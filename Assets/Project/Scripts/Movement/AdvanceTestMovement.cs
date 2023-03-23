@@ -1,40 +1,52 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AdvanceTestMovement : MonoBehaviour
 {
     [Header("Movement")]
-    public float movementSpeed = 5f; 
-    public float tilesLenght = 4f; 
-    public LayerMask obstacleMask; 
+    public float movementSpeed = 5f;
+    public float tilesLenght = 4f;
+    public LayerMask obstacleMask;
 
-    private Vector3 destination; 
+    private Vector3 destination;
     private Vector3 previousTile;
     private bool isMoving = false;
 
     [Header("Rotation")]
-    public float rotationSpeed = 360f; 
-    public float rotationThreshold = 0.01f; 
+    public float rotationSpeed = 360f;
+    public float rotationThreshold = 0.01f;
 
-    private bool isRotating = false; 
-    private Quaternion targetRotation; 
+    private bool isRotating = false;
+    private Quaternion targetRotation;
+
+    //Enqueuing
+    private Vector3 movementInputQueue = Vector3.zero;
+    private float rotationInputQueue = 0;
 
     void Update()
     {
-        MovementKeysListener();
-        RotationKeyListener();
+        MovementQueue();
+        RotationQueue();
+        MovementKeysListener(0, 0);
+        RotationKeyListener(0);
     }
 
-    void MovementKeysListener()
+    void MovementKeysListener(float horizontalInputQueue, float verticalInputQueue)
     {
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
-        float verticalInput = Input.GetAxisRaw("Vertical");
+        float horizontalInput = horizontalInputQueue;
+        float verticalInput = verticalInputQueue;
+
+        // Check if no movement is enqueued
+        if (horizontalInputQueue == 0 && verticalInputQueue ==0)
+        {
+            horizontalInput = Input.GetAxisRaw("Horizontal");
+            verticalInput = Input.GetAxisRaw("Vertical");
+        }
+
         if ((horizontalInput != 0 || verticalInput != 0) && !isMoving)
         {
             // Calculate the position of the tile the player is moving towards
-            Vector3 direction = (transform.right * horizontalInput + transform.forward * verticalInput).normalized;
-            destination = transform.position + direction*tilesLenght;
+            Vector3 direction = SingleDirectionNormalization(transform.right * horizontalInput + transform.forward * verticalInput);
+            destination = transform.position + direction * tilesLenght;
             destination.y = transform.position.y;
             previousTile = transform.position;
             if (CanMove())
@@ -51,7 +63,7 @@ public class AdvanceTestMovement : MonoBehaviour
             {
                 isMoving = false; // Stop moving when the destination is reached
             }
-            if(!CanMove())
+            if (!CanMove())
             {
                 destination = previousTile; // Back to previous tile if collide with something
             }
@@ -72,8 +84,40 @@ public class AdvanceTestMovement : MonoBehaviour
         return true;
     }
 
-    void RotationKeyListener()
+    //Normalizing and single directioning (no diagonal movement)
+    Vector3 SingleDirectionNormalization(Vector3 direction)
     {
+        direction = direction.normalized;
+        int xsign, zsign;
+
+        if (direction.x >= 0) { xsign = 1; }
+        else { xsign = -1; }
+
+        if (direction.z >= 0) { zsign = 1; }
+        else { zsign = -1; }
+
+        if (Mathf.Abs(direction.x) >= Mathf.Abs(direction.z))
+        {
+            direction.x = 1 * xsign;
+            direction.z = 0;
+        }
+        else
+        {
+            direction.x = 0;
+            direction.z = 1 * zsign;
+        }
+        return direction;
+    }
+
+    void RotationKeyListener(float rotationQueue)
+    {
+        //Check if no rotation is enqueued
+        if(rotationQueue != 0 && !isRotating)
+        {
+            isRotating = true;
+            targetRotation = transform.rotation * Quaternion.Euler(0, rotationQueue, 0);
+        }
+
         // Get target rotation
         if (Input.GetKeyDown(KeyCode.E) && !isRotating)
         {
@@ -87,13 +131,63 @@ public class AdvanceTestMovement : MonoBehaviour
         }
 
         // Rotate towards target rotation
-        if(isRotating)
+        if (isRotating)
         {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            if(Quaternion.Angle(transform.rotation, targetRotation) < rotationThreshold)
+            if (Quaternion.Angle(transform.rotation, targetRotation) < rotationThreshold)
             {
                 isRotating = false;
                 transform.rotation = targetRotation;
+            }
+        }
+    }
+
+    void MovementQueue()
+    {
+        //Enqueuing movement if input while moving
+        if(isMoving)
+        {
+            if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
+            {
+                movementInputQueue.x = Input.GetAxisRaw("Horizontal");
+                movementInputQueue.z = Input.GetAxisRaw("Vertical");
+            }
+        }
+        //Initializing queued movement after last move
+        else
+        {
+            if(movementInputQueue != Vector3.zero)
+            {
+                MovementKeysListener(movementInputQueue.x, movementInputQueue.z);
+                movementInputQueue = Vector3.zero;
+            }
+        }
+    }
+
+    void RotationQueue()
+    {
+        //Enqueuing rotation if input while rotating
+        if (isRotating)
+        {
+            if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Q))
+            {
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    rotationInputQueue = 90;
+                }
+                if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    rotationInputQueue = -90;
+                }
+            }
+        }
+        //Initializing queued rotation after last rotation
+        else
+        {
+            if (rotationInputQueue != 0)
+            {
+                RotationKeyListener(rotationInputQueue);
+                rotationInputQueue = 0;
             }
         }
     }
