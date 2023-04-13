@@ -17,24 +17,24 @@ public class Straight : MonoBehaviour
 
     private void OnValidate()
     {
-        if (showFields)
+        if(showFields)
         {
             selectedWall_1 = (WallsList.Wall)EditorGUILayout.EnumPopup("Select a wall:", selectedWall_1);
             selectedWall_2 = (WallsList.Wall)EditorGUILayout.EnumPopup("Select a wall:", selectedWall_2);
+
+            WallsList walls = gameObject.GetComponentInParent<WallsList>();
+
+            GameObject temp1 = Instantiate(walls.walls[(int)selectedWall_1], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
+            temp1.transform.localRotation = rotWall1;
+            GameObject temp2 = Instantiate(walls.walls[(int)selectedWall_2], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
+            temp2.transform.localRotation = rotWall2;
+
+            StartCoroutine(DestroyWall(wall_1));
+            StartCoroutine(DestroyWall(wall_2));
+
+            wall_1 = temp1;
+            wall_2 = temp2;
         }
-
-        WallsList walls = gameObject.GetComponentInParent<WallsList>();
-
-        GameObject temp1 = Instantiate(walls.walls[(int)selectedWall_1], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
-        temp1.transform.localRotation = rotWall1;
-        GameObject temp2 = Instantiate(walls.walls[(int)selectedWall_2], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
-        temp2.transform.localRotation = rotWall2;
-
-        StartCoroutine(DestroyWall(wall_1));
-        StartCoroutine(DestroyWall(wall_2));
-
-        wall_1 = temp1;
-        wall_2 = temp2;
     }
 
     IEnumerator DestroyWall(GameObject wall)
@@ -57,14 +57,10 @@ public class Straight : MonoBehaviour
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("selectedWall_1"), new GUIContent("Select Wall 1"));
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("selectedWall_2"), new GUIContent("Select Wall 2"));
             }
-            else
-            {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("showFields"), new GUIContent("Show Fields"));
-            }
 
             if (GUILayout.Button(script.showFields ? "Lock" : "Show Fields"))
             {
-                script.showFields = !script.showFields;
+                DestroyImmediate(script);
             }
 
             EditorGUILayout.Space();
