@@ -1,5 +1,7 @@
 import mediapipe as mp
 import cv2
+import socket
+import time
 
 
 class HandLandmarkerDetector:
@@ -8,6 +10,10 @@ class HandLandmarkerDetector:
         self.cap = None
         self.landmarker = None
         self.options = None
+
+        self.host = "127.0.0.1"
+        self.port = 25001
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         
         self.base_options = mp.tasks.BaseOptions
         self.hand_landmarker = mp.tasks.vision.HandLandmarker
@@ -35,7 +41,12 @@ class HandLandmarkerDetector:
             self.landmarker.detect_async(
                 mp_image, timestamp_ms=int(timestamp_ms))
             
-            print(f"x = {self.x:.3f}, y = {self.y:.3f}, z = {self.z:.3f}")
+            time.sleep(0.5)
+            startPos = [int(self.x*10), int(self.y*10), int(self.z*10)] 
+            posString = ','.join(map(str, startPos)) 
+            print(posString)
+
+            self.sock.sendall(posString.encode("UTF-8")) 
 
             image = cv2.circle(image, (int(self.x * 640), int(self.y * 480)), 5, (0, 0, 255), -1)
 
@@ -63,8 +74,13 @@ class HandLandmarkerDetector:
 
         self.landmarker = self.hand_landmarker.create_from_options(
             self.options)
+        
+        self.sock.connect((self.host, self.port))
 
 
 
 detector = HandLandmarkerDetector()
 detector.run()
+
+
+print('ab')
