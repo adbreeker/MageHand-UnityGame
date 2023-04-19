@@ -41,15 +41,20 @@ class HandLandmarkerDetector:
             self.landmarker.detect_async(
                 mp_image, timestamp_ms=int(timestamp_ms))
             
+            #TODO: is this sleep necessary?
             time.sleep(0.5)
+            
+            #TODO: scale points better
             startPos = [int(self.x*10), int(self.y*10), int(self.z*10)] 
             posString = ','.join(map(str, startPos)) 
             print(posString)
 
             self.sock.sendall(posString.encode("UTF-8")) 
 
+            #NOTE: this is to visualize the point
             image = cv2.circle(image, (int(self.x * 640), int(self.y * 480)), 5, (0, 0, 255), -1)
 
+            #TODO: dont't display the image
             cv2.imshow('MediaPipe Hands', cv2.flip(image, 1))
             if cv2.waitKey(5) & 0xFF == 27:
                 break
@@ -58,7 +63,12 @@ class HandLandmarkerDetector:
         self.cv2.destroyAllWindows()
 
     def _callback(self, result, output_image: mp.Image, timestamp_ms: int):
+        '''
+        The number 7 is the index of the tip of the pointing finger.
+        We can get coordinates from other points by changing the number.
+        '''
         if result.hand_landmarks != []:
+            #TODO: pass all points to unity
             self.x = result.hand_landmarks[0][7].x
             self.y = result.hand_landmarks[0][7].y
             self.z = result.hand_landmarks[0][7].z
@@ -83,4 +93,3 @@ detector = HandLandmarkerDetector()
 detector.run()
 
 
-print('ab')
