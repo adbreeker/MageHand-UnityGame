@@ -23,24 +23,24 @@ public class DeadEnd : MonoBehaviour
             selectedWall_1 = (WallsList.Wall)EditorGUILayout.EnumPopup("Select a wall:", selectedWall_1);
             selectedWall_2 = (WallsList.Wall)EditorGUILayout.EnumPopup("Select a wall:", selectedWall_2);
             selectedWall_3 = (WallsList.Wall)EditorGUILayout.EnumPopup("Select a wall:", selectedWall_3);
+
+            WallsList walls = gameObject.GetComponentInParent<WallsList>();
+
+            GameObject temp1 = Instantiate(walls.walls[(int)selectedWall_1], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
+            temp1.transform.localRotation = rotWall1;
+            GameObject temp2 = Instantiate(walls.walls[(int)selectedWall_2], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
+            temp2.transform.localRotation = rotWall2;
+            GameObject temp3 = Instantiate(walls.walls[(int)selectedWall_3], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
+            temp3.transform.localRotation = rotWall3;
+
+            StartCoroutine(DestroyWall(wall_1));
+            StartCoroutine(DestroyWall(wall_2));
+            StartCoroutine(DestroyWall(wall_3));
+
+            wall_1 = temp1;
+            wall_2 = temp2;
+            wall_3 = temp3;
         }
-
-        WallsList walls = gameObject.GetComponentInParent<WallsList>();
-
-        GameObject temp1 = Instantiate(walls.walls[(int)selectedWall_1], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
-        temp1.transform.localRotation = rotWall1;
-        GameObject temp2 = Instantiate(walls.walls[(int)selectedWall_2], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
-        temp2.transform.localRotation = rotWall2;
-        GameObject temp3 = Instantiate(walls.walls[(int)selectedWall_3], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
-        temp3.transform.localRotation = rotWall3;
-
-        StartCoroutine(DestroyWall(wall_1));
-        StartCoroutine(DestroyWall(wall_2));
-        StartCoroutine(DestroyWall(wall_3));
-
-        wall_1 = temp1;
-        wall_2 = temp2;
-        wall_3 = temp3;
     }
 
     IEnumerator DestroyWall(GameObject wall)
@@ -64,14 +64,10 @@ public class DeadEnd : MonoBehaviour
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("selectedWall_2"), new GUIContent("Select Wall 2"));
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("selectedWall_3"), new GUIContent("Select Wall 3"));
             }
-            else
-            {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("showFields"), new GUIContent("Show Fields"));
-            }
 
-            if (GUILayout.Button(script.showFields ? "Lock" : "Unlock Fields"))
+            if (GUILayout.Button(script.showFields ? "Lock" : "Show Fields"))
             {
-                script.showFields = !script.showFields;
+                DestroyImmediate(script);
             }
 
             EditorGUILayout.Space();

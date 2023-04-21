@@ -19,16 +19,16 @@ public class TCrossing : MonoBehaviour
         if (showFields)
         {
             selectedWall_1 = (WallsList.Wall)EditorGUILayout.EnumPopup("Select a wall:", selectedWall_1);
+
+            WallsList walls = gameObject.GetComponentInParent<WallsList>();
+
+            GameObject temp1 = Instantiate(walls.walls[(int)selectedWall_1], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
+            temp1.transform.localRotation = rotWall1;
+
+            StartCoroutine(DestroyWall(wall_1));
+
+            wall_1 = temp1;
         }
-
-        WallsList walls = gameObject.GetComponentInParent<WallsList>();
-
-        GameObject temp1 = Instantiate(walls.walls[(int)selectedWall_1], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
-        temp1.transform.localRotation = rotWall1;
-
-        StartCoroutine(DestroyWall(wall_1));
-
-        wall_1 = temp1;
     }
 
     IEnumerator DestroyWall(GameObject wall)
@@ -50,14 +50,10 @@ public class TCrossing : MonoBehaviour
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("selectedWall_1"), new GUIContent("Select Wall 1"));
             }
-            else
-            {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("showFields"), new GUIContent("Show Fields"));
-            }
 
-            if (GUILayout.Button(script.showFields ? "Lock" : "Unlock Fields"))
+            if (GUILayout.Button(script.showFields ? "Lock" : "Show Fields"))
             {
-                script.showFields = !script.showFields;
+                DestroyImmediate(script);
             }
 
             EditorGUILayout.Space();
