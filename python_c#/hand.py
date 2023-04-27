@@ -1,10 +1,15 @@
 import mediapipe as mp
 import cv2
 import socket
-import time
 
 
 class HandLandmarkerDetector:
+    '''
+    To run it with unity
+    1. Run the unity game (button start should be blue)
+    2. Run this script
+    3. Wait for 'connected to unity' message
+    '''
     def __init__(self):
         self.mp = mp
         self.cap = None
@@ -23,7 +28,10 @@ class HandLandmarkerDetector:
 
         self.x , self.y, self.z = 0, 0, 0
 
-    def run(self):
+    def run(self, debug: bool=False):
+        '''
+        debug: if True, it will show the camera feed and the point
+        '''
         if self.landmarker is None:
             self._initialize()
 
@@ -40,22 +48,19 @@ class HandLandmarkerDetector:
                 image_format=self.mp.ImageFormat.SRGB, data=image)
             self.landmarker.detect_async(
                 mp_image, timestamp_ms=int(timestamp_ms))
-            
-            #TODO: is this sleep necessary?
-            time.sleep(0.5)
-            
+    
             #TODO: scale points better
             startPos = [int(self.x*10), int(self.y*10), int(self.z*10)] 
             posString = ','.join(map(str, startPos)) 
-            print(posString)
 
             self.sock.sendall(posString.encode("UTF-8")) 
 
             #NOTE: this is to visualize the point
-            image = cv2.circle(image, (int(self.x * 640), int(self.y * 480)), 5, (0, 0, 255), -1)
+            if debug:
+                image = cv2.circle(image, (int(self.x * 640), int(self.y * 480)), 5, (0, 0, 255), -1)
+                cv2.imshow('MediaPipe Hands', cv2.flip(image, 1))
+                print(posString)
 
-            #TODO: dont't display the image
-            cv2.imshow('MediaPipe Hands', cv2.flip(image, 1))
             if cv2.waitKey(5) & 0xFF == 27:
                 break
 
@@ -86,10 +91,10 @@ class HandLandmarkerDetector:
             self.options)
         
         self.sock.connect((self.host, self.port))
-
+        print('connected to unity')
 
 
 detector = HandLandmarkerDetector()
-detector.run()
+detector.run(debug=True)
 
 
