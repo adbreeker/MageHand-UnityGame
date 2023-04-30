@@ -26,7 +26,7 @@ class HandLandmarkerDetector:
         self.hand_landmarker_result = mp.tasks.vision.HandLandmarkerResult
         self.vision_running_mode = mp.tasks.vision.RunningMode
 
-        self.x , self.y, self.z = 0, 0, 0
+        self.x, self.y, self.z = 0, 0, 0
 
     def run(self, debug: bool=False):
         '''
@@ -37,6 +37,7 @@ class HandLandmarkerDetector:
 
         while self.cap.isOpened():
             success, image = self.cap.read()
+
             if not success:
                 print("Ignoring empty camera frame.")
                 continue
@@ -50,7 +51,7 @@ class HandLandmarkerDetector:
                 mp_image, timestamp_ms=int(timestamp_ms))
     
             #TODO: scale points better
-            startPos = [int(self.x*10), int(self.y*10), int(self.z*10)] 
+            startPos = [float(1 - self.x), float(1 - self.y), float(self.z)]
             posString = ','.join(map(str, startPos)) 
 
             self.sock.sendall(posString.encode("UTF-8")) 
