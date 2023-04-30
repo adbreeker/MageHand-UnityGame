@@ -15,7 +15,7 @@ public class HandScript : MonoBehaviour
     IPAddress localAdd;
     TcpListener listener;
     TcpClient client;
-    Vector3 receivedPos = Vector3.zero;
+    Vector3 receivedPos;
 
     private  Camera mainCamera;
     private float cameraHeight;
@@ -60,27 +60,33 @@ public class HandScript : MonoBehaviour
         float bottom = cameraPosition.y - height * 0.5f - objectPosition.y;
         float top = cameraPosition.y + height * 0.5f - objectPosition.y;
 
-        UnityEngine.Debug.Log("left " + left);
-        UnityEngine.Debug.Log("right: " + right);
-        UnityEngine.Debug.Log("bot: " + bottom);
-        UnityEngine.Debug.Log("top: " + top);
-
         maxRight = objectPosition.x + right;
         maxLeft = objectPosition.x + left;
         maxBot = objectPosition.y + bottom;
         maxTop = objectPosition.y + top;
         z = objectPosition.z;
 
-        UnityEngine.Debug.Log("maxleft " + maxLeft);
-        UnityEngine.Debug.Log("maxright: " + maxRight);
-        UnityEngine.Debug.Log("maxbot: " + maxBot);
-        UnityEngine.Debug.Log("maxtop: " + maxTop);
+        if (objectPosition.x >= maxLeft && objectPosition.x <= maxRight &&
+            objectPosition.y >= maxBot && objectPosition.y <= maxTop )
+        {
+            // The object is visible on the camera
+            Debug.Log("Object is visible on the camera");
+            receivedPos = new Vector3(
+                objectPosition.x,
+                objectPosition.y,
+                objectPosition.z);
+        } else {
+            Debug.Log("Object is not visible on the camera");
+            receivedPos = new Vector3(
+                maxRight - (Math.Abs(maxRight) + Math.Abs(maxLeft))/2,
+                maxTop - (Math.Abs(maxTop) + Math.Abs(maxBot))/2,
+                objectPosition.z);
+        }
     }
 
 
     void GetInfo()
     {
-        UnityEngine.Debug.Log("You got to GetInfo");
         localAdd = IPAddress.Parse(connectionIP);
         listener = new TcpListener(IPAddress.Any, connectionPort);
         listener.Start();
@@ -97,7 +103,6 @@ public class HandScript : MonoBehaviour
 
     void SendAndReceiveData()
     {
-        UnityEngine.Debug.Log("You got to SendAndRec");
         NetworkStream nwStream = client.GetStream();
         byte[] buffer = new byte[client.ReceiveBufferSize];
 
@@ -119,7 +124,6 @@ public class HandScript : MonoBehaviour
 
     public static Vector3 StringToVector3(string sVector)
     {
-        UnityEngine.Debug.Log("You got to StringToVector3");
         // Remove the parentheses
         if (sVector.StartsWith("(") && sVector.EndsWith(")"))
         {
@@ -130,11 +134,6 @@ public class HandScript : MonoBehaviour
         string[] sArray = sVector.Split(',');
 
         // calculate new points
-        UnityEngine.Debug.Log("maxleft " + maxLeft);
-        UnityEngine.Debug.Log("maxright: " + maxRight);
-        UnityEngine.Debug.Log("maxbot: " + maxBot);
-        UnityEngine.Debug.Log("maxtop: " + maxTop);
-
         float xCoordinate = - Math.Abs(maxRight) + (Math.Abs(maxLeft) + Math.Abs(maxRight)) * float.Parse(sArray[0]);
         UnityEngine.Debug.Log("New x should be: " + xCoordinate);
         float yCoordinate = - Math.Abs(maxTop) + (Math.Abs(maxBot) + Math.Abs(maxTop)) * float.Parse(sArray[1]);
