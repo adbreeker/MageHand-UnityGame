@@ -6,7 +6,7 @@ public class OpenWallPassage : MonoBehaviour
 {
     public bool passageOpen = false;
     public GameObject wall;
-    public float wallSpeed = 0.5f;
+    public float wallSpeed = 0.8f;
 
 
     public void Interaction()
@@ -21,7 +21,7 @@ public class OpenWallPassage : MonoBehaviour
         else
         {
             passageOpen = true;
-            StartCoroutine(MoveWall(3.5f));
+            StartCoroutine(MoveWall(-5.5f));
         }
 
     }

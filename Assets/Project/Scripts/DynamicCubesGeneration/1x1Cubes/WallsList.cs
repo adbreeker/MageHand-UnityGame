@@ -13,6 +13,7 @@ public class WallsList : MonoBehaviour
         Wall_3,
         Wall_Bars,
         Wall_Torch,
-        Wall_Window
+        Wall_Window,
+        Wall_TwoSided
     }
 }
