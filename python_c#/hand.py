@@ -51,7 +51,7 @@ class HandLandmarkerDetector:
                 mp_image, timestamp_ms=int(timestamp_ms))
     
             #TODO: scale points better
-            startPos = [float(1 - self.x), float(1 - self.y), float(self.z)]
+            startPos = [float(self.x), float(self.y), float(self.z)]
             posString = ','.join(map(str, startPos)) 
 
             self.sock.sendall(posString.encode("UTF-8")) 

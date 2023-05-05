@@ -15,7 +15,10 @@ public class HandScript : MonoBehaviour
     IPAddress localAdd;
     TcpListener listener;
     TcpClient client;
+
     Vector3 receivedPos;
+    public static Vector3 minPoint;
+    public static Vector3 maxPoint;
 
     private  Camera mainCamera;
     private float cameraHeight;
@@ -47,41 +50,22 @@ public class HandScript : MonoBehaviour
 
     private void CalculateNearPlaneBounds()
     {
-        float distance = Mathf.Abs(transform.position.z - mainCamera.transform.position.z);
-        float height = 2.0f * distance * Mathf.Tan(mainCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
-        float width = height * mainCamera.aspect;
-
         Vector3 objectPosition = transform.position;
-        Vector3 cameraPosition = mainCamera.transform.position;
+        Vector3 objectPositionInCameraSpace = mainCamera.transform.InverseTransformPoint(objectPosition);
+        float distance = Mathf.Abs(objectPositionInCameraSpace.z);
+        float halfHeight = distance * Mathf.Tan(mainCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
+        float halfWidth = halfHeight * mainCamera.aspect;
 
-        //account for object position
-        float left = cameraPosition.x - width * 0.5f - objectPosition.x;
-        float right = cameraPosition.x + width * 0.5f - objectPosition.x;
-        float bottom = cameraPosition.y - height * 0.5f - objectPosition.y;
-        float top = cameraPosition.y + height * 0.5f - objectPosition.y;
+        float minX = -halfWidth;
+        float maxX = halfWidth;
+        float minY = -halfHeight;
+        float maxY = halfHeight;
 
-        maxRight = objectPosition.x + right;
-        maxLeft = objectPosition.x + left;
-        maxBot = objectPosition.y + bottom;
-        maxTop = objectPosition.y + top;
-        z = objectPosition.z;
+        minPoint = mainCamera.transform.TransformPoint(new Vector3(minX, minY, distance));
+        maxPoint = mainCamera.transform.TransformPoint(new Vector3(maxX, maxY, distance));
 
-        if (objectPosition.x >= maxLeft && objectPosition.x <= maxRight &&
-            objectPosition.y >= maxBot && objectPosition.y <= maxTop )
-        {
-            // The object is visible on the camera
-            Debug.Log("Object is visible on the camera");
-            receivedPos = new Vector3(
-                objectPosition.x,
-                objectPosition.y,
-                objectPosition.z);
-        } else {
-            Debug.Log("Object is not visible on the camera");
-            receivedPos = new Vector3(
-                maxRight - (Math.Abs(maxRight) + Math.Abs(maxLeft))/2,
-                maxTop - (Math.Abs(maxTop) + Math.Abs(maxBot))/2,
-                objectPosition.z);
-        }
+        Debug.Log("minPoint: " + minPoint + ", maxPoint: " + maxPoint);
+
     }
 
 
@@ -134,9 +118,9 @@ public class HandScript : MonoBehaviour
         string[] sArray = sVector.Split(',');
 
         // calculate new points
-        float xCoordinate = - Math.Abs(maxRight) + (Math.Abs(maxLeft) + Math.Abs(maxRight)) * float.Parse(sArray[0]);
+        float xCoordinate = maxPoint.x - (Math.Abs(maxPoint.x - minPoint.x)) * float.Parse(sArray[0]);
         UnityEngine.Debug.Log("New x should be: " + xCoordinate);
-        float yCoordinate = - Math.Abs(maxTop) + (Math.Abs(maxBot) + Math.Abs(maxTop)) * float.Parse(sArray[1]);
+        float yCoordinate = maxPoint.y - (Math.Abs(maxPoint.y - minPoint.y)) * float.Parse(sArray[1]);
         UnityEngine.Debug.Log("New y should be: " + yCoordinate);
         float zCoordinate = z - float.Parse(sArray[2]);
 
