@@ -17,16 +17,14 @@ public class HandScript : MonoBehaviour
     TcpClient client;
 
     Vector3 receivedPos;
+    Vector3 newPos;
+
     public static Vector3 minPoint;
     public static Vector3 maxPoint;
 
-    private  Camera mainCamera;
+    static private Camera mainCamera;
     private float cameraHeight;
     private float cameraWidth;
-    public static float maxLeft;
-    public static float maxRight;
-    public static float maxBot;
-    public static float maxTop; //this method can be used while handling z-coordinate too, but I don't think it's needed (yet)
     public static float z;
     public Bounds _nearPlaneBounds;
 
@@ -34,7 +32,8 @@ public class HandScript : MonoBehaviour
 
     private void Update()
     {
-        transform.position = receivedPos; //assigning receivedPos in SendAndReceiveData()
+        newPos = RotateAroundPoint(receivedPos, mainCamera.transform.position, mainCamera.transform.eulerAngles.y);
+        transform.position = newPos; //assigning receivedPos in SendAndReceiveData()
     }
 
     private void Start()
@@ -61,10 +60,28 @@ public class HandScript : MonoBehaviour
         float minY = -halfHeight;
         float maxY = halfHeight;
 
+
         minPoint = mainCamera.transform.TransformPoint(new Vector3(minX, minY, distance));
         maxPoint = mainCamera.transform.TransformPoint(new Vector3(maxX, maxY, distance));
 
         Debug.Log("minPoint: " + minPoint + ", maxPoint: " + maxPoint);
+
+
+        if (objectPosition.x >= minPoint.x && objectPosition.x <= maxPoint.x &&
+        objectPosition.y >= minPoint.y && objectPosition.y <= maxPoint.y )
+        {
+            Debug.Log("Object is visible on the camera");
+            receivedPos = new Vector3(
+                objectPosition.x,
+                objectPosition.y,
+                objectPosition.z);
+        } else {
+            Debug.Log("Object is not visible on the camera");
+            receivedPos = new Vector3(
+                maxPoint.x - Math.Abs(maxPoint.x + minPoint.x) / 2,
+                maxPoint.y - Math.Abs(maxPoint.y + minPoint.y) / 2,
+                objectPosition.z);
+        }
 
     }
 
@@ -84,6 +101,7 @@ public class HandScript : MonoBehaviour
         }
         listener.Stop();
     }
+
 
     void SendAndReceiveData()
     {
@@ -105,6 +123,26 @@ public class HandScript : MonoBehaviour
             nwStream.Write(myWriteBuffer, 0, myWriteBuffer.Length); //Sending the data in Bytes to Python
         }
     }
+
+
+    public static Vector3 RotateAroundPoint(Vector3 point, Vector3 pivot, float angle)
+    {
+        if (angle == 0.0f)
+        {
+            return point;
+        }
+
+        point -= pivot;
+
+        Vector3 axis = Vector3.up;
+        Quaternion rotation = Quaternion.AngleAxis(angle, axis);
+        point = rotation * point;
+
+        point += pivot;
+
+        return point;
+    }
+
 
     public static Vector3 StringToVector3(string sVector)
     {
