@@ -1,0 +1,81 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
+
+#if UNITY_EDITOR
+public class Hallway : MonoBehaviour
+{
+    public WallsList1.Wall selectedWall_1, selectedWall_2;
+
+    public GameObject wall_1, wall_2;
+
+    Quaternion rotWall1 = Quaternion.Euler(0f, 90f, 0f);
+    Quaternion rotWall2 = Quaternion.Euler(0f, -90f, 0f);
+
+
+    bool showFields = true;
+
+    private void OnValidate()
+    {
+        if (showFields)
+        {
+            selectedWall_1 = (WallsList1.Wall)EditorGUILayout.EnumPopup("Select a wall:", selectedWall_1);
+            selectedWall_2 = (WallsList1.Wall)EditorGUILayout.EnumPopup("Select a wall:", selectedWall_2);
+
+            WallsList1 walls = gameObject.GetComponentInParent<WallsList1>();
+
+            GameObject temp1 = null, temp2 = null;
+
+            if ((int)selectedWall_1 > 0)
+            {
+                temp1 = Instantiate(walls.walls[(int)selectedWall_1], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
+                temp1.transform.localRotation = rotWall1;
+            }
+            if ((int)selectedWall_2 > 0)
+            {
+                temp2 = Instantiate(walls.walls[(int)selectedWall_2], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
+                temp2.transform.localRotation = rotWall2;
+            }
+
+            StartCoroutine(DestroyWall(wall_1));
+            StartCoroutine(DestroyWall(wall_2));
+
+            wall_1 = temp1;
+            wall_2 = temp2;
+        }
+    }
+
+    IEnumerator DestroyWall(GameObject wall)
+    {
+        yield return new WaitForEndOfFrame();
+        DestroyImmediate(wall);
+    }
+
+    [CustomEditor(typeof(Hallway))]
+    public class DeadEndEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            Hallway script = (Hallway)target;
+
+            EditorGUILayout.Space();
+
+            if (script.showFields)
+            {
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("selectedWall_1"), new GUIContent("Select Wall 1"));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty("selectedWall_2"), new GUIContent("Select Wall 2"));
+            }
+
+            if (GUILayout.Button(script.showFields ? "Lock" : "Show Fields"))
+            {
+                DestroyImmediate(script);
+            }
+
+            EditorGUILayout.Space();
+
+            serializedObject.ApplyModifiedProperties();
+        }
+    }
+}
+#endif
