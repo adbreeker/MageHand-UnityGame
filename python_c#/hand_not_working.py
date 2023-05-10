@@ -1,6 +1,7 @@
 import mediapipe as mp
 import cv2
 import socket
+import numpy as np
 
 
 class HandLandmarkerDetector:
@@ -27,7 +28,9 @@ class HandLandmarkerDetector:
         self.hand_landmarker_result = mp.tasks.vision.HandLandmarkerResult
         self.vision_running_mode = mp.tasks.vision.RunningMode
 
-        self.points = [(0, 0, 0) for _ in range(21)]  # added
+        self.x = np.zeros(21, dtype=np.float32)
+        self.y = np.zeros(21, dtype=np.float32)
+        self.z = np.zeros(21, dtype=np.float32)
 
     def run(self, debug: bool = False):
         '''
@@ -51,15 +54,16 @@ class HandLandmarkerDetector:
             self.landmarker.detect_async(
                 mp_image, timestamp_ms=int(timestamp_ms))
 
+            startPos = [self.x, self.y, self.z]
             # TODO: scale points better
-            posString = ';'.join([','.join(map(str, p)) for p in self.points])  # added
+            posString = ';'.join([','.join(map(str, p)) for p in startPos])  # added
 
             self.sock.sendall(posString.encode("UTF-8"))
-
+            
             # NOTE: this is to visualize the point
             if debug:
                 cv2.imshow('MediaPipe Hands', cv2.flip(image, 1))
-
+                print(posString)
             if cv2.waitKey(5) & 0xFF == 27:
                 break
 
@@ -70,9 +74,11 @@ class HandLandmarkerDetector:
         '''
         Get all the 21 points of the hand
         '''
-        if result.hand_landmarks is not None:  # added
-            self.points = [(lm.x, lm.y, lm.z) for lm in result.hand_landmarks[0].landmark]
-
+        if result.hand_landmarks != []:  
+            for i in range(21):
+                self.x[i] = result.hand_landmarks[0][i].x
+                self.y[i] = result.hand_landmarks[0][i].y
+                self.z[i] = result.hand_landmarks[0][i].z
     def _initialize(self):
         self.cap = cv2.VideoCapture(0)
 
