@@ -56,14 +56,18 @@ class HandLandmarkerDetector:
 
             startPos = [self.x, self.y, self.z]
             # TODO: scale points better
-            posString = ';'.join([','.join(map(str, p)) for p in startPos])  # added
+            posString = ';'.join([f'{x:.5f},{y:.5f},{z:.5f}' for x, y, z in zip(self.x, self.y, self.z)])
 
             self.sock.sendall(posString.encode("UTF-8"))
             
             # NOTE: this is to visualize the point
             if debug:
+                ## for x, y in zip(self.x, self.y):
+                ##    center = (int(x * image.shape[1]), int(y * image.shape[0]))
+                ##    cv2.circle(image, center, 5, (0, 0, 255), -1)
                 cv2.imshow('MediaPipe Hands', cv2.flip(image, 1))
-                print(posString)
+                ## print(f"{startPos[0][7]} {startPos[1][7]} {startPos[2][7]}")
+                ## print(posString)
             if cv2.waitKey(5) & 0xFF == 27:
                 break
 

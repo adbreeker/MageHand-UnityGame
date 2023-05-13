@@ -16,8 +16,9 @@ public class HandScript : MonoBehaviour
     TcpListener listener;
     TcpClient client;
 
-    Vector3 receivedPos;
-    Vector3 newPos;
+    Vector3[] mpPoints;
+
+    Vector3 handPosition;
 
     public static Vector3 minPoint;
     public static Vector3 maxPoint;
@@ -26,13 +27,12 @@ public class HandScript : MonoBehaviour
     private float cameraHeight;
     private float cameraWidth;
     public static float z;
-    public Bounds _nearPlaneBounds;
 
     bool running;
 
-    private void Update()
+    private void Update() // 1. Get all points as an array or vectors 2. Calculate the rotation in joints on 2 different planes 3. Rotate hand using local variables || IN THIS ORDER 
     {
-        newPos = RotateAroundPoint(receivedPos, mainCamera.transform.position, mainCamera.transform.eulerAngles.y);
+        Vector3 newPos = RotateAroundPoint(handPosition, mainCamera.transform.position, mainCamera.transform.eulerAngles.y);
         transform.position = newPos; //assigning receivedPos in SendAndReceiveData()
     }
 
@@ -59,6 +59,7 @@ public class HandScript : MonoBehaviour
         float maxX = halfWidth;
         float minY = -halfHeight;
         float maxY = halfHeight;
+        z = objectPosition.z;
 
 
         minPoint = mainCamera.transform.TransformPoint(new Vector3(minX, minY, distance));
@@ -71,13 +72,13 @@ public class HandScript : MonoBehaviour
         objectPosition.y >= minPoint.y && objectPosition.y <= maxPoint.y )
         {
             Debug.Log("Object is visible on the camera");
-            receivedPos = new Vector3(
+            handPosition = new Vector3(
                 objectPosition.x,
                 objectPosition.y,
                 objectPosition.z);
         } else {
             Debug.Log("Object is not visible on the camera");
-            receivedPos = new Vector3(
+            handPosition = new Vector3(
                 maxPoint.x - Math.Abs(maxPoint.x + minPoint.x) / 2,
                 maxPoint.y - Math.Abs(maxPoint.y + minPoint.y) / 2,
                 objectPosition.z);
@@ -115,7 +116,8 @@ public class HandScript : MonoBehaviour
         if (dataReceived != null)
         {
             //---Using received data---
-            receivedPos = StringToVector3(dataReceived); //<-- assigning receivedPos value from Python
+            mpPoints = StringToVector3(dataReceived); //<-- assigning receivedPos value from Python
+            handPosition = mpPoints[7];
             print("received pos data, and moved the Cube!");
 
             //---Sending Data to Host----
@@ -144,31 +146,29 @@ public class HandScript : MonoBehaviour
     }
 
 
-    public static Vector3 StringToVector3(string sVector)
+    public static Vector3[] StringToVector3(string sVector)
     {
-        // Remove the parentheses
-        if (sVector.StartsWith("(") && sVector.EndsWith(")"))
-        {
-            sVector = sVector.Substring(1, sVector.Length - 2);
+
+        string[] vectors = sVector.Split(';');
+
+        Vector3[] temp = new Vector3[vectors.Length];
+
+
+        for (int i = 0; i < vectors.Length; i++) {
+
+            string[] coordinates = vectors[i].Split(',');
+
+            if (coordinates.Length == 3) {
+
+                float x = maxPoint.x - (Math.Abs(maxPoint.x - minPoint.x)) * float.Parse(coordinates[0]);
+                float y = maxPoint.y - (Math.Abs(maxPoint.y - minPoint.y)) * float.Parse(coordinates[1]);
+                float zAxis = z;
+
+                Vector3 position = new Vector3(x, y, zAxis);
+                temp[i] = position;
+            }
         }
-
-        // split the items
-        string[] sArray = sVector.Split(',');
-
-        // calculate new points
-        float xCoordinate = maxPoint.x - (Math.Abs(maxPoint.x - minPoint.x)) * float.Parse(sArray[0]);
-        UnityEngine.Debug.Log("New x should be: " + xCoordinate);
-        float yCoordinate = maxPoint.y - (Math.Abs(maxPoint.y - minPoint.y)) * float.Parse(sArray[1]);
-        UnityEngine.Debug.Log("New y should be: " + yCoordinate);
-        float zCoordinate = z - float.Parse(sArray[2]);
-
-        // store as a Vector3
-        Vector3 result = new Vector3(
-            xCoordinate,
-            yCoordinate,
-            zCoordinate);
-
-        return result;
+        return temp;
     }
     /*
     public static string GetLocalIPAddress()
