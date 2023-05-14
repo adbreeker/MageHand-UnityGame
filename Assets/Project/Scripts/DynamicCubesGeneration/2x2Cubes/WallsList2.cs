@@ -10,12 +10,18 @@ public class WallsList2 : MonoBehaviour
     {
         None,
         Big_Wall_1,
+        Duo_wall_1,
+        Duo_wall_2,
+        Duo_wall_3,
         Big_Wall_Window,
         Big_Wall_Torch,
         Duo_Wall_Passage_1,
         Duo_Wall_Passage_2,
         Duo_Wall_Bars_Passage_1,
         Duo_Wall_Bars_Passage_2,
-        Big_Wall_TwoSided
+        Big_Wall_TwoSided,
+        Duo_Wall_TwoSided,
+        Duo_Wall_Hole_1,
+        Duo_Wall_Hole_2
     }
 }
