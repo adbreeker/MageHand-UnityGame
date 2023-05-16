@@ -8,7 +8,7 @@ public class OpenDialogue : MonoBehaviour
     public Canvas dialogueCanvas;
     public GameObject player;
     public GameObject dialogueEntry;
-    bool activateDialogue = true;
+    public bool activateDialogue = true;
     private void Update()
     {
         Bounds cubeBounds = dialogueEntry.GetComponent<Renderer>().bounds;
