@@ -18,21 +18,4 @@ public class OpenDialogue : MonoBehaviour
             activateDialogue = false;
         }
     }
-
-    /*
-    void Start()
-    {
-        //canvas.gameObject.SetActive(true);
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("something inside: ", other.gameObject);
-        if (other.gameObject == player)
-        {
-            canvas.gameObject.SetActive(true);
-        }
-    }
-    */
-
 }
