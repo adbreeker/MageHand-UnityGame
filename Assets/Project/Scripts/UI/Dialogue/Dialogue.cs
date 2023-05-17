@@ -19,10 +19,10 @@ public class Dialogue : MonoBehaviour
     public string option4Text;
 
     [Header("Choices canvases")]
-    public Canvas choice1;
-    public Canvas choice2;
-    public Canvas choice3;
-    public Canvas choice4;
+    public Canvas option1Choice;
+    public Canvas option2Choice;
+    public Canvas option3Choice;
+    public Canvas option4Choice;
 
     [Header("Prefab objects")]
     public GameObject pointer;
@@ -36,10 +36,10 @@ public class Dialogue : MonoBehaviour
 
     [Header("Parameters")]
     public float textSpeed = 0.02f;
-    public float optionsSpeed = 0.5f;
 
-    private Dictionary<int, TextMeshProUGUI> Options = new Dictionary<int, TextMeshProUGUI>();
-    private Dictionary<int, Canvas> Choices = new Dictionary<int, Canvas>();
+    private Dictionary<int, TextMeshProUGUI> options = new Dictionary<int, TextMeshProUGUI>();
+    private Dictionary<int, Canvas> optionsChoices = new Dictionary<int, Canvas>();
+    private Dictionary<int, string> optionsTexts = new Dictionary<int, string>();
 
     private bool listen = false;
     private int choice = 1;
@@ -48,15 +48,18 @@ public class Dialogue : MonoBehaviour
     {
         player.GetComponent<AdvanceTestMovement>().enabled = false;
 
-        Options.Add(1, option1);
-        Options.Add(2, option2);
-        Options.Add(3, option3);
-        Options.Add(4, option4);
-
-        Choices.Add(1, choice1);
-        Choices.Add(2, choice2);
-        Choices.Add(3, choice3);
-        Choices.Add(4, choice4);
+        options.Add(1, option1);
+        options.Add(2, option2);
+        options.Add(3, option3);
+        options.Add(4, option4);
+        optionsChoices.Add(1, option1Choice);
+        optionsChoices.Add(2, option2Choice);
+        optionsChoices.Add(3, option3Choice);
+        optionsChoices.Add(4, option4Choice);
+        optionsTexts.Add(1, option1Text);
+        optionsTexts.Add(2, option2Text);
+        optionsTexts.Add(3, option3Text);
+        optionsTexts.Add(4, option4Text);
 
         if (string.IsNullOrWhiteSpace(nameText))
         {
@@ -66,17 +69,12 @@ public class Dialogue : MonoBehaviour
         }
         else nameTextObject.text = nameText;
 
-        option1.text = option1Text;
-        option2.text = option2Text;
-        option3.text = option3Text;
-        option4.text = option4Text;
         pointer.transform.position =
-            new Vector3(pointer.transform.position.x, option1.transform.position.y + 4f, pointer.transform.position.z);
-        option1.color = new Color(1f, 1f, 1f);
+            new Vector3(pointer.transform.position.x, options[1].transform.position.y + 4f, pointer.transform.position.z);
+        options[1].color = new Color(1f, 1f, 1f);
 
         StartCoroutine(TypeText());
     }
-
     void Update()
     {
         if (listen) KeysListener();
@@ -84,9 +82,9 @@ public class Dialogue : MonoBehaviour
 
     void PointOption(TextMeshProUGUI option)
     {
-        foreach (int key in Options.Keys)
+        foreach (int key in options.Keys)
         {
-            Options[key].color = new Color(0.4625f, 0.4625f, 0.4625f); //lightGrey (118, 118, 118)
+            options[key].color = new Color(0.4625f, 0.4625f, 0.4625f); //lightGrey (118, 118, 118)
         }
         option.color = new Color(1f, 1f, 1f); //white (255, 255, 255)
         pointer.transform.position =
@@ -102,26 +100,32 @@ public class Dialogue : MonoBehaviour
             {
                 for (int i = 4; i > 0; i--)
                 {
-                    if (!string.IsNullOrWhiteSpace(Options[i].text))
+                    if (!string.IsNullOrWhiteSpace(options[i].text))
                     {
-                        PointOption(Options[i]);
+                        PointOption(options[i]);
                         break;
                     }
                 }
             }
-            else PointOption(Options[choice - 1]);
+            else PointOption(options[choice - 1]);
         }
 
         if (Input.GetKeyDown(KeyCode.S))
         {
             if (choice == 4) PointOption(option1);
-            else if (string.IsNullOrWhiteSpace(Options[choice + 1].text)) PointOption(option1);
-            else PointOption(Options[choice + 1]);
+            else if (string.IsNullOrWhiteSpace(options[choice + 1].text)) PointOption(option1);
+            else PointOption(options[choice + 1]);
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (Choices[choice] == null)
+            //player.GetComponent<DialogueDiary>().dialogueDiary.Add(nameText + " : " + contentText);
+            //player.GetComponent<DialogueDiary>().dialogueDiary.Add("You : " + optionsTexts[choice]);
+            player.GetComponent<DialogueDiary>().dialogueDiary.Add(new List<string> { nameText, contentText });
+            player.GetComponent<DialogueDiary>().dialogueDiary.Add(new List<string> { "You ", optionsTexts[choice] });
+
+
+            if (optionsChoices[choice] == null)
             {
                 dialogueCanvas.gameObject.SetActive(false);
                 player.GetComponent<AdvanceTestMovement>().enabled = true;
@@ -129,7 +133,7 @@ public class Dialogue : MonoBehaviour
             else
             {
                 dialogueCanvas.gameObject.SetActive(false);
-                Choices[choice].gameObject.SetActive(true);
+                optionsChoices[choice].gameObject.SetActive(true);
             }
         }
     }
@@ -143,17 +147,26 @@ public class Dialogue : MonoBehaviour
             yield return new WaitForSeconds(textSpeed);
         }
 
-        yield return new WaitForSeconds(optionsSpeed);
         pointer.gameObject.SetActive(true);
-
-        foreach (int key in Options.Keys)
-        {
-            if (string.IsNullOrWhiteSpace(Options[key].text)) break;
-            Options[key].gameObject.SetActive(true);
-            //yield return new WaitForSeconds(optionsSpeed);
-        }
-
         yield return new WaitForSeconds(textSpeed);
+
+        foreach (int key in options.Keys)
+        {
+            if (string.IsNullOrWhiteSpace(optionsTexts[key]))
+            {
+                options[key].text = optionsTexts[key];
+            }
+            else
+            {
+                options[key].text = string.Empty;
+                options[key].gameObject.SetActive(true);
+                foreach (char c in optionsTexts[key].ToCharArray())
+                {
+                    options[key].text += c;
+                    yield return new WaitForSeconds(textSpeed);
+                }
+            }
+        }
         listen = true;
     }
 }
