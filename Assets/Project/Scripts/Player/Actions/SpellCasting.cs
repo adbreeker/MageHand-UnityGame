@@ -6,7 +6,6 @@ public class SpellCasting : MonoBehaviour
 {
     [Header("Current Spell")]
     public string currentSpell = "None";
-    public GameObject curretSpellObject = null;
 
     [Header("Spell Cast Position")]
     public GameObject hand;
@@ -18,11 +17,10 @@ public class SpellCasting : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.L))
         {
-            LightSpell();
-        }
-        if(Input.GetKeyDown(KeyCode.Mouse0) && currentSpell == "Light")
-        {
-            LightBoltSpell();
+            if(gameObject.GetComponent<HandInteractions>().inHand == null)
+            {
+                LightSpell();
+            }
         }
     }
 
@@ -31,16 +29,16 @@ public class SpellCasting : MonoBehaviour
         if(currentSpell != "Light")
         {
             currentSpell = "Light";
-            curretSpellObject = Instantiate(lightPrefab, hand.transform);
+            this.GetComponent<HandInteractions>().inHand = Instantiate(lightPrefab, hand.transform);
         }
         else
         {
             currentSpell = "None";
-            Destroy(curretSpellObject);
+            Destroy(this.GetComponent<HandInteractions>().inHand);
         }
     }
 
-    public void LightBoltSpell()
+    public void FireSpell()
     {
 
     }
