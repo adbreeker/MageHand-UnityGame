@@ -47,6 +47,7 @@ public class Dialogue : MonoBehaviour
     void Start()
     {
         player.GetComponent<AdvanceTestMovement>().enabled = false;
+        //player.transform.Find("Hand").gameObject.SetActive(false);
 
         options.Add(1, option1);
         options.Add(2, option2);
@@ -128,7 +129,9 @@ public class Dialogue : MonoBehaviour
             if (optionsChoices[choice] == null)
             {
                 dialogueCanvas.gameObject.SetActive(false);
+
                 player.GetComponent<AdvanceTestMovement>().enabled = true;
+                //player.transform.Find("Hand").gameObject.SetActive(true);
             }
             else
             {
