@@ -37,64 +37,64 @@ public class Dialogue : MonoBehaviour
     [Header("Parameters")]
     public float textSpeed = 0.02f;
 
-    private Dictionary<int, TextMeshProUGUI> options = new Dictionary<int, TextMeshProUGUI>();
-    private Dictionary<int, Canvas> optionsChoices = new Dictionary<int, Canvas>();
-    private Dictionary<int, string> optionsTexts = new Dictionary<int, string>();
+    private Dictionary<int, TextMeshProUGUI> options;
+    private Dictionary<int, Canvas> optionsChoices;
+    private Dictionary<int, string> optionsTexts;
 
     private bool listen = false;
-    private int choice = 1;
+    private int choice;
 
     void Start()
     {
+        //Disable player movement
         player.GetComponent<AdvanceTestMovement>().enabled = false;
-        //player.transform.Find("Hand").gameObject.SetActive(false);
 
+        //Create dicts of options, choices when options are chosen and text of options (indexed 1-4)
+        options = new Dictionary<int, TextMeshProUGUI>();
         options.Add(1, option1);
         options.Add(2, option2);
         options.Add(3, option3);
         options.Add(4, option4);
+        optionsChoices = new Dictionary<int, Canvas>();
         optionsChoices.Add(1, option1Choice);
         optionsChoices.Add(2, option2Choice);
         optionsChoices.Add(3, option3Choice);
         optionsChoices.Add(4, option4Choice);
+        optionsTexts = new Dictionary<int, string>();
         optionsTexts.Add(1, option1Text);
         optionsTexts.Add(2, option2Text);
         optionsTexts.Add(3, option3Text);
         optionsTexts.Add(4, option4Text);
 
-        if (string.IsNullOrWhiteSpace(nameText))
-        {
-            nameTextObject.gameObject.SetActive(false);
-            contentTextObject.GetComponent<RectTransform>().sizeDelta =
-                new Vector2(contentTextObject.GetComponent<RectTransform>().sizeDelta.x, 200f);
-        }
-        else nameTextObject.text = nameText;
-
-        pointer.transform.position =
-            new Vector3(pointer.transform.position.x, options[1].transform.position.y + 4f, pointer.transform.position.z);
-        options[1].color = new Color(1f, 1f, 1f);
-
+        //Type text
+        choice = 1;
         StartCoroutine(TypeText());
     }
     void Update()
     {
+        //Listen if typing text is done
         if (listen) KeysListener();
     }
 
     void PointOption(TextMeshProUGUI option)
     {
+        //Change color of all options to lightGrey (118, 118, 118)
         foreach (int key in options.Keys)
         {
-            options[key].color = new Color(0.4625f, 0.4625f, 0.4625f); //lightGrey (118, 118, 118)
+            options[key].color = new Color(0.4625f, 0.4625f, 0.4625f);
         }
-        option.color = new Color(1f, 1f, 1f); //white (255, 255, 255)
+
+        //Change color of pointed option to white (255, 255, 255)
+        option.color = new Color(1f, 1f, 1f);
+
+        //Set position of pointer to pointed option
         pointer.transform.position =
             new Vector3(pointer.transform.position.x, option.transform.position.y + 4f, pointer.transform.position.z);
-        choice = int.Parse(option.gameObject.name);
     }
 
     void KeysListener()
     {
+        //Change pointed option up
         if (Input.GetKeyDown(KeyCode.W))
         {
             if (choice == 1)
@@ -103,35 +103,51 @@ public class Dialogue : MonoBehaviour
                 {
                     if (!string.IsNullOrWhiteSpace(options[i].text))
                     {
-                        PointOption(options[i]);
+                        choice = i;
+                        PointOption(options[choice]);
                         break;
                     }
                 }
             }
-            else PointOption(options[choice - 1]);
+            else
+            {
+                choice--;
+                PointOption(options[choice]);
+            }
         }
 
+        //Change pointed option down
         if (Input.GetKeyDown(KeyCode.S))
         {
-            if (choice == 4) PointOption(option1);
-            else if (string.IsNullOrWhiteSpace(options[choice + 1].text)) PointOption(option1);
-            else PointOption(options[choice + 1]);
+            if (choice == 4)
+            {
+                choice = 1;
+                PointOption(options[choice]); 
+            }
+            else if (string.IsNullOrWhiteSpace(options[choice + 1].text))
+            {
+                choice = 1;
+                PointOption(options[choice]);
+            }
+            else
+            {
+                choice++;
+                PointOption(options[choice]);
+            }
         }
 
+        //Choose pointed option (if choice is null, end dialogue and activate player movement)
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            //player.GetComponent<DialogueDiary>().dialogueDiary.Add(nameText + " : " + contentText);
-            //player.GetComponent<DialogueDiary>().dialogueDiary.Add("You : " + optionsTexts[choice]);
+            //Save dialogue to player's diary
             player.GetComponent<DialogueDiary>().dialogueDiary.Add(new List<string> { nameText, contentText });
             player.GetComponent<DialogueDiary>().dialogueDiary.Add(new List<string> { "You ", optionsTexts[choice] });
-
 
             if (optionsChoices[choice] == null)
             {
                 dialogueCanvas.gameObject.SetActive(false);
 
                 player.GetComponent<AdvanceTestMovement>().enabled = true;
-                //player.transform.Find("Hand").gameObject.SetActive(true);
             }
             else
             {
@@ -143,6 +159,23 @@ public class Dialogue : MonoBehaviour
 
     IEnumerator TypeText()
     {
+        //If there is no speaker name, expand space for content, else, show speaker name 
+        if (string.IsNullOrWhiteSpace(nameText))
+        {
+            nameTextObject.gameObject.SetActive(false);
+            contentTextObject.GetComponent<RectTransform>().sizeDelta =
+                new Vector2(contentTextObject.GetComponent<RectTransform>().sizeDelta.x, 200f);
+        }
+        else nameTextObject.text = nameText;
+
+        //Set position of pointer to first option
+        pointer.transform.position =
+            new Vector3(pointer.transform.position.x, options[1].transform.position.y + 4f, pointer.transform.position.z);
+
+        //Set color of first option to white (255, 255, 255)
+        options[1].color = new Color(1f, 1f, 1f);
+
+        //Type content
         contentTextObject.text = string.Empty;
         foreach (char c in contentText.ToCharArray())
         {
@@ -150,9 +183,11 @@ public class Dialogue : MonoBehaviour
             yield return new WaitForSeconds(textSpeed);
         }
 
+        //Show pointer
         pointer.gameObject.SetActive(true);
         yield return new WaitForSeconds(textSpeed);
 
+        //Type options
         foreach (int key in options.Keys)
         {
             if (string.IsNullOrWhiteSpace(optionsTexts[key]))
@@ -170,6 +205,8 @@ public class Dialogue : MonoBehaviour
                 }
             }
         }
+
+        //Activate KeysListener
         listen = true;
     }
 }

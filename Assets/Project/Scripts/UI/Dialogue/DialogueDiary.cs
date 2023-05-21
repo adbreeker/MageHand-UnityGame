@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class DialogueDiary : MonoBehaviour
 {
-    //public List<string> dialogueDiary = new List<string>();
+    //List of dialogues that the player has completed (speaker name, content)
     public List<List<string>> dialogueDiary = new List<List<string>>();
 }
