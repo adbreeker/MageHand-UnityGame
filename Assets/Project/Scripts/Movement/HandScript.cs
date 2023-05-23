@@ -6,6 +6,7 @@ using System.Text;
 using UnityEngine;
 using System.Threading;
 using System;
+using System.Globalization;
 
 public class HandScript : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class HandScript : MonoBehaviour
     public static Vector3 minPoint;
     public static Vector3 maxPoint;
 
+    public GameObject[] handPoints;
+
     static private Camera mainCamera;
     private float cameraHeight;
     private float cameraWidth;
@@ -33,7 +36,14 @@ public class HandScript : MonoBehaviour
     private void Update() // 1. Get all points as an array or vectors 2. Calculate the rotation in joints on 2 different planes 3. Rotate hand using local variables || IN THIS ORDER 
     {
         Vector3 newPos = RotateAroundPoint(handPosition, mainCamera.transform.position, mainCamera.transform.eulerAngles.y);
-        transform.position = newPos; //assigning receivedPos in SendAndReceiveData()
+        if (mpPoints != null)
+        {
+            for (int i = 0; i < mpPoints.Length; i++)
+            {
+                handPoints[i].transform.localPosition = mpPoints[i];
+            }
+        }
+        //transform.position = newPos; //assigning receivedPos in SendAndReceiveData()
     }
 
     private void Start()
@@ -85,7 +95,6 @@ public class HandScript : MonoBehaviour
         }
 
     }
-
 
     void GetInfo()
     {
@@ -148,40 +157,28 @@ public class HandScript : MonoBehaviour
 
     public static Vector3[] StringToVector3(string sVector)
     {
-
         string[] vectors = sVector.Split(';');
-
+    
         Vector3[] temp = new Vector3[vectors.Length];
-
-
+    
         for (int i = 0; i < vectors.Length; i++) {
 
             string[] coordinates = vectors[i].Split(',');
+            
 
             if (coordinates.Length == 3) {
 
-                float x = maxPoint.x - (Math.Abs(maxPoint.x - minPoint.x)) * float.Parse(coordinates[0]);
-                float y = maxPoint.y - (Math.Abs(maxPoint.y - minPoint.y)) * float.Parse(coordinates[1]);
+                float x = maxPoint.x - (Math.Abs(maxPoint.x - minPoint.x)) * float.Parse(coordinates[0], CultureInfo.InvariantCulture);
+                float y = maxPoint.y - (Math.Abs(maxPoint.y - minPoint.y)) * float.Parse(coordinates[1], CultureInfo.InvariantCulture);
                 float zAxis = z;
 
                 Vector3 position = new Vector3(x, y, zAxis);
                 temp[i] = position;
+                //handPoints[i].transform.localPosition = position;
+                
             }
         }
         return temp;
     }
-    /*
-    public static string GetLocalIPAddress()
-    {
-        var host = Dns.GetHostEntry(Dns.GetHostName());
-        foreach (var ip in host.AddressList)
-        {
-            if (ip.AddressFamily == AddressFamily.InterNetwork)
-            {
-                return ip.ToString();
-            }
-        }
-        throw new System.Exception("No network adapters with an IPv4 address in the system!");
-    }
-    */
+
 }

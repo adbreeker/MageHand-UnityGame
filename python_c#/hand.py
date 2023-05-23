@@ -1,6 +1,7 @@
 import mediapipe as mp
 import cv2
 import socket
+import numpy as np
 
 
 class HandLandmarkerDetector:
@@ -10,6 +11,7 @@ class HandLandmarkerDetector:
     2. Run this script
     3. Wait for 'connected to unity' message
     '''
+
     def __init__(self):
         self.mp = mp
         self.cap = None
@@ -19,16 +21,18 @@ class HandLandmarkerDetector:
         self.host = "127.0.0.1"
         self.port = 25001
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        
+
         self.base_options = mp.tasks.BaseOptions
         self.hand_landmarker = mp.tasks.vision.HandLandmarker
         self.hand_landmarker_options = mp.tasks.vision.HandLandmarkerOptions
         self.hand_landmarker_result = mp.tasks.vision.HandLandmarkerResult
         self.vision_running_mode = mp.tasks.vision.RunningMode
 
-        self.x, self.y, self.z = 0, 0, 0
+        self.x = np.zeros(21, dtype=np.float32)
+        self.y = np.zeros(21, dtype=np.float32)
+        self.z = np.zeros(21, dtype=np.float32)
 
-    def run(self, debug: bool=False):
+    def run(self, debug: bool = False):
         '''
         debug: if True, it will show the camera feed and the point
         '''
@@ -49,19 +53,21 @@ class HandLandmarkerDetector:
                 image_format=self.mp.ImageFormat.SRGB, data=image)
             self.landmarker.detect_async(
                 mp_image, timestamp_ms=int(timestamp_ms))
-    
-            #TODO: scale points better
-            startPos = [float(self.x), float(self.y), float(self.z)]
-            posString = ','.join(map(str, startPos)) 
 
-            self.sock.sendall(posString.encode("UTF-8")) 
+            startPos = [self.x, self.y, self.z]
+            # TODO: scale points better
+            posString = ';'.join([f'{x:.5f},{y:.5f},{z:.5f}' for x, y, z in zip(self.x, self.y, self.z)])
 
-            #NOTE: this is to visualize the point
+            self.sock.sendall(posString.encode("UTF-8"))
+            
+            # NOTE: this is to visualize the point
             if debug:
-                image = cv2.circle(image, (int(self.x * 640), int(self.y * 480)), 5, (0, 0, 255), -1)
+                ## for x, y in zip(self.x, self.y):
+                ##    center = (int(x * image.shape[1]), int(y * image.shape[0]))
+                ##    cv2.circle(image, center, 5, (0, 0, 255), -1)
                 cv2.imshow('MediaPipe Hands', cv2.flip(image, 1))
-                print(posString)
-
+                ## print(f"{startPos[0][7]} {startPos[1][7]} {startPos[2][7]}")
+                ## print(posString)
             if cv2.waitKey(5) & 0xFF == 27:
                 break
 
@@ -70,15 +76,13 @@ class HandLandmarkerDetector:
 
     def _callback(self, result, output_image: mp.Image, timestamp_ms: int):
         '''
-        The number 7 is the index of the tip of the pointing finger.
-        We can get coordinates from other points by changing the number.
+        Get all the 21 points of the hand
         '''
-        if result.hand_landmarks != []:
-            #TODO: pass all points to unity
-            self.x = result.hand_landmarks[0][7].x
-            self.y = result.hand_landmarks[0][7].y
-            self.z = result.hand_landmarks[0][7].z
-
+        if result.hand_landmarks != []:  
+            for i in range(21):
+                self.x[i] = result.hand_landmarks[0][i].x
+                self.y[i] = result.hand_landmarks[0][i].y
+                self.z[i] = result.hand_landmarks[0][i].z
     def _initialize(self):
         self.cap = cv2.VideoCapture(0)
 
@@ -90,12 +94,10 @@ class HandLandmarkerDetector:
 
         self.landmarker = self.hand_landmarker.create_from_options(
             self.options)
-        
+
         self.sock.connect((self.host, self.port))
         print('connected to unity')
 
 
 detector = HandLandmarkerDetector()
 detector.run(debug=True)
-
-
