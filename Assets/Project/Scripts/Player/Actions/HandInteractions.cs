@@ -5,11 +5,19 @@ using UnityEngine;
 public class HandInteractions : MonoBehaviour
 {
     public GameObject inHand = null;
+    public GameObject player;
+
+    SimpleTestHand handController;
+
+    private void Start()
+    {
+        handController = this.GetComponent<SimpleTestHand>();
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.Mouse0))
+        if(Input.GetKeyDown(KeyCode.Mouse0))
         {
             if (inHand != null)
             {
@@ -24,20 +32,25 @@ public class HandInteractions : MonoBehaviour
 
     void PickUpObject()
     {
-
+        if(handController.currentlyPointing.layer == LayerMask.NameToLayer("Item"))
+        {
+            inHand = handController.currentlyPointing;
+            inHand.transform.SetParent(this.gameObject.transform);
+            inHand.transform.localPosition = new Vector3(0, 0, 2);
+        }
     }
 
     void ThrowObject()
     {
-        if(this.gameObject.GetComponent<SpellCasting>().currentSpell == "Light")
+        if(this.gameObject.GetComponentInParent<SpellCasting>().currentSpell == "Light")
         {
-            inHand.AddComponent<ThrowSpell>().Initialize(this.gameObject);
+            inHand.AddComponent<ThrowSpell>().Initialize(player);
             inHand = null;
-            this.gameObject.GetComponent<SpellCasting>().currentSpell = "None";
+            player.GetComponent<SpellCasting>().currentSpell = "None";
         }
         else
         {
-            inHand.AddComponent<ThrowObject>().Initialize(this.gameObject);
+            inHand.AddComponent<ThrowObject>().Initialize(player);
             inHand = null;
         }
     }

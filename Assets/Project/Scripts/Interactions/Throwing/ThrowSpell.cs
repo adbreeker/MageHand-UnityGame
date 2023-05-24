@@ -24,6 +24,7 @@ public class ThrowSpell : MonoBehaviour
             if(collider.gameObject.layer != LayerMask.NameToLayer("Player"))
             {
                 Destroy(gameObject);
+                break;
             }
         }
     }

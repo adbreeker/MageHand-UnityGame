@@ -17,7 +17,7 @@ public class SpellCasting : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.L))
         {
-            if(gameObject.GetComponent<HandInteractions>().inHand == null)
+            if(gameObject.GetComponentInChildren<HandInteractions>().inHand == null)
             {
                 LightSpell();
             }
@@ -29,12 +29,12 @@ public class SpellCasting : MonoBehaviour
         if(currentSpell != "Light")
         {
             currentSpell = "Light";
-            this.GetComponent<HandInteractions>().inHand = Instantiate(lightPrefab, hand.transform);
+            this.GetComponentInChildren<HandInteractions>().inHand = Instantiate(lightPrefab, hand.transform);
         }
         else
         {
             currentSpell = "None";
-            Destroy(this.GetComponent<HandInteractions>().inHand);
+            Destroy(this.GetComponentInChildren<HandInteractions>().inHand);
         }
     }
 

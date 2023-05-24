@@ -8,7 +8,8 @@ public class SimpleTestHand : MonoBehaviour
     public float handDistance = 1.5f;
     public float catchingDistance = 2.5f;
 
-    GameObject currentlyPointing;
+    public GameObject currentlyPointing;
+
 
     private void Start()
     {
@@ -33,12 +34,14 @@ public class SimpleTestHand : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, catchingDistance))
         {
             currentlyPointing = hit.collider.gameObject;
+            EnlightObject(currentlyPointing);
 
             // Visualize the raycast by drawing a line from the cursor position to the hit point
             Debug.DrawLine(ray.origin, hit.point, Color.green);
         }
         else
         {
+            currentlyPointing = null;
             // Visualize the raycast by drawing a line from the cursor position to the maximum distance
             Debug.DrawLine(ray.origin, ray.origin + ray.direction * catchingDistance, Color.red);
         }
@@ -51,6 +54,21 @@ public class SimpleTestHand : MonoBehaviour
             if(LayerMask.LayerToName(currentlyPointing.layer) == "Switch")
             {
                 currentlyPointing.SendMessage("OnClick");
+            }
+        }
+    }
+
+    void EnlightObject(GameObject pointingAt)
+    {
+        if(pointingAt.layer == LayerMask.NameToLayer("Item") && pointingAt != GetComponent<HandInteractions>().inHand)
+        {
+            if (pointingAt.GetComponent<EnlightItem>() != null)
+            {
+                pointingAt.GetComponent<EnlightItem>().enlightenTime = 10;
+            }
+            else
+            {
+                pointingAt.AddComponent<EnlightItem>();
             }
         }
     }

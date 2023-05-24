@@ -76,7 +76,7 @@ public class AdvanceTestMovement : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(transform.position, 0.8f, obstacleMask);
         foreach (Collider collider in colliders)
         {
-            if (collider.gameObject.tag == "Wall")
+            if (collider.gameObject.tag == "Wall" || collider.gameObject.tag == "Obstacle")
             {
                 return false;
             }
