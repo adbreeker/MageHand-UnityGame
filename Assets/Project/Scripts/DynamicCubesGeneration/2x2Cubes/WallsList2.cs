@@ -15,6 +15,7 @@ public class WallsList2 : MonoBehaviour
         Duo_wall_3,
         Big_Wall_Window,
         Big_Wall_Torch,
+        Big_Wall_Torch_NoLight,
         Duo_Wall_Passage_1,
         Duo_Wall_Passage_2,
         Duo_Wall_Bars_Passage_1,

@@ -73,7 +73,7 @@ public class AdvanceTestMovement : MonoBehaviour
     // Check if the player can move to a given destination
     bool CanMove()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 0.8f, obstacleMask);
+        Collider[] colliders = Physics.OverlapSphere(new Vector3(transform.position.x, 1.25f, transform.position.z), 0.8f, obstacleMask);
         foreach (Collider collider in colliders)
         {
             if (collider.gameObject.tag == "Wall" || collider.gameObject.tag == "Obstacle")

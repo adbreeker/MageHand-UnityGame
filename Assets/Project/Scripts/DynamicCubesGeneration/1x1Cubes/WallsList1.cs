@@ -15,7 +15,9 @@ public class WallsList1 : MonoBehaviour
         Wall_Bars_Passage,
         Wall_Passage,
         Wall_Torch,
+        Wall_Torch_NoLight,
         Wall_Window,
-        Wall_TwoSided
+        Wall_TwoSided,
+        Wall_LockedDoorsPassage
     }
 }
