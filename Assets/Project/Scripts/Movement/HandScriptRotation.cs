@@ -7,7 +7,7 @@ using UnityEngine;
 using System.Threading;
 using System;
 
-public class HandScript : MonoBehaviour
+public class HandScriptRotation : MonoBehaviour
 {
     Thread mThread;
     public string connectionIP = "127.0.0.1";
