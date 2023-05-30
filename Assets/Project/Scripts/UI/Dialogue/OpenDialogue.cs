@@ -7,8 +7,13 @@ public class OpenDialogue : MonoBehaviour
 {
     public Canvas dialogueCanvas;
     public GameObject player;
-    public GameObject dialogueEntry;
-    public bool activateDialogue = true;
+
+    private bool activateDialogue = true;
+    private GameObject dialogueEntry;
+    private void Start()
+    {
+        dialogueEntry = gameObject;
+    }
     private void Update()
     {
         //Activates canvas (dialogue) while player enters bounds of object that this script is connected to

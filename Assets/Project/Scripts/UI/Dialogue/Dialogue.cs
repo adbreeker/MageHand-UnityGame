@@ -46,8 +46,9 @@ public class Dialogue : MonoBehaviour
 
     void Start()
     {
-        //Disable player movement
+        //Disable other controls
         player.GetComponent<AdvanceTestMovement>().enabled = false;
+        player.GetComponent<Inventory>().enabled = false;
 
         //Create dicts of options, choices when options are chosen and text of options (indexed 1-4)
         options = new Dictionary<int, TextMeshProUGUI>();
@@ -136,7 +137,7 @@ public class Dialogue : MonoBehaviour
             }
         }
 
-        //Choose pointed option (if choice is null, end dialogue and activate player movement)
+        //Choose pointed option (if choice is null, end dialogue and activate other controls)
         if (Input.GetKeyDown(KeyCode.Space))
         {
             //Save dialogue to player's diary
@@ -148,6 +149,7 @@ public class Dialogue : MonoBehaviour
                 dialogueCanvas.gameObject.SetActive(false);
 
                 player.GetComponent<AdvanceTestMovement>().enabled = true;
+                player.GetComponent<Inventory>().enabled = true;
             }
             else
             {
