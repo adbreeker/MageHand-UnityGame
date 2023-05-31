@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -39,15 +38,15 @@ public class Inventory : MonoBehaviour
             else CloseInventory();
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && inventoryOpened)
         {
-            if (inventoryOpened) CloseInventory();
+            CloseInventory();
         }
 
         //Change page left if possible
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A) && inventoryOpened)
         {
-            if (inventoryOpened && page > 0)
+            if (page > 0)
             {
                 page--;
                 DisplayPage(page);
@@ -55,9 +54,9 @@ public class Inventory : MonoBehaviour
         }
 
         //Change page right if possible
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.D) && inventoryOpened)
         {
-            if (inventoryOpened && page+1 < inventoryPages.Count)
+            if (page+1 < inventoryPages.Count)
                 page++;
                 DisplayPage(page);
         }
@@ -120,7 +119,6 @@ public class Inventory : MonoBehaviour
 
     void DisplayPage(int pageToDisplay)
     {
-        Debug.Log(instantiatedInventory.transform.position);
         //Deactivate item slots, destroy icons and arrows
         for (int i = 0; i < itemSlots.Count; i++)
         {
