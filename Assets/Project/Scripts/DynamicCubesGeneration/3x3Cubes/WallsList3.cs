@@ -20,6 +20,9 @@ public class WallsList3 : MonoBehaviour
         Tri_Wall_Bars_Passage_1,
         Tri_Wall_Bars_Passage_2,
         Tri_Wall_Bars_Passage_3,
-        Tri_Wall_TwoSided
+        Tri_Wall_TwoSided,
+        Tri_Wall_Hole_1,
+        Tri_Wall_Hole_2,
+        Tri_Wall_Hole_3
     }
 }
