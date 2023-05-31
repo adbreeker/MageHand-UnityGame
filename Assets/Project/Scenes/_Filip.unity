@@ -4555,6 +4555,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1664111254}
   - component: {fileID: 1664111253}
+  - component: {fileID: 1664111255}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -4574,8 +4575,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9977503012c57b2478445433c4ec4dc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectionIP: 127.0.0.1
-  connectionPort: 25001
   handPoints:
   - {fileID: 62716516}
   - {fileID: 2116273022}
@@ -4598,6 +4597,7 @@ MonoBehaviour:
   - {fileID: 981084479}
   - {fileID: 803131078}
   - {fileID: 2054892080}
+  udpReceive: {fileID: 1664111255}
 --- !u!4 &1664111254
 Transform:
   m_ObjectHideFlags: 0
@@ -4606,12 +4606,27 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1664111252}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.9221075, y: 1.4616253, z: 1.8351824}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1664111255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664111252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dfdadbf211095841845f301c3f4f6ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  port: 25001
+  startReceiving: 1
+  data: 
 --- !u!1 &1804220277
 GameObject:
   m_ObjectHideFlags: 0
