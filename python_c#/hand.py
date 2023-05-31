@@ -16,9 +16,9 @@ class HandLandmarkerDetector:
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
         self.base_options = mp.tasks.BaseOptions
-        self.hand_landmarker = mp.tasks.vision.HandLandmarker
-        self.hand_landmarker_options = mp.tasks.vision.HandLandmarkerOptions
-        self.hand_landmarker_result = mp.tasks.vision.HandLandmarkerResult
+        self.hand_landmarker = mp.tasks.vision.GestureRecognizer
+        self.hand_landmarker_options = mp.tasks.vision.GestureRecognizerOptions
+        self.hand_landmarker_result = mp.tasks.vision.GestureRecognizerResult
         self.vision_running_mode = mp.tasks.vision.RunningMode
 
         self.data = np.zeros((21, 3), dtype=np.float32)
@@ -38,7 +38,7 @@ class HandLandmarkerDetector:
             image.flags.writeable = False
             mp_image = self.mp.Image(
                 image_format=self.mp.ImageFormat.SRGB, data=image)
-            self.landmarker.detect_async(
+            self.landmarker.recognize_async(
                 mp_image, timestamp_ms=int(timestamp_ms))
 
             self.sock.sendto(str.encode(';'.join([f'{x:.5f},{y:.5f},{z:.5f}' for x, y, z in self.data])), (self.host, self.port))
@@ -54,6 +54,8 @@ class HandLandmarkerDetector:
 
     def _callback(self, result, output_image: mp.Image, timestamp_ms: int):        
         if result.hand_landmarks != []:
+            #NOTE: access gesture name
+            #print(result.gestures[0][0].category_name)
             for i in range(21):
                 self.data[i] = [result.hand_landmarks[0][i].x, 
                                 result.hand_landmarks[0][i].y, 
@@ -63,7 +65,7 @@ class HandLandmarkerDetector:
 
         self.options = self.hand_landmarker_options(
             base_options=self.base_options(
-                model_asset_path='hand_landmarker.task'),
+                model_asset_path='gesture_recognizer.task'),
             running_mode=self.vision_running_mode.LIVE_STREAM,
             result_callback=self._callback)
 
