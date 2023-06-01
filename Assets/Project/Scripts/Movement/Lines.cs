@@ -19,7 +19,7 @@ public class Lines : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        lineRenderer.SetPosition(0, origin.position);
-        lineRenderer.SetPosition(1, destination.position);
+        lineRenderer.SetPosition(0, origin.localPosition);
+        lineRenderer.SetPosition(1, destination.localPosition);
     }
 }
