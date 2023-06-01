@@ -10,10 +10,10 @@ public class Room2x2 : MonoBehaviour
 
     public GameObject wall_1, wall_2, wall_3, wall_4;
 
-    Quaternion rotWall1 = Quaternion.Euler(0f, 90f, 0f);
-    Quaternion rotWall2 = Quaternion.Euler(0f, -90f, 0f);
-    Quaternion rotWall3 = Quaternion.Euler(0f, 0f, 0f);
-    Quaternion rotWall4 = Quaternion.Euler(0f, 180f, 0f);
+    Quaternion rotWall1 = Quaternion.Euler(0f, 0f, 0f);
+    Quaternion rotWall2 = Quaternion.Euler(0f, 90f, 0f);
+    Quaternion rotWall3 = Quaternion.Euler(0f, 180f, 0f);
+    Quaternion rotWall4 = Quaternion.Euler(0f, 270f, 0f);
 
     bool showFields = true;
 

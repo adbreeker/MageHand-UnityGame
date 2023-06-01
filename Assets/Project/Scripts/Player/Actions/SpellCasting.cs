@@ -1,0 +1,46 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SpellCasting : MonoBehaviour
+{
+    [Header("Current Spell")]
+    public string currentSpell = "None";
+
+    [Header("Spell Cast Position")]
+    public GameObject hand;
+
+    [Header("Spells Prefabs")]
+    public GameObject lightPrefab;
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            if(gameObject.GetComponentInChildren<HandInteractions>().inHand == null)
+            {
+                LightSpell();
+            }
+        }
+    }
+
+    public void LightSpell()
+    {
+        if(currentSpell != "Light")
+        {
+            currentSpell = "Light";
+            this.GetComponentInChildren<HandInteractions>().inHand = Instantiate(lightPrefab, hand.transform);
+        }
+        else
+        {
+            currentSpell = "None";
+            Destroy(this.GetComponentInChildren<HandInteractions>().inHand);
+        }
+    }
+
+    public void FireSpell()
+    {
+
+    }
+    
+}
