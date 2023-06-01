@@ -20,6 +20,11 @@ public class UDPReceive : MonoBehaviour
         receiveThread.Start();
     }
 
+    public void OnApplicationQuit()
+    {
+        client.Close();
+    }
+
     private void ReceiveData()
     {
         client = new UdpClient(port);

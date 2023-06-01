@@ -17,7 +17,7 @@ public class HandScript : MonoBehaviour
     public GameObject[] handPoints;
     public UDPReceive udpReceive;
 
-    static private Camera mainCamera;
+    public Camera mainCamera;
     private float cameraHeight;
     private float cameraWidth;
     public static float z;
@@ -41,7 +41,7 @@ public class HandScript : MonoBehaviour
 
     private void Start()
     {
-        mainCamera = Camera.main;
+
         CalculateNearPlaneBounds();
     }
 
@@ -117,7 +117,7 @@ public class HandScript : MonoBehaviour
 
                 float x = maxPoint.x - (Math.Abs(maxPoint.x - minPoint.x)) * float.Parse(coordinates[0], CultureInfo.InvariantCulture);
                 float y = maxPoint.y - (Math.Abs(maxPoint.y - minPoint.y)) * float.Parse(coordinates[1], CultureInfo.InvariantCulture);
-                float zAxis = z - float.Parse(coordinates[2], CultureInfo.InvariantCulture);
+                float zAxis = z - 5.0f*float.Parse(coordinates[2], CultureInfo.InvariantCulture);
 
                 Vector3 position = new Vector3(x, y, zAxis);
                 temp[i] = position;
