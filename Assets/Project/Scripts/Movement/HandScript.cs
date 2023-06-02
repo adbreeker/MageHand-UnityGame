@@ -47,9 +47,9 @@ public class HandScript : MonoBehaviour
 
     private void CalculateNearPlaneBounds()
     {
-        Vector3 objectPosition = transform.position;
+        Vector3 objectPosition = transform.localPosition;
         Vector3 objectPositionInCameraSpace = mainCamera.transform.InverseTransformPoint(objectPosition);
-        float distance = Mathf.Abs(objectPositionInCameraSpace.z);
+        float distance = Mathf.Abs(objectPosition.z);
         float halfHeight = distance * Mathf.Tan(mainCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
         float halfWidth = halfHeight * mainCamera.aspect;
 
@@ -60,8 +60,8 @@ public class HandScript : MonoBehaviour
         z = objectPosition.z;
 
 
-        minPoint = mainCamera.transform.TransformPoint(new Vector3(minX, minY, distance));
-        maxPoint = mainCamera.transform.TransformPoint(new Vector3(maxX, maxY, distance));
+        minPoint = new Vector3(minX, minY, distance);
+        maxPoint = new Vector3(maxX, maxY, distance);
 
         Debug.Log("minPoint: " + minPoint + ", maxPoint: " + maxPoint);
 
