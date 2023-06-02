@@ -6,10 +6,12 @@ using System;
 using System.Globalization;
 
 
-public class HandScript : MonoBehaviour
+public class MoveHandPoints : MonoBehaviour
 {
     Vector3[] vec;
     Vector3 handPosition;
+
+    public Camera mainCamera;
 
     public static Vector3 minPoint;
     public static Vector3 maxPoint;
@@ -17,7 +19,6 @@ public class HandScript : MonoBehaviour
     public GameObject[] handPoints;
     public UDPReceive udpReceive;
 
-    public Camera mainCamera;
     private float cameraHeight;
     private float cameraWidth;
     public static float z;
