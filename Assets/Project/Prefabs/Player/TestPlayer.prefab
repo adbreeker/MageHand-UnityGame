@@ -569,14 +569,14 @@ PrefabInstance:
       objectReference: {fileID: 2215893106494380605}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 22ff27dc72981f343b6b88c2944efcee, type: 3}
---- !u!4 &1822504807912581896 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 674754607031225937, guid: 22ff27dc72981f343b6b88c2944efcee, type: 3}
-  m_PrefabInstance: {fileID: 1159645885990544729}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1297325709213200818 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 150559502701679851, guid: 22ff27dc72981f343b6b88c2944efcee, type: 3}
+  m_PrefabInstance: {fileID: 1159645885990544729}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1822504807912581896 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 674754607031225937, guid: 22ff27dc72981f343b6b88c2944efcee, type: 3}
   m_PrefabInstance: {fileID: 1159645885990544729}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3740186669925120661
@@ -586,6 +586,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2215893105645526394}
     m_Modifications:
+    - target: {fileID: -2652551327674569987, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 2215893106494380605}
     - target: {fileID: 1776557680973669348, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
       propertyPath: mainCamera
       value: 
@@ -640,45 +644,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
---- !u!4 &2260693297293201451 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3222421630018726590, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
-  m_PrefabInstance: {fileID: 3740186669925120661}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &5635713986415474186 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 9066269380277898399, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
-  m_PrefabInstance: {fileID: 3740186669925120661}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &3116585748379559532 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1776557681398308089, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
-  m_PrefabInstance: {fileID: 3740186669925120661}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3116585748844042623 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1776557680973669354, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
   m_PrefabInstance: {fileID: 3740186669925120661}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &3116585748844042620 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1776557680973669353, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
-  m_PrefabInstance: {fileID: 3740186669925120661}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6889935685102777385
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3116585748844042620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed163d92d7ae11143a1f17220ba8296d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wristPoint: {fileID: 3116585748379559532}
-  indexFingerKnucklePoint: {fileID: 5635713986415474186}
-  smallFingerKnucklePoint: {fileID: 2260693297293201451}
-  catchingDistance: 2.5
-  currentlyPointing: {fileID: 0}

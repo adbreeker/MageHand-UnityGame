@@ -13,15 +13,20 @@ public class MoveHandPoints : MonoBehaviour
 
     public Camera mainCamera;
 
-    public static Vector3 minPoint;
-    public static Vector3 maxPoint;
+    private Vector3 minPoint;
+    private Vector3 maxPoint;
+    private float z;
 
     public GameObject[] handPoints;
     public UDPReceive udpReceive;
 
+<<<<<<< Updated upstream
     private float cameraHeight;
     private float cameraWidth;
     public static float z;
+=======
+    public string gesture;
+>>>>>>> Stashed changes
 
     bool running;
 
@@ -104,7 +109,7 @@ public class MoveHandPoints : MonoBehaviour
     }
 
 
-    public static Vector3[] StringToVector3(string sVector)
+    public Vector3[] StringToVector3(string sVector)
     {
         string[] vectors = sVector.Split(';');
         
