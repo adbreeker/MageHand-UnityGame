@@ -4,6 +4,7 @@ using System.Text;
 using UnityEngine;
 using System;
 using System.Globalization;
+using System.Linq;
 
 
 public class MoveHandPoints : MonoBehaviour
@@ -19,14 +20,8 @@ public class MoveHandPoints : MonoBehaviour
 
     public GameObject[] handPoints;
     public UDPReceive udpReceive;
-
-<<<<<<< Updated upstream
-    private float cameraHeight;
-    private float cameraWidth;
-    public static float z;
-=======
+   
     public string gesture;
->>>>>>> Stashed changes
 
     bool running;
 
@@ -113,9 +108,13 @@ public class MoveHandPoints : MonoBehaviour
     {
         string[] vectors = sVector.Split(';');
         
-        Vector3[] temp = new Vector3[vectors.Length];
+        // Labels of gestures:
+        // None, Closed_Fist, Open_Palm, Pointing_Up, Thumb_Down, Thumb_Up, Victory, ILoveYou
+        gesture = vectors[0];
+        
+        Vector3[] temp = new Vector3[vectors.Length-1];
     
-        for (int i = 0; i < vectors.Length; i++) {
+        for (int i = 1; i < vectors.Length; i++) {
 
             string[] coordinates = vectors[i].Split(',');
             
@@ -126,7 +125,7 @@ public class MoveHandPoints : MonoBehaviour
                 float zAxis = z - 5.0f*float.Parse(coordinates[2], CultureInfo.InvariantCulture);
 
                 Vector3 position = new Vector3(x, y, zAxis);
-                temp[i] = position;
+                temp[i-1] = position;
                 
             }
         }
