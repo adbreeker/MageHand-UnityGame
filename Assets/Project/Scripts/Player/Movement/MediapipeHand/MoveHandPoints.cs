@@ -4,6 +4,7 @@ using System.Text;
 using UnityEngine;
 using System;
 using System.Globalization;
+using System.Linq;
 
 
 public class MoveHandPoints : MonoBehaviour
@@ -19,6 +20,8 @@ public class MoveHandPoints : MonoBehaviour
     public GameObject[] handPoints;
     public UDPReceive udpReceive;
 
+    public static string gesture;
+
     private float cameraHeight;
     private float cameraWidth;
     public static float z;
@@ -30,7 +33,7 @@ public class MoveHandPoints : MonoBehaviour
         Vector3 newPos = RotateAroundPoint(handPosition, mainCamera.transform.position, mainCamera.transform.eulerAngles.y);
         string data = udpReceive.data;
         vec = StringToVector3(data);
-        
+        print(gesture);
         if (vec != null)
         {
             for (int i = 0; i < vec.Length; i++)
@@ -107,10 +110,12 @@ public class MoveHandPoints : MonoBehaviour
     public static Vector3[] StringToVector3(string sVector)
     {
         string[] vectors = sVector.Split(';');
+
+        gesture = vectors[0];
         
-        Vector3[] temp = new Vector3[vectors.Length];
+        Vector3[] temp = new Vector3[vectors.Length-1];
     
-        for (int i = 0; i < vectors.Length; i++) {
+        for (int i = 1; i < vectors.Length; i++) {
 
             string[] coordinates = vectors[i].Split(',');
             
@@ -121,7 +126,7 @@ public class MoveHandPoints : MonoBehaviour
                 float zAxis = z - 5.0f*float.Parse(coordinates[2], CultureInfo.InvariantCulture);
 
                 Vector3 position = new Vector3(x, y, zAxis);
-                temp[i] = position;
+                temp[i-1] = position;
                 
             }
         }
