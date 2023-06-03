@@ -70,13 +70,13 @@ public class HandInteractions : MonoBehaviour
 
     void PickUpObject()
     {
-        CooldownPickUp = 5;
+        CooldownPickUp = 0;
 
         if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("Item"))
         {
             inHand = pointer.currentlyPointing;
             inHand.transform.SetParent(holdingPoint);
-            inHand.transform.localPosition = new Vector3(0, 0, 2);
+            inHand.transform.localPosition = new Vector3(0, 0, 10);
         }
     }
 

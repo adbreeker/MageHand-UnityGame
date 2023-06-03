@@ -21,7 +21,6 @@ public class RaycastFromHand : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, catchingDistance))
         {
             currentlyPointing = hit.collider.gameObject;
-
             EnlightObject(currentlyPointing);
 
             // Visualize the raycast by drawing a line from the cursor position to the hit point
@@ -29,7 +28,7 @@ public class RaycastFromHand : MonoBehaviour
         }
         else
         {
-            currentlyPointing = null;
+
             // Visualize the raycast by drawing a line from the cursor position to the maximum distance
             Debug.DrawLine(ray.origin, ray.origin + ray.direction * catchingDistance, Color.red);
         }
@@ -49,4 +48,5 @@ public class RaycastFromHand : MonoBehaviour
             }
         }
     }
+
 }
