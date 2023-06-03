@@ -33,7 +33,7 @@ public class MoveHandPoints : MonoBehaviour
         Vector3 newPos = RotateAroundPoint(handPosition, mainCamera.transform.position, mainCamera.transform.eulerAngles.y);
         string data = udpReceive.data;
         vec = StringToVector3(data);
-        print(gesture);
+        
         if (vec != null)
         {
             for (int i = 0; i < vec.Length; i++)
@@ -110,7 +110,9 @@ public class MoveHandPoints : MonoBehaviour
     public static Vector3[] StringToVector3(string sVector)
     {
         string[] vectors = sVector.Split(';');
-
+        
+        // Labels of gestures:
+        // None, Closed_Fist, Open_Palm, Pointing_Up, Thumb_Down, Thumb_Up, Victory, ILoveYou
         gesture = vectors[0];
         
         Vector3[] temp = new Vector3[vectors.Length-1];
