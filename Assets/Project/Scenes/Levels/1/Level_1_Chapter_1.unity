@@ -2744,6 +2744,10 @@ PrefabInstance:
       value: Jail_Gate
       objectReference: {fileID: 0}
     - target: {fileID: 3949618021091473931, guid: 74306c807f3830a4a8f1c245e9549c6c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3949618021091473931, guid: 74306c807f3830a4a8f1c245e9549c6c, type: 3}
       propertyPath: m_TagString
       value: Wall
       objectReference: {fileID: 0}
@@ -3558,6 +3562,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2215893106494380605, guid: 4fc787d1eb080ed458cfb813f50f44c4, type: 3}
   m_PrefabInstance: {fileID: 1522722222}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &510087575 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2215893106494380599, guid: 4fc787d1eb080ed458cfb813f50f44c4, type: 3}
+  m_PrefabInstance: {fileID: 1522722222}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &523081263
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3937,7 +3946,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 322969909244316537, guid: 91513aa3c9b2ced4bb1e1ec1451dc07b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.44715294
+      value: 0.24
       objectReference: {fileID: 0}
     - target: {fileID: 322969909244316537, guid: 91513aa3c9b2ced4bb1e1ec1451dc07b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4068,6 +4077,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 634595028}
   m_Mesh: {fileID: 4300000, guid: 827885f9c6f8d734c894e9ee1ed7b6e7, type: 3}
+--- !u!20 &672473423 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2215893105645526395, guid: 4fc787d1eb080ed458cfb813f50f44c4, type: 3}
+  m_PrefabInstance: {fileID: 1522722222}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &687220948
 GameObject:
   m_ObjectHideFlags: 0
@@ -8987,7 +9001,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3116585748844042623, guid: 4fc787d1eb080ed458cfb813f50f44c4, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3277551215970560536, guid: 4fc787d1eb080ed458cfb813f50f44c4, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -9053,6 +9067,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 6889935685102777385, guid: 4fc787d1eb080ed458cfb813f50f44c4, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 510087575}
+    - target: {fileID: 6889935685102777385, guid: 4fc787d1eb080ed458cfb813f50f44c4, type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 672473423}
     - target: {fileID: 7064184666368505544, guid: 4fc787d1eb080ed458cfb813f50f44c4, type: 3}
       propertyPath: m_Layer
       value: 8
