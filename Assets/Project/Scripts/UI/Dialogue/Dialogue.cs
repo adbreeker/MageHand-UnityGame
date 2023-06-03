@@ -89,8 +89,8 @@ public class Dialogue : MonoBehaviour
         option.color = new Color(1f, 1f, 1f);
 
         //Set position of pointer to pointed option
-        pointer.transform.position =
-            new Vector3(pointer.transform.position.x, option.transform.position.y + 4f, pointer.transform.position.z);
+        pointer.transform.localPosition =
+            new Vector3(pointer.transform.localPosition.x, option.transform.localPosition.y + 4f, pointer.transform.localPosition.z);
     }
 
     void KeysListener()
@@ -171,8 +171,8 @@ public class Dialogue : MonoBehaviour
         else nameTextObject.text = nameText;
 
         //Set position of pointer to first option
-        pointer.transform.position =
-            new Vector3(pointer.transform.position.x, options[1].transform.position.y + 4f, pointer.transform.position.z);
+        pointer.transform.localPosition =
+            new Vector3(pointer.transform.localPosition.x, options[1].transform.localPosition.y + 4f, pointer.transform.localPosition.z);
 
         //Set color of first option to white (255, 255, 255)
         options[1].color = new Color(1f, 1f, 1f);

@@ -65,10 +65,9 @@ public class Inventory : MonoBehaviour
     void OpenInventory()
     {
         //Instatiate inventory and assign it to UiCamera
-
         instantiatedInventory = Instantiate(inventoryPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         instantiatedInventory.GetComponent<Canvas>().worldCamera = UiCamera;
-        instantiatedInventory.GetComponent<Canvas>().planeDistance = 2f; 
+        instantiatedInventory.GetComponent<Canvas>().planeDistance = 10f; 
         //^ tu coœ nie dzia³a, ¿e po instatiate on nie jest od razu tam, gdzie ma byæ i pierwszy page jest jakoœ zbugowany je¿eli chodzi o pozycje
 
         //Disable player movement
@@ -102,9 +101,12 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        //Display first page
+        //Display first page if there are items in inventory
         page = 0;
-        DisplayPage(page);
+        if (inventoryPages.Count > 0)
+        {
+            DisplayPage(page);
+        }
         inventoryOpened = true;
     }
 

@@ -129,4 +129,4 @@ class HandLandmarkerDetector:
 
 if __name__ == '__main__':
     detector = HandLandmarkerDetector()
-    detector.run(debug=False)
+    detector.run(debug=True)

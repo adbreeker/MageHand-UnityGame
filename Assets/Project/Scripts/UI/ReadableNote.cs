@@ -7,6 +7,9 @@ public class ReadableNote : MonoBehaviour
     public GameObject notePrefab;
     public GameObject player;
 
+    public string titleText;
+    public string contentText;
+
     private GameObject instantiatedNote;
 
     private GameObject pointer;
@@ -67,7 +70,7 @@ public class ReadableNote : MonoBehaviour
 
     void OpenNote()
     {
-        Debug.Log("opennote ");
+        Debug.Log("opennote");
         //Instatiate note
         instantiatedNote = Instantiate(notePrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
 
@@ -80,6 +83,9 @@ public class ReadableNote : MonoBehaviour
         title = instantiatedNote.transform.Find("Content").Find("Title").gameObject.GetComponent<TextMeshProUGUI>();
         content = instantiatedNote.transform.Find("Content").Find("Text").gameObject.GetComponent<TextMeshProUGUI>();
         pointer = instantiatedNote.transform.Find("Options").Find("Pointer").gameObject;
+
+        title.text = titleText;
+        content.text = contentText;
 
         pageCount = content.textInfo.pageCount;
 
@@ -102,7 +108,7 @@ public class ReadableNote : MonoBehaviour
             ableToChoose = true;
             option1.gameObject.SetActive(true);
         }
-        else if(page == 1)
+        else if(page == 1 && page != pageCount)
         {
             option1.text = "Continue";
         }

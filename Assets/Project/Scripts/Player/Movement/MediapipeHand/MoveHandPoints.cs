@@ -49,7 +49,6 @@ public class MoveHandPoints : MonoBehaviour
     private void CalculateNearPlaneBounds()
     {
         Vector3 objectPosition = transform.localPosition;
-        Vector3 objectPositionInCameraSpace = mainCamera.transform.InverseTransformPoint(objectPosition);
         float distance = Mathf.Abs(objectPosition.z);
         float halfHeight = distance * Mathf.Tan(mainCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
         float halfWidth = halfHeight * mainCamera.aspect;
@@ -64,19 +63,19 @@ public class MoveHandPoints : MonoBehaviour
         minPoint = new Vector3(minX, minY, distance);
         maxPoint = new Vector3(maxX, maxY, distance);
 
-        Debug.Log("minPoint: " + minPoint + ", maxPoint: " + maxPoint);
+        //Debug.Log("minPoint: " + minPoint + ", maxPoint: " + maxPoint);
 
 
         if (objectPosition.x >= minPoint.x && objectPosition.x <= maxPoint.x &&
         objectPosition.y >= minPoint.y && objectPosition.y <= maxPoint.y )
         {
-            Debug.Log("Object is visible on the camera");
+            //Debug.Log("Object is visible on the camera");
             handPosition = new Vector3(
                 objectPosition.x,
                 objectPosition.y,
                 objectPosition.z);
         } else {
-            Debug.Log("Object is not visible on the camera");
+            //Debug.Log("Object is not visible on the camera");
             handPosition = new Vector3(
                 maxPoint.x - Math.Abs(maxPoint.x + minPoint.x) / 2,
                 maxPoint.y - Math.Abs(maxPoint.y + minPoint.y) / 2,
@@ -118,7 +117,7 @@ public class MoveHandPoints : MonoBehaviour
 
                 float x = maxPoint.x - (Math.Abs(maxPoint.x - minPoint.x)) * float.Parse(coordinates[0], CultureInfo.InvariantCulture);
                 float y = maxPoint.y - (Math.Abs(maxPoint.y - minPoint.y)) * float.Parse(coordinates[1], CultureInfo.InvariantCulture);
-                float zAxis = z - 5.0f*float.Parse(coordinates[2], CultureInfo.InvariantCulture);
+                float zAxis = z - 5.0f*float.Parse(coordinates[2], CultureInfo.InvariantCulture); //zAxis is for some reason moved 1 forward
 
                 Vector3 position = new Vector3(x, y, zAxis);
                 temp[i] = position;
