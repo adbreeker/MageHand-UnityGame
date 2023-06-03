@@ -14,7 +14,14 @@ public class EnlightItem : MonoBehaviour
     void Start()
     {
         enlighten = FindObjectOfType<MaterialHolder>().enlightenObject;
-        mr = this.gameObject.GetComponent<MeshRenderer>();
+        if(this.GetComponent<MeshRenderer>() != null)
+        {
+            mr = this.GetComponent<MeshRenderer>();
+        }
+        else
+        {
+            mr = this.GetComponentInChildren<MeshRenderer>();
+        }
         previousMaterials = mr.materials;
 
         
