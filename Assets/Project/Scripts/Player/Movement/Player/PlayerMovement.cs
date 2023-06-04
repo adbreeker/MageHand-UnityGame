@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AdvanceTestMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
     public float movementSpeed = 5f;

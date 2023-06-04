@@ -72,7 +72,7 @@ public class ReadableNote : MonoBehaviour
         instantiatedNote = Instantiate(notePrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
 
         //Disable player movement
-        player.GetComponent<AdvanceTestMovement>().enabled = false;
+        player.GetComponent<PlayerMovement>().enabled = false;
 
         //Get TextMeshProUGUIs
         option1 = instantiatedNote.transform.Find("Options").Find("1").gameObject.GetComponent<TextMeshProUGUI>();
@@ -118,7 +118,7 @@ public class ReadableNote : MonoBehaviour
         Destroy(instantiatedNote);
 
         //Enable player movement
-        player.GetComponent<AdvanceTestMovement>().enabled = true;
+        player.GetComponent<PlayerMovement>().enabled = true;
         openedNote = false;
     }
 

@@ -47,7 +47,7 @@ public class Dialogue : MonoBehaviour
     void Start()
     {
         //Disable other controls
-        player.GetComponent<AdvanceTestMovement>().enabled = false;
+        player.GetComponent<PlayerMovement>().enabled = false;
         player.GetComponent<Inventory>().enabled = false;
 
         //Create dicts of options, choices when options are chosen and text of options (indexed 1-4)
@@ -148,7 +148,7 @@ public class Dialogue : MonoBehaviour
             {
                 dialogueCanvas.gameObject.SetActive(false);
 
-                player.GetComponent<AdvanceTestMovement>().enabled = true;
+                player.GetComponent<PlayerMovement>().enabled = true;
                 player.GetComponent<Inventory>().enabled = true;
             }
             else

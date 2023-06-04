@@ -9,18 +9,19 @@ public class HandInteractions : MonoBehaviour
     public Transform holdingPoint;
 
     MoveHandPoints handController;
-    RaycastFromHand pointer;
+    GetObjectsNearHand pointer;
 
     //cooldowns
     int CooldownClick = 0;
     int CooldownPickUp = 0;
     int CooldownThrow = 0;
+    int CooldownSpell = 0;
 
 
     private void Start()
     {
         handController = this.GetComponent<MoveHandPoints>();
-        pointer = this.GetComponent<RaycastFromHand>();
+        pointer = this.GetComponent<GetObjectsNearHand>();
     }
 
     // Update is called once per frame
@@ -40,6 +41,10 @@ public class HandInteractions : MonoBehaviour
         {
             ThrowObject();
         }
+        if (handController.gesture == "Victory" && inHand == null && CooldownSpell == 0)
+        {
+            CastSpell();
+        }
     }
 
     void DecreaseCooldowns()
@@ -56,6 +61,10 @@ public class HandInteractions : MonoBehaviour
         {
             CooldownThrow--;
         }
+        if (CooldownSpell > 0)
+        {
+            CooldownSpell--;
+        }
     }
 
     void ClickObject()
@@ -70,13 +79,13 @@ public class HandInteractions : MonoBehaviour
 
     void PickUpObject()
     {
-        CooldownPickUp = 5;
+        CooldownPickUp = 0;
 
         if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("Item"))
         {
             inHand = pointer.currentlyPointing;
             inHand.transform.SetParent(holdingPoint);
-            inHand.transform.localPosition = new Vector3(0, 0, 2);
+            inHand.transform.localPosition = new Vector3(0, 0, 10);
         }
     }
 
@@ -84,17 +93,24 @@ public class HandInteractions : MonoBehaviour
     {
         CooldownThrow = 5;
 
-        if (this.gameObject.GetComponentInParent<SpellCasting>().currentSpell == "Light")
+        if (GetComponent<SpellCasting>().currentSpell == "Light")
         {
             inHand.AddComponent<ThrowSpell>().Initialize(player);
             inHand = null;
-            player.GetComponent<SpellCasting>().currentSpell = "None";
+            GetComponent<SpellCasting>().currentSpell = "None";
         }
         else
         {
             inHand.AddComponent<ThrowObject>().Initialize(player);
             inHand = null;
         }
+    }
+
+    void CastSpell()
+    {
+        CooldownSpell = 300;
+
+        GetComponent<SpellCasting>().LightSpell();
     }
 
 }
