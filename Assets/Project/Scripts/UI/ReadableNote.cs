@@ -85,8 +85,11 @@ public class ReadableNote : MonoBehaviour
         //Instatiate note
         instantiatedNote = Instantiate(notePrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
 
-        //Disable player movement
-        player.GetComponent<AdvanceTestMovement>().enabled = false;
+        //Disable other controls (close inventory first, because it activates movement)
+        player.GetComponent<Inventory>().CloseInventory();
+        player.GetComponent<Inventory>().enabled = false;
+        player.GetComponent<AdvanceTestMovement>().uiActive = true;
+        player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(false);
 
         //Get TextMeshProUGUIs
         option1 = instantiatedNote.transform.Find("Options").Find("1").gameObject.GetComponent<TextMeshProUGUI>();
@@ -141,8 +144,10 @@ public class ReadableNote : MonoBehaviour
     {
         Destroy(instantiatedNote);
 
-        //Enable player movement
-        player.GetComponent<AdvanceTestMovement>().enabled = true;
+        //Enable other controls
+        player.GetComponent<Inventory>().enabled = true;
+        player.GetComponent<AdvanceTestMovement>().uiActive = false;
+        player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(true);
         openedNote = false;
     }
 

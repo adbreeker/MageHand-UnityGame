@@ -46,9 +46,11 @@ public class Dialogue : MonoBehaviour
 
     void Start()
     {
-        //Disable other controls
-        player.GetComponent<AdvanceTestMovement>().enabled = false;
+        //Disable other controls (close inventory first, because it activates movement)
+        player.GetComponent<Inventory>().CloseInventory();
         player.GetComponent<Inventory>().enabled = false;
+        player.GetComponent<AdvanceTestMovement>().uiActive = true;
+        player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(false);
 
         //Create dicts of options, choices when options are chosen and text of options (indexed 1-4)
         options = new Dictionary<int, TextMeshProUGUI>();
@@ -148,7 +150,9 @@ public class Dialogue : MonoBehaviour
             {
                 dialogueCanvas.gameObject.SetActive(false);
 
-                player.GetComponent<AdvanceTestMovement>().enabled = true;
+                //Enable other controls
+                player.GetComponent<AdvanceTestMovement>().uiActive = false;
+                player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(true);
                 player.GetComponent<Inventory>().enabled = true;
             }
             else

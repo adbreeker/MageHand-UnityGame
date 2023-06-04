@@ -15,6 +15,8 @@ public class AdvanceTestMovement : MonoBehaviour
     public float rotationSpeed = 360f;
     public float rotationThreshold = 0.01f;
 
+    public bool uiActive;
+
     private bool isRotating = false;
     private Quaternion targetRotation;
 
@@ -27,7 +29,7 @@ public class AdvanceTestMovement : MonoBehaviour
         MovementQueue();
         RotationQueue();
         MovementKeysListener(0, 0);
-        RotationKeyListener(0);
+        if (!uiActive) RotationKeyListener(0);
     }
 
     void MovementKeysListener(float horizontalInputQueue, float verticalInputQueue)
@@ -42,7 +44,7 @@ public class AdvanceTestMovement : MonoBehaviour
             verticalInput = Input.GetAxisRaw("Vertical");
         }
 
-        if ((horizontalInput != 0 || verticalInput != 0) && !isMoving)
+        if ((horizontalInput != 0 || verticalInput != 0) && !isMoving && !uiActive)
         {
             // Calculate the position of the tile the player is moving towards
             Vector3 direction = SingleDirectionNormalization(transform.right * horizontalInput + transform.forward * verticalInput);
