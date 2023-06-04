@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class AdvanceTestMovement : MonoBehaviour
+
+public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
     public float movementSpeed = 5f;
@@ -16,7 +17,6 @@ public class AdvanceTestMovement : MonoBehaviour
     public float rotationThreshold = 0.01f;
 
     public bool uiActive;
-
     private bool isRotating = false;
     private Quaternion targetRotation;
 

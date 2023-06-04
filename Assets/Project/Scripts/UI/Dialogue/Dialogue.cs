@@ -151,7 +151,7 @@ public class Dialogue : MonoBehaviour
                 dialogueCanvas.gameObject.SetActive(false);
 
                 //Enable other controls
-                player.GetComponent<AdvanceTestMovement>().uiActive = false;
+                player.GetComponent<PlayerMovement>().uiActive = false;
                 player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(true);
                 player.GetComponent<Inventory>().enabled = true;
             }

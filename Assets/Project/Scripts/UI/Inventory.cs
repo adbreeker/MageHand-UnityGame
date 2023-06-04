@@ -68,10 +68,10 @@ public class Inventory : MonoBehaviour
         instantiatedInventory = Instantiate(inventoryPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         instantiatedInventory.GetComponent<Canvas>().worldCamera = UiCamera;
         instantiatedInventory.GetComponent<Canvas>().planeDistance = 10f;
-        //^ tu coœ nie dzia³a, ¿e po instatiate on nie jest od razu tam, gdzie ma byæ i pierwszy page jest jakoœ zbugowany je¿eli chodzi o pozycje
+        //^ tu coÅ“ nie dziaÂ³a, Â¿e po instatiate on nie jest od razu tam, gdzie ma byÃ¦ i pierwszy page jest jakoÅ“ zbugowany jeÂ¿eli chodzi o pozycje
 
         //Disable other controls
-        player.GetComponent<AdvanceTestMovement>().uiActive = true;
+        player.GetComponent<PlayerMovement>().uiActive = true;
 
         //Create list of slots for items to display on one page
         itemSlots = new List<GameObject>();
@@ -116,7 +116,7 @@ public class Inventory : MonoBehaviour
         inventoryOpened = false;
 
         //Enable other controls
-        player.GetComponent<AdvanceTestMovement>().uiActive = false;
+        player.GetComponent<PlayerMovement>().uiActive = false;
     }
 
     void DisplayPage(int pageToDisplay)

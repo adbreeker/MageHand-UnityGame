@@ -88,7 +88,7 @@ public class ReadableNote : MonoBehaviour
         //Disable other controls (close inventory first, because it activates movement)
         player.GetComponent<Inventory>().CloseInventory();
         player.GetComponent<Inventory>().enabled = false;
-        player.GetComponent<AdvanceTestMovement>().uiActive = true;
+        player.GetComponent<PlayerMovement>().uiActive = true;
         player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(false);
 
         //Get TextMeshProUGUIs
@@ -146,7 +146,7 @@ public class ReadableNote : MonoBehaviour
 
         //Enable other controls
         player.GetComponent<Inventory>().enabled = true;
-        player.GetComponent<AdvanceTestMovement>().uiActive = false;
+        player.GetComponent<PlayerMovement>().uiActive = false;
         player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(true);
         openedNote = false;
     }
