@@ -46,9 +46,11 @@ public class Dialogue : MonoBehaviour
 
     void Start()
     {
-        //Disable other controls
-        player.GetComponent<PlayerMovement>().enabled = false;
+        //Disable other controls (close inventory first, because it activates movement)
+        player.GetComponent<Inventory>().CloseInventory();
         player.GetComponent<Inventory>().enabled = false;
+        player.GetComponent<AdvanceTestMovement>().uiActive = true;
+        player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(false);
 
         //Create dicts of options, choices when options are chosen and text of options (indexed 1-4)
         options = new Dictionary<int, TextMeshProUGUI>();
@@ -89,8 +91,8 @@ public class Dialogue : MonoBehaviour
         option.color = new Color(1f, 1f, 1f);
 
         //Set position of pointer to pointed option
-        pointer.transform.position =
-            new Vector3(pointer.transform.position.x, option.transform.position.y + 4f, pointer.transform.position.z);
+        pointer.transform.localPosition =
+            new Vector3(pointer.transform.localPosition.x, option.transform.localPosition.y + 4f, pointer.transform.localPosition.z);
     }
 
     void KeysListener()
@@ -148,7 +150,9 @@ public class Dialogue : MonoBehaviour
             {
                 dialogueCanvas.gameObject.SetActive(false);
 
-                player.GetComponent<PlayerMovement>().enabled = true;
+                //Enable other controls
+                player.GetComponent<PlayerMovement>().uiActive = false;
+                player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(true);
                 player.GetComponent<Inventory>().enabled = true;
             }
             else
@@ -171,8 +175,8 @@ public class Dialogue : MonoBehaviour
         else nameTextObject.text = nameText;
 
         //Set position of pointer to first option
-        pointer.transform.position =
-            new Vector3(pointer.transform.position.x, options[1].transform.position.y + 4f, pointer.transform.position.z);
+        pointer.transform.localPosition =
+            new Vector3(pointer.transform.localPosition.x, options[1].transform.localPosition.y + 4f, pointer.transform.localPosition.z);
 
         //Set color of first option to white (255, 255, 255)
         options[1].color = new Color(1f, 1f, 1f);

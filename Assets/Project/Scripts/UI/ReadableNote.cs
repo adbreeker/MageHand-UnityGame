@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -7,8 +6,10 @@ public class ReadableNote : MonoBehaviour
     public GameObject notePrefab;
     public GameObject player;
 
-    private GameObject instantiatedNote;
+    public string titleText;
+    public string contentText;
 
+    private GameObject instantiatedNote;
     private GameObject pointer;
     private TextMeshProUGUI option1;
     private TextMeshProUGUI option2;
@@ -20,28 +21,37 @@ public class ReadableNote : MonoBehaviour
     private int pageCount;
     private int pointedOption;
     private bool ableToChoose;
+    private int updateCount;
+    private int framesToWait = 2;
 
     void KeysListener()
     {
-        //Choose option
-        if (Input.GetKeyDown(KeyCode.Space) && openedNote)
+        //Test by pressing n
+        if (Input.GetKeyDown(KeyCode.N) && !openedNote)
+        {
+            OpenNote();
+        }
+            
+        //Choose option continue, back or close
+        if (Input.GetKeyDown(KeyCode.Space) && openedNote && updateCount == framesToWait)
         {
             if (pointedOption == 1 && page < pageCount)
             {
                 page++;
                 DisplayPage(page);
             }
-            if (pointedOption == 2 && page > 1)
+            else if (pointedOption == 2 && page > 1)
             {
                 page--;
                 DisplayPage(page);
             }
-            if (pointedOption == 1 && page == pageCount)
+            else if (pointedOption == 1 && page == pageCount)
             {
                 CloseNote();
             }
         }
 
+        //Point option 1 or 2
         if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S) ) && ableToChoose && openedNote)
         {
             if (pointedOption == 1)
@@ -54,25 +64,32 @@ public class ReadableNote : MonoBehaviour
             }
         }
     }
-
-    private void Start()
-    {
-        OpenNote();
-    }
-
     private void Update()
     {
         KeysListener();
+        
+        //Display first page after few frames to load everything, so pageCount works properly
+        if (openedNote && updateCount < framesToWait)
+        {
+            updateCount++;
+            if (updateCount == framesToWait)
+            {
+                pageCount = content.textInfo.pageCount;
+                option1.gameObject.SetActive(true);
+                DisplayPage(page);
+            }
+        }
     }
-
     void OpenNote()
     {
-        Debug.Log("opennote ");
         //Instatiate note
         instantiatedNote = Instantiate(notePrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
 
-        //Disable player movement
-        player.GetComponent<PlayerMovement>().enabled = false;
+        //Disable other controls (close inventory first, because it activates movement)
+        player.GetComponent<Inventory>().CloseInventory();
+        player.GetComponent<Inventory>().enabled = false;
+        player.GetComponent<PlayerMovement>().uiActive = true;
+        player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(false);
 
         //Get TextMeshProUGUIs
         option1 = instantiatedNote.transform.Find("Options").Find("1").gameObject.GetComponent<TextMeshProUGUI>();
@@ -81,50 +98,61 @@ public class ReadableNote : MonoBehaviour
         content = instantiatedNote.transform.Find("Content").Find("Text").gameObject.GetComponent<TextMeshProUGUI>();
         pointer = instantiatedNote.transform.Find("Options").Find("Pointer").gameObject;
 
-        pageCount = content.textInfo.pageCount;
-
+        //Set proper values
+        title.text = titleText;
+        content.text = contentText;
         page = 1;
-
-        DisplayPage(page);
-        PointOption(option1);
+        updateCount = 0;
         openedNote = true;
-        Debug.Log("pagecount " + pageCount);
     }
 
     void DisplayPage(int page)
     {
-        Debug.Log("displaypage " + page);
-        ableToChoose = false;
-        option2.gameObject.SetActive(false);
+        //Display page of content text
         content.pageToDisplay = page;
-        if (page < pageCount && page > 1)
+
+        //Display proper buttons
+        if (page == 1 && page != pageCount)
+        {
+            PointOption(option1);
+            ableToChoose = false;
+            option1.text = "Continue";
+            option2.gameObject.SetActive(false);
+        }
+        else if (page == 1 && page == pageCount)
+        {
+            PointOption(option1);
+            ableToChoose = false;
+            option1.text = "Close";
+            option2.gameObject.SetActive(false);
+        }
+        else if (page > 1 && page < pageCount)
         {
             ableToChoose = true;
-            option1.gameObject.SetActive(true);
-        }
-        else if(page == 1)
-        {
             option1.text = "Continue";
+            option2.gameObject.SetActive(true);
         }
         else if (page == pageCount)
         {
+            ableToChoose = true;
             option1.text = "Close";
+            option2.gameObject.SetActive(true);
         }
     }
 
     void CloseNote()
     {
-        Debug.Log("closenote");
         Destroy(instantiatedNote);
 
-        //Enable player movement
-        player.GetComponent<PlayerMovement>().enabled = true;
+        //Enable other controls
+        player.GetComponent<Inventory>().enabled = true;
+        player.GetComponent<PlayerMovement>().uiActive = false;
+        player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(true);
         openedNote = false;
     }
 
     void PointOption(TextMeshProUGUI option)
     {
-        Debug.Log("pointoption " + option);
         //Change color of all options to lightGrey (118, 118, 118)
         option1.color = new Color(0.4625f, 0.4625f, 0.4625f);
         option2.color = new Color(0.4625f, 0.4625f, 0.4625f);
@@ -133,11 +161,10 @@ public class ReadableNote : MonoBehaviour
         option.color = new Color(1f, 1f, 1f);
 
         //Set position of pointer to pointed option
-        Debug.Log(option.transform.position.y);
-        pointer.transform.position =
-            new Vector3(pointer.transform.position.x, option.transform.position.y, pointer.transform.position.z);
+        pointer.transform.localPosition =
+            new Vector3(pointer.transform.localPosition.x, option.transform.localPosition.y, pointer.transform.localPosition.z);
 
         if (option == option1) pointedOption = 1;
-        else pointedOption = 1;
+        else pointedOption = 2;
     }
 }
