@@ -49,7 +49,7 @@ public class Dialogue : MonoBehaviour
         //Disable other controls (close inventory first, because it activates movement)
         player.GetComponent<Inventory>().CloseInventory();
         player.GetComponent<Inventory>().enabled = false;
-        player.GetComponent<AdvanceTestMovement>().uiActive = true;
+        player.GetComponent<PlayerMovement>().uiActive = true;
         player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(false);
 
         //Create dicts of options, choices when options are chosen and text of options (indexed 1-4)
