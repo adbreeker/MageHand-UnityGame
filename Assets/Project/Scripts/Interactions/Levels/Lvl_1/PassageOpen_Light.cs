@@ -13,7 +13,7 @@ public class PassageOpen_Light : MonoBehaviour
     {
         if(player.transform.position.x == locX && player.transform.position.z == locZ)
         {
-            if(player.GetComponent<SpellCasting>().currentSpell == "Light")
+            if(player.GetComponentInChildren<SpellCasting>().currentSpell == "Light")
             {
                 passage.SendMessage("Interaction");
                 this.enabled = false;

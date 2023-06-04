@@ -72,7 +72,7 @@ public class Inventory : MonoBehaviour
         //^ tu coœ nie dzia³a, ¿e po instatiate on nie jest od razu tam, gdzie ma byæ i pierwszy page jest jakoœ zbugowany je¿eli chodzi o pozycje
 
         //Disable player movement
-        player.GetComponent<AdvanceTestMovement>().enabled = false;
+        player.GetComponent<PlayerMovement>().enabled = false;
 
         //Create list of slots for items to display on one page
         itemSlots = new List<GameObject>();
@@ -114,7 +114,7 @@ public class Inventory : MonoBehaviour
         inventoryOpened = false;
 
         //Enable player movement
-        player.GetComponent<AdvanceTestMovement>().enabled = true;
+        player.GetComponent<PlayerMovement>().enabled = true;
     }
 
     void DisplayPage(int pageToDisplay)

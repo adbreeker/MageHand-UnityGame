@@ -8,33 +8,17 @@ public class SpellCasting : MonoBehaviour
     public string currentSpell = "None";
 
     [Header("Spell Cast Position")]
-    public GameObject hand;
+    public Transform hand;
 
     [Header("Spells Prefabs")]
     public GameObject lightPrefab;
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.L))
-        {
-            if(gameObject.GetComponentInChildren<HandInteractions>().inHand == null)
-            {
-                LightSpell();
-            }
-        }
-    }
 
     public void LightSpell()
     {
         if(currentSpell != "Light")
         {
             currentSpell = "Light";
-            this.GetComponentInChildren<HandInteractions>().inHand = Instantiate(lightPrefab, hand.transform);
-        }
-        else
-        {
-            currentSpell = "None";
-            Destroy(this.GetComponentInChildren<HandInteractions>().inHand);
+            GetComponent<HandInteractions>().inHand = Instantiate(lightPrefab, hand);
         }
     }
 
