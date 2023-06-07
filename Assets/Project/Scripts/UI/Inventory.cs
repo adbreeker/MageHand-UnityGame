@@ -67,8 +67,8 @@ public class Inventory : MonoBehaviour
         //Instatiate inventory and assign it to UiCamera
         instantiatedInventory = Instantiate(inventoryPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         instantiatedInventory.GetComponent<Canvas>().worldCamera = UiCamera;
-        instantiatedInventory.GetComponent<Canvas>().planeDistance = 10f;
-        //^ tu coœ nie dzia³a, ¿e po instatiate on nie jest od razu tam, gdzie ma byæ i pierwszy page jest jakoœ zbugowany je¿eli chodzi o pozycje
+        instantiatedInventory.GetComponent<Canvas>().planeDistance = 2.5f;
+        //^ tu cos nie dziala, e po instatiate on nie jest od razu tam, gdzie ma byæ i pierwszy page jest jakoœ zbugowany je¿eli chodzi o pozycje
 
         //Disable other controls
         player.GetComponent<PlayerMovement>().uiActive = true;
@@ -142,9 +142,8 @@ public class Inventory : MonoBehaviour
 
             itemIconActiveInstances.Add(Instantiate(inventoryPages[pageToDisplay][i], itemSlots[i].transform));
             itemIconActiveInstances[i].transform.localScale = new Vector3(200f, 200f, 200f);
-            itemIconActiveInstances[i].GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            //itemIconActiveInstances[i].GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             itemIconActiveInstances[i].layer = LayerMask.NameToLayer("UI");
-            itemIconActiveInstances[i].transform.rotation *= Quaternion.Euler(0, 90, 0);
         }
         if (pageToDisplay > 0) instantiatedInventory.transform.Find("Background").Find("ArrowLeft").gameObject.SetActive(true);
         if (inventoryPages.Count > pageToDisplay + 1) instantiatedInventory.transform.Find("Background").Find("ArrowRight").gameObject.SetActive(true);
