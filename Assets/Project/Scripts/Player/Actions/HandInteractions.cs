@@ -10,6 +10,7 @@ public class HandInteractions : MonoBehaviour
 
     MoveHandPoints handController;
     GetObjectsNearHand pointer;
+    Inventory inventoryScript;
 
     //cooldowns
     int CooldownClick = 0;
@@ -22,6 +23,7 @@ public class HandInteractions : MonoBehaviour
     {
         handController = this.GetComponent<MoveHandPoints>();
         pointer = this.GetComponent<GetObjectsNearHand>();
+        inventoryScript = this.transform.parent.transform.parent.GetComponent<Inventory>();
     }
 
     // Update is called once per frame
@@ -44,6 +46,10 @@ public class HandInteractions : MonoBehaviour
         if (handController.gesture == "Victory" && inHand == null && CooldownSpell == 0)
         {
             CastSpell();
+        }
+        if (handController.gesture == "Thumb_Down" && inHand != null)
+        {
+            AddItemToInventory();
         }
     }
 
@@ -80,12 +86,24 @@ public class HandInteractions : MonoBehaviour
     void PickUpObject()
     {
         CooldownPickUp = 0;
-
-        if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("Item"))
+        if (pointer.currentlyPointing != null)
         {
-            inHand = pointer.currentlyPointing;
-            inHand.transform.SetParent(holdingPoint);
-            inHand.transform.localPosition = new Vector3(0, 0, 10);
+            if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("Item"))
+            {
+                inHand = pointer.currentlyPointing;
+                inHand.transform.SetParent(holdingPoint);
+                inHand.transform.localPosition = new Vector3(0, 0, 10);
+            }
+            if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("UI"))
+            {
+                inHand = inventoryScript.inventory
+                    .Find(obj => obj.CompareTag(pointer.currentlyPointing.transform.parent.GetComponent<IconParameters>().iconItem.tag));
+                inventoryScript.inventory.Remove(inHand);
+                inHand.transform.SetParent(holdingPoint);
+                inHand.SetActive(true);
+                inHand.transform.localPosition = new Vector3(0, 0, 10);
+                inventoryScript.CloseInventory();
+            }
         }
     }
 
@@ -113,4 +131,11 @@ public class HandInteractions : MonoBehaviour
         GetComponent<SpellCasting>().LightSpell();
     }
 
+    void AddItemToInventory()
+    {
+        if ((inHand.layer == LayerMask.NameToLayer("Item")))
+        {
+            inventoryScript.AddItemFromHand();
+        }
+    }
 }
