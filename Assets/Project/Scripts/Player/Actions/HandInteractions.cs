@@ -75,26 +75,28 @@ public class HandInteractions : MonoBehaviour
 
     void ClickObject()
     {
-        CooldownClick = 100;
-
-        if (LayerMask.LayerToName(pointer.currentlyPointing.layer) == "Switch")
+        if (pointer.currentlyPointing != null)
         {
-            pointer.currentlyPointing.SendMessage("OnClick");
+            CooldownClick = 100;
+            if (LayerMask.LayerToName(pointer.currentlyPointing.layer) == "Switch")
+            {
+                pointer.currentlyPointing.SendMessage("OnClick");
+            }
         }
     }
 
     void PickUpObject()
     {
-        CooldownPickUp = 0;
         if (pointer.currentlyPointing != null)
         {
+            CooldownPickUp = 0;
             if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("Item"))
             {
                 inHand = pointer.currentlyPointing;
                 inHand.transform.SetParent(holdingPoint);
                 inHand.transform.localPosition = new Vector3(0, 0, 10);
             }
-            if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("UI")) //picking up item from inventory
+            if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("UI")) //picking item from inventory
             {
                 inHand = inventoryScript.inventory
                     .Find(obj => obj.CompareTag(pointer.currentlyPointing.transform.parent.GetComponent<IconParameters>().iconItem.tag));
