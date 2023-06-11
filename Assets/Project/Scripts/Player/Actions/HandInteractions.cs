@@ -94,7 +94,7 @@ public class HandInteractions : MonoBehaviour
                 inHand.transform.SetParent(holdingPoint);
                 inHand.transform.localPosition = new Vector3(0, 0, 10);
             }
-            if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("UI"))
+            if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("UI")) //picking up item from inventory
             {
                 inHand = inventoryScript.inventory
                     .Find(obj => obj.CompareTag(pointer.currentlyPointing.transform.parent.GetComponent<IconParameters>().iconItem.tag));
@@ -133,7 +133,7 @@ public class HandInteractions : MonoBehaviour
 
     void AddItemToInventory()
     {
-        if ((inHand.layer == LayerMask.NameToLayer("Item")))
+        if (inHand.layer == LayerMask.NameToLayer("Item"))
         {
             inventoryScript.AddItemFromHand();
         }

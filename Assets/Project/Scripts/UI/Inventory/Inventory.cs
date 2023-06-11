@@ -37,7 +37,7 @@ public class Inventory : MonoBehaviour
         {
             if (!inventoryOpened && this.transform.Find("Main Camera").Find("Hand").GetComponent<HandInteractions>().inHand != null)
             {
-                AddItemFromHand();
+                if (this.transform.Find("Main Camera").Find("Hand").GetComponent<HandInteractions>().inHand.layer == LayerMask.NameToLayer("Item")) AddItemFromHand();
                 OpenInventory();
             }
             else if (!inventoryOpened) OpenInventory();
@@ -73,8 +73,8 @@ public class Inventory : MonoBehaviour
         //Instatiate inventory and assign it to UiCamera
         instantiatedInventory = Instantiate(inventoryPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         instantiatedInventory.GetComponent<Canvas>().worldCamera = UiCamera;
-        instantiatedInventory.GetComponent<Canvas>().planeDistance = 2.5f;
-        //^ tu cos nie dziala, e po instatiate on nie jest od razu tam, gdzie ma byæ i pierwszy page jest jakoœ zbugowany je¿eli chodzi o pozycje
+        instantiatedInventory.GetComponent<Canvas>().planeDistance = 1.5f;
+        //^ tu cos nie dziala, e po instatiate on nie jest od razu tam, gdzie ma byæ i pierwszy page jest jakoœ zbugowany jezeli chodzi o pozycje
 
         //Disable other controls
         player.GetComponent<PlayerMovement>().uiActive = true;
@@ -160,7 +160,7 @@ public class Inventory : MonoBehaviour
         inventory.Add(itemToAdd);
         itemToAdd.transform.SetParent(player.transform);
         itemToAdd.SetActive(false);
-        itemToAdd.transform.localPosition = new Vector3(0, 0, 0);
+        itemToAdd.transform.localPosition = new Vector3(0, 10, 0);
         this.transform.Find("Main Camera").Find("Hand").GetComponent<HandInteractions>().inHand = null;
     }
 }
