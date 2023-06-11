@@ -121,7 +121,7 @@ public class MoveHandPoints : MonoBehaviour
 
                 float x = (maxPoint.x - (Math.Abs(maxPoint.x - minPoint.x)) * float.Parse(coordinates[0], CultureInfo.InvariantCulture)) * 2;
                 float y = (maxPoint.y - (Math.Abs(maxPoint.y - minPoint.y)) * float.Parse(coordinates[1], CultureInfo.InvariantCulture)) * 2;
-                float zAxis = z - 5.0f*float.Parse(coordinates[2], CultureInfo.InvariantCulture); //zAxis is for some reason moved 1 forward
+                float zAxis = z; //- 5.0f*float.Parse(coordinates[2], CultureInfo.InvariantCulture); //zAxis is for some reason moved 1 forward
 
                 Vector3 position = new Vector3(x, y, zAxis);
                 temp[i-1] = position;

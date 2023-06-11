@@ -38,7 +38,7 @@ public class GetObjectsNearHand : MonoBehaviour
 
     void EnlightObject(GameObject pointingAt)
     {
-        if ((pointingAt.layer == LayerMask.NameToLayer("Item") || pointingAt.layer == LayerMask.NameToLayer("Switch")) && pointingAt != GetComponent<HandInteractions>().inHand)
+        if ((pointingAt.layer == LayerMask.NameToLayer("Item") || pointingAt.layer == LayerMask.NameToLayer("Switch") || pointingAt.layer == LayerMask.NameToLayer("UI")) && pointingAt != GetComponent<HandInteractions>().inHand)
         {
             if (pointingAt.GetComponent<EnlightItem>() != null)
             {
