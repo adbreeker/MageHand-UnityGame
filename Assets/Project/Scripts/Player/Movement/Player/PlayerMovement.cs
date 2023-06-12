@@ -29,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
         MovementQueue();
         RotationQueue();
         MovementKeysListener(0, 0);
-        if (!uiActive) RotationKeyListener(0);
+        RotationKeyListener(0);
     }
 
     void MovementKeysListener(float horizontalInputQueue, float verticalInputQueue)
@@ -38,13 +38,13 @@ public class PlayerMovement : MonoBehaviour
         float verticalInput = verticalInputQueue;
 
         // Check if no movement is enqueued
-        if (horizontalInputQueue == 0 && verticalInputQueue ==0)
+        if (horizontalInputQueue == 0 && verticalInputQueue ==0 && !uiActive)
         {
             horizontalInput = Input.GetAxisRaw("Horizontal");
             verticalInput = Input.GetAxisRaw("Vertical");
         }
 
-        if ((horizontalInput != 0 || verticalInput != 0) && !isMoving && !uiActive)
+        if ((horizontalInput != 0 || verticalInput != 0) && !isMoving)
         {
             // Calculate the position of the tile the player is moving towards
             Vector3 direction = SingleDirectionNormalization(transform.right * horizontalInput + transform.forward * verticalInput);
@@ -121,12 +121,12 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Get target rotation
-        if (Input.GetKeyDown(KeyCode.E) && !isRotating)
+        if (Input.GetKeyDown(KeyCode.E) && !isRotating && !uiActive)
         {
             isRotating = true;
             targetRotation = transform.rotation * Quaternion.Euler(0, 90, 0);
         }
-        if (Input.GetKeyDown(KeyCode.Q) && !isRotating)
+        if (Input.GetKeyDown(KeyCode.Q) && !isRotating && !uiActive)
         {
             isRotating = true;
             targetRotation = transform.rotation * Quaternion.Euler(0, -90, 0);
@@ -147,7 +147,7 @@ public class PlayerMovement : MonoBehaviour
     void MovementQueue()
     {
         //Enqueuing movement if input while moving
-        if(isMoving)
+        if(isMoving && !uiActive)
         {
             if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
             {
@@ -169,7 +169,7 @@ public class PlayerMovement : MonoBehaviour
     void RotationQueue()
     {
         //Enqueuing rotation if input while rotating
-        if (isRotating)
+        if (isRotating && !uiActive)
         {
             if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Q))
             {

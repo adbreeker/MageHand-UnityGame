@@ -7,6 +7,7 @@ public class OpenDialogue : MonoBehaviour
 {
     public Canvas dialogueCanvas;
     public GameObject player;
+    public float textSpeed = 0.02f;
 
     private bool activateDialogue = true;
     private GameObject dialogueEntry;
