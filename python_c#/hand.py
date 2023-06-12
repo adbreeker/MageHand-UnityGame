@@ -24,6 +24,8 @@ class HandLandmarkerDetector:
         self.data = np.zeros((21, 3), dtype=np.float32)
         self.gesture = None
 
+        self.eps = 0.013  # Lower values make the hand more "stable", but hand points movement can look artificial
+
     def run(self, debug: bool = False):
         if self.landmarker is None:
             self._initialize()
@@ -48,6 +50,9 @@ class HandLandmarkerDetector:
         
             # NOTE: this is to visualize the point
             if debug:
+                # for x, y, z in self.data:
+                #    center = (int(x * image.shape[1]), int(y * image.shape[0]))
+                #    cv2.circle(image, center, 5, (0, 0, 255), -1)
                 cv2.imshow('MediaPipe Hands', cv2.flip(image, 1))
             if cv2.waitKey(5) & 0xFF == 27:
                 break
@@ -56,12 +61,25 @@ class HandLandmarkerDetector:
         cv2.destroyAllWindows()
 
     def _callback(self, result, output_image: mp.Image, timestamp_ms: int):        
-        if result.hand_landmarks != []:
+        if result.hand_landmarks:
             self.gesture = result.gestures[0][0].category_name
             for i in range(21):
-                self.data[i] = [result.hand_landmarks[0][i].x, 
-                                result.hand_landmarks[0][i].y, 
-                                result.hand_landmarks[0][i].z]
+                """
+                This calculates the difference between last updated hand position points and their current position 
+                points. If the absolute value of the difference is greater than the epsilon, then the position is 
+                adjusted. 
+                """
+                x_diff = result.hand_landmarks[0][i].x - self.data[i][0]
+                y_diff = result.hand_landmarks[0][i].y - self.data[i][1]
+
+                self.data[i][0] += (x_diff - self.eps) if x_diff > self.eps else (
+                            x_diff + self.eps) if -x_diff > self.eps else 0
+                self.data[i][1] += (y_diff - self.eps) if y_diff > self.eps else (
+                            y_diff + self.eps) if -y_diff > self.eps else 0
+
+                self.data[i][2] = result.hand_landmarks[0][i].z
+
+
     def _initialize(self):
         self.cap = cv2.VideoCapture(0)
         
@@ -78,6 +96,7 @@ class HandLandmarkerDetector:
             self.options)
         
         print('connected to unity')
+
 
 if __name__ == '__main__':
     detector = HandLandmarkerDetector()
