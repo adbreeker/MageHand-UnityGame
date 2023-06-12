@@ -24,7 +24,18 @@ public class GetObjectsNearHand : MonoBehaviour
     void CheckSphere()
     {
         Vector3 middlePoint = (wristPoint.position + indexFingerKnucklePoint.position + smallFingerKnucklePoint.position) / 3f;
-        Collider[] colliders = Physics.OverlapSphere(middlePoint, 0.7f, objectsMask);
+
+        Collider[] colliders;
+        if (transform.parent.parent.GetComponent<PlayerMovement>().uiActive)
+        {
+            colliders = Physics.OverlapSphere(middlePoint, 0.2f, objectsMask);
+        }
+        else
+        {
+            colliders = Physics.OverlapSphere(middlePoint, 0.7f, objectsMask);
+        }
+
+
         if(colliders.Length > 0)
         {
             currentlyPointing = colliders[0].gameObject;
@@ -38,7 +49,7 @@ public class GetObjectsNearHand : MonoBehaviour
 
     void EnlightObject(GameObject pointingAt)
     {
-        if ((pointingAt.layer == LayerMask.NameToLayer("Item") || pointingAt.layer == LayerMask.NameToLayer("Switch")) && pointingAt != GetComponent<HandInteractions>().inHand)
+        if ((pointingAt.layer == LayerMask.NameToLayer("Item") || pointingAt.layer == LayerMask.NameToLayer("Switch") || pointingAt.layer == LayerMask.NameToLayer("UI")) && pointingAt != GetComponent<HandInteractions>().inHand)
         {
             if (pointingAt.GetComponent<EnlightItem>() != null)
             {

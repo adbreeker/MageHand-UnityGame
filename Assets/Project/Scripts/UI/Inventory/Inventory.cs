@@ -14,6 +14,7 @@ public class Inventory : MonoBehaviour
 
     private GameObject instantiatedInventory;
     private GameObject player;
+    private GameObject itemToAdd;
 
     private List<GameObject> itemSlots;
     private List<GameObject> itemIconActiveInstances = new List<GameObject>();
@@ -34,7 +35,12 @@ public class Inventory : MonoBehaviour
         //Open or close inventory
         if (Input.GetKeyDown(KeyCode.I))
         {
-            if (!inventoryOpened) OpenInventory();
+            if (!inventoryOpened && this.transform.Find("Main Camera").Find("Hand").GetComponent<HandInteractions>().inHand != null)
+            {
+                if (this.transform.Find("Main Camera").Find("Hand").GetComponent<HandInteractions>().inHand.layer == LayerMask.NameToLayer("Item")) AddItemFromHand();
+                OpenInventory();
+            }
+            else if (!inventoryOpened) OpenInventory();
             else CloseInventory();
         }
 
@@ -67,8 +73,8 @@ public class Inventory : MonoBehaviour
         //Instatiate inventory and assign it to UiCamera
         instantiatedInventory = Instantiate(inventoryPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         instantiatedInventory.GetComponent<Canvas>().worldCamera = UiCamera;
-        instantiatedInventory.GetComponent<Canvas>().planeDistance = 10f;
-        //^ tu coœ nie dzia³a, ¿e po instatiate on nie jest od razu tam, gdzie ma byæ i pierwszy page jest jakoœ zbugowany je¿eli chodzi o pozycje
+        instantiatedInventory.GetComponent<Canvas>().planeDistance = 1.05f;
+        //^ tu cos nie dziala, e po instatiate on nie jest od razu tam, gdzie ma byæ i pierwszy page jest jakoœ zbugowany jezeli chodzi o pozycje
 
         //Disable other controls
         player.GetComponent<PlayerMovement>().uiActive = true;
@@ -138,15 +144,23 @@ public class Inventory : MonoBehaviour
         for (int i = 0; i < inventoryPages[pageToDisplay].Count; i++)
         {
             itemSlots[i].SetActive(true);
-            itemSlots[i].transform.Find("Name").gameObject.GetComponent<TextMeshProUGUI>().text = inventoryPages[pageToDisplay][i].name;
-
-            itemIconActiveInstances.Add(Instantiate(inventoryPages[pageToDisplay][i], itemSlots[i].transform));
+            itemSlots[i].transform.Find("Name").gameObject.GetComponent<TextMeshProUGUI>().text = inventoryPages[pageToDisplay][i].GetComponent<ItemParameters>().itemName;
+            itemIconActiveInstances.Add(Instantiate(inventoryPages[pageToDisplay][i].GetComponent<ItemParameters>().itemIcon, itemSlots[i].transform));
             itemIconActiveInstances[i].transform.localScale = new Vector3(200f, 200f, 200f);
-            itemIconActiveInstances[i].GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            //itemIconActiveInstances[i].GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             itemIconActiveInstances[i].layer = LayerMask.NameToLayer("UI");
-            itemIconActiveInstances[i].transform.rotation *= Quaternion.Euler(0, 90, 0);
         }
         if (pageToDisplay > 0) instantiatedInventory.transform.Find("Background").Find("ArrowLeft").gameObject.SetActive(true);
         if (inventoryPages.Count > pageToDisplay + 1) instantiatedInventory.transform.Find("Background").Find("ArrowRight").gameObject.SetActive(true);
+    }
+
+    public void AddItemFromHand()
+    {
+        itemToAdd = this.transform.Find("Main Camera").Find("Hand").GetComponent<HandInteractions>().inHand;
+        inventory.Add(itemToAdd);
+        itemToAdd.transform.SetParent(player.transform);
+        itemToAdd.SetActive(false);
+        itemToAdd.transform.localPosition = new Vector3(0, 10, 0);
+        this.transform.Find("Main Camera").Find("Hand").GetComponent<HandInteractions>().inHand = null;
     }
 }

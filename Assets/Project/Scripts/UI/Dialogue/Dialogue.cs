@@ -5,9 +5,6 @@ using TMPro;
 
 public class Dialogue : MonoBehaviour
 {
-    [Header("Player object")]
-    public GameObject player;
-
     [Header("Content text")]
     public string nameText;
     public string contentText;
@@ -34,9 +31,8 @@ public class Dialogue : MonoBehaviour
     public TextMeshProUGUI option3;
     public TextMeshProUGUI option4;
 
-    [Header("Parameters")]
-    public float textSpeed = 0.02f;
-
+    private float textSpeed;
+    private GameObject player;
     private Dictionary<int, TextMeshProUGUI> options;
     private Dictionary<int, Canvas> optionsChoices;
     private Dictionary<int, string> optionsTexts;
@@ -46,6 +42,9 @@ public class Dialogue : MonoBehaviour
 
     void Start()
     {
+        player = transform.parent.GetComponent<OpenDialogue>().player;
+        textSpeed = transform.parent.GetComponent<OpenDialogue>().textSpeed;
+
         //Disable other controls (close inventory first, because it activates movement)
         player.GetComponent<Inventory>().CloseInventory();
         player.GetComponent<Inventory>().enabled = false;
