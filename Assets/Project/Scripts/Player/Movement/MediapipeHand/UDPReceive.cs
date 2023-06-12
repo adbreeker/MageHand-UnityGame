@@ -18,17 +18,13 @@ public class UDPReceive : MonoBehaviour
         receiveThread = new Thread(new ThreadStart(ReceiveData));
         receiveThread.IsBackground = true;
         receiveThread.Start();
+        Debug.Log("soccet open");
     }
 
-    public void OnApplicationQuit()
-    {
-        client.Close();
-        Debug.Log("quitniete");
-    }
     public void OnDestroy()
     {
         client.Close();
-        Debug.Log("rozjebane");
+        Debug.Log("soccet close");
     }
 
     private void ReceiveData()
