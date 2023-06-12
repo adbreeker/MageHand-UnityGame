@@ -73,7 +73,7 @@ public class Inventory : MonoBehaviour
         //Instatiate inventory and assign it to UiCamera
         instantiatedInventory = Instantiate(inventoryPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         instantiatedInventory.GetComponent<Canvas>().worldCamera = UiCamera;
-        instantiatedInventory.GetComponent<Canvas>().planeDistance = 1.5f;
+        instantiatedInventory.GetComponent<Canvas>().planeDistance = 1.05f;
         //^ tu cos nie dziala, e po instatiate on nie jest od razu tam, gdzie ma byæ i pierwszy page jest jakoœ zbugowany jezeli chodzi o pozycje
 
         //Disable other controls
