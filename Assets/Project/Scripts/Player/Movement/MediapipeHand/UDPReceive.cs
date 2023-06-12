@@ -23,6 +23,12 @@ public class UDPReceive : MonoBehaviour
     public void OnApplicationQuit()
     {
         client.Close();
+        Debug.Log("quitniete");
+    }
+    public void OnDestroy()
+    {
+        client.Close();
+        Debug.Log("rozjebane");
     }
 
     private void ReceiveData()
