@@ -6,6 +6,7 @@ public class Inventory : MonoBehaviour
 {
     //List of prefabs
     public List<GameObject> inventory = new List<GameObject>();
+    [Header("Game objects")]
     public GameObject inventoryPrefab;
     public Camera UiCamera;
 
@@ -62,9 +63,11 @@ public class Inventory : MonoBehaviour
         //Change page right if possible
         if (Input.GetKeyDown(KeyCode.D) && inventoryOpened)
         {
-            if (page+1 < inventoryPages.Count)
+            if (page + 1 < inventoryPages.Count)
+            {
                 page++;
                 DisplayPage(page);
+            }
         }
     }
 
@@ -74,9 +77,10 @@ public class Inventory : MonoBehaviour
         instantiatedInventory = Instantiate(inventoryPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         instantiatedInventory.GetComponent<Canvas>().worldCamera = UiCamera;
         instantiatedInventory.GetComponent<Canvas>().planeDistance = 1.05f;
-        //^ tu cos nie dziala, e po instatiate on nie jest od razu tam, gdzie ma byæ i pierwszy page jest jakoœ zbugowany jezeli chodzi o pozycje
 
         //Disable other controls
+        if (player.GetComponent<Spellbook>().enabled == true) player.GetComponent<Spellbook>().CloseSpellbook();
+        player.GetComponent<Spellbook>().enabled = false;
         player.GetComponent<PlayerMovement>().uiActive = true;
 
         //Create list of slots for items to display on one page
@@ -123,6 +127,7 @@ public class Inventory : MonoBehaviour
 
         //Enable other controls
         player.GetComponent<PlayerMovement>().uiActive = false;
+        player.GetComponent<Spellbook>().enabled = true;
     }
 
     void DisplayPage(int pageToDisplay)

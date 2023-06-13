@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class OpenDialogue : MonoBehaviour
 {
+    [Header("Game objects")]
     public Canvas dialogueCanvas;
     public GameObject player;
+    [Header("Parameters")]
     public float textSpeed = 0.02f;
 
     private bool activateDialogue = true;
