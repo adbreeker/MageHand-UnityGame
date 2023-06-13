@@ -3,11 +3,13 @@ using TMPro;
 
 public class ReadableNote : MonoBehaviour
 {
-    public GameObject notePrefab;
-    public GameObject player;
-
+    [Header("Content text")]
     public string titleText;
     public string contentText;
+
+    [Header("Game objects")]
+    public GameObject notePrefab;
+    public GameObject player;
 
     private GameObject instantiatedNote;
     private GameObject pointer;
@@ -29,7 +31,7 @@ public class ReadableNote : MonoBehaviour
         //Test by pressing n
         if (Input.GetKeyDown(KeyCode.N) && !openedNote)
         {
-            OpenNote();
+            //OpenNote();
         }
             
         //Choose option continue, back or close
@@ -80,14 +82,16 @@ public class ReadableNote : MonoBehaviour
             }
         }
     }
-    void OpenNote()
+    public void OpenNote()
     {
         //Instatiate note
         instantiatedNote = Instantiate(notePrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
 
         //Disable other controls (close inventory first, because it activates movement)
-        player.GetComponent<Inventory>().CloseInventory();
+        if (player.GetComponent<Inventory>().enabled == true) player.GetComponent<Inventory>().CloseInventory();
         player.GetComponent<Inventory>().enabled = false;
+        if (player.GetComponent<Spellbook>().enabled == true) player.GetComponent<Spellbook>().CloseSpellbook();
+        player.GetComponent<Spellbook>().enabled = false;
         player.GetComponent<PlayerMovement>().uiActive = true;
         player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(false);
 
@@ -146,6 +150,7 @@ public class ReadableNote : MonoBehaviour
 
         //Enable other controls
         player.GetComponent<Inventory>().enabled = true;
+        player.GetComponent<Spellbook>().enabled = true;
         player.GetComponent<PlayerMovement>().uiActive = false;
         player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(true);
         openedNote = false;

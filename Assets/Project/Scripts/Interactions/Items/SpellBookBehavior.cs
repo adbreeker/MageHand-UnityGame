@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class SpellBookBehavior : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+    public GameObject player;
+    public GameObject tip;
     void Update()
     {
-        
+        if (player.transform.Find("Main Camera").Find("Hand").GetComponent<HandInteractions>().inHand == gameObject)
+        {
+            player.GetComponent<Spellbook>().ableToOpen = true;
+            tip.GetComponent<ReadableNote>().OpenNote();
+            Destroy(gameObject);
+            player.transform.Find("Main Camera").Find("Hand").GetComponent<HandInteractions>().inHand = null;
+        }
     }
 }
