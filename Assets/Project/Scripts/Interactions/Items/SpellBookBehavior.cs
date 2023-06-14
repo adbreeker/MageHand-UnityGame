@@ -7,21 +7,21 @@ public class SpellBookBehavior : MonoBehaviour
     public GameObject tip;
 
     private Spellbook spellbook;
-    private HandInteractions playerHand;
+    private HandInteractions handInteractions;
 
     private void Start()
     {
         spellbook = FindObjectOfType<Spellbook>();
-        playerHand = FindObjectOfType<HandInteractions>();
+        handInteractions = FindObjectOfType<HandInteractions>();
     }
 
     void Update()
     {
-        if (playerHand.inHand == gameObject)
+        if (handInteractions.inHand == gameObject)
         {
             spellbook.ableToOpen = true;
-            // tip.GetComponent<ReadableNote>().OpenNote();
-            playerHand.inHand = null;
+            tip.GetComponent<ReadableNote>().OpenNote();
+            handInteractions.inHand = null;
             Destroy(gameObject);
         }
     }

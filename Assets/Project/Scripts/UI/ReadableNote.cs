@@ -87,10 +87,10 @@ public class ReadableNote : MonoBehaviour
         //Instatiate note
         instantiatedNote = Instantiate(notePrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
 
-        //Disable other controls (close inventory first, because it activates movement)
+        //Disable other controls (close first, because it activates movement and enable other ui)
         if (player.GetComponent<Inventory>().enabled == true) player.GetComponent<Inventory>().CloseInventory();
-        player.GetComponent<Inventory>().enabled = false;
         if (player.GetComponent<Spellbook>().enabled == true) player.GetComponent<Spellbook>().CloseSpellbook();
+        player.GetComponent<Inventory>().enabled = false;
         player.GetComponent<Spellbook>().enabled = false;
         player.GetComponent<PlayerMovement>().uiActive = true;
         player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(false);

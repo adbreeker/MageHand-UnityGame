@@ -16,6 +16,7 @@ public class Inventory : MonoBehaviour
     private GameObject instantiatedInventory;
     private GameObject player;
     private GameObject itemToAdd;
+    private HandInteractions handInteractions;
 
     private List<GameObject> itemSlots;
     private List<GameObject> itemIconActiveInstances = new List<GameObject>();
@@ -24,6 +25,7 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         player = gameObject;
+        handInteractions = FindObjectOfType<HandInteractions>();
     }
 
     void Update()
@@ -36,9 +38,9 @@ public class Inventory : MonoBehaviour
         //Open or close inventory
         if (Input.GetKeyDown(KeyCode.I))
         {
-            if (!inventoryOpened && this.transform.Find("Main Camera").Find("Hand").GetComponent<HandInteractions>().inHand != null)
+            if (!inventoryOpened && handInteractions.inHand != null)
             {
-                if (this.transform.Find("Main Camera").Find("Hand").GetComponent<HandInteractions>().inHand.layer == LayerMask.NameToLayer("Item")) AddItemFromHand();
+                if (handInteractions.inHand.layer == LayerMask.NameToLayer("Item")) AddItemFromHand();
                 OpenInventory();
             }
             else if (!inventoryOpened) OpenInventory();
@@ -78,7 +80,7 @@ public class Inventory : MonoBehaviour
         instantiatedInventory.GetComponent<Canvas>().worldCamera = UiCamera;
         instantiatedInventory.GetComponent<Canvas>().planeDistance = 1.05f;
 
-        //Disable other controls
+        //Disable other controls (close first, because it activates movement and enable other ui)
         if (player.GetComponent<Spellbook>().enabled == true) player.GetComponent<Spellbook>().CloseSpellbook();
         player.GetComponent<Spellbook>().enabled = false;
         player.GetComponent<PlayerMovement>().uiActive = true;
@@ -161,11 +163,11 @@ public class Inventory : MonoBehaviour
 
     public void AddItemFromHand()
     {
-        itemToAdd = this.transform.Find("Main Camera").Find("Hand").GetComponent<HandInteractions>().inHand;
+        itemToAdd = handInteractions.inHand;
         inventory.Add(itemToAdd);
         itemToAdd.transform.SetParent(player.transform);
         itemToAdd.SetActive(false);
         itemToAdd.transform.localPosition = new Vector3(0, 10, 0);
-        this.transform.Find("Main Camera").Find("Hand").GetComponent<HandInteractions>().inHand = null;
+        handInteractions.inHand = null;
     }
 }
