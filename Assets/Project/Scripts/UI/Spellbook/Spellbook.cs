@@ -18,6 +18,7 @@ public class Spellbook : MonoBehaviour
 
     private GameObject instantiatedSpellbook;
     private GameObject player;
+    private HandInteractions handInteractions;
 
     private GameObject arrowLeft;
     private GameObject arrowRight;
@@ -36,6 +37,7 @@ public class Spellbook : MonoBehaviour
     private void Start()
     {
         player = gameObject;
+        handInteractions = FindObjectOfType<HandInteractions>();
     }
 
     void Update()
@@ -105,7 +107,7 @@ public class Spellbook : MonoBehaviour
         instantiatedSpellbook.GetComponent<Canvas>().worldCamera = UiCamera;
         instantiatedSpellbook.GetComponent<Canvas>().planeDistance = 1.05f;
 
-        //Disable other controls
+        //Disable other controls (close first, because it activates movement and enable other ui)
         if (player.GetComponent<Inventory>().enabled == true) player.GetComponent<Inventory>().CloseInventory();
         player.GetComponent<Inventory>().enabled = false;
         player.GetComponent<PlayerMovement>().uiActive = true;
@@ -198,21 +200,21 @@ public class Spellbook : MonoBehaviour
         //Activate correct texts, arrows etc. and assign correct things to it
         if (spellbookPages[pageToDisplay].Count > 0)
         {
-            titleLeft.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][0].GetComponent<Spellscroll>().title;
+            titleLeft.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][0].GetComponent<SpellScrollBehavior>().spellName;
             titleLeft.SetActive(true);
-            descriptionLeft.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][0].GetComponent<Spellscroll>().description;
+            descriptionLeft.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][0].GetComponent<SpellScrollBehavior>().spellDescription;
             descriptionLeft.SetActive(true);
-            pictureLeft.GetComponent<RawImage>().texture = spellbookPages[pageToDisplay][0].GetComponent<Spellscroll>().picture;
+            pictureLeft.GetComponent<RawImage>().texture = spellbookPages[pageToDisplay][0].GetComponent<SpellScrollBehavior>().spellPicture;
             pictureLeft.SetActive(true);
         }
 
         if (spellbookPages[pageToDisplay].Count == 2)
         {
-            titleRight.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][1].GetComponent<Spellscroll>().title;
+            titleRight.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][1].GetComponent<SpellScrollBehavior>().spellName;
             titleRight.SetActive(true);
-            descriptionRight.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][1].GetComponent<Spellscroll>().description;
+            descriptionRight.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][1].GetComponent<SpellScrollBehavior>().spellDescription;
             descriptionRight.SetActive(true);
-            pictureRight.GetComponent<RawImage>().texture = spellbookPages[pageToDisplay][1].GetComponent<Spellscroll>().picture;
+            pictureRight.GetComponent<RawImage>().texture = spellbookPages[pageToDisplay][1].GetComponent<SpellScrollBehavior>().spellPicture;
             pictureRight.SetActive(true);
         }
 
@@ -223,11 +225,10 @@ public class Spellbook : MonoBehaviour
 
     public void AddSpellFromScroll(GameObject spellToAdd)
     {
-        GameObject scroll = this.transform.Find("Main Camera").Find("Hand").GetComponent<HandInteractions>().inHand;
         spells.Add(spellToAdd);
         spellToAdd.transform.SetParent(player.transform);
         spellToAdd.SetActive(false);
         spellToAdd.transform.localPosition = new Vector3(0, 10, 0);
-        this.transform.Find("Main Camera").Find("Hand").GetComponent<HandInteractions>().inHand = null;
+        handInteractions.inHand = null;
     }
 }

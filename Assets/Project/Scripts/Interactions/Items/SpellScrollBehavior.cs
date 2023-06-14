@@ -7,25 +7,27 @@ public class SpellScrollBehavior : MonoBehaviour
     public string spellName;
     public int manaCost;
     public string spellDescription;
-    public GameObject spellIcon;
+    public Texture spellPicture;
 
     private Spellbook spellbook;
-    private HandInteractions playerHand;
+    private HandInteractions handInteractions;
 
     private void Start()
     {
         spellbook = FindObjectOfType<Spellbook>();
-        playerHand = FindObjectOfType<HandInteractions>();
+        handInteractions = FindObjectOfType<HandInteractions>();
     }
 
     void Update()
     {
-        if (playerHand.inHand == gameObject)
+        if (spellbook.ableToOpen)
         {
-            spellbook.spells.Add(gameObject);
-            // tip.GetComponent<ReadableNote>().OpenNote();
-            playerHand.inHand = null;
-            gameObject.SetActive(false);
+            gameObject.layer = LayerMask.NameToLayer("Item");
+        }
+
+        if (handInteractions.inHand == gameObject)
+        {
+            spellbook.AddSpellFromScroll(gameObject);
         }
     }
 }

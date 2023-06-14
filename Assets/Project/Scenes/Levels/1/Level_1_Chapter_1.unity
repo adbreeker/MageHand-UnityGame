@@ -2977,6 +2977,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 508385480}
     m_Modifications:
+    - target: {fileID: -4175676622819825245, guid: 171a4463feab9a54cac77b3d517fe907, type: 3}
+      propertyPath: spellPicture
+      value: 
+      objectReference: {fileID: 2800000, guid: a43f260e993c1e24893284c6d7b27b12, type: 3}
+    - target: {fileID: -4175676622819825245, guid: 171a4463feab9a54cac77b3d517fe907, type: 3}
+      propertyPath: spellDescription
+      value: The light spell creates a glowing orb that can illuminate dark areas.
+        It can also activate things that are sensitive to light.
+      objectReference: {fileID: 0}
     - target: {fileID: 2640387059949778449, guid: 171a4463feab9a54cac77b3d517fe907, type: 3}
       propertyPath: m_Name
       value: ScrollOfLight
@@ -6215,6 +6224,53 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ddfc71f472ef6dc478262a7d9893b374, type: 3}
+--- !u!1 &812269834
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 812269835}
+  - component: {fileID: 812269836}
+  m_Layer: 0
+  m_Name: Tip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &812269835
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812269834}
+  m_LocalRotation: {x: -0, y: -1, z: 0.000000021855694, w: 0}
+  m_LocalPosition: {x: 0.87, y: 0.824, z: 0.609}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 958444779}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &812269836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812269834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbab3a27f16a2cd40b395f8bb74b0c03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  titleText: Tip
+  contentText: Press B to open your Spellbook.
+  notePrefab: {fileID: 8719623182097476511, guid: c5d3212e76e11474894fa1f66300d048, type: 3}
+  player: {fileID: 510087568}
 --- !u!1 &840072859
 GameObject:
   m_ObjectHideFlags: 0
@@ -6583,7 +6639,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8391177895316071267, guid: ddfc71f472ef6dc478262a7d9893b374, type: 3}
       propertyPath: option2Text
-      value: Sure. (End dialogue.)
+      value: Okay. (End dialogue.)
       objectReference: {fileID: 0}
     - target: {fileID: 8391177895316071267, guid: ddfc71f472ef6dc478262a7d9893b374, type: 3}
       propertyPath: option3Text
@@ -14900,7 +14956,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8391177895316071267, guid: ddfc71f472ef6dc478262a7d9893b374, type: 3}
       propertyPath: option2Text
-      value: Sure. (End dialogue.)
+      value: Okay. (End dialogue.)
       objectReference: {fileID: 0}
     - target: {fileID: 8391177895316071267, guid: ddfc71f472ef6dc478262a7d9893b374, type: 3}
       propertyPath: option3Text
@@ -15437,6 +15493,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 958444779}
     m_Modifications:
+    - target: {fileID: 668311430179699091, guid: 94925506e3d3d194aaff7791389fafe0, type: 3}
+      propertyPath: tip
+      value: 
+      objectReference: {fileID: 812269834}
     - target: {fileID: 668311430179699091, guid: 94925506e3d3d194aaff7791389fafe0, type: 3}
       propertyPath: player
       value: 

@@ -45,10 +45,10 @@ public class Dialogue : MonoBehaviour
         player = transform.parent.GetComponent<OpenDialogue>().player;
         textSpeed = transform.parent.GetComponent<OpenDialogue>().textSpeed;
 
-        //Disable other controls (close inventory first, because it activates movement)
+        //Disable other controls (close first, because it activates movement and enable other ui)
         if (player.GetComponent<Inventory>().enabled == true) player.GetComponent<Inventory>().CloseInventory();
-        player.GetComponent<Inventory>().enabled = false;
         if (player.GetComponent<Spellbook>().enabled == true) player.GetComponent<Spellbook>().CloseSpellbook();
+        player.GetComponent<Inventory>().enabled = false;
         player.GetComponent<Spellbook>().enabled = false;
         player.GetComponent<PlayerMovement>().uiActive = true;
         player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(false);
