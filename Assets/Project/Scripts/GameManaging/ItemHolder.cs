@@ -4,5 +4,17 @@ using UnityEngine;
 
 public class ItemHolder : MonoBehaviour
 {
-    public List<GameObject> Items;
+    public List<GameObject> items;
+
+    public GameObject GiveItem(string itemName)
+    {
+        foreach(GameObject item in items)
+        {
+            if(item.name == itemName)
+            {
+                return item;
+            }
+        }
+        return null;
+    }
 }

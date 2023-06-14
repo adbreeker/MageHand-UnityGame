@@ -4,16 +4,25 @@ using UnityEngine;
 
 public class SpellBookBehavior : MonoBehaviour
 {
-    public GameObject player;
     public GameObject tip;
+
+    private Spellbook spellbook;
+    private HandInteractions playerHand;
+
+    private void Start()
+    {
+        spellbook = FindObjectOfType<Spellbook>();
+        playerHand = FindObjectOfType<HandInteractions>();
+    }
+
     void Update()
     {
-        if (player.transform.Find("Main Camera").Find("Hand").GetComponent<HandInteractions>().inHand == gameObject)
+        if (playerHand.inHand == gameObject)
         {
-            player.GetComponent<Spellbook>().ableToOpen = true;
-            tip.GetComponent<ReadableNote>().OpenNote();
+            spellbook.ableToOpen = true;
+            // tip.GetComponent<ReadableNote>().OpenNote();
+            playerHand.inHand = null;
             Destroy(gameObject);
-            player.transform.Find("Main Camera").Find("Hand").GetComponent<HandInteractions>().inHand = null;
         }
     }
 }

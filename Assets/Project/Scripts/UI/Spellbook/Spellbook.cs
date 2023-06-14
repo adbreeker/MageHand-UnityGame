@@ -10,7 +10,7 @@ public class Spellbook : MonoBehaviour
     [Header("Game objects")]
     public GameObject spellbookPrefab;
     public Camera UiCamera;
-    public bool ableToOpen = true;
+    public bool ableToOpen = false;
 
     private bool spellbookOpened = false;
     private int page;
