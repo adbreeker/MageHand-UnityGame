@@ -6,6 +6,7 @@ public class SpellCasting : MonoBehaviour
 {
     [Header("Current Spell")]
     public string currentSpell = "None";
+    public GameObject floatingLight;
 
     [Header("Spell Cast Position")]
     public Transform hand;

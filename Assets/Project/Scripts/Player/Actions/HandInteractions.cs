@@ -14,8 +14,6 @@ public class HandInteractions : MonoBehaviour
 
     //cooldowns
     int CooldownClick = 0;
-    int CooldownPickUp = 0;
-    int CooldownThrow = 0;
     int CooldownSpell = 0;
 
 
@@ -35,11 +33,11 @@ public class HandInteractions : MonoBehaviour
         {
             ClickObject();
         }
-        if(handController.gesture == "Closed_Fist" && inHand == null && CooldownPickUp == 0)
+        if(handController.gesture == "Closed_Fist" && inHand == null)
         {
             PickUpObject();
         }
-        if (handController.gesture == "Thumb_Up" && inHand != null && CooldownThrow == 0)
+        if (handController.gesture == "Thumb_Up" && inHand != null)
         {
             ThrowObject();
         }
@@ -49,7 +47,14 @@ public class HandInteractions : MonoBehaviour
         }
         if (handController.gesture == "Thumb_Down" && inHand != null)
         {
-            AddItemToInventory();
+            if(GetComponent<SpellCasting>().currentSpell == "Light")
+            {
+                MakeFloatingLight();
+            }
+            else
+            {
+                AddItemToInventory();
+            }
         }
     }
 
@@ -58,14 +63,6 @@ public class HandInteractions : MonoBehaviour
         if(CooldownClick > 0)
         {
             CooldownClick--;
-        }
-        if (CooldownPickUp > 0)
-        {
-            CooldownPickUp--;
-        }
-        if (CooldownThrow > 0)
-        {
-            CooldownThrow--;
         }
         if (CooldownSpell > 0)
         {
@@ -89,7 +86,6 @@ public class HandInteractions : MonoBehaviour
     {
         if (pointer.currentlyPointing != null)
         {
-            CooldownPickUp = 0;
             if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("Item"))
             {
                 inHand = pointer.currentlyPointing;
@@ -111,8 +107,6 @@ public class HandInteractions : MonoBehaviour
 
     void ThrowObject()
     {
-        CooldownThrow = 5;
-
         if (GetComponent<SpellCasting>().currentSpell == "Light")
         {
             inHand.AddComponent<ThrowSpell>().Initialize(player);
@@ -129,7 +123,6 @@ public class HandInteractions : MonoBehaviour
     void CastSpell()
     {
         CooldownSpell = 300;
-
         GetComponent<SpellCasting>().LightSpell();
     }
 
@@ -139,5 +132,17 @@ public class HandInteractions : MonoBehaviour
         {
             inventoryScript.AddItemFromHand();
         }
+    }
+
+    void MakeFloatingLight()
+    {
+        inHand.AddComponent<FloatingLight>();
+        if(GetComponent<SpellCasting>().floatingLight != null)
+        {
+            Destroy(GetComponent<SpellCasting>().floatingLight);
+        }
+        GetComponent<SpellCasting>().floatingLight = inHand;
+        inHand = null;
+        GetComponent<SpellCasting>().currentSpell = "None";
     }
 }
