@@ -15,6 +15,6 @@ public class ShowMana : MonoBehaviour
 
     void Update()
     {
-        mana.text = spellcontroller.mana.ToString() + "/100";
+        mana.text = ((int)spellcontroller.mana).ToString() + "/100";
     }
 }

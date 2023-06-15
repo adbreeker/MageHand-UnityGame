@@ -1,17 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Whisper.Utils;
+using Whisper;
 
 public class HandInteractions : MonoBehaviour
 {
+    [Header("In Hand")]
     public GameObject inHand = null;
+
+    [Header("Speach to text")]
+    public string spellWhispered = "";
+
+    [Header("Needed objects")]
     public GameObject player;
     public Transform holdingPoint;
 
+    //hand movement and object pointing
     MoveHandPoints handController;
     GetObjectsNearHand pointer;
+
+    //spells and inventory
     SpellCasting spellCastingController;
     Inventory inventoryScript;
+
+    //speach to text
+    MicrophoneRecord microphoneRecord;
+    WhisperManager whisper;
 
     //cooldowns
     int CooldownClick = 0;
@@ -21,6 +36,7 @@ public class HandInteractions : MonoBehaviour
     {
         handController = this.GetComponent<MoveHandPoints>();
         pointer = this.GetComponent<GetObjectsNearHand>();
+
         spellCastingController = this.GetComponent<SpellCasting>();
         inventoryScript = this.transform.parent.transform.parent.GetComponent<Inventory>();
     }
@@ -29,6 +45,7 @@ public class HandInteractions : MonoBehaviour
     void Update()
     {
         DecreaseCooldowns();
+        CastSpell();
 
         if(handController.gesture == "Pointing_Up" && CooldownClick == 0)
         {
@@ -44,7 +61,7 @@ public class HandInteractions : MonoBehaviour
         }
         if (handController.gesture == "Victory" && inHand == null && spellCastingController.mana == 100)
         {
-            CastSpell();
+            RecordSpellCasting();
         }
         if (handController.gesture == "Thumb_Down" && inHand != null)
         {
@@ -119,7 +136,11 @@ public class HandInteractions : MonoBehaviour
 
     void CastSpell()
     {
-        spellCastingController.LightSpell();
+        if(spellWhispered != "")
+        {
+            spellCastingController.LightSpell();
+            spellWhispered = "";
+        }
     }
 
     void AddItemToInventory()
@@ -140,5 +161,38 @@ public class HandInteractions : MonoBehaviour
         spellCastingController.floatingLight = inHand;
         inHand = null;
         spellCastingController.currentSpell = "None";
+    }
+
+    //whisper ---------------------------------------------------------------------------------- whisper
+    private void Awake()
+    {
+        microphoneRecord = FindObjectOfType<MicrophoneRecord>();
+        whisper = FindObjectOfType<WhisperManager>();
+
+        whisper.InitModel();
+
+        microphoneRecord.OnRecordStop += Transcribe;
+    }
+
+    void RecordSpellCasting()
+    {
+        if (!microphoneRecord.IsRecording)
+        {
+            Debug.Log("started recording !!!!!!!!!!!!!!!!!!!!!");
+            microphoneRecord.StartRecord();
+        }
+    }
+
+    private async void Transcribe(float[] data, int frequency, int channels, float length)
+    {
+        var res = await whisper.GetTextAsync(data, frequency, channels);
+
+        if (res == null)
+            return;
+
+        var text = res.Result;
+        spellWhispered = text;
+
+        //spellWhispered = res.Result;
     }
 }

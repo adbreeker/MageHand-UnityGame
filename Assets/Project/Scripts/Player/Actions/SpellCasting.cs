@@ -5,8 +5,8 @@ using UnityEngine;
 public class SpellCasting : MonoBehaviour
 {
     [Header("Mana")]
-    public int mana = 100;
-    public int manaRegen = 2;
+    public float mana = 100.0f;
+    public float manaRegen = 25.0f;
 
     [Header("Current Spell")]
     public string currentSpell = "None";
@@ -18,22 +18,15 @@ public class SpellCasting : MonoBehaviour
     [Header("Spells Prefabs")]
     public GameObject lightPrefab;
 
-    private void Start()
+    private void Update()
     {
-        StartCoroutine(RegenerateMana());
+        RegenerateMana();
     }
 
-    IEnumerator RegenerateMana()
+    void RegenerateMana()
     {
-        while (true)
-        {
-            yield return new WaitForSeconds(0.1f);
-            if (mana < 100)
-            {
-                mana += manaRegen;
-            }
-            mana = Mathf.Clamp(mana, 0, 100);
-        }
+        mana += manaRegen * Time.deltaTime;
+        mana = Mathf.Clamp(mana, 0.0f, 100.0f);
     }
 
     public void LightSpell()
