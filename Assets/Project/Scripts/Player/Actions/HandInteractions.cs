@@ -10,17 +10,18 @@ public class HandInteractions : MonoBehaviour
 
     MoveHandPoints handController;
     GetObjectsNearHand pointer;
+    SpellCasting spellCastingController;
     Inventory inventoryScript;
 
     //cooldowns
     int CooldownClick = 0;
-    int CooldownSpell = 0;
 
 
     private void Start()
     {
         handController = this.GetComponent<MoveHandPoints>();
         pointer = this.GetComponent<GetObjectsNearHand>();
+        spellCastingController = this.GetComponent<SpellCasting>();
         inventoryScript = this.transform.parent.transform.parent.GetComponent<Inventory>();
     }
 
@@ -41,7 +42,7 @@ public class HandInteractions : MonoBehaviour
         {
             ThrowObject();
         }
-        if (handController.gesture == "Victory" && inHand == null && CooldownSpell == 0)
+        if (handController.gesture == "Victory" && inHand == null && spellCastingController.mana == 100)
         {
             CastSpell();
         }
@@ -63,10 +64,6 @@ public class HandInteractions : MonoBehaviour
         if(CooldownClick > 0)
         {
             CooldownClick--;
-        }
-        if (CooldownSpell > 0)
-        {
-            CooldownSpell--;
         }
     }
 
@@ -122,8 +119,7 @@ public class HandInteractions : MonoBehaviour
 
     void CastSpell()
     {
-        CooldownSpell = 300;
-        GetComponent<SpellCasting>().LightSpell();
+        spellCastingController.LightSpell();
     }
 
     void AddItemToInventory()
@@ -137,12 +133,12 @@ public class HandInteractions : MonoBehaviour
     void MakeFloatingLight()
     {
         inHand.AddComponent<FloatingLight>();
-        if(GetComponent<SpellCasting>().floatingLight != null)
+        if(spellCastingController.floatingLight != null)
         {
-            Destroy(GetComponent<SpellCasting>().floatingLight);
+            Destroy(spellCastingController.floatingLight);
         }
-        GetComponent<SpellCasting>().floatingLight = inHand;
+        spellCastingController.floatingLight = inHand;
         inHand = null;
-        GetComponent<SpellCasting>().currentSpell = "None";
+        spellCastingController.currentSpell = "None";
     }
 }
