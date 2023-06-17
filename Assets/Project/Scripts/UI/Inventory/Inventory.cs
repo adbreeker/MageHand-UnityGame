@@ -36,11 +36,11 @@ public class Inventory : MonoBehaviour
     void KeysListener()
     {
         //Open or close inventory
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab))
         {
             if (!inventoryOpened && handInteractions.inHand != null)
             {
-                if (handInteractions.inHand.layer == LayerMask.NameToLayer("Item")) AddItemFromHand();
+                if (handInteractions.inHand.layer == LayerMask.NameToLayer("Item")) AddItem(handInteractions.inHand);
                 OpenInventory();
             }
             else if (!inventoryOpened) OpenInventory();
@@ -161,9 +161,9 @@ public class Inventory : MonoBehaviour
         if (inventoryPages.Count > pageToDisplay + 1) instantiatedInventory.transform.Find("Background").Find("ArrowRight").gameObject.SetActive(true);
     }
 
-    public void AddItemFromHand()
+    public void AddItem(GameObject item)
     {
-        itemToAdd = handInteractions.inHand;
+        itemToAdd = item;
         inventory.Add(itemToAdd);
         itemToAdd.transform.SetParent(player.transform);
         itemToAdd.SetActive(false);

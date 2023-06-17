@@ -1,26 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Whisper.Utils;
+using Whisper;
 
 public class HandInteractions : MonoBehaviour
 {
+    [Header("In Hand")]
     public GameObject inHand = null;
+
+    [Header("Use speach to text")]
+    public bool useSpeach = true;
+
+    [Header("Needed objects")]
     public GameObject player;
     public Transform holdingPoint;
 
+    //hand movement and object pointing
     MoveHandPoints handController;
     GetObjectsNearHand pointer;
+
+    //spells and inventory
+    SpellCasting spellCastingController;
     Inventory inventoryScript;
+
+    //speach to text
+    MicrophoneRecord microphoneRecord;
+    WhisperManager whisper;
 
     //cooldowns
     int CooldownClick = 0;
-    int CooldownSpell = 0;
 
 
     private void Start()
     {
         handController = this.GetComponent<MoveHandPoints>();
         pointer = this.GetComponent<GetObjectsNearHand>();
+
+        spellCastingController = this.GetComponent<SpellCasting>();
         inventoryScript = this.transform.parent.transform.parent.GetComponent<Inventory>();
     }
 
@@ -33,18 +50,22 @@ public class HandInteractions : MonoBehaviour
         {
             ClickObject();
         }
+
         if(handController.gesture == "Closed_Fist" && inHand == null)
         {
             PickUpObject();
         }
+
         if (handController.gesture == "Thumb_Up" && inHand != null)
         {
             ThrowObject();
         }
-        if (handController.gesture == "Victory" && inHand == null && CooldownSpell == 0)
+
+        if (handController.gesture == "Victory" && inHand == null && spellCastingController.mana == 100)
         {
             CastSpell();
         }
+
         if (handController.gesture == "Thumb_Down" && inHand != null)
         {
             if(GetComponent<SpellCasting>().currentSpell == "Light")
@@ -63,10 +84,6 @@ public class HandInteractions : MonoBehaviour
         if(CooldownClick > 0)
         {
             CooldownClick--;
-        }
-        if (CooldownSpell > 0)
-        {
-            CooldownSpell--;
         }
     }
 
@@ -122,27 +139,36 @@ public class HandInteractions : MonoBehaviour
 
     void CastSpell()
     {
-        CooldownSpell = 300;
-        GetComponent<SpellCasting>().LightSpell();
+        if(useSpeach)
+        {
+            spellCastingController.RecordSpellCasting();
+        }
+        else
+        {
+            spellCastingController.LightSpell();
+        }
     }
 
     void AddItemToInventory()
     {
         if (inHand.layer == LayerMask.NameToLayer("Item"))
         {
-            inventoryScript.AddItemFromHand();
+            inventoryScript.AddItem(inHand);
         }
     }
 
-    void MakeFloatingLight()
+
+    // custom interactions while "inserting" spells to inventory
+
+    void MakeFloatingLight() // while trying to insert light to inventory
     {
         inHand.AddComponent<FloatingLight>();
-        if(GetComponent<SpellCasting>().floatingLight != null)
+        if(spellCastingController.floatingLight != null)
         {
-            Destroy(GetComponent<SpellCasting>().floatingLight);
+            Destroy(spellCastingController.floatingLight);
         }
-        GetComponent<SpellCasting>().floatingLight = inHand;
+        spellCastingController.floatingLight = inHand;
         inHand = null;
-        GetComponent<SpellCasting>().currentSpell = "None";
+        spellCastingController.currentSpell = "None";
     }
 }
