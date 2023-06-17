@@ -11,13 +11,13 @@ public class ProgressSaving : MonoBehaviour
     [System.Serializable]
     public class GameStateSave
     {
-        public string currentLvl;
+        public string currentLvl = "";
     }
 
     [System.Serializable]
     public class ItemsSave
     {
-        public List<string> items;
+        public List<string> items = new List<string>();
     }
 
     [System.Serializable]
@@ -30,14 +30,18 @@ public class ProgressSaving : MonoBehaviour
     // ------------------------------------------- save data struct
 
     [System.Serializable]
-    public struct SaveData
+    public class SaveData
     {
-        public GameStateSave gameStateSave;
-        public ItemsSave itemsSave;
-        public SpellsSave spellsSave;
+        public GameStateSave gameStateSave = new GameStateSave();
+        public ItemsSave itemsSave = new ItemsSave();
+        public SpellsSave spellsSave = new SpellsSave();
     }
 
     // ------------------------------------------- code
+
+    [Header("Holders")]
+    public ItemHolder itemHolder;
+    public SpellScrollsHolder spellScrollsHolder;
 
     private string savePath;
     private SaveData saveData;
@@ -47,13 +51,47 @@ public class ProgressSaving : MonoBehaviour
         savePath = Path.Combine(Application.persistentDataPath, "saveData.json");
         Debug.Log("saves are on: " + savePath);
 
-        saveData = LoadProgress();
+        try
+        {
+            saveData = LoadProgress();
+        }
+        catch
+        {
+            Debug.Log("catched exceptiooooon");
+            saveData = new SaveData();
+        }
+
+        ManageLoadedData();
+
     } 
+
+    // ------------------------------------------------------------ loading data
 
     public SaveData LoadProgress()
     {
         string json = File.ReadAllText(savePath);
         return JsonUtility.FromJson<SaveData>(json);
+    }
+
+    void ManageLoadedData()
+    {
+        Inventory inventory = FindObjectOfType<Inventory>();
+        foreach(string itemInData in saveData.itemsSave.items)
+        {
+            inventory.AddItem(itemHolder.GiveItem(itemInData));
+        }
+
+        Spellbook spellbook = FindObjectOfType<Spellbook>();
+        if(saveData.spellsSave.spellBook)
+        {
+            spellbook.ableToOpen = true;
+        }
+        if(saveData.spellsSave.light)
+        {
+            Debug.Log(spellScrollsHolder.scrollOfLight.GetComponent<SpellScrollBehavior>().spellName + "------------------------------------");
+            spellbook.AddSpellFromScroll(spellScrollsHolder.scrollOfLight);
+        }
+
     }
 
     // ------------------------------------------------------------- saving data

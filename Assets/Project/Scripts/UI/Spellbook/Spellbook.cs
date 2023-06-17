@@ -231,4 +231,19 @@ public class Spellbook : MonoBehaviour
         spellToAdd.transform.localPosition = new Vector3(0, 10, 0);
         handInteractions.inHand = null;
     }
+
+    public GameObject GetSpellScroll(string spellName)
+    {
+        GameObject scroll = null;
+        foreach(GameObject s in spells)
+        {
+            if(s.GetComponent<SpellScrollBehavior>().spellName == spellName)
+            {
+                scroll = s;
+                break;
+            }
+        }
+
+        return scroll;
+    }
 }

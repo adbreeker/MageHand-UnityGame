@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.011113753, g: 0.0072827707, b: 0.017247304, a: 1}
+  m_IndirectSpecularColor: {r: 0.011009719, g: 0.0072202943, b: 0.017041376, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1058,13 +1058,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2167677596242489558, guid: 4fc787d1eb080ed458cfb813f50f44c4, type: 3}
-      propertyPath: ableToOpen
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2215893106494380599, guid: 4fc787d1eb080ed458cfb813f50f44c4, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2215893106494380599, guid: 4fc787d1eb080ed458cfb813f50f44c4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1108,7 +1104,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2215893106494380605, guid: 4fc787d1eb080ed458cfb813f50f44c4, type: 3}
       propertyPath: m_Name
-      value: TestPlayer
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4fc787d1eb080ed458cfb813f50f44c4, type: 3}
@@ -1204,7 +1200,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6412617696393458263, guid: a894a8c977dbe674ead86bca5374a3e1, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6412617696393458263, guid: a894a8c977dbe674ead86bca5374a3e1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1248,6 +1244,42 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a894a8c977dbe674ead86bca5374a3e1, type: 3}
+--- !u!1 &505801749 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1944157883839841396, guid: a894a8c977dbe674ead86bca5374a3e1, type: 3}
+  m_PrefabInstance: {fileID: 505801748}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &505801750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 505801749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cbdac113de6ead4fb039de14cbb2cff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  torches:
+  - {fileID: 749381333}
+  - {fileID: 1258082378}
+  - {fileID: 2091488208}
+  - {fileID: 42590179}
+  - {fileID: 1543208587}
+  - {fileID: 967630438}
+  - {fileID: 820792847}
+  - {fileID: 1836847955}
+  walls:
+  - {fileID: 389595433}
+  - {fileID: 1080262926}
+  - {fileID: 1706879936}
+  - {fileID: 527536041}
+  - {fileID: 30776105}
+  - {fileID: 223068309}
+  - {fileID: 1724348706}
+  - {fileID: 2072774280}
+  torchNoLightPrefab: {fileID: 7586093321967142111, guid: 7dc63d23ee9d6654ab35b34dbbb9a3af, type: 3}
 --- !u!1 &527536041
 GameObject:
   m_ObjectHideFlags: 0
@@ -2318,42 +2350,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 839219200}
   m_Mesh: {fileID: 4300002, guid: 8211cbe42dc7376499f8a6746bc97fb9, type: 3}
---- !u!1 &858582161 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4871858993183020671, guid: a894a8c977dbe674ead86bca5374a3e1, type: 3}
-  m_PrefabInstance: {fileID: 505801748}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &858582167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 858582161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cbdac113de6ead4fb039de14cbb2cff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  torches:
-  - {fileID: 749381333}
-  - {fileID: 1258082378}
-  - {fileID: 2091488208}
-  - {fileID: 42590179}
-  - {fileID: 1543208587}
-  - {fileID: 967630438}
-  - {fileID: 820792847}
-  - {fileID: 1836847955}
-  walls:
-  - {fileID: 389595433}
-  - {fileID: 1080262926}
-  - {fileID: 1706879936}
-  - {fileID: 527536041}
-  - {fileID: 30776105}
-  - {fileID: 223068309}
-  - {fileID: 1724348706}
-  - {fileID: 2072774280}
-  torchNoLightPrefab: {fileID: 7586093321967142111, guid: 7dc63d23ee9d6654ab35b34dbbb9a3af, type: 3}
 --- !u!1 &865228627
 GameObject:
   m_ObjectHideFlags: 0
