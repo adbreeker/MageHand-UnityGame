@@ -15,7 +15,6 @@ public class Inventory : MonoBehaviour
 
     private GameObject instantiatedInventory;
     private GameObject player;
-    private GameObject itemToAdd;
     private HandInteractions handInteractions;
 
     private List<GameObject> itemSlots;
@@ -25,7 +24,7 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         player = gameObject;
-        handInteractions = FindObjectOfType<HandInteractions>();
+        handInteractions = GetComponentInChildren<HandInteractions>();
     }
 
     void Update()
@@ -163,11 +162,8 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(GameObject item)
     {
-        itemToAdd = item;
-        inventory.Add(itemToAdd);
-        itemToAdd.transform.SetParent(player.transform);
-        itemToAdd.SetActive(false);
-        itemToAdd.transform.localPosition = new Vector3(0, 10, 0);
+        inventory.Add(item);
+        item.SetActive(false);
         handInteractions.inHand = null;
     }
 }

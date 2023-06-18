@@ -9,11 +9,18 @@ public class PassageOpen_Light : MonoBehaviour
 
     public float locX, locZ;
 
+    private SpellCasting spellCastingController;
+
+    private void Start()
+    {
+        spellCastingController = player.GetComponentInChildren<SpellCasting>();
+    }
+
     void Update()
     {
         if(player.transform.position.x == locX && player.transform.position.z == locZ)
         {
-            if(player.GetComponentInChildren<SpellCasting>().currentSpell == "Light")
+            if(spellCastingController.currentSpell == "Light")
             {
                 passage.SendMessage("Interaction");
                 this.enabled = false;

@@ -226,9 +226,7 @@ public class Spellbook : MonoBehaviour
     public void AddSpellFromScroll(GameObject spellToAdd)
     {
         spells.Add(spellToAdd);
-        spellToAdd.transform.SetParent(player.transform);
         spellToAdd.SetActive(false);
-        spellToAdd.transform.localPosition = new Vector3(0, 10, 0);
         handInteractions.inHand = null;
     }
 

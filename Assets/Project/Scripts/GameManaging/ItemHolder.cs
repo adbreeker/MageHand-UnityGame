@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ItemHolder : MonoBehaviour
 {
+    [Header("Items")]
     public List<GameObject> items;
 
     public GameObject GiveItem(string itemName)
@@ -12,7 +13,7 @@ public class ItemHolder : MonoBehaviour
         {
             if(item.name == itemName)
             {
-                return item;
+                return Instantiate(item, new Vector3(0,10,0), Quaternion.identity);
             }
         }
         return null;
