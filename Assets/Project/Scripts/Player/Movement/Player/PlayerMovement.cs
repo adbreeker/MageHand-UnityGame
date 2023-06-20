@@ -15,10 +15,13 @@ public class PlayerMovement : MonoBehaviour
     [Header("Rotation")]
     public float rotationSpeed = 360f;
     public float rotationThreshold = 0.01f;
-
-    public bool uiActive;
     private bool isRotating = false;
     private Quaternion targetRotation;
+
+    [Header("Movement-interfering options")]
+    public bool uiActive = false;
+    public bool ghostmodeActive = false;
+    
 
     //Enqueuing
     private Vector3 movementInputQueue = Vector3.zero;
@@ -75,6 +78,11 @@ public class PlayerMovement : MonoBehaviour
     // Check if the player can move to a given destination
     bool CanMove()
     {
+        if(ghostmodeActive)
+        {
+            return true;
+        }
+
         Collider[] colliders = Physics.OverlapSphere(new Vector3(transform.position.x, 1.25f, transform.position.z), 0.8f, obstacleMask);
         foreach (Collider collider in colliders)
         {

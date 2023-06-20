@@ -84,7 +84,7 @@ public class ProgressSaving : MonoBehaviour
         Spellbook spellbook = FindObjectOfType<Spellbook>();
         if(saveData.spellsSave.spellBook)
         {
-            spellbook.ableToOpen = true;
+            spellbook.bookOwned = true;
         }
         if(saveData.spellsSave.light)
         {

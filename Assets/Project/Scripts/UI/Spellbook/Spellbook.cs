@@ -10,7 +10,8 @@ public class Spellbook : MonoBehaviour
     [Header("Game objects")]
     public GameObject spellbookPrefab;
     public Camera UiCamera;
-    public bool ableToOpen = false;
+    public bool bookOwned = false;
+    public bool ableToInteract = true;
 
     private bool spellbookOpened = false;
     private int page;
@@ -42,7 +43,10 @@ public class Spellbook : MonoBehaviour
 
     void Update()
     {
-        KeysListener();
+        if(ableToInteract)
+        {
+            KeysListener();
+        }
     }
 
     void KeysListener()
@@ -50,8 +54,8 @@ public class Spellbook : MonoBehaviour
         //Open or close inventory
         if (Input.GetKeyDown(KeyCode.B))
         {
-            if (!spellbookOpened && ableToOpen) OpenSpellbook();
-            else CloseSpellbook();
+            if (!spellbookOpened && bookOwned) OpenSpellbook();
+            else if (spellbookOpened) CloseSpellbook();
         }
 
         if (Input.GetKeyDown(KeyCode.Escape) && spellbookOpened)

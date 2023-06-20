@@ -20,7 +20,7 @@ public class SpellScrollBehavior : MonoBehaviour
 
     void Update()
     {
-        if (spellbook.ableToOpen)
+        if (spellbook.bookOwned)
         {
             gameObject.layer = LayerMask.NameToLayer("Item");
         }

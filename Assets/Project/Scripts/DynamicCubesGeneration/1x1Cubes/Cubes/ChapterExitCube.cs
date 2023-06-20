@@ -39,7 +39,7 @@ public class ChapterExitCube : MonoBehaviour
         {
             spells.Add(scroll.GetComponent<SpellScrollBehavior>().spellName);
         }
-        saveManager.SaveSpells(spellbook.ableToOpen, spells);
+        saveManager.SaveSpells(spellbook.bookOwned, spells);
 
         saveManager.SaveItems(inventory.inventory);
 
