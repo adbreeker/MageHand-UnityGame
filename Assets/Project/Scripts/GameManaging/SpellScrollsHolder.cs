@@ -7,11 +7,11 @@ public class SpellScrollsHolder : MonoBehaviour
     [Header("Scrolls")]
     public GameObject scrollOfLight;
 
-    public GameObject GiveScroll(string spellName)
+    public SpellScrollInfo? GiveScroll(string spellName)
     {
         if(spellName == "Light")
         {
-            return Instantiate(scrollOfLight, new Vector3(0, 10, 0), Quaternion.identity);
+            return scrollOfLight.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
         }
 
 

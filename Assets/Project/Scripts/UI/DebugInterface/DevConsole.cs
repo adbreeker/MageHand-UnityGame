@@ -7,14 +7,19 @@ public class DevConsole : MonoBehaviour
 {
     [Header("Objects of DebugCanvas")]
     public TMP_InputField console;
-    public GameObject fps;
+    public GameObject fpsCounter;
     public GameObject webCamera;
 
     [Header("Player and his stuff")]
     public GameObject player;
 
+    //commands history
     private List<string> previousCommands = new List<string>();
     int currentCommandOnList = 0;
+
+    //currently active commands
+    bool ghostmode = false;
+    bool fps = false;
 
 
     void Update()
@@ -105,9 +110,9 @@ public class DevConsole : MonoBehaviour
         }
 
         //player and movement commands
-        if(command[0] == "ghostmode" && command.Length == 2)
+        if(command[0] == "ghostmode" && command.Length == 1)
         {
-            GhostMode(command[1]);
+            GhostMode();
             return;
         }
 
@@ -143,33 +148,31 @@ public class DevConsole : MonoBehaviour
     }
 
     //player and movement commands ----------------------------------------------------------------------------------------- player and movement commands
-    void GhostMode(string param) //making player able to move through objects
+    void GhostMode() //making player able to move through objects
     {
-        if(param == "on" || param == "true")
-        {
-            player.GetComponent<PlayerMovement>().ghostmodeActive = true;
-            return;
-        }
-        if (param == "off" || param == "false")
+        if(ghostmode)
         {
             player.GetComponent<PlayerMovement>().ghostmodeActive = false;
             return;
         }
-
-        Debug.Log("Wrong Command");
+        else
+        {
+            player.GetComponent<PlayerMovement>().ghostmodeActive = true;
+            return;
+        }
     }
 
 
     //parameters commands ----------------------------------------------------------------------------------------- parameters commands
     void Fps() //turning on/off fps display
     {
-        if(fps.activeSelf)
+        if(fps)
         {
-            fps.SetActive(false);
+            fpsCounter.SetActive(false);
         }
         else
         {
-            fps.SetActive(true);
+            fpsCounter.SetActive(true);
         }
     }
 
@@ -208,7 +211,7 @@ public class DevConsole : MonoBehaviour
             Spellbook spellbook = player.GetComponent<Spellbook>();
             spellbook.bookOwned = true;
 
-            spellbook.AddSpellFromScroll(spellScrollsHolder.GiveScroll("Light"));
+            spellbook.AddSpell(spellScrollsHolder.GiveScroll("Light"));
         }
     }
 }

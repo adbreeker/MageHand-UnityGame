@@ -88,7 +88,7 @@ public class ProgressSaving : MonoBehaviour
         }
         if(saveData.spellsSave.light)
         {
-            spellbook.AddSpellFromScroll(spellScrollsHolder.GiveScroll("Light"));
+            spellbook.AddSpell(spellScrollsHolder.GiveScroll("Light"));
         }
 
     }

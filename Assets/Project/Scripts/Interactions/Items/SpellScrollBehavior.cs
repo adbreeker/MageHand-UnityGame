@@ -2,8 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct SpellScrollInfo
+{
+    public string spellName;
+    public int manaCost;
+    public string spellDescription;
+    public Texture spellPicture;
+}
+
 public class SpellScrollBehavior : MonoBehaviour
 {
+
     public string spellName;
     public int manaCost;
     public string spellDescription;
@@ -27,7 +36,19 @@ public class SpellScrollBehavior : MonoBehaviour
 
         if (handInteractions.inHand == gameObject)
         {
-            spellbook.AddSpellFromScroll(gameObject);
+            spellbook.AddSpell(GetSpellScrollInfo());
+            Destroy(gameObject);
         }
+    }
+
+    public SpellScrollInfo GetSpellScrollInfo()
+    {
+        SpellScrollInfo info;
+        info.spellName = spellName;
+        info.manaCost = manaCost;
+        info.spellDescription = spellDescription;
+        info.spellPicture = spellPicture;
+
+        return info;
     }
 }

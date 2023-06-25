@@ -6,7 +6,7 @@ using TMPro;
 public class Spellbook : MonoBehaviour
 {
     //List of prefabs
-    public List<GameObject> spells = new List<GameObject>();
+    public List<SpellScrollInfo> spells = new List<SpellScrollInfo>();
     [Header("Game objects")]
     public GameObject spellbookPrefab;
     public Camera UiCamera;
@@ -33,7 +33,7 @@ public class Spellbook : MonoBehaviour
     private GameObject pictureRight;
 
     //this means views not actual pages (spellbookPage = 1 view = 2 real pages)
-    private List<List<GameObject>> spellbookPages;
+    private List<List<SpellScrollInfo>> spellbookPages;
 
     private void Start()
     {
@@ -130,14 +130,14 @@ public class Spellbook : MonoBehaviour
         pictureRight = instantiatedSpellbook.transform.Find("Right spell").Find("Picture").gameObject;
 
         //Divide items to pages
-        spellbookPages = new List<List<GameObject>>();
+        spellbookPages = new List<List<SpellScrollInfo>>();
         int pageToAdd = -1;
         for (int i = 0; i < spells.Count; i++)
         {
             if (i % 2 == 0)
             {
                 pageToAdd++;
-                spellbookPages.Add(new List<GameObject>());
+                spellbookPages.Add(new List<SpellScrollInfo>());
                 spellbookPages[pageToAdd].Add(spells[i]);
             }
             else
@@ -204,21 +204,21 @@ public class Spellbook : MonoBehaviour
         //Activate correct texts, arrows etc. and assign correct things to it
         if (spellbookPages[pageToDisplay].Count > 0)
         {
-            titleLeft.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][0].GetComponent<SpellScrollBehavior>().spellName;
+            titleLeft.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][0].spellName;
             titleLeft.SetActive(true);
-            descriptionLeft.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][0].GetComponent<SpellScrollBehavior>().spellDescription;
+            descriptionLeft.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][0].spellDescription;
             descriptionLeft.SetActive(true);
-            pictureLeft.GetComponent<RawImage>().texture = spellbookPages[pageToDisplay][0].GetComponent<SpellScrollBehavior>().spellPicture;
+            pictureLeft.GetComponent<RawImage>().texture = spellbookPages[pageToDisplay][0].spellPicture;
             pictureLeft.SetActive(true);
         }
 
         if (spellbookPages[pageToDisplay].Count == 2)
         {
-            titleRight.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][1].GetComponent<SpellScrollBehavior>().spellName;
+            titleRight.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][1].spellName;
             titleRight.SetActive(true);
-            descriptionRight.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][1].GetComponent<SpellScrollBehavior>().spellDescription;
+            descriptionRight.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][1].spellDescription;
             descriptionRight.SetActive(true);
-            pictureRight.GetComponent<RawImage>().texture = spellbookPages[pageToDisplay][1].GetComponent<SpellScrollBehavior>().spellPicture;
+            pictureRight.GetComponent<RawImage>().texture = spellbookPages[pageToDisplay][1].spellPicture;
             pictureRight.SetActive(true);
         }
 
@@ -227,25 +227,24 @@ public class Spellbook : MonoBehaviour
         if (spellbookPages.Count > pageToDisplay + 1) arrowRight.SetActive(true);
     }
 
-    public void AddSpellFromScroll(GameObject spellToAdd)
+    public void AddSpell(SpellScrollInfo? spellToAdd)
     {
-        spells.Add(spellToAdd);
-        spellToAdd.SetActive(false);
-        handInteractions.inHand = null;
+        if(spellToAdd != null)
+        {
+            spells.Add((SpellScrollInfo)spellToAdd);
+        }
     }
 
-    public GameObject GetSpellScroll(string spellName)
+    public SpellScrollInfo? GetSpellInfo(string spellName)
     {
-        GameObject scroll = null;
-        foreach(GameObject s in spells)
+        foreach(SpellScrollInfo s in spells)
         {
-            if(s.GetComponent<SpellScrollBehavior>().spellName == spellName)
+            if(s.spellName == spellName)
             {
-                scroll = s;
-                break;
+                return s;
             }
         }
 
-        return scroll;
+        return null;
     }
 }
