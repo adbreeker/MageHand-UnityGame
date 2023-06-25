@@ -10,6 +10,8 @@ public class Inventory : MonoBehaviour
     public GameObject inventoryPrefab;
     public Camera UiCamera;
 
+    public bool ableToInteract = true;
+    
     private bool inventoryOpened = false;
     private int page;
 
@@ -29,7 +31,10 @@ public class Inventory : MonoBehaviour
 
     void Update()
     {
-       KeysListener();
+        if(ableToInteract)
+        {
+            KeysListener();
+        }
     }
 
     void KeysListener()

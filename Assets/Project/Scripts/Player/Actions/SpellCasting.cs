@@ -48,14 +48,14 @@ public class SpellCasting : MonoBehaviour
 
     public void LightSpell()
     {
-        GameObject scroll = spellbook.GetSpellScroll("Light");
+        SpellScrollInfo? scroll = spellbook.GetSpellInfo("Light");
         if(scroll != null)
         {
             if (currentSpell != "Light")
             {
                 currentSpell = "Light";
                 GetComponent<HandInteractions>().inHand = Instantiate(lightPrefab, hand);
-                mana -= scroll.GetComponent<SpellScrollBehavior>().manaCost;
+                mana -= ((SpellScrollInfo)scroll).manaCost;
             }
         }
     }

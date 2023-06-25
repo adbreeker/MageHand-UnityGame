@@ -19,7 +19,7 @@ public class SpellBookBehavior : MonoBehaviour
     {
         if (handInteractions.inHand == gameObject)
         {
-            spellbook.ableToOpen = true;
+            spellbook.bookOwned = true;
             tip.GetComponent<ReadableNote>().OpenNote();
             handInteractions.inHand = null;
             Destroy(gameObject);

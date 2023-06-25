@@ -35,11 +35,11 @@ public class ChapterExitCube : MonoBehaviour
         saveManager.SaveGameState(chapter);
 
         List<string> spells = new List<string>();
-        foreach(GameObject scroll in spellbook.spells)
+        foreach(SpellScrollInfo scroll in spellbook.spells)
         {
-            spells.Add(scroll.GetComponent<SpellScrollBehavior>().spellName);
+            spells.Add(scroll.spellName);
         }
-        saveManager.SaveSpells(spellbook.ableToOpen, spells);
+        saveManager.SaveSpells(spellbook.bookOwned, spells);
 
         saveManager.SaveItems(inventory.inventory);
 
