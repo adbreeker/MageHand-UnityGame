@@ -112,8 +112,7 @@ public class HandInteractions : MonoBehaviour
             }
             if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("UI")) //picking item from inventory
             {
-                inHand = inventoryScript.inventory
-                    .Find(obj => obj.CompareTag(pointer.currentlyPointing.transform.parent.GetComponent<IconParameters>().iconItem.tag));
+                inHand = pointer.currentlyPointing.transform.parent.GetComponent<IconParameters>().originaObject;
                 inventoryScript.inventory.Remove(inHand);
                 inHand.transform.SetParent(holdingPoint);
                 inHand.SetActive(true);

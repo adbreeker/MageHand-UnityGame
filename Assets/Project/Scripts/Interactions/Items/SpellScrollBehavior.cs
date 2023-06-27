@@ -25,6 +25,11 @@ public class SpellScrollBehavior : MonoBehaviour
     {
         spellbook = FindObjectOfType<Spellbook>();
         handInteractions = FindObjectOfType<HandInteractions>();
+
+        if(!spellbook.bookOwned)
+        {
+            gameObject.layer = LayerMask.NameToLayer("Default");
+        }
     }
 
     void Update()

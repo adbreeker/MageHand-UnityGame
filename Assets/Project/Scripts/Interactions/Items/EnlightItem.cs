@@ -24,8 +24,8 @@ public class EnlightItem : MonoBehaviour
         }
         previousMaterials = mr.materials;
 
-        
-        mr.material = enlighten;
+
+        mr.materials = EnlightenMaterials(mr.materials.Length);
     }
 
     // Update is called once per frame
@@ -37,5 +37,15 @@ public class EnlightItem : MonoBehaviour
             mr.materials = previousMaterials;
             DestroyImmediate(this);
         }
+    }
+
+    Material[] EnlightenMaterials(int matL)
+    {
+        Material[] em = new Material[matL];
+        for(int i = 0; i < matL; i++)
+        {
+            em[i] = enlighten;
+        }
+        return em;
     }
 }
