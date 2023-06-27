@@ -23,6 +23,8 @@ public class WallsList2 : MonoBehaviour
         Big_Wall_TwoSided,
         Duo_Wall_TwoSided,
         Duo_Wall_Hole_1,
-        Duo_Wall_Hole_2
+        Duo_Wall_Hole_2,
+        Duo_Wall_LockedDoors_1,
+        Duo_Wall_LockedDoors_2
     }
 }
