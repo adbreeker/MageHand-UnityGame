@@ -29,7 +29,7 @@ public class EnlightItem : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         enlightenTime--;
         if(enlightenTime <= 0)

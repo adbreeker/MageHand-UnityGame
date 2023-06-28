@@ -14,7 +14,7 @@ public class FloatingLight : MonoBehaviour
         StartCoroutine(Timer());
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         gameObject.transform.RotateAround(player.transform.position, new Vector3(0, 1, 0), 2f);
     }

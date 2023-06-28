@@ -152,11 +152,13 @@ public class DevConsole : MonoBehaviour
     {
         if(ghostmode)
         {
+            ghostmode = false;
             player.GetComponent<PlayerMovement>().ghostmodeActive = false;
             return;
         }
         else
         {
+            ghostmode = true;
             player.GetComponent<PlayerMovement>().ghostmodeActive = true;
             return;
         }

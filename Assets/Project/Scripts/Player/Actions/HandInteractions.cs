@@ -96,6 +96,10 @@ public class HandInteractions : MonoBehaviour
             {
                 pointer.currentlyPointing.SendMessage("OnClick");
             }
+            if (LayerMask.LayerToName(pointer.currentlyPointing.layer) == "Chest")
+            {
+                pointer.currentlyPointing.GetComponent<ChestBehavior>().InteractChest();
+            }
         }
     }
 

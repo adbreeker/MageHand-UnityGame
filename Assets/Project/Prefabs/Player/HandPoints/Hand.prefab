@@ -103,7 +103,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectsMask:
     serializedVersion: 2
-    m_Bits: 640
+    m_Bits: 1696
+  uiMask:
+    serializedVersion: 2
+    m_Bits: 32
   wristPoint: {fileID: 1776557681398308089}
   indexFingerKnucklePoint: {fileID: 9066269380277898399}
   smallFingerKnucklePoint: {fileID: 3222421630018726590}
@@ -122,6 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inHand: {fileID: 0}
+  useSpeach: 1
   player: {fileID: 0}
   holdingPoint: {fileID: 9066269380277898399}
 --- !u!114 &-512354603722602875
@@ -136,7 +140,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 828588037edb6d045b7cba0edf82bd01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spellbook: {fileID: 0}
+  mana: 100
+  manaRegen: 25
   currentSpell: None
+  floatingLight: {fileID: 0}
   hand: {fileID: 9066269380277898399}
   lightPrefab: {fileID: 7101868786794713321, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
 --- !u!1 &1776557681402105355
