@@ -5,6 +5,7 @@ using UnityEngine;
 public class ButtonBehavior : MonoBehaviour
 {
     public GameObject button;
+    public int clickCounter = 0;
 
     bool buttonChanging = false;
 
@@ -12,6 +13,7 @@ public class ButtonBehavior : MonoBehaviour
     {
         if (!buttonChanging)
         {
+            clickCounter++;
             StartCoroutine(ButtonAnimation());
             GetComponent<SwitchInteraction>().Interact();
         }
@@ -23,7 +25,7 @@ public class ButtonBehavior : MonoBehaviour
         for(int i=0; i<10; i++)
         {
 
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForFixedUpdate();
             Vector3 newPos = button.transform.localPosition;
             newPos.z -= 0.005f;
             button.transform.localPosition = newPos;
@@ -31,7 +33,7 @@ public class ButtonBehavior : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
 
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForFixedUpdate();
             Vector3 newPos = button.transform.localPosition;
             newPos.z += 0.005f;
             button.transform.localPosition = newPos;

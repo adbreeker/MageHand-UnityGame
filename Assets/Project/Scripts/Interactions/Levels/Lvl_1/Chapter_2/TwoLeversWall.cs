@@ -6,23 +6,15 @@ public class TwoLeversWall : MonoBehaviour
 {
     public GameObject wall1, wall2;
 
-    bool lever1 = false;
-    bool lever2 = false;
-    public void Interaction(int leverId)
-    {
-        if(leverId == 1)
-        {
-            lever1 = !lever1;
-        }
-        if (leverId == 2)
-        {
-            lever2 = !lever2;
-        }
+    public LeverBehavior lever1, lever2;
 
-        if (lever1 && lever2)
+    private void Update()
+    {
+        if (lever1.leverON && lever2.leverON)
         {
             wall1.SendMessage("Interaction");
             wall2.SendMessage("Interaction");
+            Destroy(this);
         }
     }
 }
