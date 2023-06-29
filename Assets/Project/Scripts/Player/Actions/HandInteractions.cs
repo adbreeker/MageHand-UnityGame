@@ -29,7 +29,11 @@ public class HandInteractions : MonoBehaviour
     WhisperManager whisper;
 
     //cooldowns
-    int CooldownClick = 0;
+    bool CooldownClick = false;
+    bool CooldownPickUp = false;
+    bool CooldownThrow = false;
+    bool CooldownCast = false;
+    bool CooldownPutDown = false;
 
 
     private void Start()
@@ -46,44 +50,57 @@ public class HandInteractions : MonoBehaviour
     {
         DecreaseCooldowns();
 
-        if(handController.gesture == "Pointing_Up" && CooldownClick == 0)
+        if(handController.gesture == "Pointing_Up" && !CooldownClick)
         {
             ClickObject();
         }
 
-        if(handController.gesture == "Closed_Fist" && inHand == null)
+        if(handController.gesture == "Closed_Fist" && inHand == null && !CooldownPickUp)
         {
             PickUpObject();
         }
 
-        if (handController.gesture == "Thumb_Up" && inHand != null)
+        if (handController.gesture == "Thumb_Up" && inHand != null && !CooldownThrow)
         {
             ThrowObject();
         }
 
-        if (handController.gesture == "Victory" && inHand == null && spellCastingController.mana == 100)
+        if (handController.gesture == "Victory" && inHand == null && spellCastingController.mana == 100 && !CooldownCast)
         {
             CastSpell();
         }
 
-        if (handController.gesture == "Thumb_Down" && inHand != null)
+        if (handController.gesture == "Thumb_Down" && inHand != null && !CooldownPutDown)
         {
-            if(GetComponent<SpellCasting>().currentSpell == "Light")
-            {
-                MakeFloatingLight();
-            }
-            else
-            {
-                AddItemToInventory();
-            }
+            PutDownObject();
         }
     }
 
     void DecreaseCooldowns()
     {
-        if(CooldownClick > 0)
+        if(CooldownClick && handController.gesture != "Pointing_Up")
         {
-            CooldownClick--;
+            CooldownClick = false;
+        }
+
+        if (CooldownPickUp && handController.gesture != "Closed_Fist")
+        {
+            CooldownPickUp = false;
+        }
+
+        if (CooldownThrow && handController.gesture != "Thumb_Up")
+        {
+            CooldownThrow = false;
+        }
+
+        if (CooldownCast && handController.gesture != "Victory")
+        {
+            CooldownCast = false;
+        }
+
+        if (CooldownPutDown && handController.gesture != "Thumb_Down")
+        {
+            CooldownPutDown = false;
         }
     }
 
@@ -91,7 +108,7 @@ public class HandInteractions : MonoBehaviour
     {
         if (pointer.currentlyPointing != null)
         {
-            CooldownClick = 100;
+            CooldownClick = true;
             if (LayerMask.LayerToName(pointer.currentlyPointing.layer) == "Switch")
             {
                 pointer.currentlyPointing.SendMessage("OnClick");
@@ -107,6 +124,7 @@ public class HandInteractions : MonoBehaviour
     {
         if (pointer.currentlyPointing != null)
         {
+            CooldownPickUp = true;
             if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("Item"))
             {
                 inHand = pointer.currentlyPointing;
@@ -129,6 +147,7 @@ public class HandInteractions : MonoBehaviour
 
     void ThrowObject()
     {
+        CooldownThrow = true;
         if (GetComponent<SpellCasting>().currentSpell == "Light")
         {
             inHand.AddComponent<ThrowSpell>().Initialize(player);
@@ -144,6 +163,7 @@ public class HandInteractions : MonoBehaviour
 
     void CastSpell()
     {
+        CooldownCast = true;
         if(useSpeach)
         {
             spellCastingController.RecordSpellCasting();
@@ -151,6 +171,19 @@ public class HandInteractions : MonoBehaviour
         else
         {
             spellCastingController.LightSpell();
+        }
+    }
+
+    void PutDownObject()
+    {
+        CooldownPutDown = true;
+        if (GetComponent<SpellCasting>().currentSpell == "Light")
+        {
+            MakeFloatingLight();
+        }
+        else
+        {
+            AddItemToInventory();
         }
     }
 
