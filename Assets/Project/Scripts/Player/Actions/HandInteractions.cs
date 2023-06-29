@@ -130,7 +130,7 @@ public class HandInteractions : MonoBehaviour
                 inHand = pointer.currentlyPointing;
                 inHand.transform.SetParent(holdingPoint);
                 inHand.transform.localPosition = new Vector3(0, 0, 10);
-                inHand.GetComponent<ItemParameters>().FixRotation();
+                inHand.SendMessage("OnPickUp");
             }
             if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("UI")) //picking item from inventory
             {
@@ -139,7 +139,7 @@ public class HandInteractions : MonoBehaviour
                 inHand.transform.SetParent(holdingPoint);
                 inHand.SetActive(true);
                 inHand.transform.localPosition = new Vector3(0, 0, 10);
-                inHand.GetComponent<ItemParameters>().FixRotation();
+                inHand.SendMessage("OnPickUp");
                 inventoryScript.CloseInventory();
             }
         }
