@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Whisper.Utils;
-using Whisper;
 
 public class HandInteractions : MonoBehaviour
 {
@@ -24,10 +22,6 @@ public class HandInteractions : MonoBehaviour
     SpellCasting spellCastingController;
     Inventory inventoryScript;
 
-    //speach to text
-    MicrophoneRecord microphoneRecord;
-    WhisperManager whisper;
-
     //cooldowns
     bool CooldownClick = false;
     bool CooldownPickUp = false;
@@ -36,13 +30,13 @@ public class HandInteractions : MonoBehaviour
     bool CooldownPutDown = false;
 
 
-    private void Start()
+    private void Awake()
     {
-        handController = this.GetComponent<MoveHandPoints>();
-        pointer = this.GetComponent<GetObjectsNearHand>();
+        handController = GetComponent<MoveHandPoints>();
+        pointer = GetComponent<GetObjectsNearHand>();
 
-        spellCastingController = this.GetComponent<SpellCasting>();
-        inventoryScript = this.transform.parent.transform.parent.GetComponent<Inventory>();
+        spellCastingController = GetComponent<SpellCasting>();
+        inventoryScript = transform.parent.transform.parent.GetComponent<Inventory>();
     }
 
     // Update is called once per frame

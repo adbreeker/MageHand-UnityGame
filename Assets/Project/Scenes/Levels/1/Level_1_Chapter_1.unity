@@ -5759,53 +5759,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ddfc71f472ef6dc478262a7d9893b374, type: 3}
---- !u!1 &812269834
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 812269835}
-  - component: {fileID: 812269836}
-  m_Layer: 0
-  m_Name: Tip
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &812269835
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 812269834}
-  m_LocalRotation: {x: -0, y: -1, z: 0.000000021855694, w: 0}
-  m_LocalPosition: {x: 0.87, y: 0.824, z: 0.609}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1047884442}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &812269836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 812269834}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbab3a27f16a2cd40b395f8bb74b0c03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  titleText: Tip
-  contentText: Press B to open your Spellbook.
-  notePrefab: {fileID: 5778595488933685804, guid: 02d24bcf5ef88694aa2276bef8825e5d, type: 3}
-  player: {fileID: 510087568}
 --- !u!1 &840072859
 GameObject:
   m_ObjectHideFlags: 0
@@ -7956,7 +7909,6 @@ Transform:
   - {fileID: 740284561}
   - {fileID: 499760363}
   - {fileID: 1648997518}
-  - {fileID: 812269835}
   m_Father: {fileID: 1604855173}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14092,7 +14044,7 @@ PrefabInstance:
     - target: {fileID: 668311430179699091, guid: 94925506e3d3d194aaff7791389fafe0, type: 3}
       propertyPath: tip
       value: 
-      objectReference: {fileID: 812269834}
+      objectReference: {fileID: 5778595488933685804, guid: 02d24bcf5ef88694aa2276bef8825e5d, type: 3}
     - target: {fileID: 668311430179699091, guid: 94925506e3d3d194aaff7791389fafe0, type: 3}
       propertyPath: player
       value: 

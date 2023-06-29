@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class ReadableBehavior : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [Header("Note content")]
+    public string title;
+    public string content;
 
-    // Update is called once per frame
-    void Update()
+    [Header("Prefabs")]
+    public GameObject notePrefab, noteSmallPrefab;
+
+    public void OnPickUp()
     {
-        
+        GameObject note = Instantiate(notePrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        note.GetComponent<ReadableNote>().titleText = title;
+        note.GetComponent<ReadableNote>().contentText = content;
+        note.GetComponent<ReadableNote>().OpenNote();
     }
 }

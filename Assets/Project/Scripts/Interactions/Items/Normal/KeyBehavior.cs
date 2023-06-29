@@ -17,4 +17,9 @@ public class KeyBehavior : MonoBehaviour
             }
         }
     }
+
+    public void OnPickUp()
+    {
+
+    }
 }

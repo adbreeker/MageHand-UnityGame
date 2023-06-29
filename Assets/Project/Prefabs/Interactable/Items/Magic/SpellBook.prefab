@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6098996794727153033}
   - component: {fileID: 2647942575201340883}
   - component: {fileID: 668311430179699091}
+  - component: {fileID: 6758962210027787000}
   m_Layer: 9
   m_Name: SpellBook
   m_TagString: Untagged
@@ -109,5 +110,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f77042d79224bae4dacc26498c4d68e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  tip: {fileID: 0}
+--- !u!114 &6758962210027787000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6098996794725213001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9786d8fc7a5e3a5429be1dd5058d72a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: Tip
+  content: Press B to open your Spellbook.
+  notePrefab: {fileID: 5778595488933685804, guid: 02d24bcf5ef88694aa2276bef8825e5d, type: 3}
+  noteSmallPrefab: {fileID: 8719623182097476511, guid: c5d3212e76e11474894fa1f66300d048, type: 3}

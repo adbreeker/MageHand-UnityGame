@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class ShieldBehavior : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void OnPickUp()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        Vector3 front = player.transform.forward * 1000;
+        transform.LookAt(front);
     }
 }

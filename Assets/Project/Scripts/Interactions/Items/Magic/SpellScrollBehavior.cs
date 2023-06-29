@@ -12,19 +12,17 @@ public struct SpellScrollInfo
 
 public class SpellScrollBehavior : MonoBehaviour
 {
-
+    [Header("Spell informations")]
     public string spellName;
     public int manaCost;
     public string spellDescription;
     public Texture spellPicture;
 
     private Spellbook spellbook;
-    private HandInteractions handInteractions;
 
     private void Start()
     {
         spellbook = FindObjectOfType<Spellbook>();
-        handInteractions = FindObjectOfType<HandInteractions>();
 
         if(!spellbook.bookOwned)
         {
@@ -32,18 +30,10 @@ public class SpellScrollBehavior : MonoBehaviour
         }
     }
 
-    void Update()
+    public void OnPickUp()
     {
-        if (spellbook.bookOwned)
-        {
-            gameObject.layer = LayerMask.NameToLayer("Item");
-        }
-
-        if (handInteractions.inHand == gameObject)
-        {
-            spellbook.AddSpell(GetSpellScrollInfo());
-            Destroy(gameObject);
-        }
+        spellbook.AddSpell(GetSpellScrollInfo());
+        Destroy(gameObject);
     }
 
     public SpellScrollInfo GetSpellScrollInfo()

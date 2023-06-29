@@ -4,25 +4,26 @@ using UnityEngine;
 
 public class SpellBookBehavior : MonoBehaviour
 {
-    public GameObject tip;
-
     private Spellbook spellbook;
     private HandInteractions handInteractions;
 
-    private void Start()
+    private void Awake()
     {
         spellbook = FindObjectOfType<Spellbook>();
         handInteractions = FindObjectOfType<HandInteractions>();
     }
 
-    void Update()
+    public void OnPickUp()
     {
-        if (handInteractions.inHand == gameObject)
+        spellbook.bookOwned = true;
+
+        foreach(GameObject spellScroll in GameObject.FindGameObjectsWithTag("SpellScroll"))
         {
-            spellbook.bookOwned = true;
-            tip.GetComponent<ReadableNote>().OpenNote();
-            handInteractions.inHand = null;
-            Destroy(gameObject);
+            spellScroll.layer = LayerMask.NameToLayer("Item");
         }
+
+        //destroying spellbook object
+        handInteractions.inHand = null;
+        Destroy(gameObject);
     }
 }
