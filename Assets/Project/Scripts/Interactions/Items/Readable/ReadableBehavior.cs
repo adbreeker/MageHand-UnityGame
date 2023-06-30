@@ -8,8 +8,12 @@ public class ReadableBehavior : MonoBehaviour
     public string title;
     public string content;
 
+    [Header("Destroy on pick up")]
+    public bool destroy = false;
+
     [Header("Prefabs")]
-    public GameObject notePrefab, noteSmallPrefab;
+    public GameObject notePrefab; 
+    public GameObject noteSmallPrefab;
 
     public void OnPickUp()
     {
@@ -17,5 +21,10 @@ public class ReadableBehavior : MonoBehaviour
         note.GetComponent<ReadableNote>().titleText = title;
         note.GetComponent<ReadableNote>().contentText = content;
         note.GetComponent<ReadableNote>().OpenNote();
+
+        if(destroy)
+        {
+            Destroy(gameObject);
+        }
     }
 }
