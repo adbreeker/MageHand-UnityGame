@@ -27,6 +27,5 @@ public class RotateWallPassage : MonoBehaviour
             yield return new WaitForFixedUpdate();
             wall.transform.RotateAround(pivot.position ,new Vector3(0, 1, 0), 1.0f * rotationMultiplier);
         }
-        //gameObject.SetActive(false);
     }
 }

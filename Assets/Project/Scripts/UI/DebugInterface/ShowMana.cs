@@ -8,7 +8,7 @@ public class ShowMana : MonoBehaviour
     public Text mana;
     SpellCasting spellcontroller;
 
-    private void Start()
+    private void Awake()
     {
         spellcontroller = FindObjectOfType<SpellCasting>();
     }

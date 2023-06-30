@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GetObjectsNearHand : MonoBehaviour
 {
-    private GameObject magicPointer; // relic of old times :)
     public LayerMask objectsMask, uiMask;
     public Transform wristPoint, indexFingerKnucklePoint, smallFingerKnucklePoint;
 
@@ -82,6 +81,8 @@ public class GetObjectsNearHand : MonoBehaviour
 
     //relics of old system
 
+
+    private GameObject magicPointer;
     void MakeRayCast()
     {
         Vector3 middlePoint = (wristPoint.position + indexFingerKnucklePoint.position + smallFingerKnucklePoint.position) / 3f;

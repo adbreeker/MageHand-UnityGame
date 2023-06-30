@@ -12,7 +12,7 @@ public class ChestBehavior : MonoBehaviour
 
     public bool chestOpen = false;
 
-    private void Start()
+    private void Awake()
     {
         mainCamera = Camera.main.gameObject;
         pr = mainCamera.GetComponentInParent<PlayerMovement>();

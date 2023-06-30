@@ -11,9 +11,9 @@ public class ThrowObject : MonoBehaviour
     
     public void Initialize(GameObject player)
     {
-        this.gameObject.transform.SetParent(null);
+        gameObject.transform.SetParent(null);
         previousPos = transform.position;
-        rb = this.gameObject.AddComponent<Rigidbody>();
+        rb = gameObject.AddComponent<Rigidbody>();
         rb.useGravity = true;
         rb.AddForce(player.transform.forward * 15, ForceMode.Impulse);
     }
@@ -23,7 +23,7 @@ public class ThrowObject : MonoBehaviour
         if(previousPos == transform.position)
         {
             posCounter++;
-            if(posCounter >= 10)
+            if(posCounter >= 5)
             {
                 Destroy(rb);
                 Destroy(this);

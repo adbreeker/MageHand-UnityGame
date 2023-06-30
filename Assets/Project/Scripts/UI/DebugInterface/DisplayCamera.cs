@@ -7,7 +7,7 @@ public class DisplayCamera : MonoBehaviour
 {
     private WebCamTexture webCamTexture;
 
-    void Start()
+    void Awake()
     {
         WebCamDevice[] devices = WebCamTexture.devices;
         Debug.Log("Devices l: " + devices.Length);
