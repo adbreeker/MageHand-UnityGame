@@ -9,6 +9,8 @@ public class Inventory : MonoBehaviour
     [Header("Game objects")]
     public GameObject inventoryPrefab;
     public Camera UiCamera;
+    public HandInteractions handInteractions;
+    private GameObject player;
 
     public bool ableToInteract = true;
     
@@ -16,8 +18,6 @@ public class Inventory : MonoBehaviour
     private int page;
 
     private GameObject instantiatedInventory;
-    private GameObject player;
-    private HandInteractions handInteractions;
 
     private List<GameObject> itemSlots;
     private List<GameObject> itemIconActiveInstances = new List<GameObject>();
@@ -25,8 +25,7 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
-        player = gameObject;
-        handInteractions = GetComponentInChildren<HandInteractions>();
+        player = this.gameObject;
     }
 
     void Update()
@@ -156,7 +155,9 @@ public class Inventory : MonoBehaviour
         {
             itemSlots[i].SetActive(true);
             itemSlots[i].transform.Find("Name").gameObject.GetComponent<TextMeshProUGUI>().text = inventoryPages[pageToDisplay][i].GetComponent<ItemParameters>().itemName;
-            itemIconActiveInstances.Add(Instantiate(inventoryPages[pageToDisplay][i].GetComponent<ItemParameters>().itemIcon, itemSlots[i].transform));
+            GameObject itemIcon = Instantiate(inventoryPages[pageToDisplay][i].GetComponent<ItemParameters>().itemIcon, itemSlots[i].transform);
+            itemIcon.GetComponent<IconParameters>().originaObject = inventoryPages[pageToDisplay][i];
+            itemIconActiveInstances.Add(itemIcon);
             itemIconActiveInstances[i].transform.localScale = new Vector3(200f, 200f, 200f);
             //itemIconActiveInstances[i].GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             itemIconActiveInstances[i].layer = LayerMask.NameToLayer("UI");

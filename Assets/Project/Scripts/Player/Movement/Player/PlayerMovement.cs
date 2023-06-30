@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Movement-interfering options")]
     public bool uiActive = false;
+    public bool stopMovement = false;
     public bool ghostmodeActive = false;
     
 
@@ -41,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
         float verticalInput = verticalInputQueue;
 
         // Check if no movement is enqueued
-        if (horizontalInputQueue == 0 && verticalInputQueue ==0 && !uiActive)
+        if (horizontalInputQueue == 0 && verticalInputQueue ==0 && !uiActive && !stopMovement)
         {
             horizontalInput = Input.GetAxisRaw("Horizontal");
             verticalInput = Input.GetAxisRaw("Vertical");
@@ -129,12 +130,12 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Get target rotation
-        if (Input.GetKeyDown(KeyCode.E) && !isRotating && !uiActive)
+        if (Input.GetKeyDown(KeyCode.E) && !isRotating && !uiActive && !stopMovement)
         {
             isRotating = true;
             targetRotation = transform.rotation * Quaternion.Euler(0, 90, 0);
         }
-        if (Input.GetKeyDown(KeyCode.Q) && !isRotating && !uiActive)
+        if (Input.GetKeyDown(KeyCode.Q) && !isRotating && !uiActive && !stopMovement)
         {
             isRotating = true;
             targetRotation = transform.rotation * Quaternion.Euler(0, -90, 0);
@@ -155,7 +156,7 @@ public class PlayerMovement : MonoBehaviour
     void MovementQueue()
     {
         //Enqueuing movement if input while moving
-        if(isMoving && !uiActive)
+        if(isMoving && !uiActive && !stopMovement)
         {
             if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
             {
@@ -177,7 +178,7 @@ public class PlayerMovement : MonoBehaviour
     void RotationQueue()
     {
         //Enqueuing rotation if input while rotating
-        if (isRotating && !uiActive)
+        if (isRotating && !uiActive && !stopMovement)
         {
             if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Q))
             {

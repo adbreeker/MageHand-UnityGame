@@ -9,9 +9,9 @@ public class ThrowSpell : MonoBehaviour
 
     public void Initialize(GameObject player)
     {
-        this.gameObject.transform.SetParent(null);
+        gameObject.transform.SetParent(null);
 
-        rb = this.gameObject.AddComponent<Rigidbody>();
+        rb = gameObject.AddComponent<Rigidbody>();
         rb.useGravity = false;
         rb.AddForce(player.transform.forward * 10, ForceMode.Impulse);
     }

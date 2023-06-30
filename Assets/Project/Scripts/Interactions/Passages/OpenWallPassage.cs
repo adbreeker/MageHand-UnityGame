@@ -6,8 +6,7 @@ public class OpenWallPassage : MonoBehaviour
 {
     public bool passageOpen = false;
     public GameObject wall;
-    public float wallSpeed = 0.8f;
-
+    public float wallSpeed = 0.03f;
 
     public void Interaction()
     {
@@ -30,8 +29,8 @@ public class OpenWallPassage : MonoBehaviour
     {
         while (wall.transform.position.y != wallDestination)
         {
-            yield return new WaitForSeconds(0.01f);
-            wall.transform.position = Vector3.MoveTowards(wall.transform.position, new Vector3(wall.transform.position.x, wallDestination, wall.transform.position.z), wallSpeed * Time.deltaTime);
+            yield return new WaitForFixedUpdate();
+            wall.transform.position = Vector3.MoveTowards(wall.transform.position, new Vector3(wall.transform.position.x, wallDestination, wall.transform.position.z), wallSpeed);
         }
     }
 }

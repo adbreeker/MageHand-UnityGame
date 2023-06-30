@@ -13,7 +13,7 @@ public class OpenDialogue : MonoBehaviour
 
     private bool activateDialogue = true;
     private GameObject dialogueEntry;
-    private void Start()
+    private void Awake()
     {
         dialogueEntry = gameObject;
     }

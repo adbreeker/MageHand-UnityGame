@@ -11,7 +11,7 @@ public class PassageOpen_Light : MonoBehaviour
 
     private SpellCasting spellCastingController;
 
-    private void Start()
+    private void Awake()
     {
         spellCastingController = player.GetComponentInChildren<SpellCasting>();
     }
@@ -23,7 +23,7 @@ public class PassageOpen_Light : MonoBehaviour
             if(spellCastingController.currentSpell == "Light")
             {
                 passage.SendMessage("Interaction");
-                this.enabled = false;
+                Destroy(this);
             }
         }
     }

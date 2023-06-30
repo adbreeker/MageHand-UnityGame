@@ -152,11 +152,13 @@ public class DevConsole : MonoBehaviour
     {
         if(ghostmode)
         {
+            ghostmode = false;
             player.GetComponent<PlayerMovement>().ghostmodeActive = false;
             return;
         }
         else
         {
+            ghostmode = true;
             player.GetComponent<PlayerMovement>().ghostmodeActive = true;
             return;
         }
@@ -195,7 +197,7 @@ public class DevConsole : MonoBehaviour
             Inventory inventory = player.GetComponent<Inventory>();
             foreach(GameObject item in itemHolder.items)
             {
-                inventory.AddItem(itemHolder.GiveItem(item.name));
+                inventory.AddItem(itemHolder.GiveItem(item.GetComponent<ItemParameters>().itemName));
             }
         }
     }

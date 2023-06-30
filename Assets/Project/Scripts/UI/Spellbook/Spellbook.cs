@@ -35,7 +35,7 @@ public class Spellbook : MonoBehaviour
     //this means views not actual pages (spellbookPage = 1 view = 2 real pages)
     private List<List<SpellScrollInfo>> spellbookPages;
 
-    private void Start()
+    private void Awake()
     {
         player = gameObject;
         handInteractions = FindObjectOfType<HandInteractions>();

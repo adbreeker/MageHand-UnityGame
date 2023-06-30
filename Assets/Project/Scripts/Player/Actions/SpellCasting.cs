@@ -12,7 +12,7 @@ public class SpellCasting : MonoBehaviour
 
     [Header("Mana")]
     public float mana = 100.0f;
-    public float manaRegen = 25.0f;
+    public float manaRegen = 3.0f;
 
     [Header("Current Spell")]
     public string currentSpell = "None";
@@ -28,12 +28,7 @@ public class SpellCasting : MonoBehaviour
     private MicrophoneRecord microphoneRecord;
     private WhisperManager whisper;
 
-    private void Start()
-    {
-        
-    }
-
-    private void Update()
+    private void FixedUpdate()
     {
         RegenerateMana();
     }

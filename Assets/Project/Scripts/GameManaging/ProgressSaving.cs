@@ -46,10 +46,9 @@ public class ProgressSaving : MonoBehaviour
     private string savePath;
     private SaveData saveData;
 
-    void Start()
+    private void Awake()
     {
         savePath = Path.Combine(Application.persistentDataPath, "saveData.json");
-        Debug.Log("saves are on: " + savePath);
 
         try
         {
@@ -57,7 +56,7 @@ public class ProgressSaving : MonoBehaviour
         }
         catch
         {
-            Debug.Log("catched exceptiooooon");
+            Debug.Log("error: no existing save");
             saveData = new SaveData();
         }
 
@@ -105,7 +104,7 @@ public class ProgressSaving : MonoBehaviour
         saveData.itemsSave.items = new List<string>();
         foreach(GameObject item in itemsToSave)
         {
-            saveData.itemsSave.items.Add(item.name);
+            saveData.itemsSave.items.Add(item.GetComponent<ItemParameters>().itemName);
         }
     }
 

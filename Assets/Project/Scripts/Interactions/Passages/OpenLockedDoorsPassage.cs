@@ -16,7 +16,7 @@ public class OpenLockedDoorsPassage : MonoBehaviour
     {
         for(int i = 0; i<90; i++)
         {
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForFixedUpdate();
             doors.transform.localRotation *= Quaternion.Euler(0, -1, 0);
         }
         doors.tag = "Untagged";

@@ -7,11 +7,8 @@ public class ReadableNote : MonoBehaviour
     public string titleText;
     public string contentText;
 
-    [Header("Game objects")]
-    public GameObject notePrefab;
-    public GameObject player;
+    private GameObject player;
 
-    private GameObject instantiatedNote;
     private GameObject pointer;
     private TextMeshProUGUI option1;
     private TextMeshProUGUI option2;
@@ -26,6 +23,28 @@ public class ReadableNote : MonoBehaviour
     private int updateCount;
     private int framesToWait = 2;
 
+    private void Awake()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
+
+    private void Update()
+    {
+        KeysListener();
+        
+        //Display first page after few frames to load everything, so pageCount works properly
+        if (openedNote && updateCount < framesToWait)
+        {
+            updateCount++;
+            if (updateCount == framesToWait)
+            {
+                pageCount = content.textInfo.pageCount;
+                option1.gameObject.SetActive(true);
+                DisplayPage(page);
+            }
+        }
+    }
+
     void KeysListener()
     {
         //Test by pressing n
@@ -33,7 +52,7 @@ public class ReadableNote : MonoBehaviour
         {
             //OpenNote();
         }
-            
+
         //Choose option continue, back or close
         if (Input.GetKeyDown(KeyCode.Space) && openedNote && updateCount == framesToWait)
         {
@@ -54,7 +73,7 @@ public class ReadableNote : MonoBehaviour
         }
 
         //Point option 1 or 2
-        if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S) ) && ableToChoose && openedNote)
+        if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S)) && ableToChoose && openedNote)
         {
             if (pointedOption == 1)
             {
@@ -66,27 +85,8 @@ public class ReadableNote : MonoBehaviour
             }
         }
     }
-    private void Update()
-    {
-        KeysListener();
-        
-        //Display first page after few frames to load everything, so pageCount works properly
-        if (openedNote && updateCount < framesToWait)
-        {
-            updateCount++;
-            if (updateCount == framesToWait)
-            {
-                pageCount = content.textInfo.pageCount;
-                option1.gameObject.SetActive(true);
-                DisplayPage(page);
-            }
-        }
-    }
     public void OpenNote()
     {
-        //Instatiate note
-        instantiatedNote = Instantiate(notePrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
-
         //Disable other controls (close first, because it activates movement and enable other ui)
         if (player.GetComponent<Inventory>().enabled == true) player.GetComponent<Inventory>().CloseInventory();
         if (player.GetComponent<Spellbook>().enabled == true) player.GetComponent<Spellbook>().CloseSpellbook();
@@ -96,11 +96,11 @@ public class ReadableNote : MonoBehaviour
         player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(false);
 
         //Get TextMeshProUGUIs
-        option1 = instantiatedNote.transform.Find("Options").Find("1").gameObject.GetComponent<TextMeshProUGUI>();
-        option2 = instantiatedNote.transform.Find("Options").Find("2").gameObject.GetComponent<TextMeshProUGUI>();
-        title = instantiatedNote.transform.Find("Content").Find("Title").gameObject.GetComponent<TextMeshProUGUI>();
-        content = instantiatedNote.transform.Find("Content").Find("Text").gameObject.GetComponent<TextMeshProUGUI>();
-        pointer = instantiatedNote.transform.Find("Options").Find("Pointer").gameObject;
+        option1 = transform.Find("Options").Find("1").gameObject.GetComponent<TextMeshProUGUI>();
+        option2 = transform.Find("Options").Find("2").gameObject.GetComponent<TextMeshProUGUI>();
+        title = transform.Find("Content").Find("Title").gameObject.GetComponent<TextMeshProUGUI>();
+        content = transform.Find("Content").Find("Text").gameObject.GetComponent<TextMeshProUGUI>();
+        pointer = transform.Find("Options").Find("Pointer").gameObject;
 
         //Set proper values
         title.text = titleText;
@@ -146,7 +146,7 @@ public class ReadableNote : MonoBehaviour
 
     void CloseNote()
     {
-        Destroy(instantiatedNote);
+        Destroy(gameObject);
 
         //Enable other controls
         player.GetComponent<Inventory>().enabled = true;

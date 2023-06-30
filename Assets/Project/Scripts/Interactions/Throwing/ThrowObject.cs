@@ -6,27 +6,33 @@ public class ThrowObject : MonoBehaviour
 {
     Rigidbody rb;
 
-    float previousY;
+    Vector3 previousPos;
+    int posCounter = 0;
     
     public void Initialize(GameObject player)
     {
-        this.gameObject.transform.SetParent(null);
-        previousY = transform.position.y;
-        rb = this.gameObject.AddComponent<Rigidbody>();
+        gameObject.transform.SetParent(null);
+        previousPos = transform.position;
+        rb = gameObject.AddComponent<Rigidbody>();
         rb.useGravity = true;
         rb.AddForce(player.transform.forward * 15, ForceMode.Impulse);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if(previousY < transform.position.y)
+        if(previousPos == transform.position)
         {
-            Destroy(rb);
-            Destroy(this);
+            posCounter++;
+            if(posCounter >= 5)
+            {
+                Destroy(rb);
+                Destroy(this);
+            }
         }
         else
         {
-            previousY = transform.position.y;
+            posCounter = 0;
+            previousPos = transform.position;
         }
     }
 }

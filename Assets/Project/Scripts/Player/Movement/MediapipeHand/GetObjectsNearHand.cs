@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class GetObjectsNearHand : MonoBehaviour
 {
-    private GameObject magicPointer; // relic of old times :)
-    public LayerMask objectsMask;
+    public LayerMask objectsMask, uiMask;
     public Transform wristPoint, indexFingerKnucklePoint, smallFingerKnucklePoint;
 
     public float catchingDistance = 2.5f;
@@ -28,7 +27,7 @@ public class GetObjectsNearHand : MonoBehaviour
         Collider[] colliders;
         if (transform.parent.parent.GetComponent<PlayerMovement>().uiActive)
         {
-            colliders = Physics.OverlapSphere(middlePoint, 0.2f, objectsMask);
+            colliders = Physics.OverlapSphere(middlePoint, 0.2f, uiMask);
         }
         else
         {
@@ -49,15 +48,32 @@ public class GetObjectsNearHand : MonoBehaviour
 
     void EnlightObject(GameObject pointingAt)
     {
-        if ((pointingAt.layer == LayerMask.NameToLayer("Item") || pointingAt.layer == LayerMask.NameToLayer("Switch") || pointingAt.layer == LayerMask.NameToLayer("UI")) && pointingAt != GetComponent<HandInteractions>().inHand)
+        if(pointingAt != GetComponent<HandInteractions>().inHand)
         {
-            if (pointingAt.GetComponent<EnlightItem>() != null)
+            if (pointingAt.layer == LayerMask.NameToLayer("Item") || pointingAt.layer == LayerMask.NameToLayer("Switch") || pointingAt.layer == LayerMask.NameToLayer("UI"))
             {
-                pointingAt.GetComponent<EnlightItem>().enlightenTime = 10;
+                if (pointingAt.GetComponent<EnlightItem>() != null)
+                {
+                    pointingAt.GetComponent<EnlightItem>().enlightenTime = 10;
+                }
+                else
+                {
+                    pointingAt.AddComponent<EnlightItem>();
+                }
             }
-            else
+            if(pointingAt.layer == LayerMask.NameToLayer("Chest"))
             {
-                pointingAt.AddComponent<EnlightItem>();
+                foreach(Transform child in pointingAt.transform)
+                {
+                    if (child.gameObject.GetComponent<EnlightItem>() != null)
+                    {
+                        child.gameObject.GetComponent<EnlightItem>().enlightenTime = 10;
+                    }
+                    else
+                    {
+                        child.gameObject.AddComponent<EnlightItem>();
+                    }
+                }
             }
         }
     }
@@ -65,6 +81,8 @@ public class GetObjectsNearHand : MonoBehaviour
 
     //relics of old system
 
+
+    private GameObject magicPointer;
     void MakeRayCast()
     {
         Vector3 middlePoint = (wristPoint.position + indexFingerKnucklePoint.position + smallFingerKnucklePoint.position) / 3f;

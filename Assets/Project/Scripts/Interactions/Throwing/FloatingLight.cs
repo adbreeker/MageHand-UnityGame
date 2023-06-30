@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FloatingLight : MonoBehaviour
 {
-    public float spellTimeSeconds = 30f;
+    public float spellTimeSeconds = 180f;
     GameObject player;
     void Start()
     {
@@ -14,7 +14,7 @@ public class FloatingLight : MonoBehaviour
         StartCoroutine(Timer());
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         gameObject.transform.RotateAround(player.transform.position, new Vector3(0, 1, 0), 2f);
     }

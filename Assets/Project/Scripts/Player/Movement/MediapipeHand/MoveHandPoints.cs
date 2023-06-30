@@ -25,6 +25,12 @@ public class MoveHandPoints : MonoBehaviour
 
     bool running;
 
+    private void Awake()
+    {
+
+        CalculateNearPlaneBounds();
+    }
+
     private void Update() 
     {
         Vector3 newPos = RotateAroundPoint(handPosition, mainCamera.transform.position, mainCamera.transform.eulerAngles.y);
@@ -38,12 +44,6 @@ public class MoveHandPoints : MonoBehaviour
                 handPoints[i].transform.localPosition = vec[i];
             }
         }
-    }
-
-    private void Start()
-    {
-
-        CalculateNearPlaneBounds();
     }
 
     private void CalculateNearPlaneBounds()
