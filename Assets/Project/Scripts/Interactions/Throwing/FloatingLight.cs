@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FloatingLight : MonoBehaviour
 {
-    public float spellTimeSeconds = 30f;
+    public float spellTimeSeconds = 180f;
     GameObject player;
     void Start()
     {
