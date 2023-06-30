@@ -28,6 +28,7 @@ public class HandInteractions : MonoBehaviour
     bool CooldownThrow = false;
     bool CooldownCast = false;
     bool CooldownPutDown = false;
+    bool CooldownDrink = false;
 
 
     private void Awake()
@@ -68,6 +69,11 @@ public class HandInteractions : MonoBehaviour
         {
             PutDownObject();
         }
+
+        if (handController.gesture == "ILoveYou" && inHand != null && !CooldownDrink)
+        {
+            DrinkObject();
+        }
     }
 
     void DecreaseCooldowns()
@@ -95,6 +101,10 @@ public class HandInteractions : MonoBehaviour
         if (CooldownPutDown && handController.gesture != "Thumb_Down")
         {
             CooldownPutDown = false;
+        }
+        if (CooldownDrink && handController.gesture != "ILoveYou")
+        {
+            CooldownDrink = false;
         }
     }
 
@@ -177,15 +187,19 @@ public class HandInteractions : MonoBehaviour
         }
         else
         {
-            AddItemToInventory();
+            if (inHand.layer == LayerMask.NameToLayer("Item"))
+            {
+                inventoryScript.AddItem(inHand);
+            }
         }
     }
 
-    void AddItemToInventory()
+    void DrinkObject()
     {
-        if (inHand.layer == LayerMask.NameToLayer("Item"))
+        if(inHand.tag == "Potion")
         {
-            inventoryScript.AddItem(inHand);
+            inHand.SendMessage("Drink");
+            inHand = null;
         }
     }
 
