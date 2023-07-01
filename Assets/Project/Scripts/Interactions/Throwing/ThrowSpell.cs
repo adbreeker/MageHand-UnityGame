@@ -5,11 +5,13 @@ using UnityEngine;
 public class ThrowSpell : MonoBehaviour
 {
     Rigidbody rb;
-    SphereCollider c;
+    LayerMask notColliders;
 
     public void Initialize(GameObject player)
     {
         gameObject.transform.SetParent(null);
+
+        notColliders = LayerMask.GetMask("Player", "UI", "TransparentFX");
 
         rb = gameObject.AddComponent<Rigidbody>();
         rb.useGravity = false;
@@ -18,10 +20,10 @@ public class ThrowSpell : MonoBehaviour
 
     private void Update()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 0.5f, 1);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 0.2f, 1);
         foreach (Collider collider in colliders)
         {
-            if(collider.gameObject.layer != LayerMask.NameToLayer("Player"))
+            if (collider.gameObject.layer != notColliders)
             {
                 Destroy(gameObject);
                 break;

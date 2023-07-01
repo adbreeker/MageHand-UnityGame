@@ -203,4 +203,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void TeleportTo(Vector3 destination)
+    {
+        transform.position = destination;
+        isMoving = false;
+    }
+
 }

@@ -8,6 +8,8 @@ public class ChapterExitCube : MonoBehaviour
     public LayerMask playerMask;
     public string chapter;
 
+    BoxCollider box;
+
     //objects needed for saving progress:
     private ProgressSaving saveManager;
     private Spellbook spellbook;
@@ -15,6 +17,8 @@ public class ChapterExitCube : MonoBehaviour
 
     private void Start()
     {
+        box = GetComponent<BoxCollider>();
+
         saveManager = FindObjectOfType<ProgressSaving>();
         spellbook = FindObjectOfType<Spellbook>();
         inventory = FindObjectOfType<Inventory>();
@@ -22,7 +26,8 @@ public class ChapterExitCube : MonoBehaviour
 
     private void Update()
     {
-        Collider[] colliders = Physics.OverlapSphere(new Vector3(transform.position.x, 2f, transform.position.z), 0.5f, playerMask);
+        Collider[] colliders;
+        colliders = Physics.OverlapBox(box.bounds.center, box.bounds.extents, Quaternion.identity, playerMask);
         if (colliders.Length > 0)
         {
             SaveProgress();

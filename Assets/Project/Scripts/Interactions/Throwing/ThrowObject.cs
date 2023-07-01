@@ -13,9 +13,12 @@ public class ThrowObject : MonoBehaviour
     {
         gameObject.transform.SetParent(null);
         previousPos = transform.position;
+
         rb = gameObject.AddComponent<Rigidbody>();
         rb.useGravity = true;
+        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         rb.AddForce(player.transform.forward * 15, ForceMode.Impulse);
+        rb.AddTorque(transform.right * 100);
     }
 
     private void FixedUpdate()
