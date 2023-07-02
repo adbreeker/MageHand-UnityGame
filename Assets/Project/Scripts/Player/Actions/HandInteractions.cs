@@ -152,7 +152,8 @@ public class HandInteractions : MonoBehaviour
     void ThrowObject()
     {
         CooldownThrow = true;
-        if (GetComponent<SpellCasting>().currentSpell == "Light")
+        string cs = GetComponent<SpellCasting>().currentSpell;
+        if (cs == "Light" || cs == "Fire")
         {
             inHand.AddComponent<ThrowSpell>().Initialize(player);
             inHand = null;

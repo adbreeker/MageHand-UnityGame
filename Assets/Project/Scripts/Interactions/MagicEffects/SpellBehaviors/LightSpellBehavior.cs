@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LightBehavior : MonoBehaviour
+public class LightSpellBehavior : MonoBehaviour
 {
     public GameObject flashEffectPrefab;
+
+    public void OnThrow()
+    {
+
+    }
 
     public void OnImpact()
     {

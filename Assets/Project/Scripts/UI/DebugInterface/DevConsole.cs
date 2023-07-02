@@ -214,6 +214,7 @@ public class DevConsole : MonoBehaviour
             spellbook.bookOwned = true;
 
             spellbook.AddSpell(spellScrollsHolder.GiveScroll("Light"));
+            spellbook.AddSpell(spellScrollsHolder.GiveScroll("Fire"));
         }
     }
 }

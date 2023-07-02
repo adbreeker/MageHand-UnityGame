@@ -9,9 +9,11 @@ public class ThrowSpell : MonoBehaviour
 
     public void Initialize(GameObject player)
     {
-        gameObject.transform.SetParent(null);
+        gameObject.SendMessage("OnThrow");
 
         notColliders = LayerMask.GetMask("Player", "UI", "TransparentFX");
+
+        gameObject.transform.SetParent(null);
 
         rb = gameObject.AddComponent<Rigidbody>();
         rb.useGravity = false;

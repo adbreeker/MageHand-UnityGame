@@ -23,6 +23,7 @@ public class SpellCasting : MonoBehaviour
 
     [Header("Spells Prefabs")]
     public GameObject lightPrefab;
+    public GameObject firePrefab;
 
 
     private MicrophoneRecord microphoneRecord;
@@ -46,18 +47,21 @@ public class SpellCasting : MonoBehaviour
         SpellScrollInfo? scroll = spellbook.GetSpellInfo("Light");
         if(scroll != null)
         {
-            if (currentSpell != "Light")
-            {
-                currentSpell = "Light";
-                GetComponent<HandInteractions>().inHand = Instantiate(lightPrefab, hand);
-                mana -= ((SpellScrollInfo)scroll).manaCost;
-            }
+            currentSpell = "Light";
+            GetComponent<HandInteractions>().inHand = Instantiate(lightPrefab, hand);
+            mana -= ((SpellScrollInfo)scroll).manaCost;
         }
     }
 
     public void FireSpell()
     {
-
+        SpellScrollInfo? scroll = spellbook.GetSpellInfo("Fire");
+        if (scroll != null)
+        {
+            currentSpell = "Fire";
+            GetComponent<HandInteractions>().inHand = Instantiate(firePrefab, hand);
+            mana -= ((SpellScrollInfo)scroll).manaCost;
+        }
     }
 
 
@@ -98,6 +102,10 @@ public class SpellCasting : MonoBehaviour
         if(NormalizeTranscribedText(spellWhispered) == "light")
         {
             LightSpell();
+        }
+        if (NormalizeTranscribedText(spellWhispered) == "fire")
+        {
+            FireSpell();
         }
     }
 
