@@ -203,10 +203,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void TeleportTo(Vector3 destination)
+    public void TeleportTo(Vector3 tpDestination)
     {
-        transform.position = destination;
+        destination = tpDestination;
+        transform.position = tpDestination;
         isMoving = false;
+        movementInputQueue = Vector3.zero;
     }
 
 }

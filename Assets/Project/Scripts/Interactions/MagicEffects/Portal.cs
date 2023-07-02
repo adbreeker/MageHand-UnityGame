@@ -26,14 +26,16 @@ public class Portal : MonoBehaviour
             if(toTeleport.gameObject.tag == "Player")
             {
                 toTeleport.GetComponent<PlayerMovement>().TeleportTo(teleportationDestination);
-                Instantiate(teleportationEffect_Player, toTeleport.gameObject.transform);
+                Instantiate(teleportationEffect_Player, toTeleport.gameObject.transform)
+                    .GetComponent<TeleportationColor>().ChangeColorOfEffect(gameObject.GetComponent<ParticleSystem>().startColor);
             }
             else
             {
                 if(toTeleport.transform.parent == null)
                 {
                     toTeleport.gameObject.transform.position = teleportationDestination;
-                    Instantiate(teleportationEffect_Object, teleportationDestination, Quaternion.identity);
+                    Instantiate(teleportationEffect_Object, teleportationDestination, Quaternion.identity)
+                        .GetComponent<TeleportationColor>().ChangeColorOfEffect(gameObject.GetComponent<ParticleSystem>().startColor);
                 }
             }
         }

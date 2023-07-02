@@ -25,6 +25,7 @@ public class ThrowSpell : MonoBehaviour
         {
             if (collider.gameObject.layer != notColliders)
             {
+                gameObject.SendMessage("OnImpact");
                 Destroy(gameObject);
                 break;
             }
