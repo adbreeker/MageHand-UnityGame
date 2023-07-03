@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class ButtonBehavior : MonoBehaviour
 {
+    [Header("Button object")]
     public GameObject button;
+
+    [Header("Button clicks counter")]
     public int clickCounter = 0;
 
     bool buttonChanging = false;
 
-    public void OnClick()
+    public void OnClick() //on click invoke interaction on connected object and increase click counter
     {
         if (!buttonChanging)
         {
@@ -19,7 +22,7 @@ public class ButtonBehavior : MonoBehaviour
         }
     }
 
-    IEnumerator ButtonAnimation()
+    IEnumerator ButtonAnimation() //button animation
     {
         buttonChanging = true;
         for(int i=0; i<10; i++)

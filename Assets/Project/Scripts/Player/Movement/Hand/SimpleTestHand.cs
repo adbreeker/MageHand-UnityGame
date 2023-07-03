@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimpleTestHand : MonoBehaviour
+public class SimpleTestHand : MonoBehaviour //relic of old times, before gesture recognition
 {
     public Camera mainCamera;
     public float handDistance = 1.5f;
@@ -13,6 +13,7 @@ public class SimpleTestHand : MonoBehaviour
 
     private void Start()
     {
+        //hide cursor
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
     }
@@ -23,7 +24,7 @@ public class SimpleTestHand : MonoBehaviour
         HandClick();
     }
 
-    void HandMovement()
+    void HandMovement() //moving hand object with mouse
     {
         Vector3 mousePos = Input.mousePosition;
         Ray ray = mainCamera.ScreenPointToRay(mousePos);
@@ -47,7 +48,7 @@ public class SimpleTestHand : MonoBehaviour
         }
     }
 
-    void HandClick()
+    void HandClick() //clicking on pointed object
     {
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -58,7 +59,7 @@ public class SimpleTestHand : MonoBehaviour
         }
     }
 
-    void EnlightObject(GameObject pointingAt)
+    void EnlightObject(GameObject pointingAt) //enlightening pointed object
     {
         if(pointingAt.layer == LayerMask.NameToLayer("Item") && pointingAt != GetComponent<HandInteractions>().inHand)
         {

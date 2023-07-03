@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class RotateWallPassage : MonoBehaviour
 {
+    [Header("Wall")]
     public GameObject wall;
+
+    [Header("Rotating arround point")]
     public Transform pivot;
 
+    [Header("Rotatrion multiplier")]
     public float rotationMultiplier = 1.0f;
 
     bool wallMoving = false;
 
-    public void Interaction()
+    public void Interaction() //on iteraction start rotating
     {
         if(!wallMoving)
         {
@@ -20,7 +24,7 @@ public class RotateWallPassage : MonoBehaviour
         }
     }
 
-    IEnumerator RotateDoors()
+    IEnumerator RotateDoors() //walls rotation animation
     {
         for (int i = 0; i < 90; i++)
         {

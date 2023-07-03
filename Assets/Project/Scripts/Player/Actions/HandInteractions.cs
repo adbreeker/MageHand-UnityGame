@@ -31,7 +31,7 @@ public class HandInteractions : MonoBehaviour
     bool CooldownDrink = false;
 
 
-    private void Awake()
+    private void Awake() //get necessary components
     {
         handController = GetComponent<MoveHandPoints>();
         pointer = GetComponent<GetObjectsNearHand>();
@@ -40,11 +40,11 @@ public class HandInteractions : MonoBehaviour
         inventoryScript = transform.parent.transform.parent.GetComponent<Inventory>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        DecreaseCooldowns();
+        DecreaseCooldowns(); //decrease cooldowns for all actions
 
+        //listen to player gestures
         if(handController.gesture == "Pointing_Up" && !CooldownClick)
         {
             ClickObject();
@@ -76,7 +76,7 @@ public class HandInteractions : MonoBehaviour
         }
     }
 
-    void DecreaseCooldowns()
+    void DecreaseCooldowns() //check if gesture was changed, if yes - reset cooldown of that gesture
     {
         if(CooldownClick && handController.gesture != "Pointing_Up")
         {
@@ -108,7 +108,7 @@ public class HandInteractions : MonoBehaviour
         }
     }
 
-    void ClickObject()
+    void ClickObject() //interact with objects you would normally click, like switches or chests
     {
         if (pointer.currentlyPointing != null)
         {
@@ -124,78 +124,90 @@ public class HandInteractions : MonoBehaviour
         }
     }
 
-    void PickUpObject()
+    void PickUpObject() //pick up pointed item from scene or inventory
     {
         if (pointer.currentlyPointing != null)
         {
             CooldownPickUp = true;
-            if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("Item"))
+            if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("Item")) //picking item from scene
             {
                 inHand = pointer.currentlyPointing;
+
+                //making item a child of hand so it will move when hand is moving
                 inHand.transform.SetParent(holdingPoint);
                 inHand.transform.localPosition = new Vector3(0, 0, 10);
+
+                //invoking OnPickUp method of picked item
                 inHand.SendMessage("OnPickUp");
             }
             if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("UI")) //picking item from inventory
             {
+                //getting item from inventory
                 inHand = pointer.currentlyPointing.transform.parent.GetComponent<IconParameters>().originaObject;
                 inventoryScript.inventory.Remove(inHand);
+
+                //activing item and making it a child of hand so it will move when hand is moving
                 inHand.transform.SetParent(holdingPoint);
                 inHand.SetActive(true);
                 inHand.transform.localPosition = new Vector3(0, 0, 10);
+
+                //invoking OnPickUp method of picked item
                 inHand.SendMessage("OnPickUp");
+
+                //closing inventory
                 inventoryScript.CloseInventory();
             }
         }
     }
 
-    void ThrowObject()
+    void ThrowObject() //throw item or spell
     {
         CooldownThrow = true;
         string cs = GetComponent<SpellCasting>().currentSpell;
-        if (cs == "Light" || cs == "Fire")
+
+        if (cs == "Light" || cs == "Fire") //if spell then throw spell
         {
             inHand.AddComponent<ThrowSpell>().Initialize(player);
             inHand = null;
             GetComponent<SpellCasting>().currentSpell = "None";
         }
-        else
+        else //else throw item
         {
             inHand.AddComponent<ThrowObject>().Initialize(player);
             inHand = null;
         }
     }
 
-    void CastSpell()
+    void CastSpell() //cast spell with SpellCasting class
     {
         CooldownCast = true;
-        if(useSpeach)
+        if(useSpeach) //if using speach then microphone starting to record
         {
             spellCastingController.RecordSpellCasting();
         }
-        else
+        else //else just instantly cast light spell
         {
             spellCastingController.LightSpell();
         }
     }
 
-    void PutDownObject()
+    void PutDownObject() //put object down to inventory or if in hand is spell then some special interaction
     {
         CooldownPutDown = true;
-        if (GetComponent<SpellCasting>().currentSpell == "Light")
+        if (GetComponent<SpellCasting>().currentSpell == "Light") //if light spell in hand, making it floating light
         {
             MakeFloatingLight();
         }
         else
         {
-            if (inHand.layer == LayerMask.NameToLayer("Item"))
+            if (inHand.layer == LayerMask.NameToLayer("Item")) //if item in hand then just putting it down to inventory
             {
                 inventoryScript.AddItem(inHand);
             }
         }
     }
 
-    void DrinkObject()
+    void DrinkObject() //drink object from hand, most likely potion
     {
         if(inHand.tag == "Potion")
         {
@@ -207,10 +219,11 @@ public class HandInteractions : MonoBehaviour
 
     // custom interactions while "inserting" spells to inventory
 
-    void MakeFloatingLight() // while trying to insert light to inventory
+    void MakeFloatingLight() // while trying to insert light to inventory, makes it float around player for some time
     {
         inHand.AddComponent<FloatingLight>();
-        if(spellCastingController.floatingLight != null)
+
+        if(spellCastingController.floatingLight != null) //if floatin light actually exists then replacing it
         {
             Destroy(spellCastingController.floatingLight);
         }

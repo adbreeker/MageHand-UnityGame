@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LightSpellBehavior : MonoBehaviour
 {
+    [Header("Flash effect prefab")]
     public GameObject flashEffectPrefab;
 
     public void OnThrow()
@@ -11,7 +12,7 @@ public class LightSpellBehavior : MonoBehaviour
 
     }
 
-    public void OnImpact()
+    public void OnImpact() //on impact spawn flash effect
     {
         Instantiate(flashEffectPrefab, transform.position, Quaternion.identity);
     }

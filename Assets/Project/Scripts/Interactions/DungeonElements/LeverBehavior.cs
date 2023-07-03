@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class LeverBehavior : MonoBehaviour
 {
+    [Header("Lever object")]
     public GameObject lever;
+
+    [Header("Is lever currenlty active")]
     public bool leverON = false;
 
     bool leverChanging = false;
 
-    public void OnClick()
+    public void OnClick() //on lever click invoke interaction on connected object
     {
         if(!leverChanging)
         {
@@ -18,10 +21,10 @@ public class LeverBehavior : MonoBehaviour
         }
     }
 
-    IEnumerator LeverAnimation()
+    IEnumerator LeverAnimation() //animating lever movement
     {
         leverChanging = true;
-        if(leverON)
+        if(leverON) //if leverOn then lever go up
         {
             for(int i = 1; i<=10; i++)
             {
@@ -30,7 +33,7 @@ public class LeverBehavior : MonoBehaviour
             }
             leverON = false;
         }
-        else
+        else //else lever go down
         {
             for (int i = 1; i <= 10; i++)
             {
@@ -44,7 +47,6 @@ public class LeverBehavior : MonoBehaviour
 
 
     // changing state in editor;
-
     bool previousLeverState = false;
     private void OnValidate()
     {

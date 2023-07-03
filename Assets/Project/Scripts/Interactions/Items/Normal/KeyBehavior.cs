@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class KeyBehavior : MonoBehaviour
 {
-    private void Update()
+    private void Update() //if key is near locked doors then open those doors
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, 0.5f, 1);
         foreach (Collider collider in colliders)

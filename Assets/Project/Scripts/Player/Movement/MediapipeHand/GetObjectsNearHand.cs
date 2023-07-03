@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class GetObjectsNearHand : MonoBehaviour
 {
-    public LayerMask objectsMask, uiMask;
-    public Transform wristPoint, indexFingerKnucklePoint, smallFingerKnucklePoint;
+    [Header("Layer masks for objects and UI")]
+    public LayerMask objectsMask;
+    public LayerMask uiMask;
 
-    public float catchingDistance = 2.5f;
+    [Header("Points to calculate middle point")]
+    public Transform wristPoint;
+    public Transform indexFingerKnucklePoint; 
+    public Transform smallFingerKnucklePoint;
 
+    [Header("Currently pointing object")]
     public GameObject currentlyPointing;
 
 
-    private void Update()
+    private void Update() //check objects near middle point every update
     {
         if(GetComponent<HandInteractions>().inHand == null)
         {
@@ -22,34 +27,36 @@ public class GetObjectsNearHand : MonoBehaviour
 
     void CheckSphere()
     {
+        //calculate middle point
         Vector3 middlePoint = (wristPoint.position + indexFingerKnucklePoint.position + smallFingerKnucklePoint.position) / 3f;
 
         Collider[] colliders;
-        if (transform.parent.parent.GetComponent<PlayerMovement>().uiActive)
+        if (transform.parent.parent.GetComponent<PlayerMovement>().uiActive) //if UI active then searching on UI layer with smaller range
         {
             colliders = Physics.OverlapSphere(middlePoint, 0.2f, uiMask);
         }
-        else
+        else //else searching on objects layers with bigger range
         {
             colliders = Physics.OverlapSphere(middlePoint, 0.7f, objectsMask);
         }
 
 
-        if(colliders.Length > 0)
+        if(colliders.Length > 0) //first found object becomes currently pointed
         {
             currentlyPointing = colliders[0].gameObject;
             EnlightObject(currentlyPointing);
         }
-        else
+        else //if no objects then currently pointed is null
         {
             currentlyPointing = null;
         }
     }
 
-    void EnlightObject(GameObject pointingAt)
+    void EnlightObject(GameObject pointingAt) //enlightening pointed objects
     {
-        if(pointingAt != GetComponent<HandInteractions>().inHand)
+        if(pointingAt != GetComponent<HandInteractions>().inHand) //only if no object currently in hand
         {
+            //if pointing on item, switch or UI then enlightening only this item
             if (pointingAt.layer == LayerMask.NameToLayer("Item") || pointingAt.layer == LayerMask.NameToLayer("Switch") || pointingAt.layer == LayerMask.NameToLayer("UI"))
             {
                 if (pointingAt.GetComponent<EnlightItem>() != null)
@@ -61,6 +68,8 @@ public class GetObjectsNearHand : MonoBehaviour
                     pointingAt.AddComponent<EnlightItem>();
                 }
             }
+
+            //if pointing on chest then enlightening all child objects
             if(pointingAt.layer == LayerMask.NameToLayer("Chest"))
             {
                 foreach(Transform child in pointingAt.transform)
@@ -79,10 +88,11 @@ public class GetObjectsNearHand : MonoBehaviour
     }
 
 
-    //relics of old system
+    //relics of old system ------------------------------------------------------------------------------------------------------ relics of old system
 
 
     private GameObject magicPointer;
+    private float catchingDistance = 2.5f;
     void MakeRayCast()
     {
         Vector3 middlePoint = (wristPoint.position + indexFingerKnucklePoint.position + smallFingerKnucklePoint.position) / 3f;

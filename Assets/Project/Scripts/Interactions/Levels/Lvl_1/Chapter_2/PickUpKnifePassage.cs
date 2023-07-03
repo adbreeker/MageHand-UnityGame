@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class PickUpKnifePassage : MonoBehaviour
 {
+    [Header("Knife")]
     public GameObject knife;
+
+    [Header("Bars passage")]
     public GameObject bars;
 
     Vector3 prevPos;
 
-    private void Start()
+    private void Start() //get knife possition
     {
         prevPos = knife.transform.position;
     }
 
-    void Update()
+    void Update() //if knife position changes (player picked it up) then open passage
     {
         if(knife.transform.position != prevPos)
         {

@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class FloatingLight : MonoBehaviour
 {
-    public float spellTimeSeconds = 180f;
+    [Header("Floating light duration")]
+    public float spellTimeSeconds = 120f;
+
     GameObject player;
-    void Start()
+
+    void Start() //get necessary components, set floating light parent as player, and start floating light duration timer
     {
         player = GetComponentInParent<PlayerMovement>().gameObject;
         gameObject.transform.SetParent(player.transform);
@@ -14,12 +17,12 @@ public class FloatingLight : MonoBehaviour
         StartCoroutine(Timer());
     }
 
-    private void FixedUpdate()
+    private void FixedUpdate() //rotate floating light arround player
     {
         gameObject.transform.RotateAround(player.transform.position, new Vector3(0, 1, 0), 2f);
     }
 
-    IEnumerator Timer()
+    IEnumerator Timer() //count floating light duration time and destroy floating light after duration 
     {
         yield return new WaitForSeconds(spellTimeSeconds);
         Destroy(gameObject);

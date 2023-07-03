@@ -213,8 +213,10 @@ public class DevConsole : MonoBehaviour
             Spellbook spellbook = player.GetComponent<Spellbook>();
             spellbook.bookOwned = true;
 
-            spellbook.AddSpell(spellScrollsHolder.GiveScroll("Light"));
-            spellbook.AddSpell(spellScrollsHolder.GiveScroll("Fire"));
+            foreach(SpellScrollInfo spellScroll in spellScrollsHolder.GiveAllScrolls())
+            {
+                spellbook.AddSpell(spellScroll);
+            }
         }
     }
 }

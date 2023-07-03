@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class TeleportationColor : MonoBehaviour
 {
+    [Header("All particles in teleportation effect")]
     public List<ParticleSystem> particles;
 
-    public void ChangeColorOfEffect(Color color)
+    [System.Obsolete("This class is using deprecated method")]
+    public void ChangeColorOfEffect(Color color) //change color of teleportation effect
     {
         foreach(ParticleSystem particle in particles)
         {

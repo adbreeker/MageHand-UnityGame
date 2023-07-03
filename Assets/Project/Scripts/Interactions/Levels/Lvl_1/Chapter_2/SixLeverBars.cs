@@ -4,13 +4,22 @@ using UnityEngine;
 
 public class SixLeverBars : MonoBehaviour
 {
-    public LeverBehavior lever1, lever2, lever3, lever4, lever5, lever6;
+    [Header("Levers")]
+    public LeverBehavior lever1;
+    public LeverBehavior lever2;
+    public LeverBehavior lever3;
+    public LeverBehavior lever4;
+    public LeverBehavior lever5;
+    public LeverBehavior lever6;
+
+    [Header("Bars passage to open")]
     public GameObject barsPassage;
 
     bool barsOpen = false;
 
-    private void Update()
+    private void Update() //listen to all levers state
     {
+        //if all lever are in necessary state, then open passage
         if (lever1.leverON && lever2.leverON && !lever3.leverON && !lever4.leverON && lever5.leverON && !lever6.leverON)
         {
             if (!barsOpen)
@@ -19,7 +28,7 @@ public class SixLeverBars : MonoBehaviour
                 barsOpen = true;
             }
         }
-        else
+        else //else close passage;
         {
             if(barsOpen)
             {

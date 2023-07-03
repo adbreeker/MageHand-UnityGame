@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class OpenLockedDoorsPassage : MonoBehaviour
 {
+    [Header("Doors to open")]
     public GameObject doors;
 
-    public void OpenDoors()
+    public void OpenDoors() //open assigned doors
     {
         gameObject.GetComponent<MeshRenderer>().enabled = false;
         StartCoroutine(RotateDoors());
     }
 
-    IEnumerator RotateDoors()
+    IEnumerator RotateDoors() //animating doors opening, then change doors to not obstacle, and make lock object unactive
     {
         for(int i = 0; i<90; i++)
         {

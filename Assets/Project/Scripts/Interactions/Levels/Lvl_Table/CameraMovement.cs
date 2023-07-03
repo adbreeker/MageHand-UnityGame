@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraMovement : MonoBehaviour
+public class CameraMovement : MonoBehaviour //special camera movement for withdrawn level
 {
+    [Header("Rotation on X axis")]
+    public float xRot;
 
-    public float xRot, yRot;
+    [Header("Rotation on Z axis")]
+    public float yRot;
 
-    void Update()
+    void Update() //rotate camera with WSAD and clamp it on some values
     {
         xRot = transform.rotation.eulerAngles.x;
         yRot = transform.rotation.eulerAngles.y;

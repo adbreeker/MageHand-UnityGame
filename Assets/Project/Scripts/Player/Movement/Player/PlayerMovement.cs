@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
-    public float movementSpeed = 5f;
+    public float movementSpeed = 7f;
     public float tilesLenght = 4f;
     public LayerMask obstacleMask;
 
@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isMoving = false;
 
     [Header("Rotation")]
-    public float rotationSpeed = 360f;
+    public float rotationSpeed = 300f;
     public float rotationThreshold = 0.01f;
     private bool isRotating = false;
     private Quaternion targetRotation;
@@ -24,11 +24,11 @@ public class PlayerMovement : MonoBehaviour
     public bool ghostmodeActive = false;
     
 
-    //Enqueuing
+    //enqueuing input
     private Vector3 movementInputQueue = Vector3.zero;
     private float rotationInputQueue = 0;
 
-    void Update()
+    void Update() //listen to movement inputs
     {
         MovementQueue();
         RotationQueue();
@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
         float horizontalInput = horizontalInputQueue;
         float verticalInput = verticalInputQueue;
 
-        // Check if no movement is enqueued
+        //check if no movement is enqueued
         if (horizontalInputQueue == 0 && verticalInputQueue ==0 && !uiActive && !stopMovement)
         {
             horizontalInput = Input.GetAxisRaw("Horizontal");
@@ -50,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
 
         if ((horizontalInput != 0 || verticalInput != 0) && !isMoving)
         {
-            // Calculate the position of the tile the player is moving towards
+            //calculate the position of the tile the player is moving towards
             Vector3 direction = SingleDirectionNormalization(transform.right * horizontalInput + transform.forward * verticalInput);
             destination = transform.position + direction * tilesLenght;
             destination.y = transform.position.y;
@@ -61,52 +61,56 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        // Move the player towards the destination
+        //move the player towards the destination
         if (isMoving)
         {
             transform.position = Vector3.MoveTowards(transform.position, destination, movementSpeed * Time.deltaTime);
             if (transform.position == destination)
             {
-                isMoving = false; // Stop moving when the destination is reached
+                isMoving = false; //stop moving when the destination is reached
             }
             if (!CanMove())
             {
-                destination = previousTile; // Back to previous tile if collide with something
+                destination = previousTile; //back to previous tile if collide with something
             }
         }
     }
 
-    // Check if the player can move to a given destination
+    //check if the player can move to a given destination
     bool CanMove()
     {
-        if(ghostmodeActive)
+        if(ghostmodeActive) //if ghostmode is active then allways can move
         {
             return true;
         }
 
+        //get obstacles near player
         Collider[] colliders = Physics.OverlapSphere(new Vector3(transform.position.x, 1.25f, transform.position.z), 0.8f, obstacleMask);
         foreach (Collider collider in colliders)
         {
             if (collider.gameObject.tag == "Wall" || collider.gameObject.tag == "Obstacle")
             {
+                //if obstacle near player then can't move
                 return false;
             }
         }
         return true;
     }
 
-    //Normalizing and single directioning (no diagonal movement)
+    //normalizing and single directioning (no diagonal movement)
     Vector3 SingleDirectionNormalization(Vector3 direction)
     {
-        direction = direction.normalized;
+        direction = direction.normalized; //direction normalization
         int xsign, zsign;
 
+        //geting sign of x and z variable
         if (direction.x >= 0) { xsign = 1; }
         else { xsign = -1; }
 
         if (direction.z >= 0) { zsign = 1; }
         else { zsign = -1; }
 
+        //single directioning (dominant is direction we are closer to)
         if (Mathf.Abs(direction.x) >= Mathf.Abs(direction.z))
         {
             direction.x = 1 * xsign;
@@ -122,14 +126,14 @@ public class PlayerMovement : MonoBehaviour
 
     void RotationKeyListener(float rotationQueue)
     {
-        //Check if no rotation is enqueued
+        //check if no rotation is enqueued
         if(rotationQueue != 0 && !isRotating)
         {
             isRotating = true;
             targetRotation = transform.rotation * Quaternion.Euler(0, rotationQueue, 0);
         }
 
-        // Get target rotation
+        //get target rotation
         if (Input.GetKeyDown(KeyCode.E) && !isRotating && !uiActive && !stopMovement)
         {
             isRotating = true;
@@ -141,7 +145,7 @@ public class PlayerMovement : MonoBehaviour
             targetRotation = transform.rotation * Quaternion.Euler(0, -90, 0);
         }
 
-        // Rotate towards target rotation
+        //rotate towards target rotation
         if (isRotating)
         {
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
@@ -155,7 +159,7 @@ public class PlayerMovement : MonoBehaviour
 
     void MovementQueue()
     {
-        //Enqueuing movement if input while moving
+        //enqueuing movement if input while moving
         if(isMoving && !uiActive && !stopMovement)
         {
             if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
@@ -164,8 +168,7 @@ public class PlayerMovement : MonoBehaviour
                 movementInputQueue.z = Input.GetAxisRaw("Vertical");
             }
         }
-        //Initializing queued movement after last move
-        else
+        else //initializing queued movement after last move
         {
             if(movementInputQueue != Vector3.zero)
             {
@@ -177,23 +180,22 @@ public class PlayerMovement : MonoBehaviour
 
     void RotationQueue()
     {
-        //Enqueuing rotation if input while rotating
+        //enqueuing rotation if input while rotating
         if (isRotating && !uiActive && !stopMovement)
         {
             if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Q))
             {
-                if (Input.GetKeyDown(KeyCode.E))
+                if (Input.GetKeyDown(KeyCode.E)) //rotate queue right
                 {
                     rotationInputQueue = 90;
                 }
-                if (Input.GetKeyDown(KeyCode.Q))
+                if (Input.GetKeyDown(KeyCode.Q)) //rotate queue left
                 {
                     rotationInputQueue = -90;
                 }
             }
         }
-        //Initializing queued rotation after last rotation
-        else
+        else //initializing enqueued rotation after last rotation
         {
             if (rotationInputQueue != 0)
             {
@@ -203,7 +205,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void TeleportTo(Vector3 tpDestination)
+    public void TeleportTo(Vector3 tpDestination) //teleport to destination and stop movement enqued before teleportation
     {
         destination = tpDestination;
         transform.position = tpDestination;

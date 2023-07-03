@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class ItemHolder : MonoBehaviour
 {
+    //holder for item prefabs, necessary for saves loading and dev console
     [Header("Items")]
     public List<GameObject> items;
 
-    public GameObject GiveItem(string itemName)
+    public GameObject GiveItem(string itemName) //returning requested item
     {
         foreach(GameObject item in items)
         {

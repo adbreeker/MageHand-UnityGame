@@ -7,27 +7,32 @@ using System.Globalization;
 using System.Linq;
 
 
-public class MoveHandPoints : MonoBehaviour
+public class MoveHandPoints : MonoBehaviour //move points of hand generated with mediapipe
 {
+    //position of hand, and on all points in hand
     Vector3[] vec;
     Vector3 handPosition;
 
+    [Header("Player camera")]
     public Camera mainCamera;
+
+    [Header("All hand points objects")]
+    public GameObject[] handPoints;
+
+    [Header("UDP receiver")]
+    public UDPReceive udpReceive;
+   
+    [Header("Current gesture")]
+    public string gesture;
 
     private Vector3 minPoint;
     private Vector3 maxPoint;
     private float z;
 
-    public GameObject[] handPoints;
-    public UDPReceive udpReceive;
-   
-    public string gesture;
-
     bool running;
 
     private void Awake()
     {
-
         CalculateNearPlaneBounds();
     }
 

@@ -4,20 +4,25 @@ using UnityEngine;
 
 public class OpenWallPassage : MonoBehaviour
 {
+    [Header("Is passage open")]
     public bool passageOpen = false;
+
+    [Header("Wall")]
     public GameObject wall;
+
+    [Header("Opening speed")]
     public float wallSpeed = 0.03f;
 
-    public void Interaction()
+    public void Interaction() //open or close passage on interaction
     {
         StopAllCoroutines();
 
-        if (passageOpen)
+        if (passageOpen) //if passage open then close
         {
             passageOpen = false;
             StartCoroutine(MoveWall(0.0f));
         }
-        else
+        else // else open passage
         {
             passageOpen = true;
             StartCoroutine(MoveWall(-5.5f));
@@ -25,7 +30,7 @@ public class OpenWallPassage : MonoBehaviour
 
     }
 
-    IEnumerator MoveWall(float wallDestination)
+    IEnumerator MoveWall(float wallDestination) //animating passage opening
     {
         while (wall.transform.position.y != wallDestination)
         {

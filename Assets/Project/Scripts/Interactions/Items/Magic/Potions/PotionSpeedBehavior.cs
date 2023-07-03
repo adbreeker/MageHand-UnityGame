@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class PotionSpeedBehavior : MonoBehaviour
 {
+    [Header("Potion duration time")]
     public float duration = 30;
-    public GameObject speedAura;
+
+    [Header("Speed aura pefab")]
+    public GameObject speedAuraPrefab;
 
     private GameObject auraOnPlayer;
 
@@ -14,28 +17,32 @@ public class PotionSpeedBehavior : MonoBehaviour
 
     }
 
-    public void Drink()
+    public void Drink() //add potion component to player, activate potion effect and destroy this object
     {
+        //find player and add this component
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         PotionSpeedBehavior psb = player.AddComponent<PotionSpeedBehavior>();
 
+        //set duration and speed aura prefab in script on player
         psb.duration = duration;
-        psb.speedAura = speedAura;
+        psb.speedAuraPrefab = speedAuraPrefab;
 
+        //active potion effect on player
         psb.ActivatePotionEffect();
 
+        //destroy this object
         Destroy(gameObject);
     }
 
-    public void ActivatePotionEffect()
+    public void ActivatePotionEffect() //activate potion speed effect on player
     {
-        auraOnPlayer = Instantiate(speedAura, gameObject.transform);
+        auraOnPlayer = Instantiate(speedAuraPrefab, gameObject.transform);
         GetComponent<PlayerMovement>().movementSpeed *= 2;
         GetComponent<PlayerMovement>().rotationSpeed *= 2;
         StartCoroutine(PotionDuration());
     }
 
-    IEnumerator PotionDuration()
+    IEnumerator PotionDuration() //count potion effect duration
     {
         yield return new WaitForSeconds(duration);
         GetComponent<PlayerMovement>().movementSpeed /= 2;

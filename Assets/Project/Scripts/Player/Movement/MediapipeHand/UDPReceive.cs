@@ -5,27 +5,33 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
-public class UDPReceive : MonoBehaviour
+public class UDPReceive : MonoBehaviour //udp socket for mediapipe in python
 {
-    Thread receiveThread;
-    UdpClient client;
+    [Header("Socket port")]
     public int port = 25001;
+
+    [Header("Listen on socket")]
     public bool startReceiving = true;
+
+    [Header("Sent data")]
     public string data;
 
-    public void Awake()
+    Thread receiveThread;
+    UdpClient client;
+
+    public void Awake() //start receiving on awake
     {
         receiveThread = new Thread(new ThreadStart(ReceiveData));
         receiveThread.IsBackground = true;
         receiveThread.Start();
     }
 
-    public void OnDestroy()
+    public void OnDestroy() //close client on destroy
     {
         client.Close();
     }
 
-    private void ReceiveData()
+    private void ReceiveData() //get mediapipe data from socket
     {
         client = new UdpClient(port);
         while (startReceiving)

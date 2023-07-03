@@ -227,15 +227,15 @@ public class Spellbook : MonoBehaviour
         if (spellbookPages.Count > pageToDisplay + 1) arrowRight.SetActive(true);
     }
 
-    public void AddSpell(SpellScrollInfo? spellToAdd)
+    public void AddSpell(SpellScrollInfo spellToAdd)
     {
         if(spellToAdd != null)
         {
-            spells.Add((SpellScrollInfo)spellToAdd);
+            spells.Add(spellToAdd);
         }
     }
 
-    public SpellScrollInfo? GetSpellInfo(string spellName)
+    public SpellScrollInfo GetSpellInfo(string spellName)
     {
         foreach(SpellScrollInfo s in spells)
         {

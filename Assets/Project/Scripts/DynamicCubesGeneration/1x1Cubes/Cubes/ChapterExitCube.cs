@@ -5,8 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class ChapterExitCube : MonoBehaviour
 {
-    public LayerMask playerMask;
+    [Header("Next scene:")]
     public string chapter;
+    [Header("Searching only on player layer")]
+    public LayerMask playerMask;
 
     BoxCollider box;
 
@@ -15,7 +17,7 @@ public class ChapterExitCube : MonoBehaviour
     private Spellbook spellbook;
     private Inventory inventory;
 
-    private void Start()
+    private void Start() //finding all necessary objects
     {
         box = GetComponent<BoxCollider>();
 
@@ -24,7 +26,7 @@ public class ChapterExitCube : MonoBehaviour
         inventory = FindObjectOfType<Inventory>();
     }
 
-    private void Update()
+    private void Update() //checking if player is inside cube
     {
         Collider[] colliders;
         colliders = Physics.OverlapBox(box.bounds.center, box.bounds.extents, Quaternion.identity, playerMask);
@@ -35,10 +37,12 @@ public class ChapterExitCube : MonoBehaviour
         }
     }
 
-    private void SaveProgress()
+    private void SaveProgress() //saving all progress
     {
+        //game state
         saveManager.SaveGameState(chapter);
 
+        //spells
         List<string> spells = new List<string>();
         foreach(SpellScrollInfo scroll in spellbook.spells)
         {
@@ -46,8 +50,10 @@ public class ChapterExitCube : MonoBehaviour
         }
         saveManager.SaveSpells(spellbook.bookOwned, spells);
 
+        //items
         saveManager.SaveItems(inventory.inventory);
 
+        //everything to file
         saveManager.SaveProgressToFile();
     }
 }
