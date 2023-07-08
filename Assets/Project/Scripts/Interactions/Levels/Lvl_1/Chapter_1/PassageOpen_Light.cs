@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class PassageOpen_Light : MonoBehaviour
 {
-    [Header("Player")]
-    public GameObject player;
-
     [Header("Wall")]
     public GameObject passage;
 
@@ -14,10 +11,12 @@ public class PassageOpen_Light : MonoBehaviour
     public float locX, locZ;
 
     private SpellCasting spellCastingController;
+    private GameObject player;
 
-    private void Awake() //get necessary components on awake
+    private void Start() //get necessary components on awake
     {
-        spellCastingController = player.GetComponentInChildren<SpellCasting>();
+        spellCastingController = PlayerParams.Controllers.spellCasting;
+        player = PlayerParams.Objects.player;
     }
 
     void Update() //open passage if player casted light on specified position and then destroy this script

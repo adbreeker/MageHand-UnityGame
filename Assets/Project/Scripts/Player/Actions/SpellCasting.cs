@@ -48,7 +48,7 @@ public class SpellCasting : MonoBehaviour
         if(scroll != null)
         {
             currentSpell = "Light";
-            GetComponent<HandInteractions>().inHand = Instantiate(lightPrefab, hand);
+            PlayerParams.Controllers.handInteractions.inHand = Instantiate(lightPrefab, hand);
             mana -= scroll.manaCost;
         }
     }
@@ -59,7 +59,7 @@ public class SpellCasting : MonoBehaviour
         if (scroll != null)
         {
             currentSpell = "Fire";
-            GetComponent<HandInteractions>().inHand = Instantiate(firePrefab, hand);
+            PlayerParams.Controllers.handInteractions.inHand = Instantiate(firePrefab, hand);
             mana -= scroll.manaCost;
         }
     }

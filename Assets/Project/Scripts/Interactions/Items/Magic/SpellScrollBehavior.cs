@@ -20,7 +20,7 @@ public class SpellScrollBehavior : MonoBehaviour
 
     private void Start() //make scroll unpickable if spellbook wasn't picked up yet
     {
-        spellbook = FindObjectOfType<Spellbook>();
+        spellbook = PlayerParams.Controllers.spellbook;
 
         if(!spellbook.bookOwned)
         {

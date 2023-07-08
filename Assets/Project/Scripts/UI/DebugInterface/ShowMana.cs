@@ -3,18 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShowMana : MonoBehaviour
+public class ShowMana : MonoBehaviour //displaying mana resource on debug canvas
 {
     public Text mana;
-    SpellCasting spellcontroller;
-
-    private void Awake()
-    {
-        spellcontroller = FindObjectOfType<SpellCasting>();
-    }
 
     void Update()
     {
-        mana.text = ((int)spellcontroller.mana).ToString() + "/100";
+        mana.text = ((int)PlayerParams.Controllers.spellCasting.mana).ToString() + "/100";
     }
 }

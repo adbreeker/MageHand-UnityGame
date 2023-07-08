@@ -11,7 +11,7 @@ public class FloatingLight : MonoBehaviour
 
     void Start() //get necessary components, set floating light parent as player, and start floating light duration timer
     {
-        player = GetComponentInParent<PlayerMovement>().gameObject;
+        player = PlayerParams.Objects.player;
         gameObject.transform.SetParent(player.transform);
         gameObject.transform.localPosition = new Vector3(0, 1.5f, 1);
         StartCoroutine(Timer());

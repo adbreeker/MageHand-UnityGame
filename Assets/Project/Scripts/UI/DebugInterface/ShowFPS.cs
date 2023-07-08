@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShowFPS : MonoBehaviour
+public class ShowFPS : MonoBehaviour //displaying frames per second (fps) counter on debug canvas
 {
     public Text fpsText;
     float deltaTime = 0.0f;

@@ -16,10 +16,10 @@ public class ChestBehavior : MonoBehaviour
     GameObject mainCamera;
     PlayerMovement pr;
 
-    private void Awake() //get necessary components on awake
+    private void Start() //get necessary components on awake
     {
-        mainCamera = Camera.main.gameObject;
-        pr = mainCamera.GetComponentInParent<PlayerMovement>();
+        mainCamera = PlayerParams.Objects.playerCamera.gameObject;
+        pr = PlayerParams.Controllers.playerMovement;
     }
 
     private void Update() //listen to chest close input if chest is open
@@ -61,15 +61,14 @@ public class ChestBehavior : MonoBehaviour
         }
     }
 
-    Vector3 playerCameraPos = new Vector3(0,1,0);
     IEnumerator MoveCamera() //move camera to chest or to player
     {
         if(chestOpen) //if chest is open then move camera to player 
         {
-            while (mainCamera.transform.localPosition != playerCameraPos || mainCamera.transform.localRotation != Quaternion.Euler(0,0,0))
+            while (mainCamera.transform.localPosition != PlayerParams.Variables.cameraStartingPosition || mainCamera.transform.localRotation != Quaternion.Euler(0,0,0))
             {
                 yield return new WaitForFixedUpdate();
-                mainCamera.transform.localPosition = Vector3.MoveTowards(mainCamera.transform.localPosition, playerCameraPos, 0.2f);
+                mainCamera.transform.localPosition = Vector3.MoveTowards(mainCamera.transform.localPosition, PlayerParams.Variables.cameraStartingPosition, 0.2f);
                 mainCamera.transform.localRotation = Quaternion.RotateTowards(mainCamera.transform.localRotation, Quaternion.Euler(0, 0, 0), 5);
             }
             pr.stopMovement = false;

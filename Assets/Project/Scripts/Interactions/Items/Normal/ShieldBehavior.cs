@@ -6,7 +6,7 @@ public class ShieldBehavior : MonoBehaviour
 {
     public void OnPickUp() //fix shield rotation on pick up
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        GameObject player = PlayerParams.Objects.player;
         Vector3 front = player.transform.forward * 1000;
         transform.LookAt(front);
     }

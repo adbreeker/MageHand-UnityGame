@@ -7,10 +7,10 @@ public class SpellBookBehavior : MonoBehaviour
     private Spellbook spellbook;
     private HandInteractions handInteractions;
 
-    private void Awake() //get necessary objects on awake
+    private void Start() //get necessary objects on awake
     {
-        spellbook = FindObjectOfType<Spellbook>();
-        handInteractions = FindObjectOfType<HandInteractions>();
+        spellbook = PlayerParams.Controllers.spellbook;
+        handInteractions = PlayerParams.Controllers.handInteractions;
     }
 
     public void OnPickUp() //on pick up toggle spellbook on spellbook ui script and make all spell scrolls pickable again

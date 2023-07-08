@@ -19,7 +19,7 @@ public class GetObjectsNearHand : MonoBehaviour
 
     private void Update() //check objects near middle point every update
     {
-        if(GetComponent<HandInteractions>().inHand == null)
+        if(PlayerParams.Controllers.handInteractions.inHand == null)
         {
             CheckSphere();
         }
@@ -31,7 +31,7 @@ public class GetObjectsNearHand : MonoBehaviour
         Vector3 middlePoint = (wristPoint.position + indexFingerKnucklePoint.position + smallFingerKnucklePoint.position) / 3f;
 
         Collider[] colliders;
-        if (transform.parent.parent.GetComponent<PlayerMovement>().uiActive) //if UI active then searching on UI layer with smaller range
+        if (PlayerParams.Controllers.playerMovement.uiActive) //if UI active then searching on UI layer with smaller range
         {
             colliders = Physics.OverlapSphere(middlePoint, 0.2f, uiMask);
         }
@@ -54,7 +54,7 @@ public class GetObjectsNearHand : MonoBehaviour
 
     void EnlightObject(GameObject pointingAt) //enlightening pointed objects
     {
-        if(pointingAt != GetComponent<HandInteractions>().inHand) //only if no object currently in hand
+        if(pointingAt != PlayerParams.Controllers.handInteractions.inHand) //only if no object currently in hand
         {
             //if pointing on item, switch or UI then enlightening only this item
             if (pointingAt.layer == LayerMask.NameToLayer("Item") || pointingAt.layer == LayerMask.NameToLayer("Switch") || pointingAt.layer == LayerMask.NameToLayer("UI"))

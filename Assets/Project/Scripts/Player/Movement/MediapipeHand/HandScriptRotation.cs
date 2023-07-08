@@ -26,7 +26,6 @@ public class HandScriptRotation : MonoBehaviour
     public static Vector3 minPoint;
     public static Vector3 maxPoint;
 
-    static private Camera mainCamera;
     private float cameraHeight;
     private float cameraWidth;
     public static float z;
@@ -39,19 +38,17 @@ public class HandScriptRotation : MonoBehaviour
         {
             RotateJoints();
         }
-        Vector3 newPos = RotateAroundPoint(handPosition, mainCamera.transform.position, mainCamera.transform.eulerAngles.y);
+        Vector3 newPos = RotateAroundPoint(handPosition, PlayerParams.Objects.playerCamera.transform.position, PlayerParams.Objects.playerCamera.transform.eulerAngles.y);
         transform.position = newPos; //assigning receivedPos in SendAndReceiveData()
     }
 
     private void Start()
     {
-        mainCamera = Camera.main;
         CalculateNearPlaneBounds();
 
         ThreadStart ts = new ThreadStart(GetInfo);
         mThread = new Thread(ts);
         mThread.Start();
-
     }
 
     private void CalculateNearPlaneBounds()
@@ -66,10 +63,10 @@ public class HandScriptRotation : MonoBehaviour
         }
 
         Vector3 objectPosition = transform.position;
-        Vector3 objectPositionInCameraSpace = mainCamera.transform.InverseTransformPoint(objectPosition);
+        Vector3 objectPositionInCameraSpace = PlayerParams.Objects.playerCamera.transform.InverseTransformPoint(objectPosition);
         float distance = Mathf.Abs(objectPositionInCameraSpace.z);
-        float halfHeight = distance * Mathf.Tan(mainCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
-        float halfWidth = halfHeight * mainCamera.aspect;
+        float halfHeight = distance * Mathf.Tan(PlayerParams.Objects.playerCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
+        float halfWidth = halfHeight * PlayerParams.Objects.playerCamera.aspect;
 
         float minX = -halfWidth;
         float maxX = halfWidth;
@@ -78,8 +75,8 @@ public class HandScriptRotation : MonoBehaviour
         z = objectPosition.z;
 
 
-        minPoint = mainCamera.transform.TransformPoint(new Vector3(minX, minY, distance));
-        maxPoint = mainCamera.transform.TransformPoint(new Vector3(maxX, maxY, distance));
+        minPoint = PlayerParams.Objects.playerCamera.transform.TransformPoint(new Vector3(minX, minY, distance));
+        maxPoint = PlayerParams.Objects.playerCamera.transform.TransformPoint(new Vector3(maxX, maxY, distance));
 
         Debug.Log("minPoint: " + minPoint + ", maxPoint: " + maxPoint);
 
