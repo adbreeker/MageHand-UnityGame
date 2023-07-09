@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 2215893106494380592}
   - component: {fileID: 2215893106494380593}
   - component: {fileID: 2215893106494380594}
+  - component: {fileID: 7212878339763585424}
   - component: {fileID: 2215893106494380604}
   - component: {fileID: 7445098804810710848}
   - component: {fileID: 2167677596242489558}
@@ -188,6 +189,25 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7212878339763585424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2215893106494380605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e6d6e1bb0488f040909b7f6d2fc8b8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 2215893105645526395}
+  hand: {fileID: 3116585748844042620}
+  playerMovement: {fileID: 2215893106494380604}
+  inventory: {fileID: 7445098804810710848}
+  spellbook: {fileID: 2167677596242489558}
+  handInteractions: {fileID: 7554772340525944936}
+  spellCasting: {fileID: 5405462797584546832}
 --- !u!114 &2215893106494380604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,9 +225,11 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  destination: {x: 0, y: 0, z: 0}
+  previousTile: {x: 0, y: 0, z: 0}
+  isMoving: 0
   rotationSpeed: 300
   rotationThreshold: 0.01
-  uiActive: 0
   stopMovement: 0
   ghostmodeActive: 0
 --- !u!114 &7445098804810710848
@@ -225,7 +247,6 @@ MonoBehaviour:
   inventory: []
   inventoryPrefab: {fileID: 168006485879408025, guid: e7dd642c03106cf458e52c90284c4d73, type: 3}
   UiCamera: {fileID: 6983322398821147553}
-  handInteractions: {fileID: 7554772340525944936}
   ableToInteract: 1
 --- !u!114 &2167677596242489558
 MonoBehaviour:
@@ -239,6 +260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a95abed72250e43a6e507f8200ccd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spells: []
   spellbookPrefab: {fileID: 4378254566353726498, guid: 40c9d9547247b19449073a86d917151b, type: 3}
   UiCamera: {fileID: 6983322398821147553}
   bookOwned: 0
@@ -725,6 +747,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
+--- !u!1 &3116585748844042620 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1776557680973669353, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
+  m_PrefabInstance: {fileID: 3740186669925120661}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3116585748844042623 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1776557680973669354, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
@@ -735,9 +762,20 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -2652551327674569987, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
   m_PrefabInstance: {fileID: 3740186669925120661}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 3116585748844042620}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0c1cfd419611ec4cb4c534f23ebdff9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5405462797584546832 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -512354603722602875, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
+  m_PrefabInstance: {fileID: 3740186669925120661}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3116585748844042620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828588037edb6d045b7cba0edf82bd01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

@@ -46,12 +46,12 @@ public class Dialogue : MonoBehaviour
         textSpeed = transform.parent.GetComponent<OpenDialogue>().textSpeed;
 
         //Disable other controls (close first, because it activates movement and enable other ui)
-        if (player.GetComponent<Inventory>().enabled == true) player.GetComponent<Inventory>().CloseInventory();
-        if (player.GetComponent<Spellbook>().enabled == true) player.GetComponent<Spellbook>().CloseSpellbook();
-        player.GetComponent<Inventory>().enabled = false;
-        player.GetComponent<Spellbook>().enabled = false;
-        player.GetComponent<PlayerMovement>().uiActive = true;
-        player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(false);
+        PlayerParams.Controllers.inventory.CloseInventory();
+        PlayerParams.Controllers.spellbook.CloseSpellbook();
+        PlayerParams.Controllers.inventory.ableToInteract = false;
+        PlayerParams.Controllers.spellbook.ableToInteract = false;
+        PlayerParams.Variables.uiActive = true;
+        PlayerParams.Objects.hand.SetActive(false);
 
         //Create dicts of options, choices when options are chosen and text of options (indexed 1-4)
         options = new Dictionary<int, TextMeshProUGUI>();
@@ -152,10 +152,10 @@ public class Dialogue : MonoBehaviour
                 dialogueCanvas.gameObject.SetActive(false);
 
                 //Enable other controls
-                player.GetComponent<PlayerMovement>().uiActive = false;
-                player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(true);
-                player.GetComponent<Inventory>().enabled = true;
-                player.GetComponent<Spellbook>().enabled = true;
+                PlayerParams.Variables.uiActive = false;
+                PlayerParams.Objects.hand.SetActive(true);
+                PlayerParams.Controllers.inventory.ableToInteract = true;
+                PlayerParams.Controllers.spellbook.ableToInteract = true;
             }
             else
             {

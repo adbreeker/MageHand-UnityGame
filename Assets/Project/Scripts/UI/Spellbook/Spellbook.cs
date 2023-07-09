@@ -18,8 +18,6 @@ public class Spellbook : MonoBehaviour
     private int pointed;
 
     private GameObject instantiatedSpellbook;
-    private GameObject player;
-    private HandInteractions handInteractions;
 
     private GameObject arrowLeft;
     private GameObject arrowRight;
@@ -35,11 +33,6 @@ public class Spellbook : MonoBehaviour
     //this means views not actual pages (spellbookPage = 1 view = 2 real pages)
     private List<List<SpellScrollInfo>> spellbookPages;
 
-    private void Awake()
-    {
-        player = gameObject;
-        handInteractions = FindObjectOfType<HandInteractions>();
-    }
 
     void Update()
     {
@@ -112,10 +105,10 @@ public class Spellbook : MonoBehaviour
         instantiatedSpellbook.GetComponent<Canvas>().planeDistance = 1.05f;
 
         //Disable other controls (close first, because it activates movement and enable other ui)
-        if (player.GetComponent<Inventory>().enabled == true) player.GetComponent<Inventory>().CloseInventory();
-        player.GetComponent<Inventory>().enabled = false;
-        player.GetComponent<PlayerMovement>().uiActive = true;
-        player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(false);
+        PlayerParams.Controllers.inventory.CloseInventory();
+        PlayerParams.Controllers.inventory.ableToInteract = false;
+        PlayerParams.Variables.uiActive = true;
+        PlayerParams.Objects.hand.SetActive(false);
 
         //Get right objects from prefab
         arrowLeft = instantiatedSpellbook.transform.Find("Background").Find("ArrowLeft").gameObject;
@@ -163,9 +156,9 @@ public class Spellbook : MonoBehaviour
         spellbookOpened = false;
 
         //Enable other controls
-        player.GetComponent<Inventory>().enabled = true;
-        player.GetComponent<PlayerMovement>().uiActive = false;
-        player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(true);
+        PlayerParams.Controllers.inventory.ableToInteract = true;
+        PlayerParams.Variables.uiActive = false;
+        PlayerParams.Objects.hand.SetActive(true);
     }
     void PointOption(int option)
     {
@@ -227,15 +220,15 @@ public class Spellbook : MonoBehaviour
         if (spellbookPages.Count > pageToDisplay + 1) arrowRight.SetActive(true);
     }
 
-    public void AddSpell(SpellScrollInfo? spellToAdd)
+    public void AddSpell(SpellScrollInfo spellToAdd)
     {
         if(spellToAdd != null)
         {
-            spells.Add((SpellScrollInfo)spellToAdd);
+            spells.Add(spellToAdd);
         }
     }
 
-    public SpellScrollInfo? GetSpellInfo(string spellName)
+    public SpellScrollInfo GetSpellInfo(string spellName)
     {
         foreach(SpellScrollInfo s in spells)
         {

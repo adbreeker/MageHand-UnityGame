@@ -88,12 +88,12 @@ public class ReadableNote : MonoBehaviour
     public void OpenNote()
     {
         //Disable other controls (close first, because it activates movement and enable other ui)
-        if (player.GetComponent<Inventory>().enabled == true) player.GetComponent<Inventory>().CloseInventory();
-        if (player.GetComponent<Spellbook>().enabled == true) player.GetComponent<Spellbook>().CloseSpellbook();
-        player.GetComponent<Inventory>().enabled = false;
-        player.GetComponent<Spellbook>().enabled = false;
-        player.GetComponent<PlayerMovement>().uiActive = true;
-        player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(false);
+        if (PlayerParams.Controllers.inventory.enabled == true) player.GetComponent<Inventory>().CloseInventory();
+        if (PlayerParams.Controllers.spellbook.enabled == true) player.GetComponent<Spellbook>().CloseSpellbook();
+        PlayerParams.Controllers.inventory.enabled = false;
+        PlayerParams.Controllers.spellbook.enabled = false;
+        PlayerParams.Variables.uiActive = true;
+        PlayerParams.Objects.hand.SetActive(false);
 
         //Get TextMeshProUGUIs
         option1 = transform.Find("Options").Find("1").gameObject.GetComponent<TextMeshProUGUI>();
@@ -149,10 +149,10 @@ public class ReadableNote : MonoBehaviour
         Destroy(gameObject);
 
         //Enable other controls
-        player.GetComponent<Inventory>().enabled = true;
-        player.GetComponent<Spellbook>().enabled = true;
-        player.GetComponent<PlayerMovement>().uiActive = false;
-        player.transform.Find("Main Camera").Find("Hand").gameObject.SetActive(true);
+        PlayerParams.Controllers.inventory.enabled = true;
+        PlayerParams.Controllers.spellbook.enabled = true;
+        PlayerParams.Variables.uiActive = false;
+        PlayerParams.Objects.hand.SetActive(true);
         openedNote = false;
     }
 

@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class KnifeBehavior : MonoBehaviour
 {
-    public void OnPickUp()
+    public void OnPickUp() //fix knife rotation on pick up
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        GameObject player = PlayerParams.Objects.player;
         Vector3 front = player.transform.forward * -1000;
         front.y = -2000;
         transform.LookAt(front);

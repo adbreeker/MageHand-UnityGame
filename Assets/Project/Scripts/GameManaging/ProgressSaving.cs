@@ -6,22 +6,22 @@ using System;
 
 public class ProgressSaving : MonoBehaviour
 {
-    // ----------------------------------- data to save classes
+    //data to save classes ----------------------------------------------------------------------------------------------------- data to save classes
 
     [System.Serializable]
-    public class GameStateSave
+    public class GameStateSave //for saving current level
     {
         public string currentLvl = "";
     }
 
     [System.Serializable]
-    public class ItemsSave
+    public class ItemsSave //for saving all items from inventory
     {
         public List<string> items = new List<string>();
     }
 
     [System.Serializable]
-    public class SpellsSave
+    public class SpellsSave //for saving if spellbook was picked up, and all spells from spellbook 
     {
         public bool spellBook = false;
         public bool light = false;
@@ -37,16 +37,16 @@ public class ProgressSaving : MonoBehaviour
         public SpellsSave spellsSave = new SpellsSave();
     }
 
-    // ------------------------------------------- code
+    //code --------------------------------------------------------------------------------------------------------------------------- code
 
-    [Header("Holders")]
+    [Header("Holders")] //for save loading
     public ItemHolder itemHolder;
     public SpellScrollsHolder spellScrollsHolder;
 
     private string savePath;
     private SaveData saveData;
 
-    private void Awake()
+    private void Awake() //geting json file with save, or creating new if no save exists
     {
         savePath = Path.Combine(Application.persistentDataPath, "saveData.json");
 
@@ -56,7 +56,7 @@ public class ProgressSaving : MonoBehaviour
         }
         catch
         {
-            Debug.Log("error: no existing save");
+            //Debug.Log("error: no existing save");
             saveData = new SaveData();
         }
 
@@ -66,20 +66,22 @@ public class ProgressSaving : MonoBehaviour
 
     // ------------------------------------------------------------ loading data
 
-    public SaveData LoadProgress()
+    public SaveData LoadProgress() //get save data from json
     {
         string json = File.ReadAllText(savePath);
         return JsonUtility.FromJson<SaveData>(json);
     }
 
-    void ManageLoadedData()
+    void ManageLoadedData() //managing loaded data
     {
+        //loading inventory
         Inventory inventory = FindObjectOfType<Inventory>();
         foreach(string itemInData in saveData.itemsSave.items)
         {
             inventory.AddItem(itemHolder.GiveItem(itemInData));
         }
 
+        //loading spellbook and spells
         Spellbook spellbook = FindObjectOfType<Spellbook>();
         if(saveData.spellsSave.spellBook)
         {
@@ -99,7 +101,7 @@ public class ProgressSaving : MonoBehaviour
         saveData.gameStateSave.currentLvl = currentLvl;
     }
 
-    public void SaveItems(List<GameObject> itemsToSave)
+    public void SaveItems(List<GameObject> itemsToSave) //saving all "itemsToSave"
     {
         saveData.itemsSave.items = new List<string>();
         foreach(GameObject item in itemsToSave)
@@ -108,14 +110,14 @@ public class ProgressSaving : MonoBehaviour
         }
     }
 
-    public void SaveSpells(bool spellBook, List<string> spells)
+    public void SaveSpells(bool spellBook, List<string> spells) //saving spellbook state, and all "spells"
     {
         saveData.spellsSave.spellBook = spellBook;
 
         saveData.spellsSave.light = spells.Exists(s => string.Equals(s, "light", StringComparison.OrdinalIgnoreCase));
     }
 
-    public void SaveProgressToFile()
+    public void SaveProgressToFile() //saving progress to json file (the one from which data was loaded)
     {
         string json = JsonUtility.ToJson(saveData);
         File.WriteAllText(savePath, json);

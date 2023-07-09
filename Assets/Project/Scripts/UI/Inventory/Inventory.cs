@@ -9,8 +9,6 @@ public class Inventory : MonoBehaviour
     [Header("Game objects")]
     public GameObject inventoryPrefab;
     public Camera UiCamera;
-    public HandInteractions handInteractions;
-    private GameObject player;
 
     public bool ableToInteract = true;
     
@@ -22,11 +20,6 @@ public class Inventory : MonoBehaviour
     private List<GameObject> itemSlots;
     private List<GameObject> itemIconActiveInstances = new List<GameObject>();
     private List<List<GameObject>> inventoryPages;
-
-    private void Start()
-    {
-        player = this.gameObject;
-    }
 
     void Update()
     {
@@ -41,9 +34,13 @@ public class Inventory : MonoBehaviour
         //Open or close inventory
         if (Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab))
         {
-            if (!inventoryOpened && handInteractions.inHand != null)
+            if (!inventoryOpened && PlayerParams.Controllers.handInteractions.inHand != null)
             {
-                if (handInteractions.inHand.layer == LayerMask.NameToLayer("Item")) AddItem(handInteractions.inHand);
+                if (PlayerParams.Controllers.handInteractions.inHand.layer == LayerMask.NameToLayer("Item"))
+                {
+                    AddItem(PlayerParams.Controllers.handInteractions.inHand);
+                }
+
                 OpenInventory();
             }
             else if (!inventoryOpened) OpenInventory();
@@ -84,9 +81,9 @@ public class Inventory : MonoBehaviour
         instantiatedInventory.GetComponent<Canvas>().planeDistance = 1.05f;
 
         //Disable other controls (close first, because it activates movement and enable other ui)
-        if (player.GetComponent<Spellbook>().enabled == true) player.GetComponent<Spellbook>().CloseSpellbook();
-        player.GetComponent<Spellbook>().enabled = false;
-        player.GetComponent<PlayerMovement>().uiActive = true;
+        PlayerParams.Controllers.spellbook.CloseSpellbook();
+        PlayerParams.Controllers.spellbook.ableToInteract = false;
+        PlayerParams.Variables.uiActive = true;
 
         //Create list of slots for items to display on one page
         itemSlots = new List<GameObject>();
@@ -131,8 +128,8 @@ public class Inventory : MonoBehaviour
         inventoryOpened = false;
 
         //Enable other controls
-        player.GetComponent<PlayerMovement>().uiActive = false;
-        player.GetComponent<Spellbook>().enabled = true;
+        PlayerParams.Variables.uiActive = false;
+        PlayerParams.Controllers.spellbook.ableToInteract = true;
     }
 
     void DisplayPage(int pageToDisplay)
@@ -170,6 +167,6 @@ public class Inventory : MonoBehaviour
     {
         inventory.Add(item);
         item.SetActive(false);
-        handInteractions.inHand = null;
+        PlayerParams.Controllers.handInteractions.inHand = null;
     }
 }

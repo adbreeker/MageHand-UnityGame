@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WallsList1 : MonoBehaviour
 {
+    //wall picker for 1x1 cubes, necessary for dynamic cubes generation
     public List<GameObject> walls;
 
     public enum Wall

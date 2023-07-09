@@ -49,7 +49,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9977503012c57b2478445433c4ec4dc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 0}
   handPoints:
   - {fileID: 1776557681398308088}
   - {fileID: 4505334823248126986}
@@ -110,7 +109,6 @@ MonoBehaviour:
   wristPoint: {fileID: 1776557681398308089}
   indexFingerKnucklePoint: {fileID: 9066269380277898399}
   smallFingerKnucklePoint: {fileID: 3222421630018726590}
-  catchingDistance: 2.5
   currentlyPointing: {fileID: 0}
 --- !u!114 &-2652551327674569987
 MonoBehaviour:
@@ -145,8 +143,11 @@ MonoBehaviour:
   manaRegen: 3
   currentSpell: None
   floatingLight: {fileID: 0}
+  magicMark: {fileID: 0}
   hand: {fileID: 9066269380277898399}
   lightPrefab: {fileID: 7101868786794713321, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+  firePrefab: {fileID: 1725317912486240, guid: 2045653f8ea031f4581637e7792037bb, type: 3}
+  markPrefab: {fileID: 3377181292992421420, guid: 81524c444da8fea419a22f914aa6a0ea, type: 3}
 --- !u!1 &1776557681402105355
 GameObject:
   m_ObjectHideFlags: 0

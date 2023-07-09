@@ -10,9 +10,6 @@ public class DevConsole : MonoBehaviour
     public GameObject fpsCounter;
     public GameObject webCamera;
 
-    [Header("Player and his stuff")]
-    public GameObject player;
-
     //commands history
     private List<string> previousCommands = new List<string>();
     int currentCommandOnList = 0;
@@ -38,6 +35,14 @@ public class DevConsole : MonoBehaviour
         //if console is actually active, check other options
         if(console.IsActive())
         {
+            //close without command
+            if(Input.GetKeyDown(KeyCode.Escape))
+            {
+                Time.timeScale = 1;
+                console.gameObject.SetActive(false);
+                SetStateOfOtherPlayerListeners(true);
+            }
+
             //previous command
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
@@ -66,15 +71,15 @@ public class DevConsole : MonoBehaviour
     {
         if(activate)
         {
-            player.GetComponent<PlayerMovement>().uiActive = false;
-            player.GetComponent<Spellbook>().ableToInteract = true;
-            player.GetComponent<Inventory>().ableToInteract = true;
+            PlayerParams.Variables.uiActive = false;
+            PlayerParams.Controllers.spellbook.ableToInteract = true;
+            PlayerParams.Controllers.inventory.ableToInteract = true;
         }
         else
         {
-            player.GetComponent<PlayerMovement>().uiActive = true;
-            player.GetComponent<Spellbook>().ableToInteract = false;
-            player.GetComponent<Inventory>().ableToInteract = false;
+            PlayerParams.Variables.uiActive = true;
+            PlayerParams.Controllers.spellbook.ableToInteract = false;
+            PlayerParams.Controllers.inventory.ableToInteract = false;
         }
     }
 
@@ -153,13 +158,13 @@ public class DevConsole : MonoBehaviour
         if(ghostmode)
         {
             ghostmode = false;
-            player.GetComponent<PlayerMovement>().ghostmodeActive = false;
+            PlayerParams.Controllers.playerMovement.ghostmodeActive = false;
             return;
         }
         else
         {
             ghostmode = true;
-            player.GetComponent<PlayerMovement>().ghostmodeActive = true;
+            PlayerParams.Controllers.playerMovement.ghostmodeActive = true;
             return;
         }
     }
@@ -194,7 +199,7 @@ public class DevConsole : MonoBehaviour
 
         if(itemHolder != null)
         {
-            Inventory inventory = player.GetComponent<Inventory>();
+            Inventory inventory = PlayerParams.Controllers.inventory;
             foreach(GameObject item in itemHolder.items)
             {
                 inventory.AddItem(itemHolder.GiveItem(item.GetComponent<ItemParameters>().itemName));
@@ -210,10 +215,13 @@ public class DevConsole : MonoBehaviour
 
         if (spellScrollsHolder != null)
         {
-            Spellbook spellbook = player.GetComponent<Spellbook>();
+            Spellbook spellbook = PlayerParams.Controllers.spellbook;
             spellbook.bookOwned = true;
 
-            spellbook.AddSpell(spellScrollsHolder.GiveScroll("Light"));
+            foreach(SpellScrollInfo spellScroll in spellScrollsHolder.GiveAllScrolls())
+            {
+                spellbook.AddSpell(spellScroll);
+            }
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DisplayCamera : MonoBehaviour
+public class DisplayCamera : MonoBehaviour //displaying web camera on debug canvas (currently not working while using mediapipe)
 {
     private WebCamTexture webCamTexture;
 

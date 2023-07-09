@@ -7,33 +7,35 @@ using System.Globalization;
 using System.Linq;
 
 
-public class MoveHandPoints : MonoBehaviour
+public class MoveHandPoints : MonoBehaviour //move points of hand generated with mediapipe
 {
+    //position of hand, and on all points in hand
     Vector3[] vec;
     Vector3 handPosition;
 
-    public Camera mainCamera;
+    [Header("All hand points objects")]
+    public GameObject[] handPoints;
+
+    [Header("UDP receiver")]
+    public UDPReceive udpReceive;
+   
+    [Header("Current gesture")]
+    public string gesture;
 
     private Vector3 minPoint;
     private Vector3 maxPoint;
     private float z;
 
-    public GameObject[] handPoints;
-    public UDPReceive udpReceive;
-   
-    public string gesture;
-
     bool running;
 
-    private void Awake()
+    private void Start()
     {
-
         CalculateNearPlaneBounds();
     }
 
     private void Update() 
     {
-        Vector3 newPos = RotateAroundPoint(handPosition, mainCamera.transform.position, mainCamera.transform.eulerAngles.y);
+        Vector3 newPos = RotateAroundPoint(handPosition, PlayerParams.Objects.playerCamera.transform.position, PlayerParams.Objects.playerCamera.transform.eulerAngles.y);
         string data = udpReceive.data;
         vec = StringToVector3(data);
         
@@ -50,8 +52,8 @@ public class MoveHandPoints : MonoBehaviour
     {
         Vector3 objectPosition = transform.localPosition;
         float distance = Mathf.Abs(objectPosition.z);
-        float halfHeight = distance * Mathf.Tan(mainCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
-        float halfWidth = halfHeight * mainCamera.aspect;
+        float halfHeight = distance * Mathf.Tan(PlayerParams.Objects.playerCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
+        float halfWidth = halfHeight * PlayerParams.Objects.playerCamera.aspect;
 
         float minX = -halfWidth;
         float maxX = halfWidth;

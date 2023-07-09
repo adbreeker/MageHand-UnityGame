@@ -91,7 +91,7 @@ namespace Whisper
             try
             {
                 var path = Path.Combine(Application.streamingAssetsPath, modelPath);
-                Debug.Log("path modelu " + path);
+                //Debug.Log("path modelu " + path);
                 _whisper = await WhisperWrapper.InitFromFileAsync(path);
                 _params = WhisperParams.GetDefaultParams(strategy);
                 _whisper.OnNewSegment += OnNewSegmentHandler;

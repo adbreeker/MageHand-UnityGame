@@ -4,19 +4,22 @@ using UnityEngine;
 
 public class PassageOpen_Light : MonoBehaviour
 {
-    public GameObject player;
+    [Header("Wall")]
     public GameObject passage;
 
+    [Header("Player position to start listening spell cast")]
     public float locX, locZ;
 
     private SpellCasting spellCastingController;
+    private GameObject player;
 
-    private void Awake()
+    private void Start() //get necessary components on awake
     {
-        spellCastingController = player.GetComponentInChildren<SpellCasting>();
+        spellCastingController = PlayerParams.Controllers.spellCasting;
+        player = PlayerParams.Objects.player;
     }
 
-    void Update()
+    void Update() //open passage if player casted light on specified position and then destroy this script
     {
         if(player.transform.position.x == locX && player.transform.position.z == locZ)
         {

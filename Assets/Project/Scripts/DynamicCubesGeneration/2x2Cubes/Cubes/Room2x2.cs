@@ -6,21 +6,23 @@ using UnityEditor;
 #if UNITY_EDITOR
 public class Room2x2 : MonoBehaviour
 {
+    //selecting what wall to use:
     public WallsList2.Wall selectedWall_1, selectedWall_2, selectedWall_3, selectedWall_4;
 
+    //wall instances in cube
     public GameObject wall_1, wall_2, wall_3, wall_4;
 
+    //rotations of every wall position
     Quaternion rotWall1 = Quaternion.Euler(0f, 0f, 0f);
     Quaternion rotWall2 = Quaternion.Euler(0f, 90f, 0f);
     Quaternion rotWall3 = Quaternion.Euler(0f, 180f, 0f);
     Quaternion rotWall4 = Quaternion.Euler(0f, 270f, 0f);
 
-    bool showFields = true;
-
-    private void OnValidate()
+    private void OnValidate() //changing walls dynamically in editor
     {
-        if (showFields)
+        if (PrefabUtility.IsPartOfPrefabAsset(this) == false) //works only on scene, not as asset
         {
+            //getting walls from custom editor
             selectedWall_1 = (WallsList2.Wall)EditorGUILayout.EnumPopup("Select a wall:", selectedWall_1);
             selectedWall_2 = (WallsList2.Wall)EditorGUILayout.EnumPopup("Select a wall:", selectedWall_2);
             selectedWall_3 = (WallsList2.Wall)EditorGUILayout.EnumPopup("Select a wall:", selectedWall_3);
@@ -30,7 +32,8 @@ public class Room2x2 : MonoBehaviour
 
             GameObject temp1 = null, temp2 = null, temp3 = null, temp4 = null;
 
-            if((int)selectedWall_1 > 0)
+            //creating new walls
+            if ((int)selectedWall_1 > 0)
             {
                 temp1 = Instantiate(walls.walls[(int)selectedWall_1], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
                 temp1.transform.localRotation = rotWall1;
@@ -50,7 +53,8 @@ public class Room2x2 : MonoBehaviour
                 temp4 = Instantiate(walls.walls[(int)selectedWall_4], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
                 temp4.transform.localRotation = rotWall4;
             }
-  
+
+            //destroying previous walls
             StartCoroutine(DestroyWall(wall_1));
             StartCoroutine(DestroyWall(wall_2));
             StartCoroutine(DestroyWall(wall_3));
@@ -63,12 +67,14 @@ public class Room2x2 : MonoBehaviour
         }
     }
 
-    IEnumerator DestroyWall(GameObject wall)
+    IEnumerator DestroyWall(GameObject wall) //quite strange solution so paradox problem
     {
         yield return new WaitForEndOfFrame();
         DestroyImmediate(wall);
     }
 
+
+    //custom editor ----------------------------------------------------------------------------------------------------------------- custom editor
     [CustomEditor(typeof(Room2x2))]
     public class DeadEndEditor : Editor
     {
@@ -78,7 +84,7 @@ public class Room2x2 : MonoBehaviour
 
             EditorGUILayout.Space();
 
-            if (script.showFields)
+            if (script != null)
             {
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("selectedWall_1"), new GUIContent("Select Wall 1"));
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("selectedWall_2"), new GUIContent("Select Wall 2"));
@@ -86,7 +92,7 @@ public class Room2x2 : MonoBehaviour
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("selectedWall_4"), new GUIContent("Select Wall 4"));
             }
 
-            if (GUILayout.Button(script.showFields ? "Lock" : "Show Fields"))
+            if (GUILayout.Button("Lock")) //deleting script to prevent any more changes in walls
             {
                 DestroyImmediate(script);
             }

@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class TurnOFFTorches : MonoBehaviour
 {
+    [Header("Torchs objects")]
     public List<GameObject> torches;
+
+    [Header("Wall objects")]
     public List<GameObject> walls;
+
+    [Header("No light torch prefab")]
     public GameObject torchNoLightPrefab;
-    void Start()
+
+    void Start() //turn off torches on scene start
     {
         StartCoroutine(ChangeTorches());
     }
 
-    IEnumerator ChangeTorches()
+    IEnumerator ChangeTorches() //change torches to no light torches in pairs every moment until all torches are turned off
     {
         yield return new WaitForSeconds(2f);
 
