@@ -31,7 +31,7 @@ public class GetObjectsNearHand : MonoBehaviour
         Vector3 middlePoint = (wristPoint.position + indexFingerKnucklePoint.position + smallFingerKnucklePoint.position) / 3f;
 
         Collider[] colliders;
-        if (PlayerParams.Controllers.playerMovement.uiActive) //if UI active then searching on UI layer with smaller range
+        if (PlayerParams.Variables.uiActive) //if UI active then searching on UI layer with smaller range
         {
             colliders = Physics.OverlapSphere(middlePoint, 0.2f, uiMask);
         }

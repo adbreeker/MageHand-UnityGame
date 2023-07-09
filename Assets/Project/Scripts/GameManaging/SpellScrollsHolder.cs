@@ -8,6 +8,7 @@ public class SpellScrollsHolder : MonoBehaviour
     [Header("Scrolls")]
     public GameObject scrollOfLight;
     public GameObject scrollOfFire;
+    public GameObject scrollOfMarkAndReturn;
 
     public SpellScrollInfo GiveScroll(string spellName) //returning requested scroll
     {
@@ -19,6 +20,10 @@ public class SpellScrollsHolder : MonoBehaviour
         {
             return scrollOfFire.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
         }
+        if (spellName == "Mark And Return")
+        {
+            return scrollOfMarkAndReturn.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
+        }
 
         return null;
     }
@@ -28,6 +33,7 @@ public class SpellScrollsHolder : MonoBehaviour
         List<SpellScrollInfo> allScrolls = new List<SpellScrollInfo>();
         allScrolls.Add(scrollOfLight.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
         allScrolls.Add(scrollOfFire.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
+        allScrolls.Add(scrollOfMarkAndReturn.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
 
         return allScrolls;
     }

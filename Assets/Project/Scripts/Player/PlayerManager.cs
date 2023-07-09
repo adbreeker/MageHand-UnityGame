@@ -8,6 +8,7 @@ public static class PlayerParams //static player parameters accessible from ever
     {
         public static Camera playerCamera;
         public static GameObject player;
+        public static GameObject hand;
     }
 
     public static class Controllers //scripts associated with player
@@ -24,6 +25,7 @@ public static class PlayerParams //static player parameters accessible from ever
         public static Vector3 cameraStartingPosition;
         public static float playerStartingMovementSpeed;
         public static float playerStartingRotationSpeed;
+        public static bool uiActive;
     }
 }
 
@@ -31,6 +33,7 @@ public class PlayerManager : MonoBehaviour //assigning static PlayerParams on Aw
 {
     [Header("Objects")]
     public Camera playerCamera;
+    public GameObject hand;
 
     [Header("Controllers")]
     public PlayerMovement playerMovement;
@@ -46,6 +49,7 @@ public class PlayerManager : MonoBehaviour //assigning static PlayerParams on Aw
         //objects
         PlayerParams.Objects.playerCamera = playerCamera;
         PlayerParams.Objects.player = gameObject;
+        PlayerParams.Objects.hand = hand;
 
         //Controllers
         PlayerParams.Controllers.playerMovement = playerMovement;
@@ -58,5 +62,6 @@ public class PlayerManager : MonoBehaviour //assigning static PlayerParams on Aw
         PlayerParams.Variables.cameraStartingPosition = playerCamera.transform.localPosition;
         PlayerParams.Variables.playerStartingMovementSpeed = playerMovement.movementSpeed;
         PlayerParams.Variables.playerStartingRotationSpeed = playerMovement.rotationSpeed;
+        PlayerParams.Variables.uiActive = false;
     }
 }

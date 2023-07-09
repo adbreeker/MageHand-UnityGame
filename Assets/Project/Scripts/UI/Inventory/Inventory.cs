@@ -9,7 +9,6 @@ public class Inventory : MonoBehaviour
     [Header("Game objects")]
     public GameObject inventoryPrefab;
     public Camera UiCamera;
-    private GameObject player;
 
     public bool ableToInteract = true;
     
@@ -21,11 +20,6 @@ public class Inventory : MonoBehaviour
     private List<GameObject> itemSlots;
     private List<GameObject> itemIconActiveInstances = new List<GameObject>();
     private List<List<GameObject>> inventoryPages;
-
-    private void Start()
-    {
-        player = gameObject;
-    }
 
     void Update()
     {
@@ -87,9 +81,9 @@ public class Inventory : MonoBehaviour
         instantiatedInventory.GetComponent<Canvas>().planeDistance = 1.05f;
 
         //Disable other controls (close first, because it activates movement and enable other ui)
-        if (PlayerParams.Controllers.spellbook.enabled == true) PlayerParams.Controllers.spellbook.CloseSpellbook();
-        PlayerParams.Controllers.spellbook.enabled = false;
-        PlayerParams.Controllers.playerMovement.uiActive = true;
+        PlayerParams.Controllers.spellbook.CloseSpellbook();
+        PlayerParams.Controllers.spellbook.ableToInteract = false;
+        PlayerParams.Variables.uiActive = true;
 
         //Create list of slots for items to display on one page
         itemSlots = new List<GameObject>();
@@ -134,8 +128,8 @@ public class Inventory : MonoBehaviour
         inventoryOpened = false;
 
         //Enable other controls
-        PlayerParams.Controllers.playerMovement.uiActive = false;
-        PlayerParams.Controllers.spellbook.enabled = true;
+        PlayerParams.Variables.uiActive = false;
+        PlayerParams.Controllers.spellbook.ableToInteract = true;
     }
 
     void DisplayPage(int pageToDisplay)

@@ -7,10 +7,10 @@ public class PlayerMovement : MonoBehaviour
     public float movementSpeed = 7f;
     public float tilesLenght = 4f;
     public LayerMask obstacleMask;
-
-    private Vector3 destination;
-    private Vector3 previousTile;
-    private bool isMoving = false;
+    
+    [HideInInspector] public Vector3 destination;
+    [HideInInspector] public Vector3 previousTile;
+    [HideInInspector] public bool isMoving = false;
 
     [Header("Rotation")]
     public float rotationSpeed = 300f;
@@ -19,7 +19,6 @@ public class PlayerMovement : MonoBehaviour
     private Quaternion targetRotation;
 
     [Header("Movement-interfering options")]
-    public bool uiActive = false;
     public bool stopMovement = false;
     public bool ghostmodeActive = false;
     
@@ -42,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
         float verticalInput = verticalInputQueue;
 
         //check if no movement is enqueued
-        if (horizontalInputQueue == 0 && verticalInputQueue ==0 && !uiActive && !stopMovement)
+        if (horizontalInputQueue == 0 && verticalInputQueue ==0 && !MovementInterfering())
         {
             horizontalInput = Input.GetAxisRaw("Horizontal");
             verticalInput = Input.GetAxisRaw("Vertical");
@@ -134,12 +133,12 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //get target rotation
-        if (Input.GetKeyDown(KeyCode.E) && !isRotating && !uiActive && !stopMovement)
+        if (Input.GetKeyDown(KeyCode.E) && !isRotating && !MovementInterfering())
         {
             isRotating = true;
             targetRotation = transform.rotation * Quaternion.Euler(0, 90, 0);
         }
-        if (Input.GetKeyDown(KeyCode.Q) && !isRotating && !uiActive && !stopMovement)
+        if (Input.GetKeyDown(KeyCode.Q) && !isRotating && !MovementInterfering())
         {
             isRotating = true;
             targetRotation = transform.rotation * Quaternion.Euler(0, -90, 0);
@@ -160,7 +159,7 @@ public class PlayerMovement : MonoBehaviour
     void MovementQueue()
     {
         //enqueuing movement if input while moving
-        if(isMoving && !uiActive && !stopMovement)
+        if(isMoving && !MovementInterfering())
         {
             if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
             {
@@ -181,7 +180,7 @@ public class PlayerMovement : MonoBehaviour
     void RotationQueue()
     {
         //enqueuing rotation if input while rotating
-        if (isRotating && !uiActive && !stopMovement)
+        if (isRotating && !MovementInterfering())
         {
             if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Q))
             {
@@ -202,6 +201,18 @@ public class PlayerMovement : MonoBehaviour
                 RotationKeyListener(rotationInputQueue);
                 rotationInputQueue = 0;
             }
+        }
+    }
+
+    bool MovementInterfering()
+    {
+        if(stopMovement || PlayerParams.Variables.uiActive)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 using Whisper;
 using Whisper.Utils;
 using System.Linq;
+using UnityEngine.Rendering;
 
 public class SpellCasting : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class SpellCasting : MonoBehaviour
     [Header("Current Spell")]
     public string currentSpell = "None";
     public GameObject floatingLight;
+    public GameObject magicMark;
 
     [Header("Spell Cast Position")]
     public Transform hand;
@@ -24,6 +26,7 @@ public class SpellCasting : MonoBehaviour
     [Header("Spells Prefabs")]
     public GameObject lightPrefab;
     public GameObject firePrefab;
+    public GameObject markPrefab;
 
     //classes necessary for speach to text
     private MicrophoneRecord microphoneRecord;
@@ -61,6 +64,44 @@ public class SpellCasting : MonoBehaviour
             currentSpell = "Fire";
             PlayerParams.Controllers.handInteractions.inHand = Instantiate(firePrefab, hand);
             mana -= scroll.manaCost;
+        }
+    }
+
+    public void MarkSpell() //marking place under player for future teleportation
+    {
+        SpellScrollInfo scroll = spellbook.GetSpellInfo("Mark And Return");
+        if (scroll != null)
+        {
+            if (PlayerParams.Controllers.playerMovement.isMoving)
+            {
+                Vector3 place = PlayerParams.Controllers.playerMovement.previousTile;
+                place.y = 0;
+                magicMark = Instantiate(markPrefab, place, Quaternion.identity);
+            }
+            else
+            {
+                Vector3 place = PlayerParams.Objects.player.transform.position;
+                place.y = 0;
+                magicMark = Instantiate(markPrefab, place, Quaternion.identity);
+            }
+            mana -= scroll.manaCost / 4;
+        }
+    }
+
+    public void ReturnSpell() //teleporting to marked place, if mark exists
+    {
+        if (magicMark != null)
+        {
+            SpellScrollInfo scroll = spellbook.GetSpellInfo("Mark And Return");
+            if (scroll != null)
+            {
+                Vector3 tpDestination = magicMark.transform.position;
+                tpDestination.y = 1;
+                PlayerParams.Controllers.playerMovement.stopMovement = true;
+                PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination);
+                magicMark.GetComponent<MarkAndReturnSpellBehavior>().TeleportationPerformed();
+                mana -= scroll.manaCost;
+            }
         }
     }
 
@@ -106,6 +147,14 @@ public class SpellCasting : MonoBehaviour
         if (NormalizeTranscribedText(spellWhispered) == "fire")
         {
             FireSpell();
+        }
+        if (NormalizeTranscribedText(spellWhispered) == "mark")
+        {
+            MarkSpell();
+        }
+        if (NormalizeTranscribedText(spellWhispered) == "return")
+        {
+            ReturnSpell();
         }
     }
 

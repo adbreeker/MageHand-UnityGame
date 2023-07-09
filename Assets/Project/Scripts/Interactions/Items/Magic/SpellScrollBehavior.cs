@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using TMPro;
 
 [System.Serializable]
 public class SpellScrollInfo //class for holding spell scroll data
@@ -48,6 +49,7 @@ public class SpellScrollBehavior : MonoBehaviour
 [CustomEditor(typeof(SpellScrollBehavior))]
 class SpellScrollBehaviorEditor : Editor
 {
+
     public override void OnInspectorGUI()
     {
         SpellScrollBehavior script = (SpellScrollBehavior)target;
@@ -67,7 +69,8 @@ class SpellScrollBehaviorEditor : Editor
         EditorGUILayout.BeginVertical();
         EditorGUILayout.LabelField("Spell Name", labelStyle);
         GUILayout.Space(4f);
-        script.spellScrollInfo.spellName = EditorGUILayout.TextField(script.spellScrollInfo.spellName);
+        SerializedProperty spellNameProperty = serializedObject.FindProperty("spellScrollInfo.spellName");
+        spellNameProperty.stringValue = EditorGUILayout.TextArea(script.spellScrollInfo.spellName);
         EditorGUILayout.EndVertical();
 
         //display rest only if spell name is written
@@ -78,7 +81,8 @@ class SpellScrollBehaviorEditor : Editor
             EditorGUILayout.BeginVertical();
             EditorGUILayout.LabelField("Mana Cost", labelStyle);
             GUILayout.Space(4f);
-            script.spellScrollInfo.manaCost = EditorGUILayout.IntField(script.spellScrollInfo.manaCost);
+            SerializedProperty manaCostProperty = serializedObject.FindProperty("spellScrollInfo.manaCost");
+            manaCostProperty.intValue = EditorGUILayout.IntField(script.spellScrollInfo.manaCost);
             EditorGUILayout.EndVertical();
 
             GUILayout.Space(8f);
@@ -86,7 +90,8 @@ class SpellScrollBehaviorEditor : Editor
             EditorGUILayout.BeginVertical();
             EditorGUILayout.LabelField("Spell Description", labelStyle);
             GUILayout.Space(4f);
-            script.spellScrollInfo.spellDescription = EditorGUILayout.TextArea(script.spellScrollInfo.spellDescription, textAreaStyle, GUILayout.Height(60));
+            SerializedProperty spellDescriptionProperty = serializedObject.FindProperty("spellScrollInfo.spellDescription");
+            spellDescriptionProperty.stringValue = EditorGUILayout.TextArea(script.spellScrollInfo.spellDescription, textAreaStyle, GUILayout.Height(60));
             EditorGUILayout.EndVertical();
 
             GUILayout.Space(10f);
@@ -94,7 +99,10 @@ class SpellScrollBehaviorEditor : Editor
             EditorGUILayout.BeginVertical();
             EditorGUILayout.LabelField("Spell Image", labelStyle);
             GUILayout.Space(4f);
-            script.spellScrollInfo.spellPicture = (Texture)EditorGUILayout.ObjectField(script.spellScrollInfo.spellPicture, typeof(Texture), false, GUILayout.Height(300));
+            SerializedProperty spellPictureProperty = serializedObject.FindProperty("spellScrollInfo.spellPicture");
+            spellPictureProperty.objectReferenceValue = EditorGUILayout.ObjectField(script.spellScrollInfo.spellPicture, typeof(Texture), false, GUILayout.Height(300)) as Texture;
+            //EditorGUILayout.PropertyField(serializedObject.FindProperty("spellScrollInfo.spellPicture"), new GUIContent(""), GUILayout.Height(300));
+
             EditorGUILayout.EndVertical();
 
             GUILayout.Space(20f);
