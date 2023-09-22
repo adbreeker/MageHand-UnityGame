@@ -38,6 +38,7 @@ public class Dialogue : MonoBehaviour
     private Dictionary<int, string> optionsTexts;
 
     private bool listen = false;
+    private bool skip = false;
     private int choice;
 
     void Start()
@@ -78,6 +79,7 @@ public class Dialogue : MonoBehaviour
     {
         //Listen if typing text is done
         if (listen) KeysListener();
+        else KeysListenerSkip();
     }
 
     void PointOption(TextMeshProUGUI option)
@@ -93,7 +95,7 @@ public class Dialogue : MonoBehaviour
 
         //Set position of pointer to pointed option
         pointer.transform.localPosition =
-            new Vector3(pointer.transform.localPosition.x, option.transform.localPosition.y + 4f, pointer.transform.localPosition.z);
+            new Vector3(pointer.transform.localPosition.x, option.transform.localPosition.y, pointer.transform.localPosition.z); //y was + 4f
     }
 
     void KeysListener()
@@ -165,6 +167,14 @@ public class Dialogue : MonoBehaviour
         }
     }
 
+    void KeysListenerSkip()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            skip = true;
+        }
+    }
+
     IEnumerator TypeText()
     {
         //If there is no speaker name, expand space for content, else, show speaker name 
@@ -178,7 +188,7 @@ public class Dialogue : MonoBehaviour
 
         //Set position of pointer to first option
         pointer.transform.localPosition =
-            new Vector3(pointer.transform.localPosition.x, options[1].transform.localPosition.y + 4f, pointer.transform.localPosition.z);
+            new Vector3(pointer.transform.localPosition.x, options[1].transform.localPosition.y, pointer.transform.localPosition.z); //y was + 4f
 
         //Set color of first option to white (255, 255, 255)
         options[1].color = new Color(1f, 1f, 1f);
@@ -188,12 +198,12 @@ public class Dialogue : MonoBehaviour
         foreach (char c in contentText.ToCharArray())
         {
             contentTextObject.text += c;
-            yield return new WaitForSeconds(textSpeed);
+            if (!skip) yield return new WaitForSeconds(textSpeed);
         }
 
         //Show pointer
         pointer.gameObject.SetActive(true);
-        yield return new WaitForSeconds(textSpeed);
+        if (!skip) yield return new WaitForSeconds(textSpeed);
 
         //Type options
         foreach (int key in options.Keys)
@@ -209,7 +219,7 @@ public class Dialogue : MonoBehaviour
                 foreach (char c in optionsTexts[key].ToCharArray())
                 {
                     options[key].text += c;
-                    yield return new WaitForSeconds(textSpeed);
+                    if (!skip) yield return new WaitForSeconds(textSpeed);
                 }
             }
         }

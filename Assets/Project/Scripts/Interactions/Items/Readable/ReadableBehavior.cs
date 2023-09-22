@@ -13,7 +13,6 @@ public class ReadableBehavior : MonoBehaviour
 
     [Header("Prefabs")]
     public GameObject notePrefab; 
-    public GameObject noteSmallPrefab;
 
     public void OnPickUp() //instantiate note prefab and open note on it
     {
