@@ -31,6 +31,9 @@ public class Dialogue : MonoBehaviour
     public TextMeshProUGUI option3;
     public TextMeshProUGUI option4;
 
+    [Header("Sound of voice")]
+    public AudioSource voice;
+
     private float textSpeed;
     private GameObject player;
     private Dictionary<int, TextMeshProUGUI> options;
@@ -184,7 +187,11 @@ public class Dialogue : MonoBehaviour
             contentTextObject.GetComponent<RectTransform>().sizeDelta =
                 new Vector2(contentTextObject.GetComponent<RectTransform>().sizeDelta.x, 200f);
         }
-        else nameTextObject.text = nameText;
+        else
+        {
+            nameTextObject.text = nameText;
+            voice.Play();
+        }
 
         //Set position of pointer to first option
         pointer.transform.localPosition =
@@ -200,7 +207,7 @@ public class Dialogue : MonoBehaviour
             contentTextObject.text += c;
             if (!skip) yield return new WaitForSeconds(textSpeed);
         }
-
+        voice.Stop();
         //Show pointer
         pointer.gameObject.SetActive(true);
         if (!skip) yield return new WaitForSeconds(textSpeed);
