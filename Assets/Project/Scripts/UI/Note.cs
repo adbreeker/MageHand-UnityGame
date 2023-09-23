@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-public class ReadableNote : MonoBehaviour
+public class Note : MonoBehaviour
 {
     [Header("Content text")]
     public string titleText;

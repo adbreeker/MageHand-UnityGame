@@ -17,9 +17,9 @@ public class ReadableBehavior : MonoBehaviour
     public void OnPickUp() //instantiate note prefab and open note on it
     {
         GameObject note = Instantiate(notePrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        note.GetComponent<ReadableNote>().titleText = title;
-        note.GetComponent<ReadableNote>().contentText = content;
-        note.GetComponent<ReadableNote>().OpenNote();
+        note.GetComponent<Note>().titleText = title;
+        note.GetComponent<Note>().contentText = content;
+        note.GetComponent<Note>().OpenNote();
 
         if(destroy)
         {

@@ -206,8 +206,13 @@ public class Dialogue : MonoBehaviour
         {
             contentTextObject.text += c;
             if (!skip) yield return new WaitForSeconds(textSpeed);
+
+            //Start to fade out voice
+            if (contentTextObject.text.Length >= contentText.Length - 5)
+            {
+                StartCoroutine(FadeOutVoice(0.5f));
+            }
         }
-        voice.Stop();
         //Show pointer
         pointer.gameObject.SetActive(true);
         if (!skip) yield return new WaitForSeconds(textSpeed);
@@ -226,12 +231,27 @@ public class Dialogue : MonoBehaviour
                 foreach (char c in optionsTexts[key].ToCharArray())
                 {
                     options[key].text += c;
-                    if (!skip) yield return new WaitForSeconds(textSpeed);
+                    if (!skip) yield return new WaitForSeconds(textSpeed/2);
                 }
             }
         }
 
         //Activate KeysListener
         listen = true;
+    }
+
+    IEnumerator FadeOutVoice(float speed)
+    {
+        float startVolume = voice.volume;
+
+        while (voice.volume > 0)
+        {
+            voice.volume -= startVolume * Time.deltaTime / speed;
+
+            if (!skip) yield return new WaitForSeconds(textSpeed);
+        }
+
+        voice.Stop();
+        voice.volume = startVolume;
     }
 }

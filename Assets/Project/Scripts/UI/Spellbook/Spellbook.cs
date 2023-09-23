@@ -10,6 +10,7 @@ public class Spellbook : MonoBehaviour
     [Header("Game objects")]
     public GameObject spellbookPrefab;
     public Camera UiCamera;
+    public bool spellbook3D = false;
     public bool bookOwned = false;
     public bool ableToInteract = true;
 
@@ -59,7 +60,8 @@ public class Spellbook : MonoBehaviour
         //Play pointed voice
         if (Input.GetKeyDown(KeyCode.Space) && spellbookOpened)
         {
-
+            //Instead of debugging there will be text to speech
+            Debug.Log(spellbookPages[page][pointed-1].spellName);
         }
 
         //Go left if possible
@@ -99,10 +101,19 @@ public class Spellbook : MonoBehaviour
 
     void OpenSpellbook()
     {
-        //Instatiate inventory and assign it to UiCamera
+        //Instatiate spellbook and assign it to UiCamera if in 3D
         instantiatedSpellbook = Instantiate(spellbookPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
-        instantiatedSpellbook.GetComponent<Canvas>().worldCamera = UiCamera;
-        instantiatedSpellbook.GetComponent<Canvas>().planeDistance = 1.05f;
+        
+        if (spellbook3D)
+        {
+            instantiatedSpellbook.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
+            instantiatedSpellbook.GetComponent<Canvas>().worldCamera = UiCamera;
+            instantiatedSpellbook.GetComponent<Canvas>().planeDistance = 1.05f;
+        }
+        else
+        {
+            instantiatedSpellbook.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+        }
 
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.inventory.CloseInventory();
