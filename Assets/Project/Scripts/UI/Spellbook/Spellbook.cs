@@ -154,10 +154,12 @@ public class Spellbook : MonoBehaviour
         page = 0;
         if (spellbookPages.Count > 0)
         {
+            instantiatedSpellbook.transform.Find("Empty").gameObject.SetActive(false);
             DisplayPage(page);
             pointed = 1;
             PointOption(pointed);
         }
+        else instantiatedSpellbook.transform.Find("Empty").gameObject.SetActive(true);
         spellbookOpened = true;
     }
 
