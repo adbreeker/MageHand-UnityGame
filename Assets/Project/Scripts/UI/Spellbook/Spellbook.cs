@@ -45,7 +45,7 @@ public class Spellbook : MonoBehaviour
 
     void KeysListener()
     {
-        //Open or close inventory
+        //Open or close spellbook
         if (Input.GetKeyDown(KeyCode.B))
         {
             if (!spellbookOpened && bookOwned) OpenSpellbook();
