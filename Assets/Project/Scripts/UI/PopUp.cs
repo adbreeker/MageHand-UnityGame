@@ -14,7 +14,7 @@ public class PopUp : MonoBehaviour
         popUp = gameObject;
     }
 
-    public void ActivatePopUp(string title, string content, float timeToFadeOut)
+    public void ActivatePopUp(string title, string content, float timeToFadeOut, float timeOfFadingOut)
     {
         if (!string.IsNullOrWhiteSpace(title))
         {
@@ -22,16 +22,16 @@ public class PopUp : MonoBehaviour
             titleObject.gameObject.SetActive(true);
         }
         contentObject.text = content;
-        StartCoroutine(FadeOutPopUp(timeToFadeOut));
+        StartCoroutine(FadeOutPopUp(timeToFadeOut, timeOfFadingOut));
     }
 
 
-    IEnumerator FadeOutPopUp(float timeToFadeOut)
+    IEnumerator FadeOutPopUp(float timeToFadeOut, float timeOfFadingOut)
     {
         yield return new WaitForSeconds(timeToFadeOut);
         while (popUp.GetComponent<CanvasGroup>().alpha > 0)
         {
-            popUp.GetComponent<CanvasGroup>().alpha -= 0.007f;
+            popUp.GetComponent<CanvasGroup>().alpha -= timeOfFadingOut;
             yield return new WaitForSeconds(0);
         }
         Destroy(popUp);
