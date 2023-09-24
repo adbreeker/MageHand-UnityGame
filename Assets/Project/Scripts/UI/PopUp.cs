@@ -16,12 +16,15 @@ public class PopUp : MonoBehaviour
 
     public void ActivatePopUp(string title, string content, float timeToFadeOut, float timeOfFadingOut)
     {
+        popUp.transform.parent = GameObject.FindGameObjectWithTag("PopUpContainer").transform;
+
         if (!string.IsNullOrWhiteSpace(title))
         {
             titleObject.text = title;
             titleObject.gameObject.SetActive(true);
         }
         contentObject.text = content;
+
         StartCoroutine(FadeOutPopUp(timeToFadeOut, timeOfFadingOut));
     }
 
