@@ -10,9 +10,15 @@ public class Spellbook : MonoBehaviour
     [Header("Game objects")]
     public GameObject spellbookPrefab;
     public Camera UiCamera;
+
+    [Header("Settings")]
     public bool spellbook3D = false;
     public bool bookOwned = false;
     public bool ableToInteract = true;
+
+    [Header("Voices")]
+    public bool voiceIsPlaying;
+    public AudioSource lightVoice;
 
     private bool spellbookOpened = false;
     private int page;
@@ -60,8 +66,16 @@ public class Spellbook : MonoBehaviour
         //Play pointed voice
         if (Input.GetKeyDown(KeyCode.Space) && spellbookOpened)
         {
-            //Instead of debugging there will be text to speech
-            Debug.Log(spellbookPages[page][pointed-1].spellName);
+            //Change it to TTS?
+            if (lightVoice.isPlaying) voiceIsPlaying = true;
+            //if (lightVoice.isPlaying || fireVoice.isPlaying etc.) voiceIsPlaying = true; ^in place of that
+            else voiceIsPlaying = false;
+
+            if (!voiceIsPlaying)
+            {
+                if (spellbookPages[page][pointed - 1].spellName == "Light") lightVoice.Play();
+                //if (spellbookPages[page][pointed - 1].spellName == "Fire") fireVoice.Play(); etc.
+            }
         }
 
         //Go left if possible
@@ -103,7 +117,8 @@ public class Spellbook : MonoBehaviour
     {
         //Instatiate spellbook and assign it to UiCamera if in 3D
         instantiatedSpellbook = Instantiate(spellbookPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
-        
+
+
         if (spellbook3D)
         {
             instantiatedSpellbook.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
@@ -114,6 +129,9 @@ public class Spellbook : MonoBehaviour
         {
             instantiatedSpellbook.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
         }
+
+        //Assign proper voices
+        lightVoice = instantiatedSpellbook.transform.Find("Voices").Find("Light").GetComponent<AudioSource>();
 
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.inventory.CloseInventory();
