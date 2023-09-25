@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PopUpActivate : MonoBehaviour
+public class PopUpActivateOnPickUp : MonoBehaviour
 {
     [Header("Pop up content")]
     public string title;
