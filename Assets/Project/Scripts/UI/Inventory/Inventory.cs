@@ -118,9 +118,14 @@ public class Inventory : MonoBehaviour
         if (inventoryPages.Count > 0)
         {
             instantiatedInventory.transform.Find("Empty").gameObject.SetActive(false);
+            instantiatedInventory.transform.Find("Title").gameObject.SetActive(true);
             DisplayPage(page);
         }
-        else instantiatedInventory.transform.Find("Empty").gameObject.SetActive(true);
+        else
+        {
+            instantiatedInventory.transform.Find("Empty").gameObject.SetActive(true);
+            instantiatedInventory.transform.Find("Title").gameObject.SetActive(false);
+        }
         inventoryOpened = true;
     }
 
