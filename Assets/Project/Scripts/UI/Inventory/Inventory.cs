@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class Inventory : MonoBehaviour
     public Camera UiCamera;
 
     public bool ableToInteract = true;
-    
+
     private bool inventoryOpened = false;
     private int page;
 
@@ -23,9 +24,14 @@ public class Inventory : MonoBehaviour
 
     void Update()
     {
-        if(ableToInteract)
+        if (ableToInteract)
         {
             KeysListener();
+        }
+
+        if (ableToInteract && inventoryOpened)
+        {
+            PointIcon();
         }
     }
 
@@ -89,7 +95,7 @@ public class Inventory : MonoBehaviour
         itemSlots = new List<GameObject>();
         for (int i = 0; i < 3; i++)
         {
-            itemSlots.Add(instantiatedInventory.transform.Find("Items").Find("Top").Find((i+1).ToString()).gameObject);
+            itemSlots.Add(instantiatedInventory.transform.Find("Items").Find("Top").Find((i + 1).ToString()).gameObject);
         }
         for (int i = 0; i < 3; i++)
         {
@@ -101,7 +107,7 @@ public class Inventory : MonoBehaviour
         int pageToAdd = -1;
         for (int i = 0; i < inventory.Count; i++)
         {
-            if (i%6 == 0)
+            if (i % 6 == 0)
             {
                 pageToAdd++;
                 inventoryPages.Add(new List<GameObject>());
@@ -175,5 +181,22 @@ public class Inventory : MonoBehaviour
         inventory.Add(item);
         item.SetActive(false);
         PlayerParams.Controllers.handInteractions.inHand = null;
+    }
+
+    public void PointIcon()
+    {
+        for (int i = 0; i < itemIconActiveInstances.Count; i++)
+        {
+            if (itemIconActiveInstances[i].transform.Find("Icon").GetComponent<EnlightItem>() != null)
+            {
+                itemIconActiveInstances[i].transform.parent.GetComponent<RawImage>().color = new Color(1f, 1f, 1f);
+                itemIconActiveInstances[i].transform.parent.transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
+            }
+            else if (itemIconActiveInstances[i].transform.parent.GetComponent<RawImage>().color == new Color(1f, 1f, 1f))
+            {
+                itemIconActiveInstances[i].transform.parent.GetComponent<RawImage>().color = new Color(0.2666f, 0.2666f, 0.2666f);
+                itemIconActiveInstances[i].transform.parent.transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
+            }
+        }
     }
 }

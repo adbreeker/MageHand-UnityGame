@@ -22,10 +22,6 @@ public class ShowGesture : MonoBehaviour
         else if(ununnormalizedText == "Victory") gestureText.text = "Cast";
         else if(ununnormalizedText == "Thumb_Down") gestureText.text = "Equip/Reactivation";
         else if(ununnormalizedText == "ILoveYou") gestureText.text = "Drink";
-        else gestureText.text = "None";
-
-
-
-
+        else gestureText.text = "";
     }
 }

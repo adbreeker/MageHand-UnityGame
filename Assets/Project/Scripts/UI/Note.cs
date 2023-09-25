@@ -159,8 +159,12 @@ public class Note : MonoBehaviour
     void PointOption(TextMeshProUGUI option)
     {
         //Change color of all options to lightGrey (118, 118, 118)
-        option1.color = new Color(0.4625f, 0.4625f, 0.4625f);
-        option2.color = new Color(0.4625f, 0.4625f, 0.4625f);
+        //option1.color = new Color(0.4625f, 0.4625f, 0.4625f);
+        //option2.color = new Color(0.4625f, 0.4625f, 0.4625f);
+
+        //Change color of all options to darkGrey (68, 68, 68)
+        option1.color = new Color(0.2666f, 0.2666f, 0.2666f);
+        option2.color = new Color(0.2666f, 0.2666f, 0.2666f);
 
         //Change color of pointed option to white (255, 255, 255)
         option.color = new Color(1f, 1f, 1f);

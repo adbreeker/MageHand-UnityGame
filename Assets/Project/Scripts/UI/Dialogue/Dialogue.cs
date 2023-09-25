@@ -88,9 +88,15 @@ public class Dialogue : MonoBehaviour
     void PointOption(TextMeshProUGUI option)
     {
         //Change color of all options to lightGrey (118, 118, 118)
+        //foreach (int key in options.Keys)
+        //{
+        //    options[key].color = new Color(0.4625f, 0.4625f, 0.4625f);
+        //}
+
+        //Change color of all options to darkGrey (68, 68, 68)
         foreach (int key in options.Keys)
         {
-            options[key].color = new Color(0.4625f, 0.4625f, 0.4625f);
+            options[key].color = new Color(0.2666f, 0.2666f, 0.2666f);
         }
 
         //Change color of pointed option to white (255, 255, 255)
