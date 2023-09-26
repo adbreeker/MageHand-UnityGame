@@ -88,10 +88,12 @@ public class Note : MonoBehaviour
     public void OpenNote()
     {
         //Disable other controls (close first, because it activates movement and enable other ui)
-        if (PlayerParams.Controllers.inventory.enabled == true) player.GetComponent<Inventory>().CloseInventory();
-        if (PlayerParams.Controllers.spellbook.enabled == true) player.GetComponent<Spellbook>().CloseSpellbook();
-        PlayerParams.Controllers.inventory.enabled = false;
-        PlayerParams.Controllers.spellbook.enabled = false;
+        PlayerParams.Controllers.inventory.CloseInventory();
+        PlayerParams.Controllers.spellbook.CloseSpellbook();
+        PlayerParams.Controllers.pauseMenu.CloseMenu();
+        PlayerParams.Controllers.inventory.ableToInteract = false;
+        PlayerParams.Controllers.spellbook.ableToInteract = false;
+        PlayerParams.Controllers.pauseMenu.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
 
@@ -149,8 +151,9 @@ public class Note : MonoBehaviour
         Destroy(gameObject);
 
         //Enable other controls
-        PlayerParams.Controllers.inventory.enabled = true;
-        PlayerParams.Controllers.spellbook.enabled = true;
+        PlayerParams.Controllers.inventory.ableToInteract = true;
+        PlayerParams.Controllers.spellbook.ableToInteract = true;
+        PlayerParams.Controllers.pauseMenu.ableToInteract = true;
         PlayerParams.Variables.uiActive = false;
         PlayerParams.Objects.hand.SetActive(true);
         openedNote = false;

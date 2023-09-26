@@ -52,8 +52,10 @@ public class Dialogue : MonoBehaviour
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.inventory.CloseInventory();
         PlayerParams.Controllers.spellbook.CloseSpellbook();
+        PlayerParams.Controllers.pauseMenu.CloseMenu();
         PlayerParams.Controllers.inventory.ableToInteract = false;
         PlayerParams.Controllers.spellbook.ableToInteract = false;
+        PlayerParams.Controllers.pauseMenu.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
 
@@ -167,6 +169,7 @@ public class Dialogue : MonoBehaviour
                 PlayerParams.Objects.hand.SetActive(true);
                 PlayerParams.Controllers.inventory.ableToInteract = true;
                 PlayerParams.Controllers.spellbook.ableToInteract = true;
+                PlayerParams.Controllers.pauseMenu.ableToInteract = true;
             }
             else
             {

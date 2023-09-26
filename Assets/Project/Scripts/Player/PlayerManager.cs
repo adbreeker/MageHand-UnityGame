@@ -16,6 +16,7 @@ public static class PlayerParams //static player parameters accessible from ever
         public static PlayerMovement playerMovement;
         public static Inventory inventory;
         public static Spellbook spellbook;
+        public static PauseMenu pauseMenu;
         public static HandInteractions handInteractions;
         public static SpellCasting spellCasting;
     }
@@ -39,6 +40,7 @@ public class PlayerManager : MonoBehaviour //assigning static PlayerParams on Aw
     public PlayerMovement playerMovement;
     public Inventory inventory;
     public Spellbook spellbook;
+    public PauseMenu pauseMenu;
     public HandInteractions handInteractions;
     public SpellCasting spellCasting;
 
@@ -55,6 +57,7 @@ public class PlayerManager : MonoBehaviour //assigning static PlayerParams on Aw
         PlayerParams.Controllers.playerMovement = playerMovement;
         PlayerParams.Controllers.inventory = inventory;
         PlayerParams.Controllers.spellbook = spellbook;
+        PlayerParams.Controllers.pauseMenu = pauseMenu;
         PlayerParams.Controllers.handInteractions = handInteractions;
         PlayerParams.Controllers.spellCasting = spellCasting;
 

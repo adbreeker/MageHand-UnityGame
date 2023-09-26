@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3067802443841232321}
+  - component: {fileID: 4632883312255626714}
   - component: {fileID: 3067802443841232320}
   - component: {fileID: 3067802443841232447}
   - component: {fileID: 3067802443841232446}
@@ -40,6 +41,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &4632883312255626714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3067802443841232445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11c1301343c3b28489f6dfea66c0370e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gestureText: {fileID: 6116374017405988549}
 --- !u!223 &3067802443841232320
 Canvas:
   m_ObjectHideFlags: 0
@@ -59,7 +73,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!114 &3067802443841232447
 MonoBehaviour:
@@ -197,7 +211,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3914321599011529991}
   - component: {fileID: 545726075613752648}
-  - component: {fileID: 6875138361777559834}
   - component: {fileID: 6116374017405988549}
   m_Layer: 5
   m_Name: Gesture
@@ -233,18 +246,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7509287117894162292}
   m_CullTransparentMesh: 1
---- !u!114 &6875138361777559834
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7509287117894162292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37d67023f90fa5e468cf29bd03214fc0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6116374017405988549
 MonoBehaviour:
   m_ObjectHideFlags: 0

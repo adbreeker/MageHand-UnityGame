@@ -15,12 +15,12 @@ public class Spellbook : MonoBehaviour
     public bool spellbook3D = false;
     public bool bookOwned = false;
     public bool ableToInteract = true;
+    public bool spellbookOpened = false;
 
-    [Header("Voices")]
-    public bool voiceIsPlaying;
-    public AudioSource lightVoice;
+    //[Header("Voices")]
+    private bool voiceIsPlaying;
+    private AudioSource lightVoice;
 
-    private bool spellbookOpened = false;
     private int page;
     private int pointed;
 
@@ -135,7 +135,9 @@ public class Spellbook : MonoBehaviour
 
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.inventory.CloseInventory();
-        PlayerParams.Controllers.inventory.ableToInteract = false;
+        PlayerParams.Controllers.pauseMenu.CloseMenu();
+        //PlayerParams.Controllers.inventory.ableToInteract = false;
+        PlayerParams.Controllers.pauseMenu.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
 
@@ -187,7 +189,8 @@ public class Spellbook : MonoBehaviour
         spellbookOpened = false;
 
         //Enable other controls
-        PlayerParams.Controllers.inventory.ableToInteract = true;
+        //PlayerParams.Controllers.inventory.ableToInteract = true;
+        PlayerParams.Controllers.pauseMenu.ableToInteract = true;
         PlayerParams.Variables.uiActive = false;
         PlayerParams.Objects.hand.SetActive(true);
     }
