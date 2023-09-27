@@ -27,7 +27,7 @@ public class HUD : MonoBehaviour
         else if (ununnormalizedText == "Closed_Fist") gestureText.text = "Grab";
         else if (ununnormalizedText == "Thumb_Up") gestureText.text = "Throw";
         else if (ununnormalizedText == "Victory") gestureText.text = "Cast";
-        else if (ununnormalizedText == "Thumb_Down") gestureText.text = "Equip/Reactivation";
+        else if (ununnormalizedText == "Thumb_Down") gestureText.text = "Equip";
         else if (ununnormalizedText == "ILoveYou") gestureText.text = "Drink";
         else gestureText.text = "";
     }

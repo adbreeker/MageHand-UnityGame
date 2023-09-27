@@ -9,6 +9,7 @@ public class PauseMenu : MonoBehaviour
     public GameObject menuPrefab;
     public GameObject resetMenuPrefab;
     public GameObject controlsMenuPrefab;
+    public GameObject gesturesMenuPrefab;
     public GameObject quitToMenuMenuPrefab;
     public GameObject quitGameMenuPrefab;
 
@@ -20,6 +21,7 @@ public class PauseMenu : MonoBehaviour
     private GameObject instantiatedMenu;
     private GameObject instantiatedResetMenu;
     private GameObject instantiatedControlsMenu;
+    private GameObject instantiatedGesturesMenu;
     private GameObject instantiatedQuitToMenuMenu;
     private GameObject instantiatedQuitGameMenu;
     private GameObject pointer;
@@ -128,12 +130,12 @@ public class PauseMenu : MonoBehaviour
             else if (pointedOptionMenu == 3)
             {
                 //Spawn GesturesMenu
+                instantiatedMenu.transform.Find("Menu").gameObject.SetActive(false);
 
+                instantiatedGesturesMenu = Instantiate(gesturesMenuPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity, instantiatedMenu.transform);
+                instantiatedGesturesMenu.transform.localPosition = new Vector3(0, 0, 0);
 
-
-
-
-
+                instantiatedGesturesMenu.GetComponent<GesturesMenu>().OpenMenu(pointer);
             }
             else if (pointedOptionMenu == 4)
             {
