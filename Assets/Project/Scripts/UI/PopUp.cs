@@ -16,7 +16,7 @@ public class PopUp : MonoBehaviour
 
     public void ActivatePopUp(string title, string content, float timeToFadeOut, float timeOfFadingOut)
     {
-        popUp.transform.parent = GameObject.FindGameObjectWithTag("HUD").transform.Find("PopUpContainer").transform;
+        popUp.transform.SetParent(GameObject.FindGameObjectWithTag("HUD").transform.Find("PopUpContainer").transform);
 
         if (!string.IsNullOrWhiteSpace(title))
         {
