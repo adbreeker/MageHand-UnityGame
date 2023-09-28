@@ -170,7 +170,7 @@ public class Spellbook : MonoBehaviour
             }
         }
 
-        //Display first page if there are items in inventory
+        //Display first page if there are spells
         page = 0;
         if (spellbookPages.Count > 0)
         {
@@ -204,6 +204,9 @@ public class Spellbook : MonoBehaviour
             //titleRight.GetComponent<TextMeshProUGUI>().color = new Color(0.4625f, 0.4625f, 0.4625f);
             pointerRight.SetActive(false);
             pointerLeft.SetActive(true);
+            pointerLeft.transform.parent.GetComponent<TextMeshProUGUI>().ForceMeshUpdate();
+            pointerLeft.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                pointerLeft.transform.parent.GetComponent<TextMeshProUGUI>().textBounds.size.x + 102.5f, pointerLeft.GetComponent<RectTransform>().sizeDelta.y);
         }
         else if (option == 2)
         {
@@ -213,6 +216,9 @@ public class Spellbook : MonoBehaviour
             //titleRight.GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
             pointerLeft.SetActive(false);
             pointerRight.SetActive(true);
+            pointerRight.transform.parent.GetComponent<TextMeshProUGUI>().ForceMeshUpdate();
+            pointerRight.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                pointerRight.transform.parent.GetComponent<TextMeshProUGUI>().textBounds.size.x + 102.5f, pointerRight.GetComponent<RectTransform>().sizeDelta.y);
         }
     }
 

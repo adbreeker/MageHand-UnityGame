@@ -1,13 +1,12 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class Note : MonoBehaviour
 {
     [Header("Content text")]
     public string titleText;
     public string contentText;
-
-    private GameObject player;
 
     private GameObject pointer;
     private TextMeshProUGUI option1;
@@ -20,18 +19,14 @@ public class Note : MonoBehaviour
     private int pageCount;
     private int pointedOption;
     private bool ableToChoose;
-    private int updateCount;
-    private int framesToWait = 2;
-
-    private void Awake()
-    {
-        player = GameObject.FindGameObjectWithTag("Player");
-    }
+    private int updateCount = 0;
+    private int framesToWait = 1;
 
     private void Update()
     {
         KeysListener();
-        
+
+
         //Display first page after few frames to load everything, so pageCount works properly
         if (openedNote && updateCount < framesToWait)
         {
@@ -40,31 +35,25 @@ public class Note : MonoBehaviour
             {
                 pageCount = content.textInfo.pageCount;
                 option1.gameObject.SetActive(true);
-                DisplayPage(page);
+                StartCoroutine(DisplayPage(page));
             }
         }
     }
 
     void KeysListener()
     {
-        //Test by pressing n
-        if (Input.GetKeyDown(KeyCode.N) && !openedNote)
-        {
-            //OpenNote();
-        }
-
         //Choose option continue, back or close
         if (Input.GetKeyDown(KeyCode.Space) && openedNote && updateCount == framesToWait)
         {
             if (pointedOption == 1 && page < pageCount)
             {
                 page++;
-                DisplayPage(page);
+                StartCoroutine(DisplayPage(page));
             }
             else if (pointedOption == 2 && page > 1)
             {
                 page--;
-                DisplayPage(page);
+                StartCoroutine(DisplayPage(page));
             }
             else if (pointedOption == 1 && page == pageCount)
             {
@@ -112,7 +101,7 @@ public class Note : MonoBehaviour
         openedNote = true;
     }
 
-    void DisplayPage(int page)
+    IEnumerator DisplayPage(int page)
     {
         //Display page of content text
         content.pageToDisplay = page;
@@ -120,14 +109,12 @@ public class Note : MonoBehaviour
         //Display proper buttons
         if (page == 1 && page != pageCount)
         {
-            PointOption(option1);
             ableToChoose = false;
-            option1.text = "Continue";
+            option1.text = "Con";
             option2.gameObject.SetActive(false);
         }
         else if (page == 1 && page == pageCount)
         {
-            PointOption(option1);
             ableToChoose = false;
             option1.text = "Close";
             option2.gameObject.SetActive(false);
@@ -144,7 +131,47 @@ public class Note : MonoBehaviour
             option1.text = "Close";
             option2.gameObject.SetActive(true);
         }
+
+        //Wait for text to change size
+        yield return new WaitForSeconds(0);
+
+        PointOption(option1);
     }
+
+    /*
+    void DisplayPage(int page)
+    {
+        //Display page of content text
+        content.pageToDisplay = page;
+
+        //Display proper buttons
+        if (page == 1 && page != pageCount)
+        {
+            ableToChoose = false;
+            option1.text = "Con";
+            option2.gameObject.SetActive(false);
+        }
+        else if (page == 1 && page == pageCount)
+        {
+            ableToChoose = false;
+            option1.text = "Close";
+            option2.gameObject.SetActive(false);
+        }
+        else if (page > 1 && page < pageCount)
+        {
+            ableToChoose = true;
+            option1.text = "Continue";
+            option2.gameObject.SetActive(true);
+        }
+        else if (page == pageCount)
+        {
+            ableToChoose = true;
+            option1.text = "Close";
+            option2.gameObject.SetActive(true);
+        }
+        PointOption(option1);
+    }
+    */
 
     void CloseNote()
     {
@@ -175,6 +202,10 @@ public class Note : MonoBehaviour
         //Set position of pointer to pointed option
         pointer.transform.localPosition =
             new Vector3(pointer.transform.localPosition.x, option.transform.localPosition.y, pointer.transform.localPosition.z);
+
+        //Resize pointer to fit text 
+        pointer.GetComponent<RectTransform>().sizeDelta = new Vector2(
+            option.gameObject.GetComponent<RectTransform>().sizeDelta.x + 102.5f, pointer.GetComponent<RectTransform>().sizeDelta.y);
 
         if (option == option1) pointedOption = 1;
         else pointedOption = 2;

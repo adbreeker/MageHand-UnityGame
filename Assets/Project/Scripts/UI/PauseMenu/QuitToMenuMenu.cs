@@ -94,6 +94,8 @@ public class QuitToMenuMenu : MonoBehaviour
             allOptions[option].color = new Color(1f, 1f, 1f);
 
             pointer.transform.SetParent(allOptions[option].transform);
+            pointer.GetComponent<RectTransform>().sizeDelta = new Vector2(
+                pointer.transform.parent.GetComponent<RectTransform>().sizeDelta.x + 102.5f, pointer.GetComponent<RectTransform>().sizeDelta.y);
             pointer.transform.localPosition = new Vector3(0, 0, 0);
         }
     }
