@@ -14,19 +14,22 @@ public class ChestBehavior : MonoBehaviour
     public bool chestOpen = false;
 
     GameObject mainCamera;
-    PlayerMovement pr;
+    PlayerMovement playerMovement;
+    PauseMenu pauseMenu;
 
     private void Start() //get necessary components on awake
     {
         mainCamera = PlayerParams.Objects.playerCamera.gameObject;
-        pr = PlayerParams.Controllers.playerMovement;
+        playerMovement = PlayerParams.Controllers.playerMovement;
+        pauseMenu = PlayerParams.Controllers.pauseMenu;
     }
 
     private void Update() //listen to chest close input if chest is open
     {
         if(chestOpen)
         {
-            if(Input.GetKeyDown(KeyCode.Escape))
+            pauseMenu.ableToInteract = false;
+            if (!PlayerParams.Variables.uiActive && Input.GetKeyDown(KeyCode.Escape))
             {
                 InteractChest();
             }
@@ -49,6 +52,7 @@ public class ChestBehavior : MonoBehaviour
                 chestLid.transform.localRotation = Quaternion.RotateTowards(chestLid.transform.localRotation, Quaternion.Euler(0, 0, 0), 5);
             }
             chestOpen = false;
+            pauseMenu.ableToInteract = true;
         }
         else //else open lid
         {
@@ -58,6 +62,7 @@ public class ChestBehavior : MonoBehaviour
                 chestLid.transform.localRotation = Quaternion.RotateTowards(chestLid.transform.localRotation, Quaternion.Euler(-135, 0, 0), 5);
             }
             chestOpen = true;
+            pauseMenu.ableToInteract = false;
         }
     }
 
@@ -71,11 +76,11 @@ public class ChestBehavior : MonoBehaviour
                 mainCamera.transform.localPosition = Vector3.MoveTowards(mainCamera.transform.localPosition, PlayerParams.Variables.cameraStartingPosition, 0.2f);
                 mainCamera.transform.localRotation = Quaternion.RotateTowards(mainCamera.transform.localRotation, Quaternion.Euler(0, 0, 0), 5);
             }
-            pr.stopMovement = false;
+            playerMovement.stopMovement = false;
         }
         else //else move camera to chest and stop player movement
         {
-            pr.stopMovement = true;
+            playerMovement.stopMovement = true;
             while (mainCamera.transform.position != inChestCameraTransform.position || mainCamera.transform.localRotation != inChestCameraTransform.localRotation)
             {
                 yield return new WaitForFixedUpdate();
