@@ -110,7 +110,7 @@ public class Note : MonoBehaviour
         if (page == 1 && page != pageCount)
         {
             ableToChoose = false;
-            option1.text = "Con";
+            option1.text = "Continue";
             option2.gameObject.SetActive(false);
         }
         else if (page == 1 && page == pageCount)

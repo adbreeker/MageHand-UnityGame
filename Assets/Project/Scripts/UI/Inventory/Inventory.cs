@@ -190,19 +190,22 @@ public class Inventory : MonoBehaviour
     //Probably could be done better to lag less
     public void PointIcon()
     {
-        for (int i = 0; i < itemIconActiveInstances.Count; i++)
+        if (inventoryPages.Count > 0)
         {
-            //Change background of pointed item to white (255, 255, 255)
-            if (itemIconActiveInstances[i].transform.Find("Icon").GetComponent<EnlightItem>() != null)
+            for (int i = 0; i < itemIconActiveInstances.Count; i++)
             {
-                itemIconActiveInstances[i].transform.parent.GetComponent<RawImage>().color = new Color(1f, 1f, 1f);
-                //itemIconActiveInstances[i].transform.parent.transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
-            }
-            //Change background of pointed item to darkGrey (68, 68, 68)
-            else if (itemIconActiveInstances[i].transform.parent.GetComponent<RawImage>().color == new Color(1f, 1f, 1f))
-            {
-                itemIconActiveInstances[i].transform.parent.GetComponent<RawImage>().color = new Color(0.2666f, 0.2666f, 0.2666f);
-                //itemIconActiveInstances[i].transform.parent.transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
+                //Change background of pointed item to white (255, 255, 255)
+                if (itemIconActiveInstances[i].transform.Find("Icon").GetComponent<EnlightItem>() != null)
+                {
+                    itemIconActiveInstances[i].transform.parent.GetComponent<RawImage>().color = new Color(1f, 1f, 1f);
+                    //itemIconActiveInstances[i].transform.parent.transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
+                }
+                //Change background of pointed item to darkGrey (68, 68, 68)
+                else if (itemIconActiveInstances[i].transform.parent.GetComponent<RawImage>().color == new Color(1f, 1f, 1f))
+                {
+                    itemIconActiveInstances[i].transform.parent.GetComponent<RawImage>().color = new Color(0.2666f, 0.2666f, 0.2666f);
+                    //itemIconActiveInstances[i].transform.parent.transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
+                }
             }
         }
     }
