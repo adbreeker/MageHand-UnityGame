@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class QuitToMenuMenu : MonoBehaviour
 {
@@ -50,7 +51,7 @@ public class QuitToMenuMenu : MonoBehaviour
         {
             if (pointedOptionMenu == 0)
             {
-
+                SceneManager.LoadScene("Menu");
             }
             else if (pointedOptionMenu == 1)
             {
@@ -75,8 +76,7 @@ public class QuitToMenuMenu : MonoBehaviour
 
     public void CloseMenu()
     {
-        pointer.transform.SetParent(transform.parent.transform.Find("Menu").Find("Options").Find("5"));
-        pointer.transform.localPosition = new Vector3(0, 0, 0);
+        pointer.transform.SetParent(transform.parent.transform.Find("Menu"));
         menuOptions.Clear();
         transform.parent.transform.Find("Menu").gameObject.SetActive(true);
         Destroy(gameObject);

@@ -50,7 +50,10 @@ public class QuitGameMenu : MonoBehaviour
         {
             if (pointedOptionMenu == 0)
             {
-
+                #if UNITY_EDITOR
+                    UnityEditor.EditorApplication.isPlaying = false;
+                #endif
+                    Application.Quit();
             }
             else if (pointedOptionMenu == 1)
             {
@@ -75,8 +78,7 @@ public class QuitGameMenu : MonoBehaviour
 
     public void CloseMenu()
     {
-        pointer.transform.SetParent(transform.parent.transform.Find("Menu").Find("Options").Find("6"));
-        pointer.transform.localPosition = new Vector3(0, 0, 0);
+        pointer.transform.SetParent(transform.parent.transform.Find("Menu"));
         menuOptions.Clear();
         transform.parent.transform.Find("Menu").gameObject.SetActive(true);
         Destroy(gameObject);

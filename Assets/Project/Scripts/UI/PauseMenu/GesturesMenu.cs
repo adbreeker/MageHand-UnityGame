@@ -111,8 +111,7 @@ public class GesturesMenu : MonoBehaviour
 
     public void CloseMenu()
     {
-        pointer.transform.SetParent(transform.parent.transform.Find("Menu").Find("Options").Find("4"));
-        pointer.transform.localPosition = new Vector3(0, 0, 0);
+        pointer.transform.SetParent(transform.parent.transform.Find("Menu"));
         menuOptions.Clear();
         transform.parent.transform.Find("Menu").gameObject.SetActive(true);
         Destroy(gameObject);
