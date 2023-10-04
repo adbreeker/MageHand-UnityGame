@@ -6,6 +6,7 @@ public class PopUpActivateOnPickUp : MonoBehaviour
 {
     [Header("Pop up content")]
     public string title;
+    [TextArea(1, 2)]
     public string content;
     public float timeToFadeOut = 2;
     public float timeOfFadingOut = 0.007f;

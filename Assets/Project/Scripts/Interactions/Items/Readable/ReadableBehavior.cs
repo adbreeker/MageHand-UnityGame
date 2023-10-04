@@ -6,6 +6,7 @@ public class ReadableBehavior : MonoBehaviour
 {
     [Header("Note content")]
     public string title;
+    [TextArea(3, 10)]
     public string content;
 
     [Header("Destroy on pick up")]

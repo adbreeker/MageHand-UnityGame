@@ -1122,9 +1122,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8391177895316071268}
+  - component: {fileID: 8391177895316071267}
   - component: {fileID: 8391177895316071269}
   - component: {fileID: 8391177895316071270}
-  - component: {fileID: 8391177895316071267}
   - component: {fileID: 8391177895316071271}
   m_Layer: 5
   m_Name: DialogueCanvas
@@ -1156,6 +1156,39 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &8391177895316071267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8391177895316071288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fab91f29838cfbf4999e1e1a6247b517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: Strange voice
+  contentText: Yes, you. I will be your guide through this dungeon. If you want to
+    get out of it, you must listen to me. Now you have to find the button that is
+    hidden in this room.
+  option1Text: (Stay quiet.)
+  option2Text: Fine, where should I look for it?
+  option3Text: There's no way i'm listening to you.
+  option4Text: Huh, that's interesting.
+  option1Choice: {fileID: 0}
+  option2Choice: {fileID: 0}
+  option3Choice: {fileID: 0}
+  option4Choice: {fileID: 0}
+  pointer: {fileID: 8352204867278315668}
+  dialogueCanvas: {fileID: 8391177895316071269}
+  nameTextObject: {fileID: 8391177893799296807}
+  contentTextObject: {fileID: 8391177895742728306}
+  option1: {fileID: 8391177894158173473}
+  option2: {fileID: 8391177895570376480}
+  option3: {fileID: 8391177894341740333}
+  option4: {fileID: 8391177894036484553}
+  voice: {fileID: 7094420707379491373}
 --- !u!223 &8391177895316071269
 Canvas:
   m_ObjectHideFlags: 0
@@ -1200,39 +1233,6 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
---- !u!114 &8391177895316071267
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8391177895316071288}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fab91f29838cfbf4999e1e1a6247b517, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nameText: Strange voice
-  contentText: Yes, you. I will be your guide through this dungeon. If you want to
-    get out of it, you must listen to me. Now you have to find the button that is
-    hidden in this room.
-  option1Text: (Stay quiet.)
-  option2Text: Fine, where should I look for it?
-  option3Text: There's no way i'm listening to you.
-  option4Text: Huh, that's interesting.
-  option1Choice: {fileID: 0}
-  option2Choice: {fileID: 0}
-  option3Choice: {fileID: 0}
-  option4Choice: {fileID: 0}
-  pointer: {fileID: 8352204867278315668}
-  dialogueCanvas: {fileID: 8391177895316071269}
-  nameTextObject: {fileID: 8391177893799296807}
-  contentTextObject: {fileID: 8391177895742728306}
-  option1: {fileID: 8391177894158173473}
-  option2: {fileID: 8391177895570376480}
-  option3: {fileID: 8391177894341740333}
-  option4: {fileID: 8391177894036484553}
-  voice: {fileID: 7094420707379491373}
 --- !u!114 &8391177895316071271
 MonoBehaviour:
   m_ObjectHideFlags: 0

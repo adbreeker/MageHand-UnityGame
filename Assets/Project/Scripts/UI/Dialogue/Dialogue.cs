@@ -7,12 +7,17 @@ public class Dialogue : MonoBehaviour
 {
     [Header("Content text")]
     public string nameText;
+    [TextArea(3, 10)]
     public string contentText;
 
     [Header("Options text")]
+    [TextArea(1, 2)]
     public string option1Text;
+    [TextArea(1, 2)]
     public string option2Text;
+    [TextArea(1, 2)]
     public string option3Text;
+    [TextArea(1, 2)]
     public string option4Text;
 
     [Header("Choices canvases")]
@@ -35,7 +40,6 @@ public class Dialogue : MonoBehaviour
     public AudioSource voice;
 
     private float textSpeed;
-    private GameObject player;
     private Dictionary<int, TextMeshProUGUI> options;
     private Dictionary<int, Canvas> optionsChoices;
     private Dictionary<int, string> optionsTexts;
@@ -46,7 +50,6 @@ public class Dialogue : MonoBehaviour
 
     void Start()
     {
-        player = transform.parent.GetComponent<OpenDialogue>().player;
         textSpeed = transform.parent.GetComponent<OpenDialogue>().textSpeed;
 
         //Disable other controls (close first, because it activates movement and enable other ui)
@@ -157,8 +160,21 @@ public class Dialogue : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             //Save dialogue to player's diary
-            player.GetComponent<DialogueDiary>().dialogueDiary.Add(new List<string> { nameText, contentText });
-            player.GetComponent<DialogueDiary>().dialogueDiary.Add(new List<string> { "You ", optionsTexts[choice] });
+            //transform.parent.GetComponent<OpenDialogue>().dialogueName;
+            //PlayerParams.Controllers.dialogueDiary.dialogueDiary.Add(new List<string> { nameText, contentText });
+            //PlayerParams.Controllers.dialogueDiary.dialogueDiary.Add(new List<string> { "You ", optionsTexts[choice] });
+            PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueName].Add(new List<string> { nameText, contentText });
+            PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueName].Add(new List<string> { "You ", optionsTexts[choice] });
+            foreach (string key in PlayerParams.Controllers.dialogueDiary.dialogueDiary.Keys)
+            {
+                foreach (List<string> list in PlayerParams.Controllers.dialogueDiary.dialogueDiary[key])
+                {
+                    foreach(string text in list)
+                    {
+                        Debug.Log(text);
+                    }
+                }
+            }
 
             if (optionsChoices[choice] == null)
             {

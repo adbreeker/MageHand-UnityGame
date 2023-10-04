@@ -4,7 +4,6 @@ using System.Collections;
 
 public class Note : MonoBehaviour
 {
-    [Header("Content text")]
     public string titleText;
     public string contentText;
 
@@ -35,7 +34,7 @@ public class Note : MonoBehaviour
             {
                 pageCount = content.textInfo.pageCount;
                 option1.gameObject.SetActive(true);
-                StartCoroutine(DisplayPage(page));
+                StartCoroutine(DisplayPage(page, 1));
             }
         }
     }
@@ -48,12 +47,12 @@ public class Note : MonoBehaviour
             if (pointedOption == 1 && page < pageCount)
             {
                 page++;
-                StartCoroutine(DisplayPage(page));
+                StartCoroutine(DisplayPage(page, 1));
             }
             else if (pointedOption == 2 && page > 1)
             {
                 page--;
-                StartCoroutine(DisplayPage(page));
+                StartCoroutine(DisplayPage(page, 2));
             }
             else if (pointedOption == 1 && page == pageCount)
             {
@@ -101,7 +100,7 @@ public class Note : MonoBehaviour
         openedNote = true;
     }
 
-    IEnumerator DisplayPage(int page)
+    IEnumerator DisplayPage(int page, int optionsToPoint)
     {
         //Display page of content text
         content.pageToDisplay = page;
@@ -135,7 +134,11 @@ public class Note : MonoBehaviour
         //Wait for text to change size
         yield return new WaitForSeconds(0);
 
-        PointOption(option1);
+        if (optionsToPoint == 2 && option2.gameObject.activeSelf == true)
+        {
+            PointOption(option2);
+        }
+        else PointOption(option1);
     }
 
     /*
