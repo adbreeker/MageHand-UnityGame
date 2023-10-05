@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 2215893106494380594}
   - component: {fileID: 7212878339763585424}
   - component: {fileID: 2215893106494380604}
+  - component: {fileID: 8656529184073069794}
   - component: {fileID: 7445098804810710848}
   - component: {fileID: 2167677596242489558}
   - component: {fileID: 1263839841694537611}
@@ -212,6 +213,7 @@ MonoBehaviour:
   handInteractions: {fileID: 7554772340525944936}
   spellCasting: {fileID: 5405462797584546832}
   dialogueDiary: {fileID: 1263839841694537611}
+  pointsManager: {fileID: 8656529184073069794}
 --- !u!114 &2215893106494380604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,6 +238,19 @@ MonoBehaviour:
   rotationThreshold: 0.01
   stopMovement: 0
   ghostmodeActive: 0
+--- !u!114 &8656529184073069794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2215893106494380605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f5f5250792cf4242bd52eccd6c77576, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  points: 0
 --- !u!114 &7445098804810710848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -896,11 +911,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
---- !u!1 &3116585748844042620 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1776557680973669353, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
-  m_PrefabInstance: {fileID: 3740186669925120661}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3116585748844042623 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1776557680973669354, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
@@ -928,3 +938,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 828588037edb6d045b7cba0edf82bd01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &3116585748844042620 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1776557680973669353, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
+  m_PrefabInstance: {fileID: 3740186669925120661}
+  m_PrefabAsset: {fileID: 0}

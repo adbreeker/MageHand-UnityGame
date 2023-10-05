@@ -13,12 +13,16 @@ public class Dialogue : MonoBehaviour
     [Header("Options text")]
     [TextArea(1, 2)]
     public string option1Text;
+    public float option1Points = 0;
     [TextArea(1, 2)]
     public string option2Text;
+    public float option2Points = 0;
     [TextArea(1, 2)]
     public string option3Text;
+    public float option3Points = 0;
     [TextArea(1, 2)]
     public string option4Text;
+    public float option4Points = 0;
 
     [Header("Choices canvases")]
     public Canvas option1Choice;
@@ -43,6 +47,7 @@ public class Dialogue : MonoBehaviour
     private Dictionary<int, TextMeshProUGUI> options;
     private Dictionary<int, Canvas> optionsChoices;
     private Dictionary<int, string> optionsTexts;
+    private Dictionary<int, float> optionsPoints;
 
     private bool listen = false;
     private bool skip = false;
@@ -78,6 +83,11 @@ public class Dialogue : MonoBehaviour
         optionsTexts.Add(2, option2Text);
         optionsTexts.Add(3, option3Text);
         optionsTexts.Add(4, option4Text);
+        optionsPoints = new Dictionary<int, float>();
+        optionsPoints.Add(1, option1Points);
+        optionsPoints.Add(2, option1Points);
+        optionsPoints.Add(3, option1Points);
+        optionsPoints.Add(4, option1Points);
 
         //Type text
         choice = 1;
@@ -160,21 +170,24 @@ public class Dialogue : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             //Save dialogue to player's diary
-            //transform.parent.GetComponent<OpenDialogue>().dialogueName;
             //PlayerParams.Controllers.dialogueDiary.dialogueDiary.Add(new List<string> { nameText, contentText });
             //PlayerParams.Controllers.dialogueDiary.dialogueDiary.Add(new List<string> { "You ", optionsTexts[choice] });
-            PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueName].Add(new List<string> { nameText, contentText });
-            PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueName].Add(new List<string> { "You ", optionsTexts[choice] });
+
+            PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueName].Add(new List<string> { nameText, contentText});
+            PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueName].Add(new List<string> { "You ", optionsTexts[choice]});
+
+            /*
             foreach (string key in PlayerParams.Controllers.dialogueDiary.dialogueDiary.Keys)
             {
                 foreach (List<string> list in PlayerParams.Controllers.dialogueDiary.dialogueDiary[key])
                 {
                     foreach(string text in list)
                     {
-                        //Debug.Log(text);
+                        Debug.Log(text);
                     }
                 }
             }
+            */
 
             if (optionsChoices[choice] == null)
             {
@@ -189,6 +202,7 @@ public class Dialogue : MonoBehaviour
             }
             else
             {
+                PlayerParams.Controllers.pointsManager.points += optionsPoints[choice];
                 dialogueCanvas.gameObject.SetActive(false);
                 optionsChoices[choice].gameObject.SetActive(true);
             }
