@@ -26,10 +26,10 @@ public class ChestBehavior : MonoBehaviour
 
     private void Update() //listen to chest close input if chest is open
     {
-        if(chestOpen)
+        if (chestOpen)
         {
             pauseMenu.ableToInteract = false;
-            if (!PlayerParams.Variables.uiActive && Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) && !PlayerParams.Variables.uiActive)
             {
                 InteractChest();
             }

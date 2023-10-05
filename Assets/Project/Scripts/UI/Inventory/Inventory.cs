@@ -184,7 +184,14 @@ public class Inventory : MonoBehaviour
     {
         inventory.Add(item);
         item.SetActive(false);
-        PlayerParams.Controllers.handInteractions.inHand = null;
+        try
+        {
+            PlayerParams.Controllers.handInteractions.inHand = null;
+        }
+        catch
+        {
+            Debug.Log("PlayerParams.Controllers.handInteractions.inHand is not detected");
+        }
     }
 
     //Probably could be done better to lag less
