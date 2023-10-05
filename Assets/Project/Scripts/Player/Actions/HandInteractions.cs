@@ -14,11 +14,6 @@ public class HandInteractions : MonoBehaviour
     public GameObject player;
     public Transform holdingPoint;
 
-    [Header("Pop up options")]
-    public GameObject popUpPrefab;
-    public float timeToFadeOutPopUp = 1;
-    public float timeOfFadingOutPopUp = 0.007f;
-
     //hand movement and object pointing
     MoveHandPoints gestureHandler;
     GetObjectsNearHand pointer;
@@ -178,9 +173,6 @@ public class HandInteractions : MonoBehaviour
 
     void CastSpell() //cast spell with SpellCasting class
     {
-        GameObject popUp = Instantiate(popUpPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        popUp.GetComponent<PopUp>().ActivatePopUp("", "Cast a Spell.", timeToFadeOutPopUp, timeOfFadingOutPopUp);
-
         CooldownCast = true;
         if(useSpeach) //if using speach then microphone starting to record
         {

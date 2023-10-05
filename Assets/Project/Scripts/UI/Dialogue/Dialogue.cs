@@ -171,7 +171,7 @@ public class Dialogue : MonoBehaviour
                 {
                     foreach(string text in list)
                     {
-                        Debug.Log(text);
+                        //Debug.Log(text);
                     }
                 }
             }

@@ -23,6 +23,11 @@ public class SpellCasting : MonoBehaviour
     [Header("Spell Cast Position")]
     public Transform hand;
 
+    [Header("Pop up options")]
+    public GameObject popUpPrefab;
+    public float timeToFadeOutPopUp = 1;
+    public float timeOfFadingOutPopUp = 0.007f;
+
     [Header("Spells Prefabs")]
     public GameObject lightPrefab;
     public GameObject firePrefab;
@@ -124,6 +129,9 @@ public class SpellCasting : MonoBehaviour
         {
             if (!microphoneRecord.IsRecording)
             {
+                GameObject popUp = Instantiate(popUpPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                popUp.GetComponent<PopUp>().ActivatePopUp("", "Cast a Spell.", timeToFadeOutPopUp, timeOfFadingOutPopUp);
+
                 Debug.Log("started recording ------------------------ started recording");
                 microphoneRecord.StartRecord();
             }
@@ -140,7 +148,10 @@ public class SpellCasting : MonoBehaviour
         var spellWhispered = res.Result;
         Debug.Log(NormalizeTranscribedText(spellWhispered));
 
-        if(NormalizeTranscribedText(spellWhispered) == "light")
+        GameObject popUp = Instantiate(popUpPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        popUp.GetComponent<PopUp>().ActivatePopUp("", "Detected word:<br>" + NormalizeTranscribedText(spellWhispered), timeToFadeOutPopUp, timeOfFadingOutPopUp);
+
+        if (NormalizeTranscribedText(spellWhispered) == "light")
         {
             LightSpell();
         }
