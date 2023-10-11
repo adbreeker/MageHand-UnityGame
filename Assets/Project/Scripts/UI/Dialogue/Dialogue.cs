@@ -179,8 +179,11 @@ public class Dialogue : MonoBehaviour
             //PlayerParams.Controllers.dialogueDiary.dialogueDiary.Add(new List<string> { nameText, contentText });
             //PlayerParams.Controllers.dialogueDiary.dialogueDiary.Add(new List<string> { "You ", optionsTexts[choice] });
 
-            PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueName].Add(new List<string> { nameText, contentText});
-            PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueName].Add(new List<string> { "You ", optionsTexts[choice]});
+            if (transform.parent.GetComponent<OpenDialogue>().saveDialogue)
+            {
+                PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { nameText, contentText });
+                PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { "You ", optionsTexts[choice] });
+            }
 
             /*
             foreach (string key in PlayerParams.Controllers.dialogueDiary.dialogueDiary.Keys)

@@ -11,8 +11,9 @@ public class OpenDialogue : MonoBehaviour
     [Header("Parameters")]
     public float textSpeed = 0.02f;
     //Should not be long
+    public bool saveDialogue = true;
     [Tooltip("Shouldn't be long")]
-    public string dialogueName;
+    public string dialogueSaveName;
 
     private bool activateDialogue = true;
 
@@ -22,7 +23,7 @@ public class OpenDialogue : MonoBehaviour
         Bounds cubeBounds = GetComponent<Renderer>().bounds;
         if (cubeBounds.Contains(player.transform.position) && activateDialogue)
         {
-            PlayerParams.Controllers.dialogueDiary.dialogueDiary.Add(dialogueName, new List<List<string>>());
+            if (saveDialogue) PlayerParams.Controllers.dialogueDiary.dialogueDiary.Add(dialogueSaveName, new List<List<string>>());
             dialogueCanvas.gameObject.SetActive(true);
             activateDialogue = false;
         }
