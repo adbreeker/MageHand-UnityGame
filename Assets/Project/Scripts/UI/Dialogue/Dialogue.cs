@@ -31,21 +31,10 @@ public class Dialogue : MonoBehaviour
     public Canvas option3Choice;
     public Canvas option4Choice;
 
-    [Header("Prefab objects")]
-    public GameObject pointer;
-    public Canvas dialogueCanvas;
-    public TextMeshProUGUI nameTextObject;
-    public TextMeshProUGUI contentTextObject;
-    public TextMeshProUGUI option1;
-    public TextMeshProUGUI option2;
-    public TextMeshProUGUI option3;
-    public TextMeshProUGUI option4;
-
-    [Header("Voices")]
-    public AudioSource guideVoice;
-    public AudioSource mageVoice;
-
     private AudioSource voice;
+    private GameObject pointer;
+    private TextMeshProUGUI nameTextObject;
+    private TextMeshProUGUI contentTextObject;
     private float textSpeed;
     private Dictionary<int, TextMeshProUGUI> options;
     private Dictionary<int, Canvas> optionsChoices;
@@ -70,15 +59,19 @@ public class Dialogue : MonoBehaviour
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
 
-        if (guideVoiceline) voice = guideVoice;
-        else voice = mageVoice;
+        if (guideVoiceline) voice = transform.Find("GuideVoice").GetComponent<AudioSource>();
+        else voice = transform.Find("MageVoice").GetComponent<AudioSource>();
+
+        pointer = transform.Find("Options").Find("Pointer").gameObject;
+        nameTextObject = transform.Find("Text").Find("Name").GetComponent<TextMeshProUGUI>();
+        contentTextObject = transform.Find("Text").Find("Content").GetComponent<TextMeshProUGUI>();
 
         //Create dicts of options, choices when options are chosen and text of options (indexed 1-4)
         options = new Dictionary<int, TextMeshProUGUI>();
-        options.Add(1, option1);
-        options.Add(2, option2);
-        options.Add(3, option3);
-        options.Add(4, option4);
+        options.Add(1, transform.Find("Options").Find("1").GetComponent<TextMeshProUGUI>());
+        options.Add(2, transform.Find("Options").Find("2").GetComponent<TextMeshProUGUI>());
+        options.Add(3, transform.Find("Options").Find("3").GetComponent<TextMeshProUGUI>());
+        options.Add(4, transform.Find("Options").Find("4").GetComponent<TextMeshProUGUI>());
         optionsChoices = new Dictionary<int, Canvas>();
         optionsChoices.Add(1, option1Choice);
         optionsChoices.Add(2, option2Choice);
@@ -176,9 +169,6 @@ public class Dialogue : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             //Save dialogue to player's diary
-            //PlayerParams.Controllers.dialogueDiary.dialogueDiary.Add(new List<string> { nameText, contentText });
-            //PlayerParams.Controllers.dialogueDiary.dialogueDiary.Add(new List<string> { "You ", optionsTexts[choice] });
-
             if (transform.parent.GetComponent<OpenDialogue>().saveDialogue)
             {
                 PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { nameText, contentText });
@@ -200,7 +190,7 @@ public class Dialogue : MonoBehaviour
 
             if (optionsChoices[choice] == null)
             {
-                dialogueCanvas.gameObject.SetActive(false);
+                gameObject.SetActive(false);
 
                 //Enable other controls
                 PlayerParams.Variables.uiActive = false;
@@ -212,7 +202,7 @@ public class Dialogue : MonoBehaviour
             else
             {
                 PlayerParams.Controllers.pointsManager.points += optionsPoints[choice];
-                dialogueCanvas.gameObject.SetActive(false);
+                gameObject.SetActive(false);
                 optionsChoices[choice].gameObject.SetActive(true);
             }
         }
