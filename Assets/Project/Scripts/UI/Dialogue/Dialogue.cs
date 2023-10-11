@@ -7,6 +7,7 @@ public class Dialogue : MonoBehaviour
 {
     [Header("Content text")]
     public string nameText;
+    public bool guideVoiceline = true;
     [TextArea(3, 10)]
     public string contentText;
 
@@ -40,9 +41,11 @@ public class Dialogue : MonoBehaviour
     public TextMeshProUGUI option3;
     public TextMeshProUGUI option4;
 
-    [Header("Sound of voice")]
-    public AudioSource voice;
+    [Header("Voices")]
+    public AudioSource guideVoice;
+    public AudioSource mageVoice;
 
+    private AudioSource voice;
     private float textSpeed;
     private Dictionary<int, TextMeshProUGUI> options;
     private Dictionary<int, Canvas> optionsChoices;
@@ -67,6 +70,9 @@ public class Dialogue : MonoBehaviour
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
 
+        if (guideVoiceline) voice = guideVoice;
+        else voice = mageVoice;
+
         //Create dicts of options, choices when options are chosen and text of options (indexed 1-4)
         options = new Dictionary<int, TextMeshProUGUI>();
         options.Add(1, option1);
@@ -85,9 +91,9 @@ public class Dialogue : MonoBehaviour
         optionsTexts.Add(4, option4Text);
         optionsPoints = new Dictionary<int, float>();
         optionsPoints.Add(1, option1Points);
-        optionsPoints.Add(2, option1Points);
-        optionsPoints.Add(3, option1Points);
-        optionsPoints.Add(4, option1Points);
+        optionsPoints.Add(2, option2Points);
+        optionsPoints.Add(3, option3Points);
+        optionsPoints.Add(4, option4Points);
 
         //Type text
         choice = 1;

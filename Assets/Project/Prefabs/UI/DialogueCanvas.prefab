@@ -1148,6 +1148,7 @@ RectTransform:
   - {fileID: 8391177894694553464}
   - {fileID: 8391177894317473702}
   - {fileID: 8696852404969743250}
+  - {fileID: 3631381191288902298}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1173,9 +1174,13 @@ MonoBehaviour:
     get out of it, you must listen to me. Now you have to find the button that is
     hidden in this room.
   option1Text: (Stay quiet.)
+  option1Points: 0
   option2Text: Fine, where should I look for it?
+  option2Points: 0
   option3Text: There's no way i'm listening to you.
+  option3Points: 0
   option4Text: Huh, that's interesting.
+  option4Points: 0
   option1Choice: {fileID: 0}
   option2Choice: {fileID: 0}
   option3Choice: {fileID: 0}
@@ -1188,7 +1193,9 @@ MonoBehaviour:
   option2: {fileID: 8391177895570376480}
   option3: {fileID: 8391177894341740333}
   option4: {fileID: 8391177894036484553}
-  voice: {fileID: 7094420707379491373}
+  guideVoice: {fileID: 7094420707379491373}
+  mageVoice: {fileID: 1527805535629017171}
+  guideVoiceline: 1
 --- !u!223 &8391177895316071269
 Canvas:
   m_ObjectHideFlags: 0
@@ -1683,6 +1690,138 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!1 &9015886723273029942
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3631381191288902298}
+  - component: {fileID: 1527805535629017171}
+  m_Layer: 5
+  m_Name: MageVoice
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3631381191288902298
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9015886723273029942}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8391177895316071268}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!82 &1527805535629017171
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9015886723273029942}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: c5afbdc6a5580cf45abcc115b84e1f33, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.3
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &5105842010890175809
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1784,13 +1923,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b16614e2b9241848b5034d0bcd64c30, type: 3}
---- !u!1 &8352204867278315668 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3833520214071944661, guid: 5b16614e2b9241848b5034d0bcd64c30, type: 3}
-  m_PrefabInstance: {fileID: 5105842010890175809}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &6853611526492577475 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1857579947682225026, guid: 5b16614e2b9241848b5034d0bcd64c30, type: 3}
+  m_PrefabInstance: {fileID: 5105842010890175809}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8352204867278315668 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3833520214071944661, guid: 5b16614e2b9241848b5034d0bcd64c30, type: 3}
   m_PrefabInstance: {fileID: 5105842010890175809}
   m_PrefabAsset: {fileID: 0}
