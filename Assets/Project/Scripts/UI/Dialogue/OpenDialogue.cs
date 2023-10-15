@@ -23,7 +23,13 @@ public class OpenDialogue : MonoBehaviour
         Bounds cubeBounds = GetComponent<Renderer>().bounds;
         if (cubeBounds.Contains(player.transform.position) && activateDialogue)
         {
-            if (saveDialogue) PlayerParams.Controllers.dialogueDiary.dialogueDiary.Add(dialogueSaveName, new List<List<string>>());
+            if (saveDialogue)
+            {
+                if (!PlayerParams.Controllers.dialogueDiary.dialogueDiary.ContainsKey(dialogueSaveName))
+                {
+                    PlayerParams.Controllers.dialogueDiary.dialogueDiary.Add(dialogueSaveName, new List<List<string>>());
+                }
+            }
             dialogueCanvas.gameObject.SetActive(true);
             activateDialogue = false;
         }
