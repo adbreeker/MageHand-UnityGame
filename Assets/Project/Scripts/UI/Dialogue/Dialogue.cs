@@ -7,13 +7,23 @@ public class Dialogue : MonoBehaviour
 {
     [Header("Content text")]
     public string nameText;
+    public bool guideVoiceline = true;
+    [TextArea(3, 10)]
     public string contentText;
 
     [Header("Options text")]
+    [TextArea(1, 2)]
     public string option1Text;
+    public float option1Points = 0;
+    [TextArea(1, 2)]
     public string option2Text;
+    public float option2Points = 0;
+    [TextArea(1, 2)]
     public string option3Text;
+    public float option3Points = 0;
+    [TextArea(1, 2)]
     public string option4Text;
+    public float option4Points = 0;
 
     [Header("Choices canvases")]
     public Canvas option1Choice;
@@ -21,44 +31,47 @@ public class Dialogue : MonoBehaviour
     public Canvas option3Choice;
     public Canvas option4Choice;
 
-    [Header("Prefab objects")]
-    public GameObject pointer;
-    public Canvas dialogueCanvas;
-    public TextMeshProUGUI nameTextObject;
-    public TextMeshProUGUI contentTextObject;
-    public TextMeshProUGUI option1;
-    public TextMeshProUGUI option2;
-    public TextMeshProUGUI option3;
-    public TextMeshProUGUI option4;
-
+    private AudioSource voice;
+    private GameObject pointer;
+    private TextMeshProUGUI nameTextObject;
+    private TextMeshProUGUI contentTextObject;
     private float textSpeed;
-    private GameObject player;
     private Dictionary<int, TextMeshProUGUI> options;
     private Dictionary<int, Canvas> optionsChoices;
     private Dictionary<int, string> optionsTexts;
+    private Dictionary<int, float> optionsPoints;
 
     private bool listen = false;
+    private bool skip = false;
     private int choice;
 
     void Start()
     {
-        player = transform.parent.GetComponent<OpenDialogue>().player;
         textSpeed = transform.parent.GetComponent<OpenDialogue>().textSpeed;
 
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.inventory.CloseInventory();
         PlayerParams.Controllers.spellbook.CloseSpellbook();
+        PlayerParams.Controllers.pauseMenu.CloseMenu();
         PlayerParams.Controllers.inventory.ableToInteract = false;
         PlayerParams.Controllers.spellbook.ableToInteract = false;
+        PlayerParams.Controllers.pauseMenu.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
 
+        if (guideVoiceline) voice = transform.Find("GuideVoice").GetComponent<AudioSource>();
+        else voice = transform.Find("MageVoice").GetComponent<AudioSource>();
+
+        pointer = transform.Find("Options").Find("Pointer").gameObject;
+        nameTextObject = transform.Find("Text").Find("Name").GetComponent<TextMeshProUGUI>();
+        contentTextObject = transform.Find("Text").Find("Content").GetComponent<TextMeshProUGUI>();
+
         //Create dicts of options, choices when options are chosen and text of options (indexed 1-4)
         options = new Dictionary<int, TextMeshProUGUI>();
-        options.Add(1, option1);
-        options.Add(2, option2);
-        options.Add(3, option3);
-        options.Add(4, option4);
+        options.Add(1, transform.Find("Options").Find("1").GetComponent<TextMeshProUGUI>());
+        options.Add(2, transform.Find("Options").Find("2").GetComponent<TextMeshProUGUI>());
+        options.Add(3, transform.Find("Options").Find("3").GetComponent<TextMeshProUGUI>());
+        options.Add(4, transform.Find("Options").Find("4").GetComponent<TextMeshProUGUI>());
         optionsChoices = new Dictionary<int, Canvas>();
         optionsChoices.Add(1, option1Choice);
         optionsChoices.Add(2, option2Choice);
@@ -69,6 +82,11 @@ public class Dialogue : MonoBehaviour
         optionsTexts.Add(2, option2Text);
         optionsTexts.Add(3, option3Text);
         optionsTexts.Add(4, option4Text);
+        optionsPoints = new Dictionary<int, float>();
+        optionsPoints.Add(1, option1Points);
+        optionsPoints.Add(2, option2Points);
+        optionsPoints.Add(3, option3Points);
+        optionsPoints.Add(4, option4Points);
 
         //Type text
         choice = 1;
@@ -78,14 +96,21 @@ public class Dialogue : MonoBehaviour
     {
         //Listen if typing text is done
         if (listen) KeysListener();
+        else KeysListenerSkip();
     }
 
     void PointOption(TextMeshProUGUI option)
     {
         //Change color of all options to lightGrey (118, 118, 118)
+        //foreach (int key in options.Keys)
+        //{
+        //    options[key].color = new Color(0.4625f, 0.4625f, 0.4625f);
+        //}
+
+        //Change color of all options to darkGrey (68, 68, 68)
         foreach (int key in options.Keys)
         {
-            options[key].color = new Color(0.4625f, 0.4625f, 0.4625f);
+            options[key].color = new Color(0.2666f, 0.2666f, 0.2666f);
         }
 
         //Change color of pointed option to white (255, 255, 255)
@@ -93,7 +118,7 @@ public class Dialogue : MonoBehaviour
 
         //Set position of pointer to pointed option
         pointer.transform.localPosition =
-            new Vector3(pointer.transform.localPosition.x, option.transform.localPosition.y + 4f, pointer.transform.localPosition.z);
+            new Vector3(pointer.transform.localPosition.x, option.transform.localPosition.y, pointer.transform.localPosition.z); //y was + 4f
     }
 
     void KeysListener()
@@ -144,24 +169,50 @@ public class Dialogue : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             //Save dialogue to player's diary
-            player.GetComponent<DialogueDiary>().dialogueDiary.Add(new List<string> { nameText, contentText });
-            player.GetComponent<DialogueDiary>().dialogueDiary.Add(new List<string> { "You ", optionsTexts[choice] });
+            if (transform.parent.GetComponent<OpenDialogue>().saveDialogue)
+            {
+                PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { nameText, contentText });
+                PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { "You ", optionsTexts[choice] });
+            }
+
+            /*
+            foreach (string key in PlayerParams.Controllers.dialogueDiary.dialogueDiary.Keys)
+            {
+                foreach (List<string> list in PlayerParams.Controllers.dialogueDiary.dialogueDiary[key])
+                {
+                    foreach(string text in list)
+                    {
+                        Debug.Log(text);
+                    }
+                }
+            }
+            */
 
             if (optionsChoices[choice] == null)
             {
-                dialogueCanvas.gameObject.SetActive(false);
+                gameObject.SetActive(false);
 
                 //Enable other controls
                 PlayerParams.Variables.uiActive = false;
                 PlayerParams.Objects.hand.SetActive(true);
                 PlayerParams.Controllers.inventory.ableToInteract = true;
                 PlayerParams.Controllers.spellbook.ableToInteract = true;
+                PlayerParams.Controllers.pauseMenu.ableToInteract = true;
             }
             else
             {
-                dialogueCanvas.gameObject.SetActive(false);
+                PlayerParams.Controllers.pointsManager.points += optionsPoints[choice];
+                gameObject.SetActive(false);
                 optionsChoices[choice].gameObject.SetActive(true);
             }
+        }
+    }
+
+    void KeysListenerSkip()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            skip = true;
         }
     }
 
@@ -174,11 +225,15 @@ public class Dialogue : MonoBehaviour
             contentTextObject.GetComponent<RectTransform>().sizeDelta =
                 new Vector2(contentTextObject.GetComponent<RectTransform>().sizeDelta.x, 200f);
         }
-        else nameTextObject.text = nameText;
+        else
+        {
+            nameTextObject.text = nameText;
+            voice.Play();
+        }
 
         //Set position of pointer to first option
         pointer.transform.localPosition =
-            new Vector3(pointer.transform.localPosition.x, options[1].transform.localPosition.y + 4f, pointer.transform.localPosition.z);
+            new Vector3(pointer.transform.localPosition.x, options[1].transform.localPosition.y, pointer.transform.localPosition.z); //y was + 4f
 
         //Set color of first option to white (255, 255, 255)
         options[1].color = new Color(1f, 1f, 1f);
@@ -188,12 +243,17 @@ public class Dialogue : MonoBehaviour
         foreach (char c in contentText.ToCharArray())
         {
             contentTextObject.text += c;
-            yield return new WaitForSeconds(textSpeed);
-        }
+            if (!skip) yield return new WaitForSeconds(textSpeed);
 
+            //Start to fade out voice
+            if (contentTextObject.text.Length >= contentText.Length - 5)
+            {
+                StartCoroutine(FadeOutVoice(0.5f));
+            }
+        }
         //Show pointer
         pointer.gameObject.SetActive(true);
-        yield return new WaitForSeconds(textSpeed);
+        if (!skip) yield return new WaitForSeconds(textSpeed);
 
         //Type options
         foreach (int key in options.Keys)
@@ -209,12 +269,27 @@ public class Dialogue : MonoBehaviour
                 foreach (char c in optionsTexts[key].ToCharArray())
                 {
                     options[key].text += c;
-                    yield return new WaitForSeconds(textSpeed);
+                    if (!skip) yield return new WaitForSeconds(textSpeed/2);
                 }
             }
         }
 
         //Activate KeysListener
         listen = true;
+    }
+
+    IEnumerator FadeOutVoice(float speed)
+    {
+        float startVolume = voice.volume;
+
+        while (voice.volume > 0)
+        {
+            voice.volume -= startVolume * Time.deltaTime / speed;
+
+            if (!skip) yield return new WaitForSeconds(textSpeed);
+        }
+
+        voice.Stop();
+        voice.volume = startVolume;
     }
 }

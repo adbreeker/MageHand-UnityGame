@@ -16,8 +16,11 @@ public static class PlayerParams //static player parameters accessible from ever
         public static PlayerMovement playerMovement;
         public static Inventory inventory;
         public static Spellbook spellbook;
+        public static PauseMenu pauseMenu;
         public static HandInteractions handInteractions;
         public static SpellCasting spellCasting;
+        public static DialogueDiary dialogueDiary;
+        public static PointsManager pointsManager;
     }
 
     public static class Variables //variables associated with player
@@ -39,14 +42,17 @@ public class PlayerManager : MonoBehaviour //assigning static PlayerParams on Aw
     public PlayerMovement playerMovement;
     public Inventory inventory;
     public Spellbook spellbook;
+    public PauseMenu pauseMenu;
     public HandInteractions handInteractions;
     public SpellCasting spellCasting;
+    public DialogueDiary dialogueDiary;
+    public PointsManager pointsManager;
 
     //[Header("Variables")] - no need yet
 
     void Awake()
     {
-        //objects
+        //Objects
         PlayerParams.Objects.playerCamera = playerCamera;
         PlayerParams.Objects.player = gameObject;
         PlayerParams.Objects.hand = hand;
@@ -55,8 +61,11 @@ public class PlayerManager : MonoBehaviour //assigning static PlayerParams on Aw
         PlayerParams.Controllers.playerMovement = playerMovement;
         PlayerParams.Controllers.inventory = inventory;
         PlayerParams.Controllers.spellbook = spellbook;
+        PlayerParams.Controllers.pauseMenu = pauseMenu;
         PlayerParams.Controllers.handInteractions = handInteractions;
         PlayerParams.Controllers.spellCasting = spellCasting;
+        PlayerParams.Controllers.dialogueDiary = dialogueDiary;
+        PlayerParams.Controllers.pointsManager = pointsManager;
 
         //Variables
         PlayerParams.Variables.cameraStartingPosition = playerCamera.transform.localPosition;

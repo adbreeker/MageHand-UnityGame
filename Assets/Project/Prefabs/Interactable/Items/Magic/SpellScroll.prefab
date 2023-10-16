@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2640387059951069713}
   - component: {fileID: 2640387059952036049}
   - component: {fileID: 7191307526972024214}
+  - component: {fileID: 4677441272085522233}
   - component: {fileID: -4175676622819825245}
   m_Layer: 9
   m_Name: SpellScroll
@@ -96,6 +97,24 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.4, z: 0.8}
   m_Center: {x: 0, y: 0.05, z: 0}
+--- !u!114 &4677441272085522233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2640387059949778449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abe176e27018dc94a89f97ca4daee909, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: 
+  content: New Spell added to <br>your Spellbook.
+  timeToFadeOut: 2
+  timeOfFadingOut: 0.007
+  destroy: 0
+  popUpPrefab: {fileID: 8175451159203894732, guid: d754b09499f8ee142be40f76533abed6, type: 3}
 --- !u!114 &-4175676622819825245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108,7 +127,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eda04c42f16c8948b3eb6a950a90749, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spellName: 
-  manaCost: 0
-  spellDescription: 
-  spellPicture: {fileID: 0}
+  spellScrollInfo:
+    spellName: 
+    manaCost: 0
+    spellDescription: 
+    spellPicture: {fileID: 0}

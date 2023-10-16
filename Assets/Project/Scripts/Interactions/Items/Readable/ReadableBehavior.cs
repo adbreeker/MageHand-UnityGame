@@ -6,6 +6,7 @@ public class ReadableBehavior : MonoBehaviour
 {
     [Header("Note content")]
     public string title;
+    [TextArea(3, 10)]
     public string content;
 
     [Header("Destroy on pick up")]
@@ -13,14 +14,13 @@ public class ReadableBehavior : MonoBehaviour
 
     [Header("Prefabs")]
     public GameObject notePrefab; 
-    public GameObject noteSmallPrefab;
 
     public void OnPickUp() //instantiate note prefab and open note on it
     {
         GameObject note = Instantiate(notePrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        note.GetComponent<ReadableNote>().titleText = title;
-        note.GetComponent<ReadableNote>().contentText = content;
-        note.GetComponent<ReadableNote>().OpenNote();
+        note.GetComponent<Note>().titleText = title;
+        note.GetComponent<Note>().contentText = content;
+        note.GetComponent<Note>().OpenNote();
 
         if(destroy)
         {

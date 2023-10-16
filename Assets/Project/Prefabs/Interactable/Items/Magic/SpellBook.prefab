@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6098996794727153033}
   - component: {fileID: 2647942575201340883}
   - component: {fileID: 668311430179699091}
-  - component: {fileID: 6758962210027787000}
+  - component: {fileID: 951793410973665050}
   m_Layer: 9
   m_Name: SpellBook
   m_TagString: Untagged
@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f77042d79224bae4dacc26498c4d68e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6758962210027787000
+--- !u!114 &951793410973665050
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,11 +119,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6098996794725213001}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9786d8fc7a5e3a5429be1dd5058d72a2, type: 3}
+  m_Script: {fileID: 11500000, guid: abe176e27018dc94a89f97ca4daee909, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: Tip
-  content: Press B to open your Spellbook.
+  title: 
+  content: Press B to open your<br>Spellbook.
+  timeToFadeOut: 2
+  timeOfFadingOut: 0.007
   destroy: 0
-  notePrefab: {fileID: 5778595488933685804, guid: 02d24bcf5ef88694aa2276bef8825e5d, type: 3}
-  noteSmallPrefab: {fileID: 8719623182097476511, guid: c5d3212e76e11474894fa1f66300d048, type: 3}
+  popUpPrefab: {fileID: 8175451159203894732, guid: d754b09499f8ee142be40f76533abed6, type: 3}
