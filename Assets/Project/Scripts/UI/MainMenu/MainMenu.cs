@@ -182,9 +182,9 @@ public class MainMenu : MonoBehaviour
             pointer.transform.SetParent(allOptions[option].transform);
 
             //Resize pointer to fit text
-            pointer.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                pointer.transform.parent.GetComponent<RectTransform>().sizeDelta.x + 102.5f, pointer.GetComponent<RectTransform>().sizeDelta.y);
-            pointer.transform.localPosition = new Vector3(0, 0, 0);
+            //pointer.GetComponent<RectTransform>().sizeDelta = new Vector2(
+            //    pointer.transform.parent.GetComponent<RectTransform>().sizeDelta.x + 102.5f, pointer.GetComponent<RectTransform>().sizeDelta.y);
+            //pointer.transform.localPosition = new Vector3(0, 0, 0);
         }
 
         //*************if option is 1 display save info on the left

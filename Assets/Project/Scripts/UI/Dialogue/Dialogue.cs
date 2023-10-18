@@ -172,7 +172,10 @@ public class Dialogue : MonoBehaviour
             if (transform.parent.GetComponent<OpenDialogue>().saveDialogue)
             {
                 PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { nameText, contentText });
-                PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { "You ", optionsTexts[choice] });
+                if (optionsTexts[choice] != "(Continue.)")
+                {
+                    PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { "You ", optionsTexts[choice] });
+                }
             }
 
             /*

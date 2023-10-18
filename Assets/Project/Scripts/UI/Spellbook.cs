@@ -36,6 +36,8 @@ public class Spellbook : MonoBehaviour
     private GameObject descriptionRight;
     private GameObject pictureLeft;
     private GameObject pictureRight;
+    private GameObject numberLeft;
+    private GameObject numberRight;
 
     //this means views not actual pages (spellbookPage = 1 view = 2 real pages)
     private List<List<SpellScrollInfo>> spellbookPages;
@@ -152,6 +154,8 @@ public class Spellbook : MonoBehaviour
         descriptionRight = instantiatedSpellbook.transform.Find("Right spell").Find("Description").gameObject;
         pictureLeft = instantiatedSpellbook.transform.Find("Left spell").Find("Picture").gameObject;
         pictureRight = instantiatedSpellbook.transform.Find("Right spell").Find("Picture").gameObject;
+        numberLeft = instantiatedSpellbook.transform.Find("Left spell").Find("Number").gameObject;
+        numberRight = instantiatedSpellbook.transform.Find("Right spell").Find("Number").gameObject;
 
         //Divide items to pages
         spellbookPages = new List<List<SpellScrollInfo>>();
@@ -204,9 +208,9 @@ public class Spellbook : MonoBehaviour
             //titleRight.GetComponent<TextMeshProUGUI>().color = new Color(0.4625f, 0.4625f, 0.4625f);
             pointerRight.SetActive(false);
             pointerLeft.SetActive(true);
-            pointerLeft.transform.parent.GetComponent<TextMeshProUGUI>().ForceMeshUpdate();
-            pointerLeft.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                pointerLeft.transform.parent.GetComponent<TextMeshProUGUI>().textBounds.size.x + 102.5f, pointerLeft.GetComponent<RectTransform>().sizeDelta.y);
+            //pointerLeft.transform.parent.GetComponent<TextMeshProUGUI>().ForceMeshUpdate();
+            //pointerLeft.GetComponent<RectTransform>().sizeDelta = new Vector2(
+            //    pointerLeft.transform.parent.GetComponent<TextMeshProUGUI>().textBounds.size.x + 102.5f, pointerLeft.GetComponent<RectTransform>().sizeDelta.y);
         }
         else if (option == 2)
         {
@@ -216,14 +220,15 @@ public class Spellbook : MonoBehaviour
             //titleRight.GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
             pointerLeft.SetActive(false);
             pointerRight.SetActive(true);
-            pointerRight.transform.parent.GetComponent<TextMeshProUGUI>().ForceMeshUpdate();
-            pointerRight.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                pointerRight.transform.parent.GetComponent<TextMeshProUGUI>().textBounds.size.x + 102.5f, pointerRight.GetComponent<RectTransform>().sizeDelta.y);
+            //pointerRight.transform.parent.GetComponent<TextMeshProUGUI>().ForceMeshUpdate();
+            //pointerRight.GetComponent<RectTransform>().sizeDelta = new Vector2(
+            //    pointerRight.transform.parent.GetComponent<TextMeshProUGUI>().textBounds.size.x + 102.5f, pointerRight.GetComponent<RectTransform>().sizeDelta.y);
         }
     }
 
     void DisplayPage(int pageToDisplay)
     {
+        Debug.Log(pageToDisplay);
         //Deactivate texts, arrows etc.
         arrowLeft.SetActive(false);
         arrowRight.SetActive(false);
@@ -233,6 +238,8 @@ public class Spellbook : MonoBehaviour
         descriptionRight.SetActive(false);
         pictureLeft.SetActive(false);
         pictureRight.SetActive(false);
+        numberLeft.SetActive(false);
+        numberRight.SetActive(false);
 
         //Activate correct texts, arrows etc. and assign correct things to it
         if (spellbookPages[pageToDisplay].Count > 0)
@@ -243,6 +250,8 @@ public class Spellbook : MonoBehaviour
             descriptionLeft.SetActive(true);
             pictureLeft.GetComponent<RawImage>().texture = spellbookPages[pageToDisplay][0].spellPicture;
             pictureLeft.SetActive(true);
+            numberLeft.GetComponent<TextMeshProUGUI>().text = (((pageToDisplay + 1) * 2) - 1).ToString();
+            numberLeft.SetActive(true);
         }
 
         if (spellbookPages[pageToDisplay].Count == 2)
@@ -253,6 +262,8 @@ public class Spellbook : MonoBehaviour
             descriptionRight.SetActive(true);
             pictureRight.GetComponent<RawImage>().texture = spellbookPages[pageToDisplay][1].spellPicture;
             pictureRight.SetActive(true);
+            numberRight.GetComponent<TextMeshProUGUI>().text = ((pageToDisplay + 1) * 2).ToString();
+            numberRight.SetActive(true);
         }
 
         if (pageToDisplay > 0) arrowLeft.SetActive(true);
