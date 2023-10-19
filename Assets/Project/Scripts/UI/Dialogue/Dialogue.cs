@@ -53,9 +53,11 @@ public class Dialogue : MonoBehaviour
         PlayerParams.Controllers.inventory.CloseInventory();
         PlayerParams.Controllers.spellbook.CloseSpellbook();
         PlayerParams.Controllers.pauseMenu.CloseMenu();
+        PlayerParams.Controllers.dialogueDiary.CloseDiary();
         PlayerParams.Controllers.inventory.ableToInteract = false;
         PlayerParams.Controllers.spellbook.ableToInteract = false;
         PlayerParams.Controllers.pauseMenu.ableToInteract = false;
+        PlayerParams.Controllers.dialogueDiary.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
 
@@ -174,7 +176,7 @@ public class Dialogue : MonoBehaviour
                 PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { nameText, contentText });
                 if (optionsTexts[choice] != "(Continue.)")
                 {
-                    PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { "You ", optionsTexts[choice] });
+                    PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { "You", optionsTexts[choice] });
                 }
             }
 
@@ -201,6 +203,7 @@ public class Dialogue : MonoBehaviour
                 PlayerParams.Controllers.inventory.ableToInteract = true;
                 PlayerParams.Controllers.spellbook.ableToInteract = true;
                 PlayerParams.Controllers.pauseMenu.ableToInteract = true;
+                PlayerParams.Controllers.dialogueDiary.ableToInteract = true;
             }
             else
             {

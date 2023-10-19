@@ -138,6 +138,7 @@ public class Spellbook : MonoBehaviour
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.inventory.CloseInventory();
         PlayerParams.Controllers.pauseMenu.CloseMenu();
+        PlayerParams.Controllers.dialogueDiary.CloseDiary();
         //PlayerParams.Controllers.inventory.ableToInteract = false;
         PlayerParams.Controllers.pauseMenu.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
@@ -228,7 +229,6 @@ public class Spellbook : MonoBehaviour
 
     void DisplayPage(int pageToDisplay)
     {
-        Debug.Log(pageToDisplay);
         //Deactivate texts, arrows etc.
         arrowLeft.SetActive(false);
         arrowRight.SetActive(false);

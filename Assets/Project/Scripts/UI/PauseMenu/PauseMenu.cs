@@ -50,7 +50,7 @@ public class PauseMenu : MonoBehaviour
         if (menuOpened && atMainMenu)
         {
             KeysListenerMenu();
-            PointOption(pointedOptionMenu, menuOptions);
+            PointOption(pointedOptionMenu);
         }
     }
 
@@ -166,6 +166,7 @@ public class PauseMenu : MonoBehaviour
         //Disable other controls
         PlayerParams.Controllers.inventory.ableToInteract = false;
         PlayerParams.Controllers.spellbook.ableToInteract = false;
+        PlayerParams.Controllers.dialogueDiary.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
 
@@ -179,7 +180,7 @@ public class PauseMenu : MonoBehaviour
         }
 
         pointedOptionMenu = 0;
-        PointOption(pointedOptionMenu, menuOptions);
+        PointOption(pointedOptionMenu);
         menuOpened = true;
     }
 
@@ -190,6 +191,7 @@ public class PauseMenu : MonoBehaviour
         //Enable other controls
         PlayerParams.Controllers.inventory.ableToInteract = true;
         PlayerParams.Controllers.spellbook.ableToInteract = true;
+        PlayerParams.Controllers.dialogueDiary.ableToInteract = true;
         PlayerParams.Variables.uiActive = false;
         PlayerParams.Objects.hand.SetActive(true);
 
@@ -198,19 +200,19 @@ public class PauseMenu : MonoBehaviour
         menuOptions.Clear();
     }
 
-    void PointOption(int option, List<TextMeshProUGUI> allOptions)
+    void PointOption(int option)
     {
         //Change color of text and make pointer child of chosen option
-        for (int i = 0; i < allOptions.Count; i++)
+        for (int i = 0; i < menuOptions.Count; i++)
         {
-            allOptions[i].color = new Color(0.2666f, 0.2666f, 0.2666f);
+            menuOptions[i].color = new Color(0.2666f, 0.2666f, 0.2666f);
         }
 
-        if (option < allOptions.Count)
+        if (option < menuOptions.Count)
         {
-            allOptions[option].color = new Color(1f, 1f, 1f);
+            menuOptions[option].color = new Color(1f, 1f, 1f);
 
-            pointer.transform.SetParent(allOptions[option].transform);
+            pointer.transform.SetParent(menuOptions[option].transform);
 
             //Resize pointer to fit text
             //pointer.GetComponent<RectTransform>().sizeDelta = new Vector2(

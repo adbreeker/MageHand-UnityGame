@@ -90,6 +90,7 @@ public class Inventory : MonoBehaviour
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.spellbook.CloseSpellbook();
         PlayerParams.Controllers.pauseMenu.CloseMenu();
+        PlayerParams.Controllers.dialogueDiary.CloseDiary();
         //PlayerParams.Controllers.spellbook.ableToInteract = false;
         PlayerParams.Controllers.pauseMenu.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;

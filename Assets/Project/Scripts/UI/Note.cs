@@ -90,7 +90,7 @@ public class Note : MonoBehaviour
         option2 = transform.Find("Options").Find("2").gameObject.GetComponent<TextMeshProUGUI>();
         title = transform.Find("Content").Find("Title").gameObject.GetComponent<TextMeshProUGUI>();
         content = transform.Find("Content").Find("Text").gameObject.GetComponent<TextMeshProUGUI>();
-        pointer = transform.Find("Options").Find("Pointer").gameObject;
+        pointer = transform.Find("Options").Find("1").Find("Pointer").gameObject;
 
         //Set proper values
         title.text = titleText;
@@ -203,12 +203,7 @@ public class Note : MonoBehaviour
         option.color = new Color(1f, 1f, 1f);
 
         //Set position of pointer to pointed option
-        pointer.transform.localPosition =
-            new Vector3(pointer.transform.localPosition.x, option.transform.localPosition.y, pointer.transform.localPosition.z);
-
-        //Resize pointer to fit text 
-        pointer.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            option.gameObject.GetComponent<RectTransform>().sizeDelta.x + 102.5f, pointer.GetComponent<RectTransform>().sizeDelta.y);
+        pointer.transform.SetParent(option.transform);
 
         if (option == option1) pointedOption = 1;
         else pointedOption = 2;
