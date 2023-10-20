@@ -43,7 +43,7 @@ public class DialogueDiary : MonoBehaviour
     private int keyTimeDelay = 5;
     private int keyTimeDelayer = 0;
 
-    /*
+    
     private void Start()
     {
         dialogueDiary.Add("TEST 2", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
@@ -74,7 +74,7 @@ public class DialogueDiary : MonoBehaviour
             new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" },
             new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
     }
-    */
+  
 
     void Update()
     {
@@ -118,7 +118,7 @@ public class DialogueDiary : MonoBehaviour
                 {
                     pointedName--;
                     PointName(pointedName);
-                    dialogueNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 1f / instantiatedNames.Count;
+                    dialogueNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 1f / (instantiatedNames.Count - 1);
                     keyTimeDelayer = keyTimeDelayFirst;
                 }
             }
@@ -130,7 +130,7 @@ public class DialogueDiary : MonoBehaviour
                 {
                     pointedName++;
                     PointName(pointedName);
-                    dialogueNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -1f / instantiatedNames.Count;
+                    dialogueNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -1f / (instantiatedNames.Count - 1);
                     keyTimeDelayer = keyTimeDelayFirst;
                 }
             }
@@ -141,7 +141,7 @@ public class DialogueDiary : MonoBehaviour
                 {
                     pointedName--;
                     PointName(pointedName);
-                    dialogueNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 1f / instantiatedNames.Count;
+                    dialogueNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 1f / (instantiatedNames.Count - 1);
                     keyTimeDelayer = keyTimeDelay;
                 }
             }
@@ -153,7 +153,7 @@ public class DialogueDiary : MonoBehaviour
                 {
                     pointedName++;
                     PointName(pointedName);
-                    dialogueNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -1f / instantiatedNames.Count;
+                    dialogueNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -1f / (instantiatedNames.Count - 1);
                     keyTimeDelayer = keyTimeDelay;
                 }
             }
