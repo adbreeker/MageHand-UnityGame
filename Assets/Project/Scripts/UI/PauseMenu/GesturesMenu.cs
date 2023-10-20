@@ -39,11 +39,21 @@ public class GesturesMenu : MonoBehaviour
     private List<string> descriptions = new List<string>();
     private List<Texture> pictures = new List<Texture>();
 
+    private int keyTimeDelayFirst = 20;
+    private int keyTimeDelay = 10;
+    private int keyTimeDelayer = 0;
+
+
     void Update()
     {
         KeysListener();
         PointOption(pointedOptionMenu, menuOptions);
         DisplayGesture(pointedOptionMenu);
+
+        if (keyTimeDelayer > 0)
+        {
+            keyTimeDelayer--;
+        }
     }
 
     void KeysListener()
@@ -63,6 +73,7 @@ public class GesturesMenu : MonoBehaviour
             {
                 pointedOptionMenu = 0;
             }
+            keyTimeDelayer = keyTimeDelayFirst;
         }
 
         if (Input.GetKeyDown(KeyCode.W))
@@ -75,6 +86,33 @@ public class GesturesMenu : MonoBehaviour
             {
                 pointedOptionMenu = menuOptions.Count - 1;
             }
+            keyTimeDelayer = keyTimeDelayFirst;
+        }
+
+        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.S))
+        {
+            if (pointedOptionMenu < menuOptions.Count - 1)
+            {
+                pointedOptionMenu++;
+            }
+            else
+            {
+                pointedOptionMenu = 0;
+            }
+            keyTimeDelayer = keyTimeDelay;
+        }
+
+        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.W))
+        {
+            if (pointedOptionMenu > 0)
+            {
+                pointedOptionMenu--;
+            }
+            else
+            {
+                pointedOptionMenu = menuOptions.Count - 1;
+            }
+            keyTimeDelayer = keyTimeDelay;
         }
     }
 

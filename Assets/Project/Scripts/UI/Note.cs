@@ -21,6 +21,10 @@ public class Note : MonoBehaviour
     private int updateCount = 0;
     private int framesToWait = 1;
 
+    private int keyTimeDelayFirst = 20;
+    private int keyTimeDelay = 10;
+    private int keyTimeDelayer = 0;
+
     private void Update()
     {
         KeysListener();
@@ -36,6 +40,11 @@ public class Note : MonoBehaviour
                 option1.gameObject.SetActive(true);
                 StartCoroutine(DisplayPage(page, 1));
             }
+        }
+
+        if (keyTimeDelayer > 0)
+        {
+            keyTimeDelayer--;
         }
     }
 
@@ -71,6 +80,20 @@ public class Note : MonoBehaviour
             {
                 PointOption(option1);
             }
+            keyTimeDelayer = keyTimeDelayFirst;
+        }
+
+        if (keyTimeDelayer == 0 && (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S)) && ableToChoose && openedNote)
+        {
+            if (pointedOption == 1)
+            {
+                PointOption(option2);
+            }
+            else
+            {
+                PointOption(option1);
+            }
+            keyTimeDelayer = keyTimeDelay;
         }
     }
     public void OpenNote()

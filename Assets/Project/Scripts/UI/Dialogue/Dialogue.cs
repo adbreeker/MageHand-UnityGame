@@ -45,6 +45,10 @@ public class Dialogue : MonoBehaviour
     private bool skip = false;
     private int choice;
 
+    private int keyTimeDelayFirst = 20;
+    private int keyTimeDelay = 10;
+    private int keyTimeDelayer = 0;
+
     void Start()
     {
         textSpeed = transform.parent.GetComponent<OpenDialogue>().textSpeed;
@@ -99,6 +103,11 @@ public class Dialogue : MonoBehaviour
         //Listen if typing text is done
         if (listen) KeysListener();
         else KeysListenerSkip();
+
+        if (keyTimeDelayer > 0)
+        {
+            keyTimeDelayer--;
+        }
     }
 
     void PointOption(TextMeshProUGUI option)
@@ -145,6 +154,7 @@ public class Dialogue : MonoBehaviour
                 choice--;
                 PointOption(options[choice]);
             }
+            keyTimeDelayer = keyTimeDelayFirst;
         }
 
         //Change pointed option down
@@ -165,6 +175,49 @@ public class Dialogue : MonoBehaviour
                 choice++;
                 PointOption(options[choice]);
             }
+            keyTimeDelayer = keyTimeDelayFirst;
+        }
+
+        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.W))
+        {
+            if (choice == 1)
+            {
+                for (int i = 4; i > 0; i--)
+                {
+                    if (!string.IsNullOrWhiteSpace(options[i].text))
+                    {
+                        choice = i;
+                        PointOption(options[choice]);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                choice--;
+                PointOption(options[choice]);
+            }
+            keyTimeDelayer = keyTimeDelay;
+        }
+
+        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.S))
+        {
+            if (choice == 4)
+            {
+                choice = 1;
+                PointOption(options[choice]);
+            }
+            else if (string.IsNullOrWhiteSpace(options[choice + 1].text))
+            {
+                choice = 1;
+                PointOption(options[choice]);
+            }
+            else
+            {
+                choice++;
+                PointOption(options[choice]);
+            }
+            keyTimeDelayer = keyTimeDelay;
         }
 
         //Choose pointed option (if choice is null, end dialogue and activate other controls)

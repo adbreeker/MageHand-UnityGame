@@ -30,6 +30,10 @@ public class PauseMenu : MonoBehaviour
     private bool atMainMenu = false;
     private List<TextMeshProUGUI> menuOptions = new List<TextMeshProUGUI>();
 
+    private int keyTimeDelayFirst = 20;
+    private int keyTimeDelay = 10;
+    private int keyTimeDelayer = 0;
+
     void Update()
     {
         //Change status of atMenu depending of that if it is active or not
@@ -51,6 +55,11 @@ public class PauseMenu : MonoBehaviour
         {
             KeysListenerMenu();
             PointOption(pointedOptionMenu);
+        }
+
+        if (keyTimeDelayer > 0)
+        {
+            keyTimeDelayer--;
         }
     }
 
@@ -81,6 +90,7 @@ public class PauseMenu : MonoBehaviour
             {
                 pointedOptionMenu = 0;
             }
+            keyTimeDelayer = keyTimeDelayFirst;
         }
 
         //Move up
@@ -94,6 +104,33 @@ public class PauseMenu : MonoBehaviour
             {
                 pointedOptionMenu = menuOptions.Count - 1;
             }
+            keyTimeDelayer = keyTimeDelayFirst;
+        }
+
+        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.S))
+        {
+            if (pointedOptionMenu < menuOptions.Count - 1)
+            {
+                pointedOptionMenu++;
+            }
+            else
+            {
+                pointedOptionMenu = 0;
+            }
+            keyTimeDelayer = keyTimeDelay;
+        }
+
+        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.W))
+        {
+            if (pointedOptionMenu > 0)
+            {
+                pointedOptionMenu--;
+            }
+            else
+            {
+                pointedOptionMenu = menuOptions.Count - 1;
+            }
+            keyTimeDelayer = keyTimeDelay;
         }
 
         //Choice

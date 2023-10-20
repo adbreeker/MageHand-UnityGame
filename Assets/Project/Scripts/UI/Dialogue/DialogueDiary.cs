@@ -39,36 +39,40 @@ public class DialogueDiary : MonoBehaviour
     private bool atNamesList = false;
     private int pointedName;
 
+    private int keyTimeDelayFirst = 20;
+    private int keyTimeDelay = 5;
+    private int keyTimeDelayer = 0;
+
     /*
     private void Start()
     {
-        dialogueDiary.Add("LONGER", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" }, 
-            new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" },
-            new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" }, 
-            new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" }, 
-            new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 2", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 3", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 4", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 5", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 6", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 7", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 8", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 9", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 10", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 11", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 12", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 13", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 14", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 15", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 16", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 17", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 18", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 19", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 20", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 21", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 22", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
-        dialogueDiary.Add("TEST 23", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "TY", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 2", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 3", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 4", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 5", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 6", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 7", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 8", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 9", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 10", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 11", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 12", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 13", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 14", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 15", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 16", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 17", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 18", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 19", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 20", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 21", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 22", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("TEST 23", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
+        dialogueDiary.Add("LONGER", new List<List<string>> { new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" },
+            new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" },
+            new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" },
+            new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" },
+            new List<string> { null, "essasito tekscik taki o" }, new List<string> { "You", "essasito tekscik taki o" }, new List<string> { "Strange voice", "essasito tekscik taki o" } });
     }
     */
 
@@ -77,6 +81,11 @@ public class DialogueDiary : MonoBehaviour
         if (ableToInteract)
         {
             KeysListener();
+        }
+
+        if (keyTimeDelayer > 0)
+        {
+            keyTimeDelayer--;
         }
     }
 
@@ -110,6 +119,7 @@ public class DialogueDiary : MonoBehaviour
                     pointedName--;
                     PointName(pointedName);
                     dialogueNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 1f / instantiatedNames.Count;
+                    keyTimeDelayer = keyTimeDelayFirst;
                 }
             }
 
@@ -121,6 +131,30 @@ public class DialogueDiary : MonoBehaviour
                     pointedName++;
                     PointName(pointedName);
                     dialogueNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -1f / instantiatedNames.Count;
+                    keyTimeDelayer = keyTimeDelayFirst;
+                }
+            }
+
+            if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.W))
+            {
+                if (pointedName > 0)
+                {
+                    pointedName--;
+                    PointName(pointedName);
+                    dialogueNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 1f / instantiatedNames.Count;
+                    keyTimeDelayer = keyTimeDelay;
+                }
+            }
+
+
+            if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.S))
+            {
+                if (pointedName < instantiatedNames.Count - 1)
+                {
+                    pointedName++;
+                    PointName(pointedName);
+                    dialogueNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -1f / instantiatedNames.Count;
+                    keyTimeDelayer = keyTimeDelay;
                 }
             }
         }
@@ -133,16 +167,14 @@ public class DialogueDiary : MonoBehaviour
                 DisplayNames();
             }
 
-
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKey(KeyCode.W))
             {
-                dialogueLinesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 2f / instantiatedLines.Count;
-            }
+                dialogueLinesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 0.015f;
+            }   
 
-
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKey(KeyCode.S))
             {
-                dialogueLinesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -2f / instantiatedLines.Count;
+                dialogueLinesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -0.015f;
             }
         }
     }

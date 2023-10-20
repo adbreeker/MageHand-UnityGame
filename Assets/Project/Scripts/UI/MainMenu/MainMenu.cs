@@ -17,6 +17,10 @@ public class MainMenu : MonoBehaviour
     private bool atMainMenu = false;
     private List<TextMeshProUGUI> menuOptions = new List<TextMeshProUGUI>();
 
+    private int keyTimeDelayFirst = 20;
+    private int keyTimeDelay = 10;
+    private int keyTimeDelayer = 0;
+
     private void Start()
     {
         DisplayMenu();
@@ -38,6 +42,11 @@ public class MainMenu : MonoBehaviour
             KeysListenerMenu();
             PointOption(pointedOptionMenu, menuOptions);
         }
+
+        if (keyTimeDelayer > 0)
+        {
+            keyTimeDelayer--;
+        }
     }
 
     void KeysListenerMenu()
@@ -46,12 +55,26 @@ public class MainMenu : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S))
         {
             GoDown(pointedOptionMenu);
+            keyTimeDelayer = keyTimeDelayFirst;
         }
 
         //Move up
         if (Input.GetKeyDown(KeyCode.W))
         {
             GoUp(pointedOptionMenu);
+            keyTimeDelayer = keyTimeDelayFirst;
+        }
+
+        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.S))
+        {
+            GoDown(pointedOptionMenu);
+            keyTimeDelayer = keyTimeDelay;
+        }
+
+        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.W))
+        {
+            GoUp(pointedOptionMenu);
+            keyTimeDelayer = keyTimeDelay;
         }
 
         //Choice
