@@ -48,6 +48,24 @@ public class DialogueDiary : MonoBehaviour
     /*
     private void Start()
     {
+        dialogueDiary.Add("1", new List<List<string>> { new List<string> { null, "tekscik taki o" }});
+        dialogueDiary.Add("2", new List<List<string>> { new List<string> { null, "tekscik taki o" } });
+        dialogueDiary.Add("3", new List<List<string>> { new List<string> { null, "tekscik taki o" } });
+        dialogueDiary.Add("4", new List<List<string>> { new List<string> { null, "tekscik taki o" } });
+        dialogueDiary.Add("5", new List<List<string>> { new List<string> { null, "tekscik taki o" } });
+        dialogueDiary.Add("6", new List<List<string>> { new List<string> { null, "tekscik taki o" } });
+        dialogueDiary.Add("7", new List<List<string>> { new List<string> { null, "tekscik taki o" } });
+        dialogueDiary.Add("8", new List<List<string>> { new List<string> { null, "tekscik taki o" } });
+        dialogueDiary.Add("9", new List<List<string>> { new List<string> { null, "tekscik taki o" } });
+        dialogueDiary.Add("10", new List<List<string>> { new List<string> { null, "tekscik taki o" } });
+        dialogueDiary.Add("11", new List<List<string>> { new List<string> { null, "tekscik taki o" } });
+        dialogueDiary.Add("12", new List<List<string>> { new List<string> { null, "tekscik taki o" } });
+        dialogueDiary.Add("13", new List<List<string>> { new List<string> { null, "tekscik taki o" } });
+        dialogueDiary.Add("14", new List<List<string>> { new List<string> { null, "tekscik taki o" } });
+        dialogueDiary.Add("15", new List<List<string>> { new List<string> { null, "tekscik taki o" } });
+        dialogueDiary.Add("16", new List<List<string>> { new List<string> { null, "tekscik taki o" } });
+        dialogueDiary.Add("17", new List<List<string>> { new List<string> { null, "tekscik taki o" } });
+        dialogueDiary.Add("18", new List<List<string>> { new List<string> { null, "tekscik taki o" } });
         dialogueDiary.Add("KRUCIAK", new List<List<string>> { new List<string> { null, "tekscik taki o" }, new List<string> { "You", "tekscik taki o" }, new List<string> { "Strange voice", "tekscik taki o" },
             new List<string> { null, "tekscik taki o" }, new List<string> { "You", "tekscik taki o" }, new List<string> { "Strange voice", "tekscik taki o" },
             new List<string> { null, "tekscik taki o" }, new List<string> { "You", "tekscik taki o" }, new List<string> { "Strange voice", "tekscik taki o" } });
