@@ -12,6 +12,11 @@ public class SoundManager : MonoBehaviour
         SFX_StepStone2,
         SFX_OpenChest,
         SFX_CloseChest,
+        SFX_Button,
+        SFX_LeverToUp,
+        SFX_LeverToDown,
+        SFX_PutToInventory,
+        SFX_Drink,
 
         VOICES_mage,
         VOICES_guide
