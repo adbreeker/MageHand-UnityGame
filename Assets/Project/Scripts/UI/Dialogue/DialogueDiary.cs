@@ -314,7 +314,8 @@ public class DialogueDiary : MonoBehaviour
             {
                 instantiatedLine.transform.Find("Title").GetComponent<TextMeshProUGUI>().text = list[0];
                 if (list[0] == "You") instantiatedLine.transform.Find("Title").GetComponent<TextMeshProUGUI>().color = new Color(0.2070577f, 0.8989306f, 0.9339623f); //Blue
-                else instantiatedLine.transform.Find("Title").GetComponent<TextMeshProUGUI>().color = new Color(0.9337825f, 0.9433962f, 0.4583482f); //Yellow
+                else if (list[0] == "Guide" || list[0] == "Strange voice") instantiatedLine.transform.Find("Title").GetComponent<TextMeshProUGUI>().color = new Color(0.9337825f, 0.9433962f, 0.4583482f); //Yellow
+                else instantiatedLine.transform.Find("Title").GetComponent<TextMeshProUGUI>().color = new Color(0.3055397f, 0.6603774f, 0.252314f); //Green
             }
             else Destroy(instantiatedLine.transform.Find("Title").gameObject);
             instantiatedLine.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = list[1];

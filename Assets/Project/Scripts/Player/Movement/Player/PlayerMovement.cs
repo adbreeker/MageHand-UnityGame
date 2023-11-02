@@ -27,6 +27,19 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 movementInputQueue = Vector3.zero;
     private float rotationInputQueue = 0;
 
+    //steps sounds
+    private bool lastWasStep1 = false;
+    private AudioSource stepStone1;
+    private AudioSource stepStone2;
+
+    void Start()
+    {       
+        stepStone1 = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_StepStone1);
+        stepStone1.volume = 0.2f;
+        stepStone2 = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_StepStone2);
+        stepStone2.volume = 0.2f;
+    }
+
     void Update() //listen to movement inputs
     {
         MovementQueue();
@@ -57,6 +70,17 @@ public class PlayerMovement : MonoBehaviour
             if (CanMove())
             {
                 isMoving = true;
+
+                if (lastWasStep1)
+                {
+                    stepStone2.PlayDelayed(0.2f);
+                    lastWasStep1 = false;
+                }
+                else
+                {
+                    stepStone1.PlayDelayed(0.2f);
+                    lastWasStep1 = true;
+                }
             }
         }
 

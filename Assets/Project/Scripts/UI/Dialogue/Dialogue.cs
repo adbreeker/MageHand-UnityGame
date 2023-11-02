@@ -65,12 +65,12 @@ public class Dialogue : MonoBehaviour
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
 
-        if (guideVoiceline) voice = transform.Find("GuideVoice").GetComponent<AudioSource>();
-        else voice = transform.Find("MageVoice").GetComponent<AudioSource>();
-
         pointer = transform.Find("Options").Find("Pointer").gameObject;
         nameTextObject = transform.Find("Text").Find("Name").GetComponent<TextMeshProUGUI>();
         contentTextObject = transform.Find("Text").Find("Content").GetComponent<TextMeshProUGUI>();
+
+        if (guideVoiceline) voice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.VOICES_guide);
+        else voice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.VOICES_mage);
 
         //Create dicts of options, choices when options are chosen and text of options (indexed 1-4)
         options = new Dictionary<int, TextMeshProUGUI>();
@@ -287,6 +287,7 @@ public class Dialogue : MonoBehaviour
         else
         {
             nameTextObject.text = nameText;
+            voice.volume = 0.3f;
             voice.Play();
         }
 
@@ -335,6 +336,8 @@ public class Dialogue : MonoBehaviour
 
         //Activate KeysListener
         listen = true;
+
+        Destroy(voice.gameObject);
     }
 
     IEnumerator FadeOutVoice(float speed)
@@ -349,6 +352,5 @@ public class Dialogue : MonoBehaviour
         }
 
         voice.Stop();
-        voice.volume = startVolume;
     }
 }

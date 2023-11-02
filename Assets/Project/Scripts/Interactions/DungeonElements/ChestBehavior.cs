@@ -17,11 +17,19 @@ public class ChestBehavior : MonoBehaviour
     PlayerMovement playerMovement;
     PauseMenu pauseMenu;
 
+    private AudioSource openingChestSound;
+    private AudioSource closingChestSound;
+
     private void Start() //get necessary components on awake
     {
         mainCamera = PlayerParams.Objects.playerCamera.gameObject;
         playerMovement = PlayerParams.Controllers.playerMovement;
         pauseMenu = PlayerParams.Controllers.pauseMenu;
+
+        openingChestSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_OpenChest);
+        openingChestSound.volume = 0.3f;
+        closingChestSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CloseChest);
+        closingChestSound.volume = 0.3f;
     }
 
     private void Update() //listen to chest close input if chest is open
@@ -46,6 +54,7 @@ public class ChestBehavior : MonoBehaviour
     {
         if(chestOpen) //if chest is open then close lid
         {
+            if (!closingChestSound.isPlaying) closingChestSound.Play();
             while (chestLid.transform.localRotation != Quaternion.Euler(0, 0, 0))
             {
                 yield return new WaitForFixedUpdate();
@@ -56,6 +65,7 @@ public class ChestBehavior : MonoBehaviour
         }
         else //else open lid
         {
+            if(!openingChestSound.isPlaying) openingChestSound.Play();
             while (chestLid.transform.localRotation != Quaternion.Euler(-135, 0, 0))
             {
                 yield return new WaitForFixedUpdate();

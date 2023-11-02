@@ -68,6 +68,8 @@ public class Spellbook : MonoBehaviour
         //Play pointed voice
         if (Input.GetKeyDown(KeyCode.Space) && spellbookOpened)
         {
+
+
             //Change it to TTS?
             if (lightVoice.isPlaying) voiceIsPlaying = true;
             //if (lightVoice.isPlaying || fireVoice.isPlaying etc.) voiceIsPlaying = true; ^in place of that
@@ -78,6 +80,8 @@ public class Spellbook : MonoBehaviour
                 if (spellbookPages[page][pointed - 1].spellName == "Light") lightVoice.Play();
                 //if (spellbookPages[page][pointed - 1].spellName == "Fire") fireVoice.Play(); etc.
             }
+        
+
         }
 
         //Go left if possible
@@ -133,13 +137,13 @@ public class Spellbook : MonoBehaviour
         }
 
         //Assign proper voices
-        lightVoice = instantiatedSpellbook.transform.Find("Voices").Find("Light").GetComponent<AudioSource>();
+        lightVoice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.READING_Light);
+        lightVoice.volume = 0.8f;
 
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.inventory.CloseInventory();
         PlayerParams.Controllers.pauseMenu.CloseMenu();
         PlayerParams.Controllers.dialogueDiary.CloseDiary();
-        //PlayerParams.Controllers.inventory.ableToInteract = false;
         PlayerParams.Controllers.pauseMenu.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
@@ -191,10 +195,14 @@ public class Spellbook : MonoBehaviour
     public void CloseSpellbook()
     {
         Destroy(instantiatedSpellbook);
+        if(lightVoice != null)
+        {
+            Destroy(lightVoice.gameObject);
+            //Destroy(fireVoice.gameObject); etc.
+        }
         spellbookOpened = false;
 
         //Enable other controls
-        //PlayerParams.Controllers.inventory.ableToInteract = true;
         PlayerParams.Controllers.pauseMenu.ableToInteract = true;
         PlayerParams.Variables.uiActive = false;
         PlayerParams.Objects.hand.SetActive(true);
@@ -203,27 +211,13 @@ public class Spellbook : MonoBehaviour
     {
         if (option == 1)
         {
-            //Change color of pointed option to white (255, 255, 255)
-            //titleLeft.GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
-            //Change color of not pointed option to lightGrey (118, 118, 118)
-            //titleRight.GetComponent<TextMeshProUGUI>().color = new Color(0.4625f, 0.4625f, 0.4625f);
             pointerRight.SetActive(false);
             pointerLeft.SetActive(true);
-            //pointerLeft.transform.parent.GetComponent<TextMeshProUGUI>().ForceMeshUpdate();
-            //pointerLeft.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            //    pointerLeft.transform.parent.GetComponent<TextMeshProUGUI>().textBounds.size.x + 102.5f, pointerLeft.GetComponent<RectTransform>().sizeDelta.y);
         }
         else if (option == 2)
         {
-            //Change color of not pointed option to lightGrey (118, 118, 118)
-            //titleLeft.GetComponent<TextMeshProUGUI>().color = new Color(0.4625f, 0.4625f, 0.4625f);
-            //Change color of pointed option to white (255, 255, 255)
-            //titleRight.GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
             pointerLeft.SetActive(false);
             pointerRight.SetActive(true);
-            //pointerRight.transform.parent.GetComponent<TextMeshProUGUI>().ForceMeshUpdate();
-            //pointerRight.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            //    pointerRight.transform.parent.GetComponent<TextMeshProUGUI>().textBounds.size.x + 102.5f, pointerRight.GetComponent<RectTransform>().sizeDelta.y);
         }
     }
 
