@@ -30,6 +30,11 @@ public class PauseMenu : MonoBehaviour
     private bool atMainMenu = false;
     private List<TextMeshProUGUI> menuOptions = new List<TextMeshProUGUI>();
 
+    private AudioSource closeSound;
+    private AudioSource openSound;
+    private AudioSource changeSound;
+    private AudioSource selectSound;
+
     private int keyTimeDelayFirst = 20;
     private int keyTimeDelay = 10;
     private int keyTimeDelayer = 0;
@@ -69,6 +74,7 @@ public class PauseMenu : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape) && !PlayerParams.Variables.uiActive)
         {
             OpenMenu();
+            openSound.Play();
         }
     }
     void KeysListenerMenu()
@@ -76,12 +82,14 @@ public class PauseMenu : MonoBehaviour
         //Close menu
         if (Input.GetKeyDown(KeyCode.Escape) && menuOpened && atMainMenu)
         {
+            closeSound.Play();
             CloseMenu();
         }
 
         //Move down
         if (Input.GetKeyDown(KeyCode.S))
         {
+            changeSound.Play();
             if (pointedOptionMenu < menuOptions.Count-1)
             {
                 pointedOptionMenu++;
@@ -96,6 +104,7 @@ public class PauseMenu : MonoBehaviour
         //Move up
         if (Input.GetKeyDown(KeyCode.W))
         {
+            changeSound.Play();
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
@@ -109,6 +118,7 @@ public class PauseMenu : MonoBehaviour
 
         if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.S))
         {
+            changeSound.Play();
             if (pointedOptionMenu < menuOptions.Count - 1)
             {
                 pointedOptionMenu++;
@@ -122,6 +132,7 @@ public class PauseMenu : MonoBehaviour
 
         if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.W))
         {
+            changeSound.Play();
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
@@ -136,6 +147,7 @@ public class PauseMenu : MonoBehaviour
         //Choice
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            selectSound.Play();
             if (pointedOptionMenu == 0)
             {
                 //Spawn ResetMenu
@@ -210,6 +222,11 @@ public class PauseMenu : MonoBehaviour
         //Assing proper objects
         pointer = instantiatedMenu.transform.Find("Pointer").gameObject;
 
+        openSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Open);
+        closeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Close);
+        changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
+        selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
+
         for (int i = 1; i < 7; i++)
         {
             string text = i.ToString();
@@ -223,6 +240,13 @@ public class PauseMenu : MonoBehaviour
 
     public void CloseMenu()
     {
+        if (menuOpened)
+        {
+            Destroy(openSound.gameObject, openSound.clip.length);
+            Destroy(closeSound.gameObject, closeSound.clip.length);
+            Destroy(changeSound.gameObject, changeSound.clip.length);
+            Destroy(selectSound.gameObject, selectSound.clip.length);
+        }
         Destroy(instantiatedMenu);
 
         //Enable other controls

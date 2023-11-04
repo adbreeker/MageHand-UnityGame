@@ -19,8 +19,11 @@ public class Spellbook : MonoBehaviour
 
     //[Header("Voices")]
     private bool voiceIsPlaying;
+    private AudioSource closeSound;
+    private AudioSource openSound;
+    private AudioSource changeSound;
     private AudioSource lightVoice;
-
+    
     private int page;
     private int pointed;
 
@@ -56,12 +59,21 @@ public class Spellbook : MonoBehaviour
         //Open or close spellbook
         if (Input.GetKeyDown(KeyCode.B))
         {
-            if (!spellbookOpened && bookOwned) OpenSpellbook();
-            else if (spellbookOpened) CloseSpellbook();
+            if (!spellbookOpened && bookOwned)
+            {
+                OpenSpellbook();
+                openSound.Play();
+            }
+            else if (spellbookOpened) 
+            {
+                closeSound.Play();
+                CloseSpellbook();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape) && spellbookOpened)
         {
+            closeSound.Play();
             CloseSpellbook();
         }
 
@@ -89,11 +101,13 @@ public class Spellbook : MonoBehaviour
         {
             if (pointed == 2)
             {
+                changeSound.Play();
                 pointed = 1;
                 PointOption(pointed);
             }
             else if (pointed == 1 && page > 0)
             {
+                changeSound.Play();
                 page--;
                 DisplayPage(page);
                 pointed = 2;
@@ -106,11 +120,13 @@ public class Spellbook : MonoBehaviour
         {
             if (pointed == 1 && spellbookPages[page].Count == 2)
             {
+                changeSound.Play();
                 pointed = 2;
                 PointOption(pointed);
             }
             else if (pointed == 2 && page + 1 < spellbookPages.Count)
             {
+                changeSound.Play();
                 page++;
                 DisplayPage(page);
                 pointed = 1;
@@ -137,8 +153,11 @@ public class Spellbook : MonoBehaviour
         }
 
         //Assign proper voices
+        openSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Open);
+        closeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Close);
+        changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
         lightVoice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.READING_Light);
-        lightVoice.volume = 0.8f;
+        lightVoice.volume *= 2f;
 
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.inventory.CloseInventory();
@@ -194,12 +213,15 @@ public class Spellbook : MonoBehaviour
 
     public void CloseSpellbook()
     {
-        Destroy(instantiatedSpellbook);
-        if(lightVoice != null)
+        if(spellbookOpened)
         {
-            Destroy(lightVoice.gameObject);
+            Destroy(openSound.gameObject, openSound.clip.length);
+            Destroy(closeSound.gameObject, closeSound.clip.length);
+            Destroy(changeSound.gameObject, changeSound.clip.length);
+            Destroy(lightVoice.gameObject, lightVoice.clip.length);
             //Destroy(fireVoice.gameObject); etc.
         }
+        Destroy(instantiatedSpellbook);
         spellbookOpened = false;
 
         //Enable other controls

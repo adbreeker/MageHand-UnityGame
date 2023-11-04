@@ -35,9 +35,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {       
         stepStone1 = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_StepStone1);
-        stepStone1.volume = 0.2f;
         stepStone2 = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_StepStone2);
-        stepStone2.volume = 0.2f;
     }
 
     void Update() //listen to movement inputs

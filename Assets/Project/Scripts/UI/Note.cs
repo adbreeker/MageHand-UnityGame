@@ -13,6 +13,9 @@ public class Note : MonoBehaviour
     private TextMeshProUGUI title;
     private TextMeshProUGUI content;
 
+    private AudioSource changeSound;
+    private AudioSource selectSound;
+
     private bool openedNote = false;
     private int page;
     private int pageCount;
@@ -53,6 +56,7 @@ public class Note : MonoBehaviour
         //Choose option continue, back or close
         if (Input.GetKeyDown(KeyCode.Space) && openedNote && updateCount == framesToWait)
         {
+            selectSound.Play();
             if (pointedOption == 1 && page < pageCount)
             {
                 page++;
@@ -74,10 +78,12 @@ public class Note : MonoBehaviour
         {
             if (pointedOption == 1)
             {
+                changeSound.Play();
                 PointOption(option2);
             }
             else
             {
+                changeSound.Play();
                 PointOption(option1);
             }
             keyTimeDelayer = keyTimeDelayFirst;
@@ -87,10 +93,12 @@ public class Note : MonoBehaviour
         {
             if (pointedOption == 1)
             {
+                changeSound.Play();
                 PointOption(option2);
             }
             else
             {
+                changeSound.Play();
                 PointOption(option1);
             }
             keyTimeDelayer = keyTimeDelay;
@@ -107,6 +115,9 @@ public class Note : MonoBehaviour
         PlayerParams.Controllers.pauseMenu.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
+
+        changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
+        selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
 
         //Get TextMeshProUGUIs
         option1 = transform.Find("Options").Find("1").gameObject.GetComponent<TextMeshProUGUI>();
@@ -201,6 +212,8 @@ public class Note : MonoBehaviour
 
     void CloseNote()
     {
+        Destroy(changeSound.gameObject, changeSound.clip.length);
+        Destroy(selectSound.gameObject, selectSound.clip.length);
         Destroy(gameObject);
 
         //Enable other controls

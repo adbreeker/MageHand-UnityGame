@@ -31,6 +31,8 @@ public class Dialogue : MonoBehaviour
     public Canvas option3Choice;
     public Canvas option4Choice;
 
+    private AudioSource changeSound;
+    private AudioSource selectSound;
     private AudioSource voice;
     private GameObject pointer;
     private TextMeshProUGUI nameTextObject;
@@ -69,8 +71,10 @@ public class Dialogue : MonoBehaviour
         nameTextObject = transform.Find("Text").Find("Name").GetComponent<TextMeshProUGUI>();
         contentTextObject = transform.Find("Text").Find("Content").GetComponent<TextMeshProUGUI>();
 
-        if (guideVoiceline) voice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.VOICES_guide);
-        else voice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.VOICES_mage);
+        changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
+        selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
+        if (guideVoiceline) voice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.VOICES_Guide);
+        else voice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.VOICES_Mage);
 
         //Create dicts of options, choices when options are chosen and text of options (indexed 1-4)
         options = new Dictionary<int, TextMeshProUGUI>();
@@ -112,12 +116,6 @@ public class Dialogue : MonoBehaviour
 
     void PointOption(TextMeshProUGUI option)
     {
-        //Change color of all options to lightGrey (118, 118, 118)
-        //foreach (int key in options.Keys)
-        //{
-        //    options[key].color = new Color(0.4625f, 0.4625f, 0.4625f);
-        //}
-
         //Change color of all options to darkGrey (68, 68, 68)
         foreach (int key in options.Keys)
         {
@@ -129,7 +127,7 @@ public class Dialogue : MonoBehaviour
 
         //Set position of pointer to pointed option
         pointer.transform.localPosition =
-            new Vector3(pointer.transform.localPosition.x, option.transform.localPosition.y, pointer.transform.localPosition.z); //y was + 4f
+            new Vector3(pointer.transform.localPosition.x, option.transform.localPosition.y, pointer.transform.localPosition.z);
     }
 
     void KeysListener()
@@ -144,6 +142,7 @@ public class Dialogue : MonoBehaviour
                     if (!string.IsNullOrWhiteSpace(options[i].text))
                     {
                         choice = i;
+                        if(choice != 1) changeSound.Play();
                         PointOption(options[choice]);
                         break;
                     }
@@ -151,6 +150,7 @@ public class Dialogue : MonoBehaviour
             }
             else
             {
+                changeSound.Play();
                 choice--;
                 PointOption(options[choice]);
             }
@@ -162,16 +162,19 @@ public class Dialogue : MonoBehaviour
         {
             if (choice == 4)
             {
+                changeSound.Play();
                 choice = 1;
                 PointOption(options[choice]); 
             }
             else if (string.IsNullOrWhiteSpace(options[choice + 1].text))
             {
+                if(choice != 1) changeSound.Play();
                 choice = 1;
                 PointOption(options[choice]);
             }
             else
             {
+                changeSound.Play();
                 choice++;
                 PointOption(options[choice]);
             }
@@ -187,6 +190,7 @@ public class Dialogue : MonoBehaviour
                     if (!string.IsNullOrWhiteSpace(options[i].text))
                     {
                         choice = i;
+                        if (choice != 1) changeSound.Play();
                         PointOption(options[choice]);
                         break;
                     }
@@ -194,6 +198,7 @@ public class Dialogue : MonoBehaviour
             }
             else
             {
+                changeSound.Play();
                 choice--;
                 PointOption(options[choice]);
             }
@@ -202,18 +207,22 @@ public class Dialogue : MonoBehaviour
 
         if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.S))
         {
+
             if (choice == 4)
             {
+                changeSound.Play();
                 choice = 1;
                 PointOption(options[choice]);
             }
             else if (string.IsNullOrWhiteSpace(options[choice + 1].text))
             {
+                if(choice != 1) changeSound.Play();
                 choice = 1;
                 PointOption(options[choice]);
             }
             else
             {
+                changeSound.Play();
                 choice++;
                 PointOption(options[choice]);
             }
@@ -223,6 +232,8 @@ public class Dialogue : MonoBehaviour
         //Choose pointed option (if choice is null, end dialogue and activate other controls)
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            selectSound.Play();
+
             //Save dialogue to player's diary
             if (transform.parent.GetComponent<OpenDialogue>().saveDialogue)
             {
@@ -264,6 +275,9 @@ public class Dialogue : MonoBehaviour
                 gameObject.SetActive(false);
                 optionsChoices[choice].gameObject.SetActive(true);
             }
+
+            Destroy(changeSound.gameObject, changeSound.clip.length);
+            Destroy(selectSound.gameObject, selectSound.clip.length);
         }
     }
 
@@ -287,7 +301,6 @@ public class Dialogue : MonoBehaviour
         else
         {
             nameTextObject.text = nameText;
-            voice.volume = 0.3f;
             voice.Play();
         }
 
@@ -336,7 +349,6 @@ public class Dialogue : MonoBehaviour
 
         //Activate KeysListener
         listen = true;
-
         Destroy(voice.gameObject);
     }
 

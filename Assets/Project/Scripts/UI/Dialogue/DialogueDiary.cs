@@ -20,6 +20,11 @@ public class DialogueDiary : MonoBehaviour
     public bool ableToInteract = true;
     public bool diaryOpened = false;
 
+    private AudioSource closeSound;
+    private AudioSource openSound;
+    private AudioSource changeSound;
+    private AudioSource selectSound;
+
     private GameObject instantiatedDiary;
 
     private List<TextMeshProUGUI> instantiatedNames;
@@ -126,8 +131,16 @@ public class DialogueDiary : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            if (!diaryOpened) OpenDiary();
-            else CloseDiary();
+            if (!diaryOpened)
+            {
+                OpenDiary();
+                openSound.Play();
+            }
+            else 
+            {
+                closeSound.Play();
+                CloseDiary();
+            }
         }
 
 
@@ -135,12 +148,14 @@ public class DialogueDiary : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
+                closeSound.Play();
                 CloseDiary();
             }
 
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                selectSound.Play();
                 if (instantiatedNames.Count > 0) DisplayDialogue(instantiatedNames[pointedName].text);
             }
 
@@ -149,6 +164,7 @@ public class DialogueDiary : MonoBehaviour
             {
                 if (pointedName > 0)
                 {
+                    changeSound.Play();
                     pointedName--;
                     PointName(pointedName);
                     dialogueNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 1f / (instantiatedNames.Count - 1);
@@ -161,6 +177,7 @@ public class DialogueDiary : MonoBehaviour
             {
                 if (pointedName < instantiatedNames.Count - 1)
                 {
+                    changeSound.Play();
                     pointedName++;
                     PointName(pointedName);
                     dialogueNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -1f / (instantiatedNames.Count - 1);
@@ -172,6 +189,7 @@ public class DialogueDiary : MonoBehaviour
             {
                 if (pointedName > 0)
                 {
+                    changeSound.Play();
                     pointedName--;
                     PointName(pointedName);
                     dialogueNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 1f / (instantiatedNames.Count - 1);
@@ -184,6 +202,7 @@ public class DialogueDiary : MonoBehaviour
             {
                 if (pointedName < instantiatedNames.Count - 1)
                 {
+                    changeSound.Play();
                     pointedName++;
                     PointName(pointedName);
                     dialogueNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -1f / (instantiatedNames.Count - 1);
@@ -197,6 +216,7 @@ public class DialogueDiary : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
+                closeSound.Play();
                 DisplayNames();
             }
 
@@ -224,6 +244,11 @@ public class DialogueDiary : MonoBehaviour
         PlayerParams.Controllers.pauseMenu.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
+
+        openSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Open);
+        closeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Close);
+        changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
+        selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
 
         pointer = instantiatedDiary.transform.Find("ScrollableDialogueNames").Find("Pointer").gameObject;
         dialogueNamesScrollView = instantiatedDiary.transform.Find("ScrollableDialogueNames").gameObject;
@@ -273,6 +298,13 @@ public class DialogueDiary : MonoBehaviour
 
     public void CloseDiary()
     {
+        if (diaryOpened)
+        {
+            Destroy(openSound.gameObject, openSound.clip.length);
+            Destroy(closeSound.gameObject, closeSound.clip.length);
+            Destroy(selectSound.gameObject, selectSound.clip.length);
+            Destroy(changeSound.gameObject, changeSound.clip.length);
+        }
         Destroy(instantiatedDiary);
         diaryOpened = false;
 

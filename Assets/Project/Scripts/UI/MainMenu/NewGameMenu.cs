@@ -9,6 +9,10 @@ public class NewGameMenu : MonoBehaviour
     private int pointedOptionMenu;
     private List<TextMeshProUGUI> menuOptions = new List<TextMeshProUGUI>();
 
+    private AudioSource closeSound;
+    private AudioSource changeSound;
+    private AudioSource selectSound;
+
     private int keyTimeDelayFirst = 20;
     private int keyTimeDelay = 10;
     private int keyTimeDelayer = 0;
@@ -28,11 +32,13 @@ public class NewGameMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            closeSound.Play();
             CloseMenu();
         }
 
         if (Input.GetKeyDown(KeyCode.S))
         {
+            changeSound.Play();
             if (pointedOptionMenu < menuOptions.Count - 1)
             {
                 pointedOptionMenu++;
@@ -46,6 +52,7 @@ public class NewGameMenu : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.W))
         {
+            changeSound.Play();
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
@@ -59,6 +66,7 @@ public class NewGameMenu : MonoBehaviour
 
         if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.S))
         {
+            changeSound.Play();
             if (pointedOptionMenu < menuOptions.Count - 1)
             {
                 pointedOptionMenu++;
@@ -72,6 +80,7 @@ public class NewGameMenu : MonoBehaviour
 
         if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.W))
         {
+            changeSound.Play();
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
@@ -85,6 +94,7 @@ public class NewGameMenu : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            selectSound.Play();
             if (pointedOptionMenu == 0)
             {
 
@@ -99,6 +109,10 @@ public class NewGameMenu : MonoBehaviour
     public void OpenMenu(GameObject givenPointer)
     {
         pointer = givenPointer;
+
+        closeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Close);
+        changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
+        selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
 
         for (int i = 1; i < 3; i++)
         {
@@ -115,6 +129,9 @@ public class NewGameMenu : MonoBehaviour
         pointer.transform.SetParent(transform.parent.transform.Find("Menu"));
         menuOptions.Clear();
         transform.parent.transform.Find("Menu").gameObject.SetActive(true);
+        Destroy(closeSound.gameObject, closeSound.clip.length);
+        Destroy(changeSound.gameObject, changeSound.clip.length);
+        Destroy(selectSound.gameObject, selectSound.clip.length);
         Destroy(gameObject);
     }
 

@@ -36,9 +36,7 @@ public class HandInteractions : MonoBehaviour
         pointer = GetComponent<GetObjectsNearHand>();
 
         putToInventorySound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_PutToInventory);
-        putToInventorySound.volume = 0.3f;
         drinkSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Drink);
-        drinkSound.volume = 0.3f;
     }
 
     void Update()
