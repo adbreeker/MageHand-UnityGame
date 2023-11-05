@@ -20,12 +20,10 @@ public class ProgressSaving : MonoBehaviour
     {
         savePath = Path.Combine(Application.persistentDataPath, "Saves", saveName+".json");
 
-        CreateNewSave("test1");
-        DeleteExistingSave("test1");
-
         try
         {
-            saveData = LoadProgress();
+            string json = File.ReadAllText(savePath);
+            saveData = JsonUtility.FromJson<SaveData>(json);
         }
         catch
         {
@@ -35,16 +33,10 @@ public class ProgressSaving : MonoBehaviour
         }
 
         ManageLoadedData();
-
     } 
 
     // ------------------------------------------------------------ loading data
 
-    public SaveData LoadProgress() //get save data from json
-    {
-        string json = File.ReadAllText(savePath);
-        return JsonUtility.FromJson<SaveData>(json);
-    }
 
     void ManageLoadedData() //managing loaded data
     {
@@ -109,7 +101,7 @@ public class ProgressSaving : MonoBehaviour
 
     // -------------------------------------------------------------- save files managing
 
-    public static string[] GetSaves()
+    public static string[] GetSaves() //returnig list of existing saves names
     {
         string savesLocation = Path.Combine(Application.persistentDataPath, "Saves");
         string[] savesNames = Directory.GetFiles(savesLocation, "*.json");
@@ -121,20 +113,36 @@ public class ProgressSaving : MonoBehaviour
         return savesNames;
     }
 
-    public static void CreateNewSave(string saveToCreate)
+    public static void CreateNewSave(string saveToCreate) //creating new save
     {
         string saveToCreatePath = Path.Combine(Application.persistentDataPath, "Saves", saveToCreate + ".json");
         string json = JsonUtility.ToJson(new SaveData());
         File.WriteAllText(saveToCreatePath, json);
     }
 
-    public static void DeleteExistingSave(string saveToDelete)
+    public static void DeleteExistingSave(string saveToDelete) //deleting existing save
     {
         string saveToDeletePath = Path.Combine(Application.persistentDataPath, "Saves", saveToDelete + ".json");
         if(File.Exists(saveToDeletePath))
         {
             File.Delete(saveToDeletePath);
         }
+    }
+
+    public static SaveData GetSaveByName(string saveToGet)
+    {
+        SaveData chosenSave;
+        try
+        {
+            string json = File.ReadAllText(Path.Combine(Application.persistentDataPath, "Saves", saveToGet + ".json"));
+            chosenSave = JsonUtility.FromJson<SaveData>(json);
+        }
+        catch
+        {
+            Debug.LogError("Save: " + saveToGet + " does not exist");
+            chosenSave = new SaveData();
+        }
+        return chosenSave;
     }
 
     //data to save classes ----------------------------------------------------------------------------------------------------- data to save classes
