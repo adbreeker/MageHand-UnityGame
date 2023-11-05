@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 6322994209368972440}
   - component: {fileID: -1410173973553914173}
   - component: {fileID: 2920437737176594091}
+  - component: {fileID: 7784286471385358420}
   - component: {fileID: 3603493736633032789}
   m_Layer: 0
   m_Name: GameManager
@@ -139,6 +140,21 @@ MonoBehaviour:
   scrollOfLight: {fileID: 6208631547529939595, guid: a747e3ad3b7cf4c41b3f62a60c4ae9d8, type: 3}
   scrollOfFire: {fileID: 5973000855758016690, guid: 57f7db98b8ce5a844a11ecc4bee89398, type: 3}
   scrollOfMarkAndReturn: {fileID: 5126895042329327938, guid: 7480944496d88db428b802418f606e7f, type: 3}
+--- !u!114 &7784286471385358420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4871858993183020671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5443548d77ea6604690583bd12ca203a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startMusic: 3
+  loopMusic: 3
+  playBackgroundMusic: 0
 --- !u!114 &3603493736633032789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45362506209594649a56a676e678d53b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volume: 0.3
+  volume: 0.5
   soundAudioClipArray:
   - sound: 0
     audioClip: {fileID: 8300000, guid: c5afbdc6a5580cf45abcc115b84e1f33, type: 3}
@@ -172,32 +188,32 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: 648011517ec9a06478ed6ecbb257faee, type: 3}
     baseVolume: 1
   - sound: 6
-    audioClip: {fileID: 8300000, guid: 5fa3cd79079717748ae483f32943b20a, type: 3}
+    audioClip: {fileID: 8300000, guid: 36bd8a050c9194b4c9a4795329747c19, type: 3}
     baseVolume: 1
   - sound: 7
-    audioClip: {fileID: 8300000, guid: e58cc99688c81654dab0671ad36adbc7, type: 3}
+    audioClip: {fileID: 8300000, guid: 4a994139e0fb9e74bb43234ef0f6ab9f, type: 3}
     baseVolume: 1
   - sound: 8
-    audioClip: {fileID: 8300000, guid: 84224b113a0cbde48868568f0eb935a1, type: 3}
+    audioClip: {fileID: 8300000, guid: eb31e4a8ecd34574897bc2b7af14c5d9, type: 3}
     baseVolume: 1
   - sound: 9
-    audioClip: {fileID: 8300000, guid: 741891cc81f426a4c9b8f3e2f7f5604e, type: 3}
+    audioClip: {fileID: 8300000, guid: 0f37e65fcd39eb84586b844c632c6d26, type: 3}
     baseVolume: 1
   - sound: 10
-    audioClip: {fileID: 8300000, guid: cbb959a04e265114d87f64e3b9b0d4af, type: 3}
+    audioClip: {fileID: 8300000, guid: 4d35e7d677ab00847916360e998f9712, type: 3}
     baseVolume: 1
   - sound: 11
     audioClip: {fileID: 8300000, guid: beca0c5e413ffc04d91cf82ce8749ed9, type: 3}
-    baseVolume: 0.7
+    baseVolume: 0.5
   - sound: 12
     audioClip: {fileID: 8300000, guid: 5c22fe0d083e0d0419f6a4b48a6efb23, type: 3}
-    baseVolume: 0.7
+    baseVolume: 0.5
   - sound: 13
     audioClip: {fileID: 8300000, guid: b267bd15fd9b03f47baba4b7428cfd61, type: 3}
-    baseVolume: 0.9
+    baseVolume: 1
   - sound: 14
     audioClip: {fileID: 8300000, guid: 489ba9c9450f9b24aa78d7159eef2f35, type: 3}
-    baseVolume: 0.9
+    baseVolume: 1
   - sound: 15
     audioClip: {fileID: 8300000, guid: 89fadebd66478c2459915c43ba250e0a, type: 3}
     baseVolume: 0.9
@@ -213,6 +229,24 @@ MonoBehaviour:
   - sound: 20
     audioClip: {fileID: 8300000, guid: 1b87a175eb8820042ab7277141c7ff34, type: 3}
     baseVolume: 0.9
+  - sound: 21
+    audioClip: {fileID: 8300000, guid: 9fff810ab5dc5cd4ba8d5a415c27f763, type: 3}
+    baseVolume: 0.9
+  - sound: 24
+    audioClip: {fileID: 8300000, guid: db4a32a57c06f0741b5c27eb46bff4f2, type: 3}
+    baseVolume: 1
+  - sound: 25
+    audioClip: {fileID: 8300000, guid: 340068cc4cf053a4eb5a8724ae69547c, type: 3}
+    baseVolume: 1
+  - sound: 18
+    audioClip: {fileID: 8300000, guid: d793707e3daef024aa107f14280a4399, type: 3}
+    baseVolume: 1
+  - sound: 22
+    audioClip: {fileID: 8300000, guid: 587416d4506db05458aab423580134ff, type: 3}
+    baseVolume: 1
+  - sound: 23
+    audioClip: {fileID: 8300000, guid: 4e472eee736eb1541b92dbad8bad2f3a, type: 3}
+    baseVolume: 1
   SoundsParent: {fileID: 2172408899549468536}
 --- !u!1 &6666853821655842875
 GameObject:

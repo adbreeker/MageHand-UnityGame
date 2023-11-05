@@ -27,7 +27,7 @@ public class LeverBehavior : MonoBehaviour
         leverChanging = true;
         if(leverON) //if leverOn then lever go up
         {
-            changingSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_LeverToUp);
+            changingSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_LeverToUp, transform);
             changingSound.Play();
 
             for (int i = 1; i<=10; i++)

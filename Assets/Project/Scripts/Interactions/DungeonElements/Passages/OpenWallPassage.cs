@@ -13,9 +13,12 @@ public class OpenWallPassage : MonoBehaviour
     [Header("Opening speed")]
     public float wallSpeed = 0.03f;
 
+    private AudioSource wallSound;
+
     public void Interaction() //open or close passage on interaction
     {
         StopAllCoroutines();
+        if (wallSound != null) Destroy(wallSound.gameObject);
 
         if (passageOpen) //if passage open then close
         {
@@ -25,17 +28,21 @@ public class OpenWallPassage : MonoBehaviour
         else // else open passage
         {
             passageOpen = true;
-            StartCoroutine(MoveWall(-5.5f));
+            StartCoroutine(MoveWall(-5.5f));    
         }
 
     }
 
     IEnumerator MoveWall(float wallDestination) //animating passage opening
     {
+        wallSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_MovingWall, wall.transform, 20f);
+        wallSound.gameObject.transform.localPosition = new Vector3(0, 2, -4);
+        wallSound.Play();
         while (wall.transform.position.y != wallDestination)
         {
             yield return new WaitForFixedUpdate();
             wall.transform.position = Vector3.MoveTowards(wall.transform.position, new Vector3(wall.transform.position.x, wallDestination, wall.transform.position.z), wallSpeed);
         }
+        Destroy(wallSound.gameObject);
     }
 }

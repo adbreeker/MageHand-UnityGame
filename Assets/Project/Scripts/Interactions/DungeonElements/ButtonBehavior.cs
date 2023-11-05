@@ -25,7 +25,7 @@ public class ButtonBehavior : MonoBehaviour
 
     IEnumerator ButtonAnimation() //button animation
     {
-        clickSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Button);
+        clickSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Button, transform);
         clickSound.Play();
 
         buttonChanging = true;
