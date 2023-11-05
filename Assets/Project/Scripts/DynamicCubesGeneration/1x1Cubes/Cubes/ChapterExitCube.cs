@@ -22,8 +22,8 @@ public class ChapterExitCube : MonoBehaviour
         box = GetComponent<BoxCollider>();
 
         saveManager = FindObjectOfType<ProgressSaving>();
-        spellbook = FindObjectOfType<Spellbook>();
-        inventory = FindObjectOfType<Inventory>();
+        spellbook = PlayerParams.Controllers.spellbook;
+        inventory = PlayerParams.Controllers.inventory;
     }
 
     private void Update() //checking if player is inside cube
