@@ -30,6 +30,15 @@ public class PauseMenu : MonoBehaviour
     private bool atMainMenu = false;
     private List<TextMeshProUGUI> menuOptions = new List<TextMeshProUGUI>();
 
+    private AudioSource closeSound;
+    private AudioSource openSound;
+    private AudioSource changeSound;
+    private AudioSource selectSound;
+
+    private int keyTimeDelayFirst = 20;
+    private int keyTimeDelay = 10;
+    private int keyTimeDelayer = 0;
+
     void Update()
     {
         //Change status of atMenu depending of that if it is active or not
@@ -50,7 +59,12 @@ public class PauseMenu : MonoBehaviour
         if (menuOpened && atMainMenu)
         {
             KeysListenerMenu();
-            PointOption(pointedOptionMenu, menuOptions);
+            PointOption(pointedOptionMenu);
+        }
+
+        if (keyTimeDelayer > 0)
+        {
+            keyTimeDelayer--;
         }
     }
 
@@ -60,6 +74,7 @@ public class PauseMenu : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape) && !PlayerParams.Variables.uiActive)
         {
             OpenMenu();
+            openSound.Play();
         }
     }
     void KeysListenerMenu()
@@ -67,12 +82,14 @@ public class PauseMenu : MonoBehaviour
         //Close menu
         if (Input.GetKeyDown(KeyCode.Escape) && menuOpened && atMainMenu)
         {
+            closeSound.Play();
             CloseMenu();
         }
 
         //Move down
         if (Input.GetKeyDown(KeyCode.S))
         {
+            changeSound.Play();
             if (pointedOptionMenu < menuOptions.Count-1)
             {
                 pointedOptionMenu++;
@@ -81,11 +98,13 @@ public class PauseMenu : MonoBehaviour
             {
                 pointedOptionMenu = 0;
             }
+            keyTimeDelayer = keyTimeDelayFirst;
         }
 
         //Move up
         if (Input.GetKeyDown(KeyCode.W))
         {
+            changeSound.Play();
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
@@ -94,11 +113,41 @@ public class PauseMenu : MonoBehaviour
             {
                 pointedOptionMenu = menuOptions.Count - 1;
             }
+            keyTimeDelayer = keyTimeDelayFirst;
+        }
+
+        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.S))
+        {
+            changeSound.Play();
+            if (pointedOptionMenu < menuOptions.Count - 1)
+            {
+                pointedOptionMenu++;
+            }
+            else
+            {
+                pointedOptionMenu = 0;
+            }
+            keyTimeDelayer = keyTimeDelay;
+        }
+
+        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.W))
+        {
+            changeSound.Play();
+            if (pointedOptionMenu > 0)
+            {
+                pointedOptionMenu--;
+            }
+            else
+            {
+                pointedOptionMenu = menuOptions.Count - 1;
+            }
+            keyTimeDelayer = keyTimeDelay;
         }
 
         //Choice
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            selectSound.Play();
             if (pointedOptionMenu == 0)
             {
                 //Spawn ResetMenu
@@ -166,11 +215,17 @@ public class PauseMenu : MonoBehaviour
         //Disable other controls
         PlayerParams.Controllers.inventory.ableToInteract = false;
         PlayerParams.Controllers.spellbook.ableToInteract = false;
+        PlayerParams.Controllers.dialogueDiary.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
 
         //Assing proper objects
         pointer = instantiatedMenu.transform.Find("Pointer").gameObject;
+
+        openSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Open);
+        closeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Close);
+        changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
+        selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
 
         for (int i = 1; i < 7; i++)
         {
@@ -179,17 +234,25 @@ public class PauseMenu : MonoBehaviour
         }
 
         pointedOptionMenu = 0;
-        PointOption(pointedOptionMenu, menuOptions);
+        PointOption(pointedOptionMenu);
         menuOpened = true;
     }
 
     public void CloseMenu()
     {
+        if (menuOpened)
+        {
+            Destroy(openSound.gameObject, openSound.clip.length);
+            Destroy(closeSound.gameObject, closeSound.clip.length);
+            Destroy(changeSound.gameObject, changeSound.clip.length);
+            Destroy(selectSound.gameObject, selectSound.clip.length);
+        }
         Destroy(instantiatedMenu);
 
         //Enable other controls
         PlayerParams.Controllers.inventory.ableToInteract = true;
         PlayerParams.Controllers.spellbook.ableToInteract = true;
+        PlayerParams.Controllers.dialogueDiary.ableToInteract = true;
         PlayerParams.Variables.uiActive = false;
         PlayerParams.Objects.hand.SetActive(true);
 
@@ -198,24 +261,24 @@ public class PauseMenu : MonoBehaviour
         menuOptions.Clear();
     }
 
-    void PointOption(int option, List<TextMeshProUGUI> allOptions)
+    void PointOption(int option)
     {
         //Change color of text and make pointer child of chosen option
-        for (int i = 0; i < allOptions.Count; i++)
+        for (int i = 0; i < menuOptions.Count; i++)
         {
-            allOptions[i].color = new Color(0.2666f, 0.2666f, 0.2666f);
+            menuOptions[i].color = new Color(0.2666f, 0.2666f, 0.2666f);
         }
 
-        if (option < allOptions.Count)
+        if (option < menuOptions.Count)
         {
-            allOptions[option].color = new Color(1f, 1f, 1f);
+            menuOptions[option].color = new Color(1f, 1f, 1f);
 
-            pointer.transform.SetParent(allOptions[option].transform);
+            pointer.transform.SetParent(menuOptions[option].transform);
 
             //Resize pointer to fit text
-            pointer.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                pointer.transform.parent.GetComponent<RectTransform>().sizeDelta.x + 102.5f, pointer.GetComponent<RectTransform>().sizeDelta.y);
-            pointer.transform.localPosition = new Vector3(0, 0, 0);
+            //pointer.GetComponent<RectTransform>().sizeDelta = new Vector2(
+            //    pointer.transform.parent.GetComponent<RectTransform>().sizeDelta.x + 102.5f, pointer.GetComponent<RectTransform>().sizeDelta.y);
+            //pointer.transform.localPosition = new Vector3(0, 0, 0);
         }
     }
 }

@@ -26,11 +26,17 @@ public class HandInteractions : MonoBehaviour
     bool CooldownPutDown = false;
     bool CooldownDrink = false;
 
+    AudioSource putToInventorySound;
+    AudioSource drinkSound;
+
 
     private void Awake() //get necessary components
     {
         gestureHandler = GetComponent<MoveHandPoints>();
         pointer = GetComponent<GetObjectsNearHand>();
+
+        putToInventorySound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_PutToInventory);
+        drinkSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Drink);
     }
 
     void Update()
@@ -195,6 +201,7 @@ public class HandInteractions : MonoBehaviour
         {
             if (inHand.layer == LayerMask.NameToLayer("Item")) //if item in hand then just putting it down to inventory
             {
+                putToInventorySound.Play();
                 PlayerParams.Controllers.inventory.AddItem(inHand);
             }
         }
@@ -204,6 +211,7 @@ public class HandInteractions : MonoBehaviour
     {
         if(inHand.tag == "Potion")
         {
+            drinkSound.Play();
             inHand.SendMessage("Drink");
             inHand = null;
         }

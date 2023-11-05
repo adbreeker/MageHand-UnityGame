@@ -17,6 +17,13 @@ public class MainMenu : MonoBehaviour
     private bool atMainMenu = false;
     private List<TextMeshProUGUI> menuOptions = new List<TextMeshProUGUI>();
 
+    private AudioSource changeSound;
+    private AudioSource selectSound;
+
+    private int keyTimeDelayFirst = 20;
+    private int keyTimeDelay = 10;
+    private int keyTimeDelayer = 0;
+
     private void Start()
     {
         DisplayMenu();
@@ -38,6 +45,11 @@ public class MainMenu : MonoBehaviour
             KeysListenerMenu();
             PointOption(pointedOptionMenu, menuOptions);
         }
+
+        if (keyTimeDelayer > 0)
+        {
+            keyTimeDelayer--;
+        }
     }
 
     void KeysListenerMenu()
@@ -45,18 +57,37 @@ public class MainMenu : MonoBehaviour
         //Move down
         if (Input.GetKeyDown(KeyCode.S))
         {
+            changeSound.Play();
             GoDown(pointedOptionMenu);
+            keyTimeDelayer = keyTimeDelayFirst;
         }
 
         //Move up
         if (Input.GetKeyDown(KeyCode.W))
         {
+            changeSound.Play();
             GoUp(pointedOptionMenu);
+            keyTimeDelayer = keyTimeDelayFirst;
+        }
+
+        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.S))
+        {
+            changeSound.Play();
+            GoDown(pointedOptionMenu);
+            keyTimeDelayer = keyTimeDelay;
+        }
+
+        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.W))
+        {
+            changeSound.Play();
+            GoUp(pointedOptionMenu);
+            keyTimeDelayer = keyTimeDelay;
         }
 
         //Choice
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            selectSound.Play();
             if (pointedOptionMenu == 0)
             {
                 //Continue
@@ -151,6 +182,9 @@ public class MainMenu : MonoBehaviour
         //Assing proper objects
         pointer = transform.Find("Pointer").gameObject;
 
+        changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
+        selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
+
         for (int i = 1; i < 5; i++)
         {
             string text = i.ToString();
@@ -182,9 +216,9 @@ public class MainMenu : MonoBehaviour
             pointer.transform.SetParent(allOptions[option].transform);
 
             //Resize pointer to fit text
-            pointer.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                pointer.transform.parent.GetComponent<RectTransform>().sizeDelta.x + 102.5f, pointer.GetComponent<RectTransform>().sizeDelta.y);
-            pointer.transform.localPosition = new Vector3(0, 0, 0);
+            //pointer.GetComponent<RectTransform>().sizeDelta = new Vector2(
+            //    pointer.transform.parent.GetComponent<RectTransform>().sizeDelta.x + 102.5f, pointer.GetComponent<RectTransform>().sizeDelta.y);
+            //pointer.transform.localPosition = new Vector3(0, 0, 0);
         }
 
         //*************if option is 1 display save info on the left

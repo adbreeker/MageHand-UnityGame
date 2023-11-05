@@ -5,6 +5,11 @@ using TMPro;
 
 public class ControlsMenu : MonoBehaviour
 {
+    private AudioSource closeSound;
+    private void Start()
+    {
+        closeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Close);
+    }
     void Update()
     {
         KeysListener();
@@ -14,6 +19,7 @@ public class ControlsMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            closeSound.Play();
             CloseMenu();
         }
     }
@@ -21,6 +27,7 @@ public class ControlsMenu : MonoBehaviour
     public void CloseMenu()
     {
         transform.parent.transform.Find("Menu").gameObject.SetActive(true);
+        Destroy(closeSound.gameObject, closeSound.clip.length);
         Destroy(gameObject);
     }
 }

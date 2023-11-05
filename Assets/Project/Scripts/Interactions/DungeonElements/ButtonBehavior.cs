@@ -11,6 +11,7 @@ public class ButtonBehavior : MonoBehaviour
     public int clickCounter = 0;
 
     bool buttonChanging = false;
+    private AudioSource clickSound;
 
     public void OnClick() //on click invoke interaction on connected object and increase click counter
     {
@@ -24,6 +25,9 @@ public class ButtonBehavior : MonoBehaviour
 
     IEnumerator ButtonAnimation() //button animation
     {
+        clickSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Button);
+        clickSound.Play();
+
         buttonChanging = true;
         for(int i=0; i<10; i++)
         {
@@ -41,6 +45,10 @@ public class ButtonBehavior : MonoBehaviour
             newPos.z += 0.005f;
             button.transform.localPosition = newPos;
         }
+
+        while (clickSound.isPlaying) yield return null;
+
+        Destroy(clickSound.gameObject);
         buttonChanging = false;
     }
 }

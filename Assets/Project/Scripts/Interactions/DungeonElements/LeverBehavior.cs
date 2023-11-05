@@ -11,6 +11,7 @@ public class LeverBehavior : MonoBehaviour
     public bool leverON = false;
 
     bool leverChanging = false;
+    private AudioSource changingSound;
 
     public void OnClick() //on lever click invoke interaction on connected object
     {
@@ -26,7 +27,10 @@ public class LeverBehavior : MonoBehaviour
         leverChanging = true;
         if(leverON) //if leverOn then lever go up
         {
-            for(int i = 1; i<=10; i++)
+            changingSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_LeverToUp);
+            changingSound.Play();
+
+            for (int i = 1; i<=10; i++)
             {
                 yield return new WaitForFixedUpdate();
                 lever.transform.rotation *= Quaternion.Euler(-5, 0, 0);
@@ -35,6 +39,9 @@ public class LeverBehavior : MonoBehaviour
         }
         else //else lever go down
         {
+            changingSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_LeverToDown);
+            changingSound.Play();
+
             for (int i = 1; i <= 10; i++)
             {
                 yield return new WaitForFixedUpdate();
@@ -42,6 +49,10 @@ public class LeverBehavior : MonoBehaviour
             }
             leverON = true;
         }
+
+        while (changingSound.isPlaying) yield return null;
+
+        Destroy(changingSound.gameObject);
         leverChanging = false;
     }
 

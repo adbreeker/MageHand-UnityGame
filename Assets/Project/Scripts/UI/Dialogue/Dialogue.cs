@@ -31,6 +31,8 @@ public class Dialogue : MonoBehaviour
     public Canvas option3Choice;
     public Canvas option4Choice;
 
+    private AudioSource changeSound;
+    private AudioSource selectSound;
     private AudioSource voice;
     private GameObject pointer;
     private TextMeshProUGUI nameTextObject;
@@ -45,6 +47,10 @@ public class Dialogue : MonoBehaviour
     private bool skip = false;
     private int choice;
 
+    private int keyTimeDelayFirst = 20;
+    private int keyTimeDelay = 10;
+    private int keyTimeDelayer = 0;
+
     void Start()
     {
         textSpeed = transform.parent.GetComponent<OpenDialogue>().textSpeed;
@@ -53,18 +59,22 @@ public class Dialogue : MonoBehaviour
         PlayerParams.Controllers.inventory.CloseInventory();
         PlayerParams.Controllers.spellbook.CloseSpellbook();
         PlayerParams.Controllers.pauseMenu.CloseMenu();
+        PlayerParams.Controllers.dialogueDiary.CloseDiary();
         PlayerParams.Controllers.inventory.ableToInteract = false;
         PlayerParams.Controllers.spellbook.ableToInteract = false;
         PlayerParams.Controllers.pauseMenu.ableToInteract = false;
+        PlayerParams.Controllers.dialogueDiary.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
-
-        if (guideVoiceline) voice = transform.Find("GuideVoice").GetComponent<AudioSource>();
-        else voice = transform.Find("MageVoice").GetComponent<AudioSource>();
 
         pointer = transform.Find("Options").Find("Pointer").gameObject;
         nameTextObject = transform.Find("Text").Find("Name").GetComponent<TextMeshProUGUI>();
         contentTextObject = transform.Find("Text").Find("Content").GetComponent<TextMeshProUGUI>();
+
+        changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
+        selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
+        if (guideVoiceline) voice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.VOICES_Guide);
+        else voice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.VOICES_Mage);
 
         //Create dicts of options, choices when options are chosen and text of options (indexed 1-4)
         options = new Dictionary<int, TextMeshProUGUI>();
@@ -97,16 +107,15 @@ public class Dialogue : MonoBehaviour
         //Listen if typing text is done
         if (listen) KeysListener();
         else KeysListenerSkip();
+
+        if (keyTimeDelayer > 0)
+        {
+            keyTimeDelayer--;
+        }
     }
 
     void PointOption(TextMeshProUGUI option)
     {
-        //Change color of all options to lightGrey (118, 118, 118)
-        //foreach (int key in options.Keys)
-        //{
-        //    options[key].color = new Color(0.4625f, 0.4625f, 0.4625f);
-        //}
-
         //Change color of all options to darkGrey (68, 68, 68)
         foreach (int key in options.Keys)
         {
@@ -118,7 +127,7 @@ public class Dialogue : MonoBehaviour
 
         //Set position of pointer to pointed option
         pointer.transform.localPosition =
-            new Vector3(pointer.transform.localPosition.x, option.transform.localPosition.y, pointer.transform.localPosition.z); //y was + 4f
+            new Vector3(pointer.transform.localPosition.x, option.transform.localPosition.y, pointer.transform.localPosition.z);
     }
 
     void KeysListener()
@@ -133,6 +142,7 @@ public class Dialogue : MonoBehaviour
                     if (!string.IsNullOrWhiteSpace(options[i].text))
                     {
                         choice = i;
+                        if(choice != 1) changeSound.Play();
                         PointOption(options[choice]);
                         break;
                     }
@@ -140,9 +150,11 @@ public class Dialogue : MonoBehaviour
             }
             else
             {
+                changeSound.Play();
                 choice--;
                 PointOption(options[choice]);
             }
+            keyTimeDelayer = keyTimeDelayFirst;
         }
 
         //Change pointed option down
@@ -150,29 +162,86 @@ public class Dialogue : MonoBehaviour
         {
             if (choice == 4)
             {
+                changeSound.Play();
                 choice = 1;
                 PointOption(options[choice]); 
             }
             else if (string.IsNullOrWhiteSpace(options[choice + 1].text))
             {
+                if(choice != 1) changeSound.Play();
                 choice = 1;
                 PointOption(options[choice]);
             }
             else
             {
+                changeSound.Play();
                 choice++;
                 PointOption(options[choice]);
             }
+            keyTimeDelayer = keyTimeDelayFirst;
+        }
+
+        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.W))
+        {
+            if (choice == 1)
+            {
+                for (int i = 4; i > 0; i--)
+                {
+                    if (!string.IsNullOrWhiteSpace(options[i].text))
+                    {
+                        choice = i;
+                        if (choice != 1) changeSound.Play();
+                        PointOption(options[choice]);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                changeSound.Play();
+                choice--;
+                PointOption(options[choice]);
+            }
+            keyTimeDelayer = keyTimeDelay;
+        }
+
+        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.S))
+        {
+
+            if (choice == 4)
+            {
+                changeSound.Play();
+                choice = 1;
+                PointOption(options[choice]);
+            }
+            else if (string.IsNullOrWhiteSpace(options[choice + 1].text))
+            {
+                if(choice != 1) changeSound.Play();
+                choice = 1;
+                PointOption(options[choice]);
+            }
+            else
+            {
+                changeSound.Play();
+                choice++;
+                PointOption(options[choice]);
+            }
+            keyTimeDelayer = keyTimeDelay;
         }
 
         //Choose pointed option (if choice is null, end dialogue and activate other controls)
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            selectSound.Play();
+
             //Save dialogue to player's diary
             if (transform.parent.GetComponent<OpenDialogue>().saveDialogue)
             {
                 PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { nameText, contentText });
-                PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { "You ", optionsTexts[choice] });
+                if (optionsTexts[choice] != "(Continue.)")
+                {
+                    PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { "You", optionsTexts[choice] });
+                }
             }
 
             /*
@@ -198,6 +267,7 @@ public class Dialogue : MonoBehaviour
                 PlayerParams.Controllers.inventory.ableToInteract = true;
                 PlayerParams.Controllers.spellbook.ableToInteract = true;
                 PlayerParams.Controllers.pauseMenu.ableToInteract = true;
+                PlayerParams.Controllers.dialogueDiary.ableToInteract = true;
             }
             else
             {
@@ -205,6 +275,9 @@ public class Dialogue : MonoBehaviour
                 gameObject.SetActive(false);
                 optionsChoices[choice].gameObject.SetActive(true);
             }
+
+            Destroy(changeSound.gameObject, changeSound.clip.length);
+            Destroy(selectSound.gameObject, selectSound.clip.length);
         }
     }
 
@@ -276,6 +349,7 @@ public class Dialogue : MonoBehaviour
 
         //Activate KeysListener
         listen = true;
+        Destroy(voice.gameObject);
     }
 
     IEnumerator FadeOutVoice(float speed)
@@ -290,6 +364,5 @@ public class Dialogue : MonoBehaviour
         }
 
         voice.Stop();
-        voice.volume = startVolume;
     }
 }

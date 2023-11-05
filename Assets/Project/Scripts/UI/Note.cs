@@ -13,6 +13,9 @@ public class Note : MonoBehaviour
     private TextMeshProUGUI title;
     private TextMeshProUGUI content;
 
+    private AudioSource changeSound;
+    private AudioSource selectSound;
+
     private bool openedNote = false;
     private int page;
     private int pageCount;
@@ -20,6 +23,10 @@ public class Note : MonoBehaviour
     private bool ableToChoose;
     private int updateCount = 0;
     private int framesToWait = 1;
+
+    private int keyTimeDelayFirst = 20;
+    private int keyTimeDelay = 10;
+    private int keyTimeDelayer = 0;
 
     private void Update()
     {
@@ -37,6 +44,11 @@ public class Note : MonoBehaviour
                 StartCoroutine(DisplayPage(page, 1));
             }
         }
+
+        if (keyTimeDelayer > 0)
+        {
+            keyTimeDelayer--;
+        }
     }
 
     void KeysListener()
@@ -44,6 +56,7 @@ public class Note : MonoBehaviour
         //Choose option continue, back or close
         if (Input.GetKeyDown(KeyCode.Space) && openedNote && updateCount == framesToWait)
         {
+            selectSound.Play();
             if (pointedOption == 1 && page < pageCount)
             {
                 page++;
@@ -65,12 +78,30 @@ public class Note : MonoBehaviour
         {
             if (pointedOption == 1)
             {
+                changeSound.Play();
                 PointOption(option2);
             }
             else
             {
+                changeSound.Play();
                 PointOption(option1);
             }
+            keyTimeDelayer = keyTimeDelayFirst;
+        }
+
+        if (keyTimeDelayer == 0 && (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S)) && ableToChoose && openedNote)
+        {
+            if (pointedOption == 1)
+            {
+                changeSound.Play();
+                PointOption(option2);
+            }
+            else
+            {
+                changeSound.Play();
+                PointOption(option1);
+            }
+            keyTimeDelayer = keyTimeDelay;
         }
     }
     public void OpenNote()
@@ -85,12 +116,15 @@ public class Note : MonoBehaviour
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
 
+        changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
+        selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
+
         //Get TextMeshProUGUIs
         option1 = transform.Find("Options").Find("1").gameObject.GetComponent<TextMeshProUGUI>();
         option2 = transform.Find("Options").Find("2").gameObject.GetComponent<TextMeshProUGUI>();
         title = transform.Find("Content").Find("Title").gameObject.GetComponent<TextMeshProUGUI>();
         content = transform.Find("Content").Find("Text").gameObject.GetComponent<TextMeshProUGUI>();
-        pointer = transform.Find("Options").Find("Pointer").gameObject;
+        pointer = transform.Find("Options").Find("1").Find("Pointer").gameObject;
 
         //Set proper values
         title.text = titleText;
@@ -178,6 +212,8 @@ public class Note : MonoBehaviour
 
     void CloseNote()
     {
+        Destroy(changeSound.gameObject, changeSound.clip.length);
+        Destroy(selectSound.gameObject, selectSound.clip.length);
         Destroy(gameObject);
 
         //Enable other controls
@@ -203,12 +239,7 @@ public class Note : MonoBehaviour
         option.color = new Color(1f, 1f, 1f);
 
         //Set position of pointer to pointed option
-        pointer.transform.localPosition =
-            new Vector3(pointer.transform.localPosition.x, option.transform.localPosition.y, pointer.transform.localPosition.z);
-
-        //Resize pointer to fit text 
-        pointer.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            option.gameObject.GetComponent<RectTransform>().sizeDelta.x + 102.5f, pointer.GetComponent<RectTransform>().sizeDelta.y);
+        pointer.transform.SetParent(option.transform);
 
         if (option == option1) pointedOption = 1;
         else pointedOption = 2;

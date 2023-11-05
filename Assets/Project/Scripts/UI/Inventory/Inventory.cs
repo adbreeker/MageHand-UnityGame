@@ -23,6 +23,10 @@ public class Inventory : MonoBehaviour
     private List<GameObject> itemIconActiveInstances = new List<GameObject>();
     private List<List<GameObject>> inventoryPages;
 
+    private AudioSource closeSound;
+    private AudioSource openSound;
+    private AudioSource changeSound;
+
     void Update()
     {
         if (ableToInteract)
@@ -47,15 +51,24 @@ public class Inventory : MonoBehaviour
                 {
                     AddItem(PlayerParams.Controllers.handInteractions.inHand);
                 }
-
                 OpenInventory();
+                openSound.Play();
             }
-            else if (!inventoryOpened) OpenInventory();
-            else CloseInventory();
+            else if (!inventoryOpened)
+            {
+                OpenInventory();
+                openSound.Play();
+            }
+            else
+            {
+                closeSound.Play();
+                CloseInventory();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape) && inventoryOpened)
         {
+            closeSound.Play();
             CloseInventory();
         }
 
@@ -64,6 +77,7 @@ public class Inventory : MonoBehaviour
         {
             if (page > 0)
             {
+                changeSound.Play();
                 page--;
                 DisplayPage(page);
             }
@@ -74,6 +88,7 @@ public class Inventory : MonoBehaviour
         {
             if (page + 1 < inventoryPages.Count)
             {
+                changeSound.Play();
                 page++;
                 DisplayPage(page);
             }
@@ -90,9 +105,14 @@ public class Inventory : MonoBehaviour
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.spellbook.CloseSpellbook();
         PlayerParams.Controllers.pauseMenu.CloseMenu();
+        PlayerParams.Controllers.dialogueDiary.CloseDiary();
         //PlayerParams.Controllers.spellbook.ableToInteract = false;
         PlayerParams.Controllers.pauseMenu.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
+
+        openSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Open);
+        closeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Close);
+        changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
 
         //Create list of slots for items to display on one page
         itemSlots = new List<GameObject>();
@@ -141,6 +161,12 @@ public class Inventory : MonoBehaviour
     public void CloseInventory()
     {
         Destroy(instantiatedInventory);
+        if (inventoryOpened)
+        {
+            Destroy(openSound.gameObject, openSound.clip.length);
+            Destroy(closeSound.gameObject, closeSound.clip.length);
+            Destroy(changeSound.gameObject, changeSound.clip.length);
+        }
         inventoryOpened = false;
 
         //Enable other controls

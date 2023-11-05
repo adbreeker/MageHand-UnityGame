@@ -19,8 +19,11 @@ public class Spellbook : MonoBehaviour
 
     //[Header("Voices")]
     private bool voiceIsPlaying;
+    private AudioSource closeSound;
+    private AudioSource openSound;
+    private AudioSource changeSound;
     private AudioSource lightVoice;
-
+    
     private int page;
     private int pointed;
 
@@ -36,6 +39,8 @@ public class Spellbook : MonoBehaviour
     private GameObject descriptionRight;
     private GameObject pictureLeft;
     private GameObject pictureRight;
+    private GameObject numberLeft;
+    private GameObject numberRight;
 
     //this means views not actual pages (spellbookPage = 1 view = 2 real pages)
     private List<List<SpellScrollInfo>> spellbookPages;
@@ -54,18 +59,29 @@ public class Spellbook : MonoBehaviour
         //Open or close spellbook
         if (Input.GetKeyDown(KeyCode.B))
         {
-            if (!spellbookOpened && bookOwned) OpenSpellbook();
-            else if (spellbookOpened) CloseSpellbook();
+            if (!spellbookOpened && bookOwned)
+            {
+                OpenSpellbook();
+                openSound.Play();
+            }
+            else if (spellbookOpened) 
+            {
+                closeSound.Play();
+                CloseSpellbook();
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape) && spellbookOpened)
         {
+            closeSound.Play();
             CloseSpellbook();
         }
 
         //Play pointed voice
         if (Input.GetKeyDown(KeyCode.Space) && spellbookOpened)
         {
+
+
             //Change it to TTS?
             if (lightVoice.isPlaying) voiceIsPlaying = true;
             //if (lightVoice.isPlaying || fireVoice.isPlaying etc.) voiceIsPlaying = true; ^in place of that
@@ -76,6 +92,8 @@ public class Spellbook : MonoBehaviour
                 if (spellbookPages[page][pointed - 1].spellName == "Light") lightVoice.Play();
                 //if (spellbookPages[page][pointed - 1].spellName == "Fire") fireVoice.Play(); etc.
             }
+        
+
         }
 
         //Go left if possible
@@ -83,11 +101,13 @@ public class Spellbook : MonoBehaviour
         {
             if (pointed == 2)
             {
+                changeSound.Play();
                 pointed = 1;
                 PointOption(pointed);
             }
             else if (pointed == 1 && page > 0)
             {
+                changeSound.Play();
                 page--;
                 DisplayPage(page);
                 pointed = 2;
@@ -100,11 +120,13 @@ public class Spellbook : MonoBehaviour
         {
             if (pointed == 1 && spellbookPages[page].Count == 2)
             {
+                changeSound.Play();
                 pointed = 2;
                 PointOption(pointed);
             }
             else if (pointed == 2 && page + 1 < spellbookPages.Count)
             {
+                changeSound.Play();
                 page++;
                 DisplayPage(page);
                 pointed = 1;
@@ -131,12 +153,16 @@ public class Spellbook : MonoBehaviour
         }
 
         //Assign proper voices
-        lightVoice = instantiatedSpellbook.transform.Find("Voices").Find("Light").GetComponent<AudioSource>();
+        openSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Open);
+        closeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Close);
+        changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
+        lightVoice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.READING_Light);
+        lightVoice.volume *= 2f;
 
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.inventory.CloseInventory();
         PlayerParams.Controllers.pauseMenu.CloseMenu();
-        //PlayerParams.Controllers.inventory.ableToInteract = false;
+        PlayerParams.Controllers.dialogueDiary.CloseDiary();
         PlayerParams.Controllers.pauseMenu.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
@@ -152,6 +178,8 @@ public class Spellbook : MonoBehaviour
         descriptionRight = instantiatedSpellbook.transform.Find("Right spell").Find("Description").gameObject;
         pictureLeft = instantiatedSpellbook.transform.Find("Left spell").Find("Picture").gameObject;
         pictureRight = instantiatedSpellbook.transform.Find("Right spell").Find("Picture").gameObject;
+        numberLeft = instantiatedSpellbook.transform.Find("Left spell").Find("Number").gameObject;
+        numberRight = instantiatedSpellbook.transform.Find("Right spell").Find("Number").gameObject;
 
         //Divide items to pages
         spellbookPages = new List<List<SpellScrollInfo>>();
@@ -185,11 +213,18 @@ public class Spellbook : MonoBehaviour
 
     public void CloseSpellbook()
     {
+        if(spellbookOpened)
+        {
+            Destroy(openSound.gameObject, openSound.clip.length);
+            Destroy(closeSound.gameObject, closeSound.clip.length);
+            Destroy(changeSound.gameObject, changeSound.clip.length);
+            Destroy(lightVoice.gameObject, lightVoice.clip.length);
+            //Destroy(fireVoice.gameObject); etc.
+        }
         Destroy(instantiatedSpellbook);
         spellbookOpened = false;
 
         //Enable other controls
-        //PlayerParams.Controllers.inventory.ableToInteract = true;
         PlayerParams.Controllers.pauseMenu.ableToInteract = true;
         PlayerParams.Variables.uiActive = false;
         PlayerParams.Objects.hand.SetActive(true);
@@ -198,27 +233,13 @@ public class Spellbook : MonoBehaviour
     {
         if (option == 1)
         {
-            //Change color of pointed option to white (255, 255, 255)
-            //titleLeft.GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
-            //Change color of not pointed option to lightGrey (118, 118, 118)
-            //titleRight.GetComponent<TextMeshProUGUI>().color = new Color(0.4625f, 0.4625f, 0.4625f);
             pointerRight.SetActive(false);
             pointerLeft.SetActive(true);
-            pointerLeft.transform.parent.GetComponent<TextMeshProUGUI>().ForceMeshUpdate();
-            pointerLeft.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                pointerLeft.transform.parent.GetComponent<TextMeshProUGUI>().textBounds.size.x + 102.5f, pointerLeft.GetComponent<RectTransform>().sizeDelta.y);
         }
         else if (option == 2)
         {
-            //Change color of not pointed option to lightGrey (118, 118, 118)
-            //titleLeft.GetComponent<TextMeshProUGUI>().color = new Color(0.4625f, 0.4625f, 0.4625f);
-            //Change color of pointed option to white (255, 255, 255)
-            //titleRight.GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
             pointerLeft.SetActive(false);
             pointerRight.SetActive(true);
-            pointerRight.transform.parent.GetComponent<TextMeshProUGUI>().ForceMeshUpdate();
-            pointerRight.GetComponent<RectTransform>().sizeDelta = new Vector2(
-                pointerRight.transform.parent.GetComponent<TextMeshProUGUI>().textBounds.size.x + 102.5f, pointerRight.GetComponent<RectTransform>().sizeDelta.y);
         }
     }
 
@@ -233,6 +254,8 @@ public class Spellbook : MonoBehaviour
         descriptionRight.SetActive(false);
         pictureLeft.SetActive(false);
         pictureRight.SetActive(false);
+        numberLeft.SetActive(false);
+        numberRight.SetActive(false);
 
         //Activate correct texts, arrows etc. and assign correct things to it
         if (spellbookPages[pageToDisplay].Count > 0)
@@ -243,6 +266,8 @@ public class Spellbook : MonoBehaviour
             descriptionLeft.SetActive(true);
             pictureLeft.GetComponent<RawImage>().texture = spellbookPages[pageToDisplay][0].spellPicture;
             pictureLeft.SetActive(true);
+            numberLeft.GetComponent<TextMeshProUGUI>().text = (((pageToDisplay + 1) * 2) - 1).ToString();
+            numberLeft.SetActive(true);
         }
 
         if (spellbookPages[pageToDisplay].Count == 2)
@@ -253,6 +278,8 @@ public class Spellbook : MonoBehaviour
             descriptionRight.SetActive(true);
             pictureRight.GetComponent<RawImage>().texture = spellbookPages[pageToDisplay][1].spellPicture;
             pictureRight.SetActive(true);
+            numberRight.GetComponent<TextMeshProUGUI>().text = ((pageToDisplay + 1) * 2).ToString();
+            numberRight.SetActive(true);
         }
 
         if (pageToDisplay > 0) arrowLeft.SetActive(true);
