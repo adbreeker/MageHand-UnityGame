@@ -2,6 +2,12 @@ import mediapipe as mp
 import cv2
 import socket
 import numpy as np
+import sys
+import os
+
+#Get .task path
+base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+task_file_path = os.path.join(base_path, 'gesture_recognizer.task')
 
                 
 class HandLandmarkerDetector:
@@ -50,9 +56,9 @@ class HandLandmarkerDetector:
         
             # NOTE: this is to visualize the point
             if debug:
-                # for x, y, z in self.data:
-                #    center = (int(x * image.shape[1]), int(y * image.shape[0]))
-                #    cv2.circle(image, center, 5, (0, 0, 255), -1)
+                for x, y, z in self.data:
+                   center = (int(x * image.shape[1]), int(y * image.shape[0]))
+                   cv2.circle(image, center, 5, (0, 0, 255), -1)
                 cv2.imshow('MediaPipe Hands', cv2.flip(image, 1))
             if cv2.waitKey(5) & 0xFF == 27:
                 break
@@ -79,13 +85,12 @@ class HandLandmarkerDetector:
 
                 self.data[i][2] = result.hand_landmarks[0][i].z
 
-
     def _initialize(self):
         self.cap = cv2.VideoCapture(0)
         
         self.options = self.hand_landmarker_options(
             base_options=self.base_options(
-                model_asset_path='gesture_recognizer.task'),
+                model_asset_path=task_file_path),
             running_mode=self.vision_running_mode.LIVE_STREAM,
             min_hand_detection_confidence= 0.5,
             min_hand_presence_confidence= 0.5,
@@ -100,4 +105,4 @@ class HandLandmarkerDetector:
 
 if __name__ == '__main__':
     detector = HandLandmarkerDetector()
-    detector.run(debug=True)
+    detector.run(debug=False)
