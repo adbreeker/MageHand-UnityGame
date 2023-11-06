@@ -132,7 +132,8 @@ public class HandInteractions : MonoBehaviour
             CooldownPickUp = true;
             if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("Item")) //picking item from scene
             {
-                pickUpItemSound.Play();
+                if(pointer.currentlyPointing.GetComponent<ReadableBehavior>() == null 
+                    && pointer.currentlyPointing.GetComponent<PopUpActivateOnPickUp>() == null) pickUpItemSound.Play();
                 inHand = pointer.currentlyPointing;
 
                 //making item a child of hand so it will move when hand is moving
@@ -144,7 +145,8 @@ public class HandInteractions : MonoBehaviour
             }
             if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("UI")) //picking item from inventory
             {
-                pickUpItemSound.Play();
+                if (pointer.currentlyPointing.GetComponent<ReadableBehavior>() == null
+                    && pointer.currentlyPointing.GetComponent<PopUpActivateOnPickUp>() == null) pickUpItemSound.Play();
                 //getting item from inventory
                 inHand = pointer.currentlyPointing.transform.parent.GetComponent<IconParameters>().originaObject;
                 PlayerParams.Controllers.inventory.inventory.Remove(inHand);

@@ -23,18 +23,20 @@ public class SoundManager : MonoBehaviour
 
         SFX_StepStone1, //0.5
         SFX_StepStone2, //0.5
-        SFX_OpenChest, //1
-        SFX_CloseChest, //1
-        SFX_Button, //0.9
+        SFX_OpenChest, //0.7
+        SFX_CloseChest, //0.7
+        SFX_Button, //0.8
         SFX_LeverToUp, //0.7
         SFX_LeverToDown, //0.7
-        SFX_PickUpItem, //? PLACEHOLDER
+        SFX_PickUpItem, //0.7
         SFX_PutToInventory, //0.9
         SFX_Drink, //0.9
         SFX_UnlockOpenDoor, //0.9
-        SFX_IllusionBroken,
-        SFX_ObjectHittingWall,
-        SFX_MovingWall, //1
+        SFX_IllusionBroken, //0.8
+        SFX_Collision1, //0.7
+        SFX_Collision2, //0.7
+        SFX_Collision3, //0.7
+        SFX_MovingWall, //0.7
         SFX_MovingMetalGate, //1 
 
         SFX_StartCastingSpell,
@@ -57,7 +59,7 @@ public class SoundManager : MonoBehaviour
 
     public Transform SoundsParent;
 
-    public AudioSource CreateAudioSource(Sound sound, Transform soundParent = null, float hearingDistance = 10f)
+    public AudioSource CreateAudioSource(Sound sound, Transform soundParent = null, float minHearingDistance = 4f, float maxHearingDistance = 10f)
     {
         GameObject soundGameObject = new GameObject(sound.ToString());
         AudioSource audioSource = soundGameObject.AddComponent<AudioSource>();
@@ -70,7 +72,8 @@ public class SoundManager : MonoBehaviour
             soundGameObject.transform.parent = soundParent;
             soundGameObject.transform.localPosition = new Vector3(0, 0, 0);
             audioSource.spatialBlend = 1f;
-            audioSource.maxDistance = hearingDistance;
+            audioSource.minDistance = minHearingDistance;
+            audioSource.maxDistance = maxHearingDistance;
         }
         else
         {
