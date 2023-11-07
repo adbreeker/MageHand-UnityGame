@@ -19,6 +19,7 @@ public class ProgressSaving : MonoBehaviour
     private void Awake() //geting json file with save, or creating new if no save exists
     {
         savePath = Path.Combine(Application.persistentDataPath, "Saves", saveName+".json");
+        CreateSavesDirectory();
 
         try
         {
@@ -27,7 +28,7 @@ public class ProgressSaving : MonoBehaviour
         }
         catch
         {
-            //Debug.Log("error: no existing save");
+            Debug.Log("error: no existing save");
             saveData = new SaveData();
             SaveProgressToFile();
         }
@@ -66,10 +67,23 @@ public class ProgressSaving : MonoBehaviour
         {
             spellbook.AddSpell(spellScrollsHolder.GiveScroll("Mark And Return"));
         }
+
+        //loading dialogue diary
+        DialogueDiary dialogueDiary = FindObjectOfType<DialogueDiary>();
+        dialogueDiary.dialogueDiary = new Dictionary<string, List<List<string>>>();
+        
     }
 
     // ------------------------------------------------------------- saving data
-
+    void CreateSavesDirectory()
+    {
+        if(!Directory.Exists(Path.Combine(Application.persistentDataPath, "Saves")))
+        {
+            Debug.Log("Directory status: " + Directory.Exists(Path.Combine(Application.persistentDataPath, "Saves")));
+            Directory.CreateDirectory(Path.Combine(Application.persistentDataPath, "Saves"));
+            Debug.Log("Directory status: " + Directory.Exists(Path.Combine(Application.persistentDataPath, "Saves")));
+        }
+    }
     public void SaveGameState(string currentLvl)
     {
         saveData.gameStateSave.currentLvl = currentLvl;
@@ -91,6 +105,12 @@ public class ProgressSaving : MonoBehaviour
         saveData.spellsSave.light = spells.Exists(s => string.Equals(s, "light", StringComparison.OrdinalIgnoreCase));
         saveData.spellsSave.fire = spells.Exists(s => string.Equals(s, "fire", StringComparison.OrdinalIgnoreCase));
         saveData.spellsSave.markAndReturn = spells.Exists(s => string.Equals(s, "mark and return", StringComparison.OrdinalIgnoreCase));
+    }
+
+    public void SaveDialogueDiary(Dictionary<string, List<List<string>>> diaryToSave)
+    {
+        saveData.dialogueDiarySave.diaryTitles = new List<string>(diaryToSave.Keys);
+        
     }
 
     public void SaveProgressToFile() //saving progress to json file (the one from which data was loaded)
@@ -154,6 +174,7 @@ public class ProgressSaving : MonoBehaviour
         public GameStateSave gameStateSave = new GameStateSave();
         public ItemsSave itemsSave = new ItemsSave();
         public SpellsSave spellsSave = new SpellsSave();
+        public DialogueDiarySave dialogueDiarySave = new DialogueDiarySave();
 
         [System.Serializable]
         public class GameStateSave //for saving current level
@@ -174,6 +195,13 @@ public class ProgressSaving : MonoBehaviour
             public bool light = false;
             public bool fire = false;
             public bool markAndReturn = false;
+        }
+
+        [System.Serializable]
+        public class DialogueDiarySave
+        {
+            public List<string> diaryTitles = new List<string>();
+            public List<List<List<string>>> diaryNotes = new List<List<List<string>>>();
         }
     }
 }
