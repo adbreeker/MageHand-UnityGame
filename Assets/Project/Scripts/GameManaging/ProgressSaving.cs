@@ -71,6 +71,21 @@ public class ProgressSaving : MonoBehaviour
         //loading dialogue diary
         DialogueDiary dialogueDiary = FindObjectOfType<DialogueDiary>();
         dialogueDiary.dialogueDiary = new Dictionary<string, List<List<string>>>();
+
+        for(int i = 0; i < saveData.dialogueDiarySave.diaryTitles.Count; i++)
+        {
+            List<List<string>> note = new List<List<string>>();
+            foreach(SaveData.DialogueDiarySave.DictionarySerializationNote.InnerNote serializedNote in saveData.dialogueDiarySave.diaryNotes[i].innerNotes)
+            {
+                List<string> innerNote = new List<string>();
+                foreach(string innerSerializedNote in serializedNote.innerInnerNotes)
+                {
+                    innerNote.Add(innerSerializedNote);
+                }
+                note.Add(innerNote);
+            }
+            dialogueDiary.dialogueDiary[saveData.dialogueDiarySave.diaryTitles[i]] = note;
+        }
         
     }
 
@@ -110,6 +125,22 @@ public class ProgressSaving : MonoBehaviour
     public void SaveDialogueDiary(Dictionary<string, List<List<string>>> diaryToSave)
     {
         saveData.dialogueDiarySave.diaryTitles = new List<string>(diaryToSave.Keys);
+        saveData.dialogueDiarySave.diaryNotes = new List<SaveData.DialogueDiarySave.DictionarySerializationNote>();
+
+        foreach(List<List<string>> note in diaryToSave.Values)
+        {
+            SaveData.DialogueDiarySave.DictionarySerializationNote noteToSerialize = new SaveData.DialogueDiarySave.DictionarySerializationNote();
+            foreach (List<string> innerNote in note)
+            {
+                SaveData.DialogueDiarySave.DictionarySerializationNote.InnerNote innerNoteToSerialize = new SaveData.DialogueDiarySave.DictionarySerializationNote.InnerNote();
+                foreach(string innerInnerNote in innerNote)
+                {
+                    innerNoteToSerialize.innerInnerNotes.Add(innerInnerNote);
+                }
+                noteToSerialize.innerNotes.Add(innerNoteToSerialize);
+            }
+            saveData.dialogueDiarySave.diaryNotes.Add(noteToSerialize);
+        }
         
     }
 
@@ -201,7 +232,19 @@ public class ProgressSaving : MonoBehaviour
         public class DialogueDiarySave
         {
             public List<string> diaryTitles = new List<string>();
-            public List<List<List<string>>> diaryNotes = new List<List<List<string>>>();
+            public List<DictionarySerializationNote> diaryNotes = new List<DictionarySerializationNote>();
+
+            [System.Serializable]
+            public class DictionarySerializationNote
+            {
+                public List<InnerNote> innerNotes = new List<InnerNote>();
+
+                [System.Serializable]
+                public class InnerNote
+                {
+                    public List<string> innerInnerNotes = new List<string>();
+                }
+            }
         }
     }
 }
