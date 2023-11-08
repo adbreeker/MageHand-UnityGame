@@ -152,7 +152,7 @@ public class ProgressSaving : MonoBehaviour
 
     // -------------------------------------------------------------- save files managing
 
-    public static string[] GetSaves() //returnig list of existing saves names
+    public static List<string> GetSaves() //returnig list of existing saves names
     {
         string savesLocation = Path.Combine(Application.persistentDataPath, "Saves");
         string[] savesNames = Directory.GetFiles(savesLocation, "*.json");
@@ -161,7 +161,8 @@ public class ProgressSaving : MonoBehaviour
             savesNames[i] = savesNames[i].Remove(0, savesLocation.Length + 1);
             savesNames[i] = savesNames[i].Remove(savesNames[i].Length - 5, 5);
         }
-        return savesNames;
+        List<string> listOfNames = new List<string>(savesNames);
+        return listOfNames;
     }
 
     public static void CreateNewSave(string saveToCreate) //creating new save
@@ -194,6 +195,51 @@ public class ProgressSaving : MonoBehaviour
             chosenSave = new SaveData();
         }
         return chosenSave;
+    }
+
+    public static string GetRecentlyChangedSave()
+    {
+        string directoryPath = Path.Combine(Application.persistentDataPath, "Saves");
+
+        FileInfo mostRecentFile;
+
+        if (Directory.Exists(directoryPath))
+        {
+            DirectoryInfo directoryInfo = new DirectoryInfo(directoryPath);
+            FileInfo[] files = directoryInfo.GetFiles();
+
+            if (files.Length > 0)
+            {
+                mostRecentFile = files[0];
+
+                foreach (FileInfo file in files)
+                {
+                    if (file.LastWriteTime > mostRecentFile.LastWriteTime)
+                    {
+                        mostRecentFile = file;
+                    }
+                }
+            }
+            else mostRecentFile = null;
+        }
+        else mostRecentFile = null;
+
+        return Path.GetFileNameWithoutExtension(mostRecentFile.Name);
+    }
+
+    public static string GetChangeDateOfSaveByName(string save)
+    {
+        FileInfo fileInfo;
+        try
+        {
+            fileInfo = new FileInfo(Path.Combine(Application.persistentDataPath, "Saves", save + ".json"));
+        }
+        catch
+        {
+            Debug.LogError("Save: " + save + " does not exist");
+            return null;
+        }
+        return fileInfo.LastWriteTime.ToString("yyyy-MM-dd<br>HH:mm:ss");
     }
 
     //data to save classes ----------------------------------------------------------------------------------------------------- data to save classes

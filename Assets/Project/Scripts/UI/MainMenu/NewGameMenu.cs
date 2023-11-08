@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class NewGameMenu : MonoBehaviour
 {
@@ -97,7 +98,16 @@ public class NewGameMenu : MonoBehaviour
             selectSound.Play();
             if (pointedOptionMenu == 0)
             {
-
+                for (int i = 0; i < 4; i++)
+                {
+                    if(!ProgressSaving.GetSaves().Contains("save" + i))
+                    {
+                        ProgressSaving.saveName = "save" + i;
+                        break;
+                    }
+                }
+                ProgressSaving.CreateNewSave(ProgressSaving.saveName);
+                SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
             }
             else if (pointedOptionMenu == 1)
             {
@@ -147,9 +157,6 @@ public class NewGameMenu : MonoBehaviour
             allOptions[option].color = new Color(1f, 1f, 1f);
 
             pointer.transform.SetParent(allOptions[option].transform);
-            //pointer.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            //    pointer.transform.parent.GetComponent<RectTransform>().sizeDelta.x + 102.5f, pointer.GetComponent<RectTransform>().sizeDelta.y);
-            //pointer.transform.localPosition = new Vector3(0, 0, 0);
         }
     }
 }

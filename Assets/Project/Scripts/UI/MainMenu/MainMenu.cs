@@ -2,19 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
     [Header("Prefabs")]
     public GameObject newGameMenuPrefab;
     public GameObject quitGameMenuPrefab;
+    public GameObject savesMenuPrefab;
 
     private GameObject instantiatedNewGameMenu;
     private GameObject instantiatedQuitGameMenu;
+    private GameObject instantiatedSavesMenu;
     private GameObject pointer;
 
     private int pointedOptionMenu;
-    private bool atMainMenu = false;
+    private bool atMainMenu = true;
+    private bool checkAtMainMenuChange = true;
     private List<TextMeshProUGUI> menuOptions = new List<TextMeshProUGUI>();
 
     private AudioSource changeSound;
@@ -40,7 +44,13 @@ public class MainMenu : MonoBehaviour
             atMainMenu = false;
         }
 
-        if (atMainMenu)
+        if (checkAtMainMenuChange != atMainMenu)
+        {
+            ChangesDependentToSaves();
+            checkAtMainMenuChange = atMainMenu;
+        }
+
+                if (atMainMenu)
         {
             KeysListenerMenu();
             PointOption(pointedOptionMenu, menuOptions);
@@ -91,7 +101,8 @@ public class MainMenu : MonoBehaviour
             if (pointedOptionMenu == 0)
             {
                 //Continue
-
+                ProgressSaving.saveName = ProgressSaving.GetRecentlyChangedSave();
+                SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
             }
             else if (pointedOptionMenu == 1)
             {
@@ -106,8 +117,13 @@ public class MainMenu : MonoBehaviour
             }
             else if (pointedOptionMenu == 2)
             {
-                //*************Spawn LoadMenu
+                //Spawn SavesMenu
+                transform.Find("Menu").gameObject.SetActive(false);
 
+                instantiatedSavesMenu = Instantiate(savesMenuPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity, transform);
+                instantiatedSavesMenu.transform.localPosition = new Vector3(0, 0, 0);
+
+                instantiatedSavesMenu.GetComponent<SavesMenu>().OpenMenu(pointer, 0);
             }
             else if (pointedOptionMenu == 3)
             {
@@ -178,7 +194,6 @@ public class MainMenu : MonoBehaviour
 
     public void DisplayMenu()
     {
-
         //Assing proper objects
         pointer = transform.Find("Pointer").gameObject;
 
@@ -191,17 +206,37 @@ public class MainMenu : MonoBehaviour
             menuOptions.Add(transform.Find("Menu").Find("Options").Find(text).GetComponent<TextMeshProUGUI>());
         }
 
-
-        //*************if there are saves, activate option 1
-        //*************if there are saves, activate option 2
-        //*************if there are saves, pointedOptionMenu = 0 (1)
-        //*************else, point pointedOptionMenu = 1 (2)
-
-        pointedOptionMenu = 1;
+        ChangesDependentToSaves();
         PointOption(pointedOptionMenu, menuOptions);
     }
 
-    void PointOption(int option, List<TextMeshProUGUI> allOptions)
+    public void ChangesDependentToSaves()
+    {
+        if (ProgressSaving.GetSaves().Count > 3)
+        {
+            transform.Find("Menu").Find("Options").Find("2").gameObject.SetActive(false);
+        }
+        else
+        {
+            transform.Find("Menu").Find("Options").Find("2").gameObject.SetActive(true);
+        }
+
+        if (ProgressSaving.GetSaves().Count > 0)
+        {
+            transform.Find("Menu").Find("Options").Find("1").gameObject.SetActive(true);
+            transform.Find("Menu").Find("Options").Find("3").gameObject.SetActive(true);
+        }
+        else
+        {
+            transform.Find("Menu").Find("Options").Find("1").gameObject.SetActive(false);
+            transform.Find("Menu").Find("Options").Find("3").gameObject.SetActive(false);
+        }
+
+        if (ProgressSaving.GetSaves().Count > 0) pointedOptionMenu = 0;
+        else pointedOptionMenu = 1;
+    }
+
+        void PointOption(int option, List<TextMeshProUGUI> allOptions)
     {
         //Change color of text and make pointer child of chosen option
         for (int i = 0; i < allOptions.Count; i++)
@@ -214,11 +249,6 @@ public class MainMenu : MonoBehaviour
             allOptions[option].color = new Color(1f, 1f, 1f);
 
             pointer.transform.SetParent(allOptions[option].transform);
-
-            //Resize pointer to fit text
-            //pointer.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            //    pointer.transform.parent.GetComponent<RectTransform>().sizeDelta.x + 102.5f, pointer.GetComponent<RectTransform>().sizeDelta.y);
-            //pointer.transform.localPosition = new Vector3(0, 0, 0);
         }
 
         //*************if option is 1 display save info on the left
