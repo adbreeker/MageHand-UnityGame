@@ -10,7 +10,7 @@ public class PopUp : MonoBehaviour
 
     private AudioSource popUpSound;
 
-    public void ActivatePopUp(string title, string content, float timeToFadeOut, float timeOfFadingOut)
+    public void ActivatePopUp(string title, string content, float timeToFadeOut, float timeOfFadingOut, bool playSound = true)
     {
         transform.SetParent(GameObject.FindGameObjectWithTag("HUD").transform.Find("PopUpContainer").transform);
 
@@ -21,14 +21,17 @@ public class PopUp : MonoBehaviour
         }
         contentObject.text = content;
 
-        popUpSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_PopUp);
-        popUpSound.Play();
+        if(playSound)
+        {
+            popUpSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_PopUp);
+            popUpSound.Play();
+        }
 
-        StartCoroutine(FadeOutPopUp(timeToFadeOut, timeOfFadingOut));
+        StartCoroutine(FadeOutPopUp(timeToFadeOut, timeOfFadingOut, playSound));
     }
 
 
-    IEnumerator FadeOutPopUp(float timeToFadeOut, float timeOfFadingOut)
+    IEnumerator FadeOutPopUp(float timeToFadeOut, float timeOfFadingOut, bool playSound)
     {
         yield return new WaitForSeconds(timeToFadeOut);
         while (GetComponent<CanvasGroup>().alpha > 0)
@@ -36,7 +39,7 @@ public class PopUp : MonoBehaviour
             GetComponent<CanvasGroup>().alpha -= timeOfFadingOut;
             yield return new WaitForSeconds(0);
         }
-        Destroy(popUpSound.gameObject);
+        if(playSound) Destroy(popUpSound.gameObject);
         Destroy(gameObject);
     }
 }

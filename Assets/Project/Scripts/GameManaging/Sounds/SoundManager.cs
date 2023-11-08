@@ -39,8 +39,8 @@ public class SoundManager : MonoBehaviour
         SFX_MovingWall, //0.7
         SFX_MovingMetalGate, //1 
 
-        SFX_StartCastingSpell,
-        SFX_CastingSpell,
+        SFX_CastingSpell, //0.6
+        SFX_CastingSpellFailed, //? PLACEHOLDER
         SFX_SpellLightCasted,
         SFX_SpellLightRemaining,
         SFX_SpellLightBurst
