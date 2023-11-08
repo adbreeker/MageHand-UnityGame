@@ -11,7 +11,7 @@ public class ChosenSaveMenu : MonoBehaviour
     public GameObject deleteSaveMenuPrefab;
 
     private GameObject instantiatedSavesMenu;
-    private GameObject instantiateddeleteSaveMenu;
+    private GameObject instantiatedDeleteSaveMenu;
 
     private GameObject pointer;
     private int pointedOptionMenu;
@@ -112,8 +112,15 @@ public class ChosenSaveMenu : MonoBehaviour
             }
             else if (pointedOptionMenu == 1)
             {
-                //OPEN DeleteSaveMenu
-                Debug.Log("DELETE FILE");
+                instantiatedDeleteSaveMenu = Instantiate(deleteSaveMenuPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity, transform.parent);
+                instantiatedDeleteSaveMenu.transform.localPosition = new Vector3(0, 0, 0);
+                instantiatedDeleteSaveMenu.GetComponent<DeleteSaveMenu>().OpenMenu(pointer, saveName);
+
+                menuOptions.Clear();
+                Destroy(closeSound.gameObject, closeSound.clip.length);
+                Destroy(changeSound.gameObject, changeSound.clip.length);
+                Destroy(selectSound.gameObject, selectSound.clip.length);
+                Destroy(gameObject);
             }
         }
     }
@@ -142,7 +149,6 @@ public class ChosenSaveMenu : MonoBehaviour
         instantiatedSavesMenu = Instantiate(savesMenuPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity, transform.parent);
         instantiatedSavesMenu.transform.localPosition = new Vector3(0, 0, 0);
         instantiatedSavesMenu.GetComponent<SavesMenu>().OpenMenu(pointer, int.Parse(saveName.Substring(saveName.Length - 1)));
-
 
         menuOptions.Clear();
         Destroy(closeSound.gameObject, closeSound.clip.length);

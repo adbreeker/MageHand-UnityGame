@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Debug.Log(ProgressSaving.saveName + " powinno byæ jeden mniejsze i jest git");
+        }
+    }
+
     public enum Sound
     {
         VOICES_Mage, //? PLACEHOLDER

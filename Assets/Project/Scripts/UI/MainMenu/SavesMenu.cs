@@ -8,8 +8,10 @@ public class SavesMenu : MonoBehaviour
 {
     [Header("Prefabs")]
     public GameObject chosenSaveMenuPrefab;
+    public GameObject newGameMenuPrefab;
 
     private GameObject instantiatedChosenSaveMenu;
+    private GameObject instantiatedNewGameMenu;
 
     private GameObject pointer;
     private int pointedOptionMenu;
@@ -118,9 +120,16 @@ public class SavesMenu : MonoBehaviour
             }
             else
             {
-                ProgressSaving.saveName = "save" + pointedOptionMenu;
-                ProgressSaving.CreateNewSave(ProgressSaving.saveName);
-                SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
+                instantiatedNewGameMenu = Instantiate(newGameMenuPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity, transform.parent);
+                instantiatedNewGameMenu.transform.localPosition = new Vector3(0, 0, 0);
+
+                instantiatedNewGameMenu.GetComponent<NewGameMenu>().OpenMenu(pointer, true, "save" + pointedOptionMenu);
+
+                menuOptions.Clear();
+                Destroy(closeSound.gameObject, closeSound.clip.length);
+                Destroy(changeSound.gameObject, changeSound.clip.length);
+                Destroy(selectSound.gameObject, selectSound.clip.length);
+                Destroy(gameObject);
             }
         }
     }

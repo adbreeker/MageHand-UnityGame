@@ -6,6 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class NewGameMenu : MonoBehaviour
 {
+    [Header("Prefabs")]
+    public GameObject savesMenuPrefab;
+
+    private GameObject instantiatedSavesMenu;
+
+    private bool openSavesMenuOnQuit;
+    private string saveName;
+
     private GameObject pointer;
     private int pointedOptionMenu;
     private List<TextMeshProUGUI> menuOptions = new List<TextMeshProUGUI>();
@@ -98,16 +106,25 @@ public class NewGameMenu : MonoBehaviour
             selectSound.Play();
             if (pointedOptionMenu == 0)
             {
-                for (int i = 0; i < 4; i++)
+                if(openSavesMenuOnQuit)
                 {
-                    if(!ProgressSaving.GetSaves().Contains("save" + i))
-                    {
-                        ProgressSaving.saveName = "save" + i;
-                        break;
-                    }
+                    ProgressSaving.saveName = saveName;
+                    ProgressSaving.CreateNewSave(ProgressSaving.saveName);
+                    SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
                 }
-                ProgressSaving.CreateNewSave(ProgressSaving.saveName);
-                SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
+                else
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        if (!ProgressSaving.GetSaves().Contains("save" + i))
+                        {
+                            ProgressSaving.saveName = "save" + i;
+                            break;
+                        }
+                    }
+                    ProgressSaving.CreateNewSave(ProgressSaving.saveName);
+                    SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
+                }
             }
             else if (pointedOptionMenu == 1)
             {
@@ -116,8 +133,11 @@ public class NewGameMenu : MonoBehaviour
         }
     }
 
-    public void OpenMenu(GameObject givenPointer)
+    public void OpenMenu(GameObject givenPointer, bool isFromSavesMenu = false, string givenSaveName = null)
     {
+        openSavesMenuOnQuit = isFromSavesMenu;
+        saveName = givenSaveName;
+
         pointer = givenPointer;
 
         closeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Close);
@@ -136,13 +156,28 @@ public class NewGameMenu : MonoBehaviour
 
     public void CloseMenu()
     {
-        pointer.transform.SetParent(transform.parent.transform.Find("Menu"));
-        menuOptions.Clear();
-        transform.parent.transform.Find("Menu").gameObject.SetActive(true);
-        Destroy(closeSound.gameObject, closeSound.clip.length);
-        Destroy(changeSound.gameObject, changeSound.clip.length);
-        Destroy(selectSound.gameObject, selectSound.clip.length);
-        Destroy(gameObject);
+        if (openSavesMenuOnQuit)
+        {
+            instantiatedSavesMenu = Instantiate(savesMenuPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity, transform.parent);
+            instantiatedSavesMenu.transform.localPosition = new Vector3(0, 0, 0);
+            instantiatedSavesMenu.GetComponent<SavesMenu>().OpenMenu(pointer, int.Parse(saveName.Substring(saveName.Length - 1)));
+
+            menuOptions.Clear();
+            Destroy(closeSound.gameObject, closeSound.clip.length);
+            Destroy(changeSound.gameObject, changeSound.clip.length);
+            Destroy(selectSound.gameObject, selectSound.clip.length);
+            Destroy(gameObject);
+        }
+        else
+        {
+            pointer.transform.SetParent(transform.parent.transform.Find("Menu"));
+            menuOptions.Clear();
+            transform.parent.transform.Find("Menu").gameObject.SetActive(true);
+            Destroy(closeSound.gameObject, closeSound.clip.length);
+            Destroy(changeSound.gameObject, changeSound.clip.length);
+            Destroy(selectSound.gameObject, selectSound.clip.length);
+            Destroy(gameObject);
+        }
     }
 
     void PointOption(int option, List<TextMeshProUGUI> allOptions)
