@@ -74,13 +74,16 @@ public class GetObjectsNearHand : MonoBehaviour
             {
                 foreach(Transform child in pointingAt.transform)
                 {
-                    if (child.gameObject.GetComponent<EnlightItem>() != null)
+                    if (child.gameObject.GetComponent<MeshRenderer>() != null)
                     {
-                        child.gameObject.GetComponent<EnlightItem>().enlightenTime = 10;
-                    }
-                    else
-                    {
-                        child.gameObject.AddComponent<EnlightItem>();
+                        if (child.gameObject.GetComponent<EnlightItem>() != null)
+                        {
+                            child.gameObject.GetComponent<EnlightItem>().enlightenTime = 10;
+                        }
+                        else
+                        {
+                            child.gameObject.AddComponent<EnlightItem>();
+                        }
                     }
                 }
             }

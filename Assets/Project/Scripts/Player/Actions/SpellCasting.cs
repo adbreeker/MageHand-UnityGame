@@ -33,6 +33,10 @@ public class SpellCasting : MonoBehaviour
     public GameObject firePrefab;
     public GameObject markPrefab;
 
+
+    private AudioSource castingSound;
+    private AudioSource castingFailSound;
+
     //classes necessary for speach to text
     private MicrophoneRecord microphoneRecord;
     private WhisperManager whisper;
@@ -132,6 +136,9 @@ public class SpellCasting : MonoBehaviour
                 GameObject popUp = Instantiate(popUpPrefab, new Vector3(0, 0, 0), Quaternion.identity);
                 popUp.GetComponent<PopUp>().ActivatePopUp("", "Cast a Spell.", timeToFadeOutPopUp, timeOfFadingOutPopUp);
 
+                castingSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpell);
+                castingSound.Play();
+
                 Debug.Log("started recording ------------------------ started recording");
                 microphoneRecord.StartRecord();
             }
@@ -149,23 +156,31 @@ public class SpellCasting : MonoBehaviour
         Debug.Log(NormalizeTranscribedText(spellWhispered));
 
         GameObject popUp = Instantiate(popUpPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        popUp.GetComponent<PopUp>().ActivatePopUp("", "Detected word:<br>" + NormalizeTranscribedText(spellWhispered), timeToFadeOutPopUp, timeOfFadingOutPopUp);
+        popUp.GetComponent<PopUp>().ActivatePopUp("", "Detected word:<br>" + NormalizeTranscribedText(spellWhispered), timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
+
+        Destroy(castingSound);
 
         if (NormalizeTranscribedText(spellWhispered) == "light")
         {
             LightSpell();
         }
-        if (NormalizeTranscribedText(spellWhispered) == "fire")
+        else if(NormalizeTranscribedText(spellWhispered) == "fire")
         {
             FireSpell();
         }
-        if (NormalizeTranscribedText(spellWhispered) == "mark")
+        else if(NormalizeTranscribedText(spellWhispered) == "mark")
         {
             MarkSpell();
         }
-        if (NormalizeTranscribedText(spellWhispered) == "return")
+        else if (NormalizeTranscribedText(spellWhispered) == "return")
         {
             ReturnSpell();
+        }
+        else
+        {
+            castingFailSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
+            castingFailSound.Play();
+            Destroy(castingFailSound, castingFailSound.clip.length);
         }
     }
 

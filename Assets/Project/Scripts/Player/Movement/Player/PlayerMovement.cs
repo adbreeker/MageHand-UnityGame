@@ -112,6 +112,10 @@ public class PlayerMovement : MonoBehaviour
             if (collider.gameObject.tag == "Wall" || collider.gameObject.tag == "Obstacle")
             {
                 //if obstacle near player then can't move
+                AudioSource collisionSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Collision2);
+                collisionSound.Play();
+                Destroy(collisionSound.gameObject, collisionSound.clip.length);
+
                 return false;
             }
         }

@@ -26,8 +26,8 @@ public class ChestBehavior : MonoBehaviour
         playerMovement = PlayerParams.Controllers.playerMovement;
         pauseMenu = PlayerParams.Controllers.pauseMenu;
 
-        openingChestSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_OpenChest);
-        closingChestSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CloseChest);
+        openingChestSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_OpenChest, transform);
+        closingChestSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CloseChest, transform);
     }
 
     private void Update() //listen to chest close input if chest is open

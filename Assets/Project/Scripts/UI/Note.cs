@@ -13,6 +13,7 @@ public class Note : MonoBehaviour
     private TextMeshProUGUI title;
     private TextMeshProUGUI content;
 
+    private AudioSource openSound;
     private AudioSource changeSound;
     private AudioSource selectSound;
 
@@ -116,6 +117,7 @@ public class Note : MonoBehaviour
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
 
+        openSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Open);
         changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
         selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
 
@@ -125,6 +127,8 @@ public class Note : MonoBehaviour
         title = transform.Find("Content").Find("Title").gameObject.GetComponent<TextMeshProUGUI>();
         content = transform.Find("Content").Find("Text").gameObject.GetComponent<TextMeshProUGUI>();
         pointer = transform.Find("Options").Find("1").Find("Pointer").gameObject;
+
+        openSound.Play();
 
         //Set proper values
         title.text = titleText;
@@ -212,6 +216,7 @@ public class Note : MonoBehaviour
 
     void CloseNote()
     {
+        Destroy(openSound.gameObject, openSound.clip.length);
         Destroy(changeSound.gameObject, changeSound.clip.length);
         Destroy(selectSound.gameObject, selectSound.clip.length);
         Destroy(gameObject);

@@ -26,8 +26,9 @@ public class HandInteractions : MonoBehaviour
     bool CooldownPutDown = false;
     bool CooldownDrink = false;
 
-    AudioSource putToInventorySound;
-    AudioSource drinkSound;
+    private AudioSource pickUpItemSound;
+    private AudioSource putToInventorySound;
+    private AudioSource drinkSound;
 
 
     private void Awake() //get necessary components
@@ -35,6 +36,7 @@ public class HandInteractions : MonoBehaviour
         gestureHandler = GetComponent<MoveHandPoints>();
         pointer = GetComponent<GetObjectsNearHand>();
 
+        pickUpItemSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_PickUpItem);
         putToInventorySound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_PutToInventory);
         drinkSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Drink);
     }
@@ -130,6 +132,8 @@ public class HandInteractions : MonoBehaviour
             CooldownPickUp = true;
             if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("Item")) //picking item from scene
             {
+                if(pointer.currentlyPointing.GetComponent<ReadableBehavior>() == null 
+                    && pointer.currentlyPointing.GetComponent<PopUpActivateOnPickUp>() == null) pickUpItemSound.Play();
                 inHand = pointer.currentlyPointing;
 
                 //making item a child of hand so it will move when hand is moving
@@ -141,6 +145,8 @@ public class HandInteractions : MonoBehaviour
             }
             if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("UI")) //picking item from inventory
             {
+                if (pointer.currentlyPointing.GetComponent<ReadableBehavior>() == null
+                    && pointer.currentlyPointing.GetComponent<PopUpActivateOnPickUp>() == null) pickUpItemSound.Play();
                 //getting item from inventory
                 inHand = pointer.currentlyPointing.transform.parent.GetComponent<IconParameters>().originaObject;
                 PlayerParams.Controllers.inventory.inventory.Remove(inHand);
