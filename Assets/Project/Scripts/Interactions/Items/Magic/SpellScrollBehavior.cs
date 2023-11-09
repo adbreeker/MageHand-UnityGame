@@ -45,6 +45,7 @@ public class SpellScrollBehavior : MonoBehaviour
 }
 
 
+#if UNITY_EDITOR
 //custom editor ------------------------------------------------------------------------------------------ custom editor
 [CustomEditor(typeof(SpellScrollBehavior))]
 class SpellScrollBehaviorEditor : Editor
@@ -111,5 +112,5 @@ class SpellScrollBehaviorEditor : Editor
         serializedObject.ApplyModifiedProperties();
     }
 }
-
+#endif
 
