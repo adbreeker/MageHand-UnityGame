@@ -104,12 +104,12 @@ public class SavesMenu : MonoBehaviour
         {
             selectSound.Play();
 
-            if(ProgressSaving.GetSaves().Contains("save" + pointedOptionMenu))
+            if(ProgressSaving.GetSaves().Contains("save" + (pointedOptionMenu + 1)))
             {
                 instantiatedChosenSaveMenu = Instantiate(chosenSaveMenuPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity, transform.parent);
                 instantiatedChosenSaveMenu.transform.localPosition = new Vector3(0, 0, 0);
 
-                instantiatedChosenSaveMenu.GetComponent<ChosenSaveMenu>().OpenMenu(pointer, "save" + pointedOptionMenu);
+                instantiatedChosenSaveMenu.GetComponent<ChosenSaveMenu>().OpenMenu(pointer, "save" + (pointedOptionMenu + 1));
 
 
                 menuOptions.Clear();
@@ -123,7 +123,7 @@ public class SavesMenu : MonoBehaviour
                 instantiatedNewGameMenu = Instantiate(newGameMenuPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity, transform.parent);
                 instantiatedNewGameMenu.transform.localPosition = new Vector3(0, 0, 0);
 
-                instantiatedNewGameMenu.GetComponent<NewGameMenu>().OpenMenu(pointer, true, "save" + pointedOptionMenu);
+                instantiatedNewGameMenu.GetComponent<NewGameMenu>().OpenMenu(pointer, true, "save" + (pointedOptionMenu + 1));
 
                 menuOptions.Clear();
                 Destroy(closeSound.gameObject, closeSound.clip.length);
@@ -134,7 +134,7 @@ public class SavesMenu : MonoBehaviour
         }
     }
 
-    public void OpenMenu(GameObject givenPointer, int pointOption)
+    public void OpenMenu(GameObject givenPointer, int pointOption = -1)
     {
         pointer = givenPointer;
 
@@ -147,7 +147,7 @@ public class SavesMenu : MonoBehaviour
             string text = i.ToString();
             menuOptions.Add(transform.Find("Menu").Find("Options").Find(text).gameObject);
 
-            if (!ProgressSaving.GetSaves().Contains("save" + (i - 1)))
+            if (!ProgressSaving.GetSaves().Contains("save" + i))
             {
                 menuOptions[i - 1].transform.Find("Name").GetComponent<TextMeshProUGUI>().text = "Empty";
                 menuOptions[i - 1].transform.Find("Description").gameObject.SetActive(false);
@@ -155,10 +155,10 @@ public class SavesMenu : MonoBehaviour
             else
             {
                 menuOptions[i - 1].transform.Find("Description").Find("Date").GetComponent<TextMeshProUGUI>().text =
-                    ProgressSaving.GetChangeDateOfSaveByName("save" + (i - 1));
+                    ProgressSaving.GetChangeDateOfSaveByName("save" + i);
 
 
-                string chapter = ProgressSaving.GetSaveByName("save" + (i - 1)).gameStateSave.currentLvl.Replace("_", " ");
+                string chapter = ProgressSaving.GetSaveByName("save" + i).gameStateSave.currentLvl.Replace("_", " ");
                 int firstSpaceIndex = chapter.IndexOf(' ');
                 int secondSpaceIndex = chapter.IndexOf(' ', firstSpaceIndex + 1);
                 if (firstSpaceIndex >= 0 && secondSpaceIndex > firstSpaceIndex)
@@ -166,11 +166,26 @@ public class SavesMenu : MonoBehaviour
                     chapter = chapter.Substring(0, secondSpaceIndex) + "<br>" + chapter.Substring(secondSpaceIndex + 1);
                 }
                 menuOptions[i - 1].transform.Find("Description").Find("Chapter").GetComponent<TextMeshProUGUI>().text = chapter;
-
             }
         }
 
-        pointedOptionMenu = pointOption;
+        if (pointOption == -1)
+        {
+            for(int i = 1; i < 5; i++)
+            {
+                if (ProgressSaving.GetSaves().Contains("save" + i))
+                {
+                    pointedOptionMenu = i - 1;
+                    break;
+                }
+                pointedOptionMenu = 0;
+            }
+        }
+        else
+        {
+            pointedOptionMenu = pointOption;
+        }
+
         PointOption(pointedOptionMenu, menuOptions);
     }
 

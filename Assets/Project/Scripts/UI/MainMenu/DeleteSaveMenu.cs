@@ -16,6 +16,7 @@ public class DeleteSaveMenu : MonoBehaviour
     private GameObject pointer;
     private int pointedOptionMenu;
     private List<TextMeshProUGUI> menuOptions = new List<TextMeshProUGUI>();
+    private TextMeshProUGUI title;
 
     private string saveName;
 
@@ -140,6 +141,9 @@ public class DeleteSaveMenu : MonoBehaviour
             string text = i.ToString();
             menuOptions.Add(transform.Find("Menu").Find("Options").Find(text).GetComponent<TextMeshProUGUI>());
         }
+
+        title = transform.Find("Menu").Find("Options").Find("Title").GetComponent<TextMeshProUGUI>();
+        title.text = "Do you want to<br>delete Save File " + int.Parse(givenSaveName.Substring(4)) + "?";
 
         pointedOptionMenu = 0;
         PointOption(pointedOptionMenu, menuOptions);

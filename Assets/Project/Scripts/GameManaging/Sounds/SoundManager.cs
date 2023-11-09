@@ -8,7 +8,7 @@ public class SoundManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            Debug.Log(ProgressSaving.saveName + " powinno byæ jeden mniejsze i jest git");
+            Debug.Log(ProgressSaving.saveName);
         }
     }
 
@@ -49,6 +49,7 @@ public class SoundManager : MonoBehaviour
 
         SFX_CastingSpell, //0.6
         SFX_CastingSpellFailed, //? PLACEHOLDER
+
         SFX_SpellLightCasted,
         SFX_SpellLightRemaining,
         SFX_SpellLightBurst

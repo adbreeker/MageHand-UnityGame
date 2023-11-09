@@ -59,7 +59,7 @@ public class ProgressSaving : MonoBehaviour
         {
             spellbook.AddSpell(spellScrollsHolder.GiveScroll("Light"));
         }
-        if (saveData.spellsSave.light)
+        if (saveData.spellsSave.fire)
         {
             spellbook.AddSpell(spellScrollsHolder.GiveScroll("Fire"));
         }

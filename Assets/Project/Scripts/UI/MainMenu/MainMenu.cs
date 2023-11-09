@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class MainMenu : MonoBehaviour
 {
@@ -46,7 +47,7 @@ public class MainMenu : MonoBehaviour
 
         if (checkAtMainMenuChange != atMainMenu)
         {
-            ChangesDependentToSaves();
+            ChangesDependentOnSaves();
             checkAtMainMenuChange = atMainMenu;
         }
 
@@ -123,7 +124,7 @@ public class MainMenu : MonoBehaviour
                 instantiatedSavesMenu = Instantiate(savesMenuPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity, transform);
                 instantiatedSavesMenu.transform.localPosition = new Vector3(0, 0, 0);
 
-                instantiatedSavesMenu.GetComponent<SavesMenu>().OpenMenu(pointer, 0);
+                instantiatedSavesMenu.GetComponent<SavesMenu>().OpenMenu(pointer);
             }
             else if (pointedOptionMenu == 3)
             {
@@ -206,13 +207,13 @@ public class MainMenu : MonoBehaviour
             menuOptions.Add(transform.Find("Menu").Find("Options").Find(text).GetComponent<TextMeshProUGUI>());
         }
 
-        ChangesDependentToSaves();
+        ChangesDependentOnSaves();
         PointOption(pointedOptionMenu, menuOptions);
     }
 
-    public void ChangesDependentToSaves()
+    public void ChangesDependentOnSaves()
     {
-        if (ProgressSaving.GetSaves().Count > 3)
+        if (ProgressSaving.GetSaves().Count(item => item != "TestSaveDevEdit") > 3)
         {
             transform.Find("Menu").Find("Options").Find("2").gameObject.SetActive(false);
         }
@@ -221,19 +222,18 @@ public class MainMenu : MonoBehaviour
             transform.Find("Menu").Find("Options").Find("2").gameObject.SetActive(true);
         }
 
-        if (ProgressSaving.GetSaves().Count > 0)
+        if (ProgressSaving.GetSaves().Count(item => item != "TestSaveDevEdit") > 0)
         {
+            pointedOptionMenu = 0;
             transform.Find("Menu").Find("Options").Find("1").gameObject.SetActive(true);
-            transform.Find("Menu").Find("Options").Find("3").gameObject.SetActive(true);
+            //transform.Find("Menu").Find("Options").Find("3").gameObject.SetActive(true);
         }
         else
         {
+            pointedOptionMenu = 1;
             transform.Find("Menu").Find("Options").Find("1").gameObject.SetActive(false);
-            transform.Find("Menu").Find("Options").Find("3").gameObject.SetActive(false);
+            //transform.Find("Menu").Find("Options").Find("3").gameObject.SetActive(false);
         }
-
-        if (ProgressSaving.GetSaves().Count > 0) pointedOptionMenu = 0;
-        else pointedOptionMenu = 1;
     }
 
         void PointOption(int option, List<TextMeshProUGUI> allOptions)

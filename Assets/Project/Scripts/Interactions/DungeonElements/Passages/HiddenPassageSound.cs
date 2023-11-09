@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HiddenPassage : MonoBehaviour
+public class HiddenPassageSound : MonoBehaviour
 {
     private AudioSource sound;
     private bool activateSound = true;
@@ -18,7 +18,7 @@ public class HiddenPassage : MonoBehaviour
         {
             sound.Play();
             activateSound = false;
-            Destroy(sound.gameObject, sound.clip.length);
+            Destroy(this, sound.clip.length);
         }
     }
 }
