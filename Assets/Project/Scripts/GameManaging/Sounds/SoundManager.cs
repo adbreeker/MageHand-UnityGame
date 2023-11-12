@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Debug.Log(ProgressSaving.saveName);
+        }
+    }
+
     public enum Sound
     {
         VOICES_Mage, //? PLACEHOLDER
@@ -41,6 +49,7 @@ public class SoundManager : MonoBehaviour
 
         SFX_CastingSpell, //0.6
         SFX_CastingSpellFailed, //? PLACEHOLDER
+
         SFX_SpellLightCasted,
         SFX_SpellLightRemaining,
         SFX_SpellLightBurst

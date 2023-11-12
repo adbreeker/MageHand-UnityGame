@@ -111,9 +111,12 @@ public class Note : MonoBehaviour
         PlayerParams.Controllers.inventory.CloseInventory();
         PlayerParams.Controllers.spellbook.CloseSpellbook();
         PlayerParams.Controllers.pauseMenu.CloseMenu();
+
         PlayerParams.Controllers.inventory.ableToInteract = false;
         PlayerParams.Controllers.spellbook.ableToInteract = false;
+        PlayerParams.Controllers.dialogueDiary.ableToInteract = false;
         PlayerParams.Controllers.pauseMenu.ableToInteract = false;
+
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
 

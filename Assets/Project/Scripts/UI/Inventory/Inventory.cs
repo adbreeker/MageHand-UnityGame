@@ -42,9 +42,10 @@ public class Inventory : MonoBehaviour
 
     void KeysListener()
     {
-        //Open or close inventory
-        if (Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab))
+            //Open or close inventory
+            if (Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab))
         {
+
             if (!inventoryOpened && PlayerParams.Controllers.handInteractions.inHand != null)
             {
                 if (PlayerParams.Controllers.handInteractions.inHand.layer == LayerMask.NameToLayer("Item"))
