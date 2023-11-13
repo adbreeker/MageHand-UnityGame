@@ -4,14 +4,6 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Debug.Log(ProgressSaving.saveName);
-        }
-    }
-
     public enum Sound
     {
         VOICES_Mage, //? PLACEHOLDER
@@ -55,8 +47,17 @@ public class SoundManager : MonoBehaviour
         SFX_SpellLightBurst
     }
 
+    /// <summary>
+    /// This is only for display, don't change this value by hand! Use function instead.
+    /// </summary>
     public float volume = 0.3f;
+
     public SoundAudioClip[] soundAudioClipArray;
+
+    private void Start()
+    {
+        volume = Mathf.Clamp01(volume);
+    }
 
     [System.Serializable]
     public class SoundAudioClip
@@ -92,6 +93,23 @@ public class SoundManager : MonoBehaviour
         return audioSource;
     }
 
+    public void ChangeVolume(float givenVolume)
+    {
+        volume = givenVolume;
+
+        AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
+
+        foreach (AudioSource audioSource in audioSources)
+        {
+            audioSource.volume = GetBaseVolume((Sound)System.Enum.Parse(typeof(Sound), audioSource.name)) * volume;
+        }
+    }
+
+    public float GetVolume()
+    {
+        return volume;
+    }
+
     private AudioClip GetAudioClip(Sound sound)
     {
         foreach(SoundAudioClip soundAudioClip in soundAudioClipArray)
@@ -103,6 +121,7 @@ public class SoundManager : MonoBehaviour
 
     private float GetBaseVolume(Sound sound)
     {
+        volume = Mathf.Clamp01(volume);
         foreach (SoundAudioClip soundAudioClip in soundAudioClipArray)
         {
             if (soundAudioClip.sound == sound) return soundAudioClip.baseVolume;
