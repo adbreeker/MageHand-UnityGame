@@ -21,7 +21,8 @@ public class BackgroundMusic : MonoBehaviour
     }
     void Update()
     {
-        if(playBackgroundMusic && !startMusicAS.isPlaying && !loopMusicAS.isPlaying) loopMusicAS.Play();
+        if(playBackgroundMusic && !PlayerParams.Controllers.pauseMenu.menuOpened && !startMusicAS.isPlaying && !loopMusicAS.isPlaying) loopMusicAS.Play();
+
         if(!playBackgroundMusic)
         {
             startMusicAS.Stop();

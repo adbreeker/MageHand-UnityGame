@@ -68,6 +68,9 @@ public class PauseMenu : MonoBehaviour
         {
             keyTimeDelayer--;
         }
+
+        if (menuOpened) Time.timeScale = 0f;
+        else Time.timeScale = 1f;
     }
 
     void KeysListener()
@@ -213,6 +216,8 @@ public class PauseMenu : MonoBehaviour
 
     public void OpenMenu()
     {
+        FindObjectOfType<SoundManager>().PauseAllAudioSources();
+
         instantiatedMenu = Instantiate(menuPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         //Disable other controls
         PlayerParams.Controllers.inventory.ableToInteract = false;
@@ -244,6 +249,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (menuOpened)
         {
+            FindObjectOfType<SoundManager>().UnPauseAllAudioSources();
             Destroy(openSound.gameObject, openSound.clip.length);
             Destroy(closeSound.gameObject, closeSound.clip.length);
             Destroy(changeSound.gameObject, changeSound.clip.length);

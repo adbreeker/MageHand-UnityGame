@@ -40,7 +40,7 @@ public class SoundManager : MonoBehaviour
         SFX_MovingMetalGate, //1 
 
         SFX_CastingSpell, //0.6
-        SFX_CastingSpellFailed, //? PLACEHOLDER
+        SFX_CastingSpellFailed, //1
 
         SFX_SpellLightCasted,
         SFX_SpellLightRemaining,
@@ -102,6 +102,26 @@ public class SoundManager : MonoBehaviour
         foreach (AudioSource audioSource in audioSources)
         {
             audioSource.volume = GetBaseVolume((Sound)System.Enum.Parse(typeof(Sound), audioSource.name)) * volume;
+        }
+    }
+
+    public void PauseAllAudioSources()
+    {
+        AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
+
+        foreach (AudioSource audioSource in audioSources)
+        {
+            audioSource.Pause();
+        }
+    }
+
+    public void UnPauseAllAudioSources()
+    {
+        AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
+
+        foreach (AudioSource audioSource in audioSources)
+        {
+            audioSource.UnPause();
         }
     }
 
