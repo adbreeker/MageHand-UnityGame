@@ -8,6 +8,7 @@ public class PauseMenu : MonoBehaviour
     [Header("Prefabs")]
     public GameObject menuPrefab;
     public GameObject resetMenuPrefab;
+    public GameObject settingsMenuPrefab;
     public GameObject controlsMenuPrefab;
     public GameObject gesturesMenuPrefab;
     public GameObject quitToMenuMenuPrefab;
@@ -20,6 +21,7 @@ public class PauseMenu : MonoBehaviour
 
     private GameObject instantiatedMenu;
     private GameObject instantiatedResetMenu;
+    private GameObject instantiatedSettingsMenu;
     private GameObject instantiatedControlsMenu;
     private GameObject instantiatedGesturesMenu;
     private GameObject instantiatedQuitToMenuMenu;
@@ -66,6 +68,9 @@ public class PauseMenu : MonoBehaviour
         {
             keyTimeDelayer--;
         }
+
+        if (menuOpened) Time.timeScale = 0f;
+        else Time.timeScale = 1f;
     }
 
     void KeysListener()
@@ -161,12 +166,12 @@ public class PauseMenu : MonoBehaviour
             else if (pointedOptionMenu == 1)
             {
                 //Spawn SettingsMenu
+                instantiatedMenu.transform.Find("Menu").gameObject.SetActive(false);
 
+                instantiatedSettingsMenu = Instantiate(settingsMenuPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity, instantiatedMenu.transform);
+                instantiatedSettingsMenu.transform.localPosition = new Vector3(0, 0, 0);
 
-
-
-
-
+                instantiatedSettingsMenu.GetComponent<SettingsMenu>().OpenMenu(pointer);
             }
             else if (pointedOptionMenu == 2)
             {
@@ -211,6 +216,8 @@ public class PauseMenu : MonoBehaviour
 
     public void OpenMenu()
     {
+        FindObjectOfType<SoundManager>().PauseAllAudioSources();
+
         instantiatedMenu = Instantiate(menuPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         //Disable other controls
         PlayerParams.Controllers.inventory.ableToInteract = false;
@@ -242,6 +249,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (menuOpened)
         {
+            FindObjectOfType<SoundManager>().UnPauseAllAudioSources();
             Destroy(openSound.gameObject, openSound.clip.length);
             Destroy(closeSound.gameObject, closeSound.clip.length);
             Destroy(changeSound.gameObject, changeSound.clip.length);
@@ -274,11 +282,6 @@ public class PauseMenu : MonoBehaviour
             menuOptions[option].color = new Color(1f, 1f, 1f);
 
             pointer.transform.SetParent(menuOptions[option].transform);
-
-            //Resize pointer to fit text
-            //pointer.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            //    pointer.transform.parent.GetComponent<RectTransform>().sizeDelta.x + 102.5f, pointer.GetComponent<RectTransform>().sizeDelta.y);
-            //pointer.transform.localPosition = new Vector3(0, 0, 0);
         }
     }
 }

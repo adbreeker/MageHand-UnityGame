@@ -18,6 +18,7 @@ public class HiddenPassageSound : MonoBehaviour
         {
             sound.Play();
             activateSound = false;
+            Destroy(sound, sound.clip.length);
             Destroy(this, sound.clip.length);
         }
     }

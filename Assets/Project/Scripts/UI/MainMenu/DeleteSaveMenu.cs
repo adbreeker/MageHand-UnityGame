@@ -112,7 +112,7 @@ public class DeleteSaveMenu : MonoBehaviour
 
                 instantiatedSavesMenu = Instantiate(savesMenuPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity, transform.parent);
                 instantiatedSavesMenu.transform.localPosition = new Vector3(0, 0, 0);
-                instantiatedSavesMenu.GetComponent<SavesMenu>().OpenMenu(pointer, int.Parse(saveName.Substring(saveName.Length - 1)));
+                instantiatedSavesMenu.GetComponent<SavesMenu>().OpenMenu(pointer, int.Parse(saveName.Substring(saveName.Length - 1)) - 1);
 
                 menuOptions.Clear();
                 Destroy(closeSound.gameObject, closeSound.clip.length);

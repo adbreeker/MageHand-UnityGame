@@ -34,6 +34,8 @@ public class DialogueDiary : MonoBehaviour
     private GameObject dialogueNamesContentBox;
     private GameObject dialogeNamesBackground;
     private GameObject emptyTitle;
+    private GameObject titleNames;
+    private GameObject topFrameNames;
 
     private List<GameObject> instantiatedLines;
     private GameObject instantiatedLine;
@@ -255,6 +257,8 @@ public class DialogueDiary : MonoBehaviour
         dialogueNamesContentBox = instantiatedDiary.transform.Find("ScrollableDialogueNames").Find("Content").gameObject;
         dialogeNamesBackground = instantiatedDiary.transform.Find("Background").Find("DialogueNamesBackgroud").gameObject;
         emptyTitle = instantiatedDiary.transform.Find("Background").Find("DialogueNamesBackgroud").Find("Empty").gameObject;
+        titleNames = instantiatedDiary.transform.Find("Background").Find("DialogueNamesBackgroud").Find("Title").gameObject;
+        topFrameNames = instantiatedDiary.transform.Find("Background").Find("DialogueNamesBackgroud").Find("TopFrame").gameObject;
 
         dialogueLinesScrollView = instantiatedDiary.transform.Find("ScrollableDialogue").gameObject;
         dialogueLinesContentBox = instantiatedDiary.transform.Find("ScrollableDialogue").Find("Content").gameObject;
@@ -290,6 +294,8 @@ public class DialogueDiary : MonoBehaviour
         else
         {
             emptyTitle.SetActive(true);
+            titleNames.SetActive(false);
+            topFrameNames.SetActive(false);
         }
 
         atNamesList = true;

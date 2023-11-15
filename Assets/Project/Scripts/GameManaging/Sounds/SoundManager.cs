@@ -4,14 +4,6 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Debug.Log(ProgressSaving.saveName);
-        }
-    }
-
     public enum Sound
     {
         VOICES_Mage, //? PLACEHOLDER
@@ -48,15 +40,24 @@ public class SoundManager : MonoBehaviour
         SFX_MovingMetalGate, //1 
 
         SFX_CastingSpell, //0.6
-        SFX_CastingSpellFailed, //? PLACEHOLDER
+        SFX_CastingSpellFailed, //1
+        SFX_CastingSpellFinished, //1
 
-        SFX_SpellLightCasted,
-        SFX_SpellLightRemaining,
-        SFX_SpellLightBurst
+        SFX_SpellLightRemaining, //1
+        SFX_SpellLightBurst //0.6
     }
 
+    /// <summary>
+    /// This is only for display, don't change this value by hand! Use function instead.
+    /// </summary>
     public float volume = 0.3f;
+
     public SoundAudioClip[] soundAudioClipArray;
+
+    private void Start()
+    {
+        volume = Mathf.Clamp01(volume);
+    }
 
     [System.Serializable]
     public class SoundAudioClip
@@ -68,28 +69,66 @@ public class SoundManager : MonoBehaviour
 
     public Transform SoundsParent;
 
-    public AudioSource CreateAudioSource(Sound sound, Transform soundParent = null, float minHearingDistance = 4f, float maxHearingDistance = 10f)
+    public AudioSource CreateAudioSource(Sound sound, GameObject soundParent = null, float minHearingDistance = 4f, float maxHearingDistance = 20f)
     {
-        GameObject soundGameObject = new GameObject(sound.ToString());
-        AudioSource audioSource = soundGameObject.AddComponent<AudioSource>();
-
-        audioSource.clip = GetAudioClip(sound);
-        audioSource.volume = GetBaseVolume(sound) * volume;
+        AudioSource audioSource;
 
         if (soundParent != null)
         {
-            soundGameObject.transform.parent = soundParent;
-            soundGameObject.transform.localPosition = new Vector3(0, 0, 0);
+            audioSource = soundParent.AddComponent<AudioSource>();
             audioSource.spatialBlend = 1f;
             audioSource.minDistance = minHearingDistance;
             audioSource.maxDistance = maxHearingDistance;
         }
         else
         {
+            GameObject soundGameObject = new GameObject(sound.ToString());
+            audioSource = soundGameObject.AddComponent<AudioSource>();
+
             soundGameObject.transform.parent = SoundsParent;
         }
 
+        audioSource.clip = GetAudioClip(sound);
+        audioSource.volume = GetBaseVolume(sound) * volume;
+
         return audioSource;
+    }
+
+    public void ChangeVolume(float givenVolume)
+    {
+        volume = givenVolume;
+
+        AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
+
+        foreach (AudioSource audioSource in audioSources)
+        {
+            audioSource.volume = GetBaseVolume(GetFirstSoundEnumByAudioClip(audioSource.clip)) * volume;
+        }
+    }
+
+    public void PauseAllAudioSources()
+    {
+        AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
+
+        foreach (AudioSource audioSource in audioSources)
+        {
+            audioSource.Pause();
+        }
+    }
+
+    public void UnPauseAllAudioSources()
+    {
+        AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
+
+        foreach (AudioSource audioSource in audioSources)
+        {
+            audioSource.UnPause();
+        }
+    }
+
+    public float GetVolume()
+    {
+        return volume;
     }
 
     private AudioClip GetAudioClip(Sound sound)
@@ -101,8 +140,21 @@ public class SoundManager : MonoBehaviour
         return null;
     }
 
+    private Sound GetFirstSoundEnumByAudioClip(AudioClip audioClip)
+    {
+        foreach(SoundAudioClip soundAudioClip in soundAudioClipArray)
+        {
+            if (soundAudioClip.audioClip == audioClip)
+            {
+                return soundAudioClip.sound;
+            }
+        }
+        return Sound.SFX_CastingSpellFailed;
+    }
+
     private float GetBaseVolume(Sound sound)
     {
+        volume = Mathf.Clamp01(volume);
         foreach (SoundAudioClip soundAudioClip in soundAudioClipArray)
         {
             if (soundAudioClip.sound == sound) return soundAudioClip.baseVolume;

@@ -10,10 +10,12 @@ public class MainMenu : MonoBehaviour
     [Header("Prefabs")]
     public GameObject newGameMenuPrefab;
     public GameObject quitGameMenuPrefab;
+    public GameObject settingsMenuPrefab;
     public GameObject savesMenuPrefab;
 
     private GameObject instantiatedNewGameMenu;
     private GameObject instantiatedQuitGameMenu;
+    private GameObject instantiatedSettingsMenu;
     private GameObject instantiatedSavesMenu;
     private GameObject pointer;
 
@@ -47,11 +49,11 @@ public class MainMenu : MonoBehaviour
 
         if (checkAtMainMenuChange != atMainMenu)
         {
-            ChangesDependentOnSaves();
+            ChangesDependentOnSaves(false);
             checkAtMainMenuChange = atMainMenu;
         }
 
-                if (atMainMenu)
+        if (atMainMenu)
         {
             KeysListenerMenu();
             PointOption(pointedOptionMenu, menuOptions);
@@ -128,6 +130,16 @@ public class MainMenu : MonoBehaviour
             }
             else if (pointedOptionMenu == 3)
             {
+                //Spawn SettingsMenu
+                transform.Find("Menu").gameObject.SetActive(false);
+
+                instantiatedSettingsMenu = Instantiate(settingsMenuPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity, transform);
+                instantiatedSettingsMenu.transform.localPosition = new Vector3(0, 0, 0);
+
+                instantiatedSettingsMenu.GetComponent<SettingsMenu>().OpenMenu(pointer);
+            }
+            else if(pointedOptionMenu == 4)
+            {
                 //Spawn QuitGameMenu
                 transform.Find("Menu").gameObject.SetActive(false);
 
@@ -201,17 +213,17 @@ public class MainMenu : MonoBehaviour
         changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
         selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
 
-        for (int i = 1; i < 5; i++)
+        for (int i = 1; i < 6; i++)
         {
             string text = i.ToString();
             menuOptions.Add(transform.Find("Menu").Find("Options").Find(text).GetComponent<TextMeshProUGUI>());
         }
 
-        ChangesDependentOnSaves();
+        ChangesDependentOnSaves(true);
         PointOption(pointedOptionMenu, menuOptions);
     }
 
-    public void ChangesDependentOnSaves()
+    public void ChangesDependentOnSaves(bool onStart)
     {
         if (ProgressSaving.GetSaves().Count(item => item != "TestSaveDevEdit") > 3)
         {
@@ -224,24 +236,29 @@ public class MainMenu : MonoBehaviour
 
         if (ProgressSaving.GetSaves().Count(item => item != "TestSaveDevEdit") > 0)
         {
-            pointedOptionMenu = 0;
+            if(onStart) pointedOptionMenu = 0;
             transform.Find("Menu").Find("Options").Find("1").gameObject.SetActive(true);
             //transform.Find("Menu").Find("Options").Find("3").gameObject.SetActive(true);
         }
         else
         {
-            pointedOptionMenu = 1;
+            if(onStart) pointedOptionMenu = 1;
             transform.Find("Menu").Find("Options").Find("1").gameObject.SetActive(false);
             //transform.Find("Menu").Find("Options").Find("3").gameObject.SetActive(false);
         }
     }
 
-        void PointOption(int option, List<TextMeshProUGUI> allOptions)
+    void PointOption(int option, List<TextMeshProUGUI> allOptions)
     {
         //Change color of text and make pointer child of chosen option
         for (int i = 0; i < allOptions.Count; i++)
         {
             allOptions[i].color = new Color(0.2666f, 0.2666f, 0.2666f);
+
+            if (i == 0)
+            {
+                allOptions[i].transform.Find("Save").gameObject.SetActive(false);
+            }
         }
 
         if (option < allOptions.Count)
@@ -249,8 +266,30 @@ public class MainMenu : MonoBehaviour
             allOptions[option].color = new Color(1f, 1f, 1f);
 
             pointer.transform.SetParent(allOptions[option].transform);
-        }
 
-        //*************if option is 1 display save info on the left
+
+            if (option == 0)
+            {
+                ProgressSaving.GetRecentlyChangedSave();
+
+                allOptions[option].transform.Find("Save").Find("SaveInfo").Find("Name").GetComponent<TextMeshProUGUI>().text =
+                    "Save File " + ProgressSaving.GetRecentlyChangedSave().Substring(4);
+
+                allOptions[option].transform.Find("Save").Find("SaveInfo").Find("Description").Find("Date").GetComponent<TextMeshProUGUI>().text =
+                    ProgressSaving.GetChangeDateOfSaveByName(ProgressSaving.GetRecentlyChangedSave());
+
+
+                string chapter = ProgressSaving.GetSaveByName(ProgressSaving.GetRecentlyChangedSave()).gameStateSave.currentLvl.Replace("_", " ");
+                int firstSpaceIndex = chapter.IndexOf(' ');
+                int secondSpaceIndex = chapter.IndexOf(' ', firstSpaceIndex + 1);
+                if (firstSpaceIndex >= 0 && secondSpaceIndex > firstSpaceIndex)
+                {
+                    chapter = chapter.Substring(0, secondSpaceIndex) + "<br>" + chapter.Substring(secondSpaceIndex + 1);
+                }
+                allOptions[option].transform.transform.Find("Save").Find("SaveInfo").Find("Description").Find("Chapter").GetComponent<TextMeshProUGUI>().text = chapter;
+
+                allOptions[option].transform.Find("Save").gameObject.SetActive(true);
+            }
+        }
     }
 }

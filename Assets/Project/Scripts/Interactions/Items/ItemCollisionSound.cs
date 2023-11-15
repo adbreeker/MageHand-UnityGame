@@ -11,12 +11,12 @@ public class ItemCollisionSound : MonoBehaviour
         {
             int random = Random.Range(1, 4);
 
-            if (random == 1) collisionSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Collision1, transform, maxHearingDistance: 15f);
-            else if (random == 2) collisionSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Collision2, transform, maxHearingDistance: 15f);
-            else if (random == 3) collisionSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Collision3, transform, maxHearingDistance: 15f);
+            if (random == 1) collisionSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Collision1, gameObject, maxHearingDistance: 15f);
+            else if (random == 2) collisionSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Collision2, gameObject, maxHearingDistance: 15f);
+            else if (random == 3) collisionSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Collision3, gameObject, maxHearingDistance: 15f);
 
             collisionSound.Play();
-            Destroy(collisionSound.gameObject, collisionSound.clip.length);
+            Destroy(collisionSound, collisionSound.clip.length);
         }
     }
 }
