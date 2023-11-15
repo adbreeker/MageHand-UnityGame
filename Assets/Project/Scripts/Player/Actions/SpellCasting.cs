@@ -36,6 +36,7 @@ public class SpellCasting : MonoBehaviour
 
     private AudioSource castingSound;
     private AudioSource castingFailSound;
+    private AudioSource castingFinishedSound;
 
     //classes necessary for speach to text
     private MicrophoneRecord microphoneRecord;
@@ -162,18 +163,30 @@ public class SpellCasting : MonoBehaviour
 
         if (NormalizeTranscribedText(spellWhispered) == "light")
         {
+            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
+            castingFinishedSound.Play();
+            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
             LightSpell();
         }
         else if(NormalizeTranscribedText(spellWhispered) == "fire")
         {
+            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
+            castingFinishedSound.Play();
+            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
             FireSpell();
         }
         else if(NormalizeTranscribedText(spellWhispered) == "mark")
         {
+            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
+            castingFinishedSound.Play();
+            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
             MarkSpell();
         }
         else if (NormalizeTranscribedText(spellWhispered) == "return")
         {
+            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
+            castingFinishedSound.Play();
+            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
             ReturnSpell();
         }
         else

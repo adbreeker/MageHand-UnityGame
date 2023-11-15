@@ -16,7 +16,7 @@ public class OpenLockedDoorsPassage : MonoBehaviour
 
     IEnumerator RotateDoors() //animating doors opening, then change doors to not obstacle, and make lock object unactive
     {
-        openDoorsSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_UnlockOpenDoor, doors.transform);
+        openDoorsSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_UnlockOpenDoor, doors);
         openDoorsSound.Play();
         for(int i = 0; i<90; i++)
         {
@@ -25,7 +25,7 @@ public class OpenLockedDoorsPassage : MonoBehaviour
         }
         doors.tag = "Untagged";
 
-        Destroy(openDoorsSound.gameObject, openDoorsSound.clip.length);
+        Destroy(openDoorsSound, openDoorsSound.clip.length);
         gameObject.SetActive(false);
     }
 }

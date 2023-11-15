@@ -7,6 +7,18 @@ public class LightSpellBehavior : MonoBehaviour
     [Header("Flash effect prefab")]
     public GameObject flashEffectPrefab;
 
+    private GameObject instantiatedEffect;
+
+    private AudioSource spellRemaining;
+    private AudioSource spellBurst;
+
+    private void Start()
+    {
+        spellRemaining = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_SpellLightRemaining, gameObject, 10f, 30f);
+        spellRemaining.loop = true;
+        spellRemaining.Play();
+    }
+
     public void OnThrow()
     {
 
@@ -14,6 +26,9 @@ public class LightSpellBehavior : MonoBehaviour
 
     public void OnImpact() //on impact spawn flash effect
     {
-        Instantiate(flashEffectPrefab, transform.position, Quaternion.identity);
+        spellRemaining.Stop();
+        instantiatedEffect = Instantiate(flashEffectPrefab, transform.position, Quaternion.identity);
+        spellBurst = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_SpellLightBurst, instantiatedEffect, 8f, 30f);
+        spellBurst.Play();
     }
 }

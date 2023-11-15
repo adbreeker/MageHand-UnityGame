@@ -25,7 +25,7 @@ public class ButtonBehavior : MonoBehaviour
 
     IEnumerator ButtonAnimation() //button animation
     {
-        clickSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Button, transform);
+        clickSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Button, gameObject);
         clickSound.Play();
 
         buttonChanging = true;
@@ -48,7 +48,7 @@ public class ButtonBehavior : MonoBehaviour
 
         while (clickSound.isPlaying) yield return null;
 
-        Destroy(clickSound.gameObject);
+        Destroy(clickSound);
         buttonChanging = false;
     }
 }

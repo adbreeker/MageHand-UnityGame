@@ -27,7 +27,7 @@ public class LeverBehavior : MonoBehaviour
         leverChanging = true;
         if(leverON) //if leverOn then lever go up
         {
-            changingSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_LeverToUp, transform);
+            changingSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_LeverToUp, gameObject);
             changingSound.Play();
 
             for (int i = 1; i<=10; i++)
@@ -52,7 +52,7 @@ public class LeverBehavior : MonoBehaviour
 
         while (changingSound.isPlaying) yield return null;
 
-        Destroy(changingSound.gameObject);
+        Destroy(changingSound);
         leverChanging = false;
     }
 

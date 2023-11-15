@@ -254,6 +254,11 @@ public class MainMenu : MonoBehaviour
         for (int i = 0; i < allOptions.Count; i++)
         {
             allOptions[i].color = new Color(0.2666f, 0.2666f, 0.2666f);
+
+            if (i == 0)
+            {
+                allOptions[i].transform.Find("Save").gameObject.SetActive(false);
+            }
         }
 
         if (option < allOptions.Count)
@@ -261,6 +266,30 @@ public class MainMenu : MonoBehaviour
             allOptions[option].color = new Color(1f, 1f, 1f);
 
             pointer.transform.SetParent(allOptions[option].transform);
+
+
+            if (option == 0)
+            {
+                ProgressSaving.GetRecentlyChangedSave();
+
+                allOptions[option].transform.Find("Save").Find("SaveInfo").Find("Name").GetComponent<TextMeshProUGUI>().text =
+                    "Save File " + ProgressSaving.GetRecentlyChangedSave().Substring(4);
+
+                allOptions[option].transform.Find("Save").Find("SaveInfo").Find("Description").Find("Date").GetComponent<TextMeshProUGUI>().text =
+                    ProgressSaving.GetChangeDateOfSaveByName(ProgressSaving.GetRecentlyChangedSave());
+
+
+                string chapter = ProgressSaving.GetSaveByName(ProgressSaving.GetRecentlyChangedSave()).gameStateSave.currentLvl.Replace("_", " ");
+                int firstSpaceIndex = chapter.IndexOf(' ');
+                int secondSpaceIndex = chapter.IndexOf(' ', firstSpaceIndex + 1);
+                if (firstSpaceIndex >= 0 && secondSpaceIndex > firstSpaceIndex)
+                {
+                    chapter = chapter.Substring(0, secondSpaceIndex) + "<br>" + chapter.Substring(secondSpaceIndex + 1);
+                }
+                allOptions[option].transform.transform.Find("Save").Find("SaveInfo").Find("Description").Find("Chapter").GetComponent<TextMeshProUGUI>().text = chapter;
+
+                allOptions[option].transform.Find("Save").gameObject.SetActive(true);
+            }
         }
     }
 }

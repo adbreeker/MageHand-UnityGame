@@ -28,14 +28,14 @@ public class RotateWallPassage : MonoBehaviour
 
     IEnumerator RotateDoors() //walls rotation animation
     {
-        wallSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_MovingWall, wall.transform, 8f, 20f);
-        wallSound.gameObject.transform.localPosition = new Vector3(0, 2, 0);
+        wallSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_MovingWall, wall, 8f, 30f);
         wallSound.Play();
+
         for (int i = 0; i < 90; i++)
         {
             yield return new WaitForFixedUpdate();
             wall.transform.RotateAround(pivot.position ,new Vector3(0, 1, 0), 1.0f * rotationMultiplier);
         }
-        Destroy(wallSound.gameObject);
+        Destroy(wallSound);
     }
 }

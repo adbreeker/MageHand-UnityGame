@@ -41,10 +41,10 @@ public class SoundManager : MonoBehaviour
 
         SFX_CastingSpell, //0.6
         SFX_CastingSpellFailed, //1
+        SFX_CastingSpellFinished, //1
 
-        SFX_SpellLightCasted,
-        SFX_SpellLightRemaining,
-        SFX_SpellLightBurst
+        SFX_SpellLightRemaining, //1
+        SFX_SpellLightBurst //0.6
     }
 
     /// <summary>
@@ -69,26 +69,27 @@ public class SoundManager : MonoBehaviour
 
     public Transform SoundsParent;
 
-    public AudioSource CreateAudioSource(Sound sound, Transform soundParent = null, float minHearingDistance = 4f, float maxHearingDistance = 10f)
+    public AudioSource CreateAudioSource(Sound sound, GameObject soundParent = null, float minHearingDistance = 4f, float maxHearingDistance = 20f)
     {
-        GameObject soundGameObject = new GameObject(sound.ToString());
-        AudioSource audioSource = soundGameObject.AddComponent<AudioSource>();
-
-        audioSource.clip = GetAudioClip(sound);
-        audioSource.volume = GetBaseVolume(sound) * volume;
+        AudioSource audioSource;
 
         if (soundParent != null)
         {
-            soundGameObject.transform.parent = soundParent;
-            soundGameObject.transform.localPosition = new Vector3(0, 0, 0);
+            audioSource = soundParent.AddComponent<AudioSource>();
             audioSource.spatialBlend = 1f;
             audioSource.minDistance = minHearingDistance;
             audioSource.maxDistance = maxHearingDistance;
         }
         else
         {
+            GameObject soundGameObject = new GameObject(sound.ToString());
+            audioSource = soundGameObject.AddComponent<AudioSource>();
+
             soundGameObject.transform.parent = SoundsParent;
         }
+
+        audioSource.clip = GetAudioClip(sound);
+        audioSource.volume = GetBaseVolume(sound) * volume;
 
         return audioSource;
     }
@@ -101,7 +102,7 @@ public class SoundManager : MonoBehaviour
 
         foreach (AudioSource audioSource in audioSources)
         {
-            audioSource.volume = GetBaseVolume((Sound)System.Enum.Parse(typeof(Sound), audioSource.name)) * volume;
+            audioSource.volume = GetBaseVolume(GetFirstSoundEnumByAudioClip(audioSource.clip)) * volume;
         }
     }
 
@@ -137,6 +138,18 @@ public class SoundManager : MonoBehaviour
             if (soundAudioClip.sound == sound) return soundAudioClip.audioClip;
         }
         return null;
+    }
+
+    private Sound GetFirstSoundEnumByAudioClip(AudioClip audioClip)
+    {
+        foreach(SoundAudioClip soundAudioClip in soundAudioClipArray)
+        {
+            if (soundAudioClip.audioClip == audioClip)
+            {
+                return soundAudioClip.sound;
+            }
+        }
+        return Sound.SFX_CastingSpellFailed;
     }
 
     private float GetBaseVolume(Sound sound)
