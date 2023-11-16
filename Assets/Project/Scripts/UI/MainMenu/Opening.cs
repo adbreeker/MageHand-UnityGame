@@ -54,11 +54,11 @@ public class Opening : MonoBehaviour
         else
         {
             if (Microphone.devices.Length <= 0 && WebCamTexture.devices.Length <= 0) errorText.text =
-                    "Camera and Microphone were not detected.<br>Those devices are necessary for the game to work properly. Connect them and restart the game.";
+                    "Camera and Microphone were not detected.<br>Those devices are necessary for the game to work properly.<br>Connect them and restart the game.";
             else if (Microphone.devices.Length <= 0) errorText.text =
-                    "Microphone was not detected.<br>This device is necessary for the game to work properly. Connect it and restart the game.";
+                    "Microphone was not detected.<br>This device is necessary for the game to work properly.<br>Connect it and restart the game.";
             else if (WebCamTexture.devices.Length <= 0) errorText.text =
-                    "Camera was not detected.<br>This device is necessary for the game to work properly. Connect it and restart the game.";
+                    "Camera was not detected.<br>This device is necessary for the game to work properly.<br>Connect it and restart the game.";
 
 
             info.SetActive(false);
