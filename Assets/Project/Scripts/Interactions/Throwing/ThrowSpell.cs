@@ -26,10 +26,10 @@ public class ThrowSpell : MonoBehaviour //script added to spell on throw
 
     private void Update() //check for collisions
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 0.2f, 1);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 0.2f);
         foreach (Collider collider in colliders)
         {
-            if (collider.gameObject.layer != notColliders) //check if spell is colliding with something not on specified layers
+            if (!IsLayerInLayerMask(collider.gameObject.layer, notColliders)) //check if spell is colliding with something not on specified layers
             {
                 //Invoke OnImpact method on spell object and then destroy object
                 gameObject.SendMessage("OnImpact");
@@ -37,5 +37,15 @@ public class ThrowSpell : MonoBehaviour //script added to spell on throw
                 break;
             }
         }
+
+    }
+
+    bool IsLayerInLayerMask(int layer, LayerMask layerMask)
+    {
+        // Convert the layerMask to a bit mask
+        int layerMaskValue = 1 << layer;
+
+        // Check if the layer is in the layerMask
+        return (layerMask.value & layerMaskValue) != 0;
     }
 }

@@ -41,4 +41,12 @@ public class ThrowObject : MonoBehaviour //script added to object on throw
             previousPos = transform.position;
         }
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Switch"))
+        {
+            collision.gameObject.SendMessage("OnClick");
+        }
+    }
 }
