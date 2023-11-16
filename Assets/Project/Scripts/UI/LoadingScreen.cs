@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System;
 
 public class LoadingScreen : MonoBehaviour
 {
@@ -10,8 +11,12 @@ public class LoadingScreen : MonoBehaviour
 
     public float fontBig = 42f;
     public float fontSmall = 38f;
+
+    private UDPReceive receive;
     void Start()
     {
+        receive = FindObjectOfType<UDPReceive>();
+
         text.fontSize = fontSmall;
         StartCoroutine(Pulls());
     }
@@ -19,7 +24,7 @@ public class LoadingScreen : MonoBehaviour
     private void Update()
     {
         //There we need to check if mediapipeProcess is loaded
-        if(true) SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
+        if(!String.IsNullOrWhiteSpace(receive.data)) SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
     }
 
     IEnumerator Pulls()

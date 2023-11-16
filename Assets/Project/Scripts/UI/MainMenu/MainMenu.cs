@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using System;
 
 public class MainMenu : MonoBehaviour
 {
@@ -107,7 +108,7 @@ public class MainMenu : MonoBehaviour
                 ProgressSaving.saveName = ProgressSaving.GetRecentlyChangedSave();
 
                 //There we need to check if mediapipeProcess is loaded
-                if (false) SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
+                if (!String.IsNullOrWhiteSpace(FindObjectOfType<UDPReceive>().data)) SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
                 else SceneManager.LoadScene("Loading_Screen");
             }
             else if (pointedOptionMenu == 1)
