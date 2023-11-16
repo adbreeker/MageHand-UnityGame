@@ -69,13 +69,15 @@ namespace Whisper.Utils
             SelectedMicDevice = opt.text == microphoneDefaultLabel ? null : opt.text;
         }
 
-        public void StartRecord()
+        public void StartRecord(string microphoneName = null)
         {
             if (IsRecording)
                 return;
 
             _recordStart = Time.realtimeSinceStartup;
-            RecordStartMicDevice = SelectedMicDevice;
+            if (microphoneName == null) RecordStartMicDevice = SelectedMicDevice;
+            //This code gives option to manualy change microphone from other scripts
+            else RecordStartMicDevice = microphoneName;
             _clip = Microphone.Start(RecordStartMicDevice, false, maxLengthSec, frequency);
             IsRecording = true;
         }

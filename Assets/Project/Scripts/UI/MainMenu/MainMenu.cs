@@ -105,7 +105,10 @@ public class MainMenu : MonoBehaviour
             {
                 //Continue
                 ProgressSaving.saveName = ProgressSaving.GetRecentlyChangedSave();
-                SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
+
+                //There we need to check if mediapipeProcess is loaded
+                if (false) SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
+                else SceneManager.LoadScene("Loading_Screen");
             }
             else if (pointedOptionMenu == 1)
             {

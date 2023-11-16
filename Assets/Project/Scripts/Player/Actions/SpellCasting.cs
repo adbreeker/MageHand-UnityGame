@@ -141,7 +141,7 @@ public class SpellCasting : MonoBehaviour
                 castingSound.Play();
 
                 Debug.Log("started recording ------------------------ started recording");
-                microphoneRecord.StartRecord();
+                microphoneRecord.StartRecord(GameSettings.microphoneName);
             }
         }
     }

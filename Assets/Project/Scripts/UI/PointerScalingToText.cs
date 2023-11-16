@@ -6,13 +6,14 @@ using TMPro;
 public class PointerScalingToText : MonoBehaviour
 {
     private Vector3 savedSizeDelta = new Vector3(0f, 0f, 0f);
+    public float distanceFromText = 102.5f;
     void Update()
     {
         transform.parent.GetComponent<TextMeshProUGUI>().ForceMeshUpdate();
 
         if (transform.parent.GetComponent<TextMeshProUGUI>().textBounds.size != savedSizeDelta)
         {
-            GetComponent<RectTransform>().sizeDelta = new Vector2(transform.parent.GetComponent<TextMeshProUGUI>().textBounds.size.x + 102.5f, GetComponent<RectTransform>().sizeDelta.y);
+            GetComponent<RectTransform>().sizeDelta = new Vector2(transform.parent.GetComponent<TextMeshProUGUI>().textBounds.size.x + distanceFromText, GetComponent<RectTransform>().sizeDelta.y);
             transform.localPosition = new Vector3(0, 0, 0);
 
             savedSizeDelta = transform.parent.GetComponent<RectTransform>().sizeDelta;

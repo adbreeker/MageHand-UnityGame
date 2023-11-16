@@ -47,17 +47,9 @@ public class SoundManager : MonoBehaviour
         SFX_SpellLightBurst //0.6
     }
 
-    /// <summary>
-    /// This is only for display, don't change this value by hand! Use function instead.
-    /// </summary>
-    public float volume = 0.3f;
+    private float volume;
 
     public SoundAudioClip[] soundAudioClipArray;
-
-    private void Start()
-    {
-        volume = Mathf.Clamp01(volume);
-    }
 
     [System.Serializable]
     public class SoundAudioClip
@@ -96,7 +88,7 @@ public class SoundManager : MonoBehaviour
 
     public void ChangeVolume(float givenVolume)
     {
-        volume = givenVolume;
+        volume = Mathf.Clamp01(givenVolume);
 
         AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
 
