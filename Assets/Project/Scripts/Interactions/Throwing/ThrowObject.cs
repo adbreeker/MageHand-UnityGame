@@ -24,23 +24,6 @@ public class ThrowObject : MonoBehaviour //script added to object on throw
         rb.AddTorque(transform.right * 100);
     }
 
-    private void FixedUpdate() //check if object still flying
-    {
-        if(previousPos == transform.position)
-        {
-            posCounter++;
-            if(posCounter >= 5) //if object stopped moving destroy rigidbody and this script
-            {
-                Destroy(rb);
-                Destroy(this);
-            }
-        }
-        else
-        {
-            posCounter = 0;
-            previousPos = transform.position;
-        }
-    }
 
     private void OnCollisionEnter(Collision collision)
     {
