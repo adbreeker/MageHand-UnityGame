@@ -29,7 +29,7 @@ public class GameSettings : MonoBehaviour
         soundManager = FindObjectOfType<SoundManager>();
 
 
-        if (microphoneName == null) microphoneName = Microphone.devices[0];
+        if (microphoneName == null && Microphone.devices.Length > 0) microphoneName = Microphone.devices[0];
         else
         {
             bool found = false;
@@ -41,11 +41,11 @@ public class GameSettings : MonoBehaviour
                     break;
                 }
             }
-            if (!found) microphoneName = Microphone.devices[0];
+            if (!found && Microphone.devices.Length > 0) microphoneName = Microphone.devices[0];
         }
 
 
-        if (webCamName == null) webCamName = WebCamTexture.devices[0].name;
+        if (webCamName == null && WebCamTexture.devices.Length > 0) webCamName = WebCamTexture.devices[0].name;
         else
         {
             bool found = false;
@@ -57,7 +57,7 @@ public class GameSettings : MonoBehaviour
                     break;
                 }
             }
-            if (!found) webCamName = WebCamTexture.devices[0].name;
+            if (!found && WebCamTexture.devices.Length > 0) webCamName = WebCamTexture.devices[0].name;
         }
 
 
