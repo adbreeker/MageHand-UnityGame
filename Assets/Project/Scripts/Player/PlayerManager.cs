@@ -28,6 +28,7 @@ public static class PlayerParams //static player parameters accessible from ever
         public static Vector3 cameraStartingPosition;
         public static float playerStartingMovementSpeed;
         public static float playerStartingRotationSpeed;
+        public static float startingManaRegen;
         public static bool uiActive;
     }
 }

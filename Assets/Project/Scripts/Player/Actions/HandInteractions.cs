@@ -148,7 +148,7 @@ public class HandInteractions : MonoBehaviour
                 if (pointer.currentlyPointing.GetComponent<ReadableBehavior>() == null
                     && pointer.currentlyPointing.GetComponent<PopUpActivateOnPickUp>() == null) pickUpItemSound.Play();
                 //getting item from inventory
-                inHand = pointer.currentlyPointing.transform.parent.GetComponent<IconParameters>().originaObject;
+                inHand = pointer.currentlyPointing.transform.parent.GetComponent<IconParameters>().originalObject;
                 PlayerParams.Controllers.inventory.inventory.Remove(inHand);
 
                 //activing item and making it a child of hand so it will move when hand is moving

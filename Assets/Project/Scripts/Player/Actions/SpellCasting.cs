@@ -42,6 +42,11 @@ public class SpellCasting : MonoBehaviour
     private MicrophoneRecord microphoneRecord;
     private WhisperManager whisper;
 
+    private void Start()
+    {
+        PlayerParams.Variables.startingManaRegen = manaRegen;
+    }
+
     private void FixedUpdate()
     {
         RegenerateMana(); //regenerating mana every fixed update
