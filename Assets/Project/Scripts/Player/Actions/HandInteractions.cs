@@ -132,16 +132,7 @@ public class HandInteractions : MonoBehaviour
             CooldownPickUp = true;
             if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("Item")) //picking item from scene
             {
-                if(pointer.currentlyPointing.GetComponent<ReadableBehavior>() == null 
-                    && pointer.currentlyPointing.GetComponent<PopUpActivateOnPickUp>() == null) pickUpItemSound.Play();
-                inHand = pointer.currentlyPointing;
-
-                //making item a child of hand so it will move when hand is moving
-                inHand.transform.SetParent(holdingPoint);
-                inHand.transform.localPosition = new Vector3(0, 0, 10);
-
-                //invoking OnPickUp method of picked item
-                inHand.SendMessage("OnPickUp");
+                AddToHand(pointer.currentlyPointing);
             }
             if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("UI")) //picking item from inventory
             {
@@ -221,6 +212,23 @@ public class HandInteractions : MonoBehaviour
             inHand.SendMessage("Drink");
             inHand = null;
         }
+    }
+
+    public void AddToHand(GameObject toHand)
+    {
+        if (toHand.GetComponent<ReadableBehavior>() == null && toHand.GetComponent<PopUpActivateOnPickUp>() == null)
+        {
+            pickUpItemSound.Play();
+        }
+
+        inHand = toHand;
+
+        //making item a child of hand so it will move when hand is moving
+        inHand.transform.SetParent(holdingPoint);
+        inHand.transform.localPosition = new Vector3(0, 0, 10);
+
+        //invoking OnPickUp method of picked item
+        inHand.SendMessage("OnPickUp");
     }
 
 

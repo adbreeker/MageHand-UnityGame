@@ -71,20 +71,20 @@ public class LevelExitCube : MonoBehaviour
         int stairCounter = 0;
         while (true)
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 10; i++)
             {
                 yield return new WaitForFixedUpdate();
                 Vector3 destination = transform.position;
                 destination.y = PlayerParams.Objects.player.transform.position.y;
-                PlayerParams.Objects.player.transform.position = Vector3.MoveTowards(PlayerParams.Objects.player.transform.position, destination, 0.1f);
+                PlayerParams.Objects.player.transform.position = Vector3.MoveTowards(PlayerParams.Objects.player.transform.position, destination, 0.05f);
             }
 
-            for (int i=0; i < 5; i++)
+            for (int i=0; i < 10; i++)
             {
                 yield return new WaitForFixedUpdate();
                 Vector3 destination = PlayerParams.Objects.player.transform.position;
                 destination.y = stairsHigh;
-                PlayerParams.Objects.player.transform.position = Vector3.MoveTowards(PlayerParams.Objects.player.transform.position, destination, 0.1f);
+                PlayerParams.Objects.player.transform.position = Vector3.MoveTowards(PlayerParams.Objects.player.transform.position, destination, 0.05f);
             }
 
             stairCounter++;
