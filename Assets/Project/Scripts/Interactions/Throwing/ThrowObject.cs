@@ -5,16 +5,11 @@ using UnityEngine;
 public class ThrowObject : MonoBehaviour //script added to object on throw
 {
     Rigidbody rb;
-
-    //necessary values for counting if object stopped moving
-    Vector3 previousPos;
-    int posCounter = 0;
     
     public void Initialize(GameObject player) //initializing throw
     {
         //clear object parent and get first previous position
         gameObject.transform.SetParent(null);
-        previousPos = transform.position;
 
         //add rigidbody and set it values
         rb = gameObject.AddComponent<Rigidbody>();

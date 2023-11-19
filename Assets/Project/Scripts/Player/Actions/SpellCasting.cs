@@ -140,7 +140,7 @@ public class SpellCasting : MonoBehaviour
                 castingSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpell);
                 castingSound.Play();
 
-                Debug.Log("started recording ------------------------ started recording");
+                //Debug.Log("started recording ------------------------ started recording");
                 microphoneRecord.StartRecord();
             }
         }
