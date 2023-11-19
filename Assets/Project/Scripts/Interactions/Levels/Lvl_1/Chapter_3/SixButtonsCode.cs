@@ -52,11 +52,11 @@ public class SixButtonsCode : MonoBehaviour
     void CheckCode()
     {
         if(
-        _button1.clickCounter == 1 &&
-        _button2.clickCounter == 1 &&
+        _button1.clickCounter == 3 &&
+        _button2.clickCounter == 2 &&
         _button3.clickCounter == 1 &&
-        _button4.clickCounter == 1 &&
-        _button5.clickCounter == 1 &&
+        _button4.clickCounter == 4 &&
+        _button5.clickCounter == 3 &&
         _button6.clickCounter == 1)
         {
             _passage.Interaction();
