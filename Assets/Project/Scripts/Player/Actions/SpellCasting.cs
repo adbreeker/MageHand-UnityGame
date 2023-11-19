@@ -84,7 +84,7 @@ public class SpellCasting : MonoBehaviour
         {
             if (PlayerParams.Controllers.playerMovement.isMoving)
             {
-                Vector3 place = PlayerParams.Controllers.playerMovement.previousTile;
+                Vector3 place = PlayerParams.Controllers.playerMovement.currentTilePos;
                 place.y = 0;
                 magicMark = Instantiate(markPrefab, place, Quaternion.identity);
             }
