@@ -42,6 +42,11 @@ public class SpellCasting : MonoBehaviour
     private MicrophoneRecord microphoneRecord;
     private WhisperManager whisper;
 
+    private void Start()
+    {
+        PlayerParams.Variables.startingManaRegen = manaRegen;
+    }
+
     private void FixedUpdate()
     {
         RegenerateMana(); //regenerating mana every fixed update
@@ -66,6 +71,22 @@ public class SpellCasting : MonoBehaviour
         }
     }
 
+    public void PickUpSpell()
+    {
+        SpellScrollInfo scroll = spellbook.GetSpellInfo("Pick Up");
+        if(scroll != null)
+        {
+            Vector3 castPos = PlayerParams.Objects.player.transform.position;
+            castPos.y = PlayerParams.Objects.player.transform.position.y - 1.0f;
+            Collider[] nearItems = Physics.OverlapSphere(castPos, 3.0f, LayerMask.GetMask("Item"));
+            if(nearItems.Length > 0)
+            {
+                PlayerParams.Controllers.handInteractions.AddToHand(nearItems[0].gameObject);
+            }
+            mana -= scroll.manaCost;
+        }
+    }
+
     public void FireSpell() //casting fire spell
     {
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Fire");
@@ -84,7 +105,7 @@ public class SpellCasting : MonoBehaviour
         {
             if (PlayerParams.Controllers.playerMovement.isMoving)
             {
-                Vector3 place = PlayerParams.Controllers.playerMovement.previousTile;
+                Vector3 place = PlayerParams.Controllers.playerMovement.currentTilePos;
                 place.y = 0;
                 magicMark = Instantiate(markPrefab, place, Quaternion.identity);
             }
@@ -140,8 +161,8 @@ public class SpellCasting : MonoBehaviour
                 castingSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpell);
                 castingSound.Play();
 
-                Debug.Log("started recording ------------------------ started recording");
-                microphoneRecord.StartRecord(GameSettings.microphoneName);
+                //Debug.Log("started recording ------------------------ started recording");
+                microphoneRecord.StartRecord();
             }
         }
     }
@@ -167,6 +188,13 @@ public class SpellCasting : MonoBehaviour
             castingFinishedSound.Play();
             Destroy(castingFinishedSound, castingFinishedSound.clip.length);
             LightSpell();
+        }
+        else if (NormalizeTranscribedText(spellWhispered) == "pickup")
+        {
+            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
+            castingFinishedSound.Play();
+            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
+            PickUpSpell();
         }
         else if(NormalizeTranscribedText(spellWhispered) == "fire")
         {

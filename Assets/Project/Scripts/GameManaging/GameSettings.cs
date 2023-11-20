@@ -17,7 +17,7 @@ public class GameSettings : MonoBehaviour
     //applying player setting, actually hardcoded values
     void Awake()
     {
-        QualitySettings.vSyncCount = 0;
+        //QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
 
         RunMediapipeExe();

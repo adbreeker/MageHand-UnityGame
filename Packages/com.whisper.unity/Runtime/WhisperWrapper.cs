@@ -72,13 +72,13 @@ namespace Whisper
             lock (_lock)
             {
                 // preprocess data if necessary
-                Debug.Log("Preprocessing audio data...");
+                //Debug.Log("Preprocessing audio data...");
                 var sw = new Stopwatch();
                 sw.Start();
             
                 var readySamples = AudioUtils.Preprocess(samples,frequency, channels, WhisperSampleRate);
             
-                Debug.Log($"Audio data is preprocessed, total time: {sw.ElapsedMilliseconds} ms.");
+                //Debug.Log($"Audio data is preprocessed, total time: {sw.ElapsedMilliseconds} ms.");
 
                 var userData = new WhisperUserData(this, param);
                 var gch = GCHandle.Alloc(userData);
@@ -98,9 +98,9 @@ namespace Whisper
             
                 gch.Free();
 
-                Debug.Log("Trying to get number of text segments...");
+                //Debug.Log("Trying to get number of text segments...");
                 var n = WhisperNative.whisper_full_n_segments(_whisperCtx);
-                Debug.Log($"Number of text segments: {n}");
+                //Debug.Log($"Number of text segments: {n}");
 
                 var list = new List<WhisperSegment>();
                 for (var i = 0; i < n; ++i)
@@ -111,7 +111,7 @@ namespace Whisper
 
                 var langId = WhisperNative.whisper_full_lang_id(_whisperCtx);
                 var res = new WhisperResult(list, langId);
-                Debug.Log($"Final text: {res.Result}");
+                //Debug.Log($"Final text: {res.Result}");
                 return res;
             }
         }
@@ -124,7 +124,7 @@ namespace Whisper
 
         private unsafe bool InferenceWhisper(float[] samples, WhisperNativeParams param)
         {
-            Debug.Log("Inference Whisper on input data...");
+            //Debug.Log("Inference Whisper on input data...");
                 
             var sw = new Stopwatch();
             sw.Start();
@@ -138,7 +138,7 @@ namespace Whisper
                 }
             }
 
-            Debug.Log($"Whisper inference finished, total time: {sw.ElapsedMilliseconds} ms.");
+            //Debug.Log($"Whisper inference finished, total time: {sw.ElapsedMilliseconds} ms.");
             return true;
         }
 

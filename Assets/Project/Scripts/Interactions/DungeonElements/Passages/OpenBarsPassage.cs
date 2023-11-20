@@ -43,4 +43,16 @@ public class OpenBarsPassage : MonoBehaviour
         }
         Destroy(chainSound);
     }
+
+    private void OnValidate()
+    {
+        if (passageOpen)
+        {
+            bars.transform.position = new Vector3(bars.transform.position.x, 2.5f, bars.transform.position.z);
+        }
+        else
+        {
+            bars.transform.position = new Vector3(bars.transform.position.x, 0.0f, bars.transform.position.z);
+        }
+    }
 }

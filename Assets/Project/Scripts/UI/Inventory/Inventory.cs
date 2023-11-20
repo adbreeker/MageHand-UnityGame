@@ -197,7 +197,7 @@ public class Inventory : MonoBehaviour
             itemSlots[i].SetActive(true);
             itemSlots[i].transform.Find("Name").gameObject.GetComponent<TextMeshProUGUI>().text = inventoryPages[pageToDisplay][i].GetComponent<ItemParameters>().itemName;
             GameObject itemIcon = Instantiate(inventoryPages[pageToDisplay][i].GetComponent<ItemParameters>().itemIcon, itemSlots[i].transform);
-            itemIcon.GetComponent<IconParameters>().originaObject = inventoryPages[pageToDisplay][i];
+            itemIcon.GetComponent<IconParameters>().originalObject = inventoryPages[pageToDisplay][i];
             itemIconActiveInstances.Add(itemIcon);
             itemIconActiveInstances[i].transform.localScale = new Vector3(200f, 200f, 200f);
             //itemIconActiveInstances[i].GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
