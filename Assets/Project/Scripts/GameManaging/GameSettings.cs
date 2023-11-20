@@ -8,6 +8,12 @@ public class GameSettings : MonoBehaviour
 {
     static Process mediapipeHandProcess;
 
+    private SoundManager soundManager;
+
+    public static float soundVolume = 0.3f;
+    public static string microphoneName = null;
+    public static string webCamName = null;
+
     //applying player setting, actually hardcoded values
     void Awake()
     {
@@ -20,9 +26,49 @@ public class GameSettings : MonoBehaviour
 
     private void Start()
     {
+        soundManager = FindObjectOfType<SoundManager>();
+
+
+        if (microphoneName == null && Microphone.devices.Length > 0) microphoneName = Microphone.devices[0];
+        else
+        {
+            bool found = false;
+            foreach (string name in Microphone.devices)
+            {
+                if (name == microphoneName)
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found && Microphone.devices.Length > 0) microphoneName = Microphone.devices[0];
+        }
+
+
+        if (webCamName == null && WebCamTexture.devices.Length > 0) webCamName = WebCamTexture.devices[0].name;
+        else
+        {
+            bool found = false;
+            foreach (WebCamDevice webCamDevice in WebCamTexture.devices)
+            {
+                if (webCamDevice.name == microphoneName)
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found && WebCamTexture.devices.Length > 0) webCamName = WebCamTexture.devices[0].name;
+        }
+
+
         //hide cursor
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
+    }
+
+    private void Update()
+    {
+        if (soundVolume != soundManager.GetVolume()) soundManager.ChangeVolume(soundVolume);
     }
 
     void RunMediapipeExe()

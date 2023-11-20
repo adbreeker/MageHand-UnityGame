@@ -74,12 +74,16 @@ public class PlayerMovement : MonoBehaviour
 
                 if (lastWasStep1)
                 {
+                    //if it is single step play delayed; if not play without delay
                     stepStone2.PlayDelayed(0.2f);
+                    //stepStone2.Play();
                     lastWasStep1 = false;
                 }
                 else
                 {
+                    //if it is single step play delayed; if not play without delay
                     stepStone1.PlayDelayed(0.2f);
+                    //stepStone1.Play();
                     lastWasStep1 = true;
                 }
             }

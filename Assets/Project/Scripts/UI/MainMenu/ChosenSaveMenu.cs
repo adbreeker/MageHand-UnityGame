@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System;
 
 public class ChosenSaveMenu : MonoBehaviour
 {
@@ -109,7 +110,8 @@ public class ChosenSaveMenu : MonoBehaviour
             if (pointedOptionMenu == 0)
             {
                 ProgressSaving.saveName = saveName;
-                SceneManager.LoadScene(ProgressSaving.GetSaveByName(saveName).gameStateSave.currentLvl);
+                if (!String.IsNullOrWhiteSpace(FindObjectOfType<UDPReceive>().data)) SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
+                else SceneManager.LoadScene("Loading_Screen");
             }
             else if (pointedOptionMenu == 1)
             {

@@ -8,9 +8,11 @@ using UnityEngine.SceneManagement;
 public class SettingsMenu : MonoBehaviour
 {
     public RawImage webcamVideoDisplay;
+    public RectTransform webcamVideoDisplayFrame;
     public Slider volumeSlider;
     public TextMeshProUGUI volumeValueText;
 
+    private WebCamTexture tex;
     private SoundManager soundManager;
 
     private GameObject pointer;
@@ -25,6 +27,8 @@ public class SettingsMenu : MonoBehaviour
     private int keyTimeDelay = 10;
     private int keyTimeDelayer = 0;
 
+    private int microphoneIndex = 0;
+    private int webCamIndex = 0;
     void Update()
     {
         KeysListener();
@@ -128,20 +132,47 @@ public class SettingsMenu : MonoBehaviour
         }
         else
         {
-            if (volumeSlider.value / 100 != soundManager.GetVolume()) soundManager.ChangeVolume(volumeSlider.value / 100);
+            if (volumeSlider.value / 100 != GameSettings.soundVolume) GameSettings.soundVolume = volumeSlider.value / 100;
+        }
+
+        if (pointedOptionMenu == 1)
+        {
+            if (Input.GetKeyDown(KeyCode.A) && menuOptions[1].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.activeSelf)
+            {
+                microphoneIndex += -1;
+                ChangeMicrophone();
+                DisplayMicrophone();
+            }
+
+            if (Input.GetKeyDown(KeyCode.D) && menuOptions[1].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.activeSelf)
+            {
+                microphoneIndex += 1;
+                ChangeMicrophone();
+                DisplayMicrophone();
+            }
+        }
+
+        if (pointedOptionMenu == 2)
+        {
+            if (Input.GetKeyDown(KeyCode.A) && menuOptions[2].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.activeSelf)
+            {
+                webCamIndex += -1;
+                ChangeWebCam();
+                DisplayWebCam();
+            }
+
+            if (Input.GetKeyDown(KeyCode.D) && menuOptions[2].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.activeSelf)
+            {
+                webCamIndex += 1;
+                ChangeWebCam();
+                DisplayWebCam();
+            }
         }
     }
-
     public void OpenMenu(GameObject givenPointer)
     {
-        WebCamDevice[] devices = WebCamTexture.devices;
-        WebCamTexture tex = new WebCamTexture(devices[0].name);
-        //webcamVideoDisplay.texture = tex;
-        //tex.Play();
-
         soundManager = FindObjectOfType<SoundManager>();
         volumeSlider.value = soundManager.GetVolume() * 100;
-
 
         pointer = givenPointer;
 
@@ -155,13 +186,36 @@ public class SettingsMenu : MonoBehaviour
             menuOptions.Add(transform.Find("Menu").Find("Options").Find(text).gameObject);
         }
 
+        string[] microphones = Microphone.devices;
+        for (int i = 0; i < microphones.Length; i++)
+        {
+            if (microphones[i] == GameSettings.microphoneName)
+            {
+                microphoneIndex = i;
+                break;
+            }
+        }
+        DisplayMicrophone();
+
+        WebCamDevice[] cameras = WebCamTexture.devices;
+        for (int i = 0; i < cameras.Length; i++)
+        {
+            if (cameras[i].name == GameSettings.webCamName)
+            {
+                webCamIndex = i;
+                break;
+            }
+        }
+        DisplayWebCam();
+
         pointedOptionMenu = 0;
         PointOption(pointedOptionMenu, menuOptions);
     }
 
     public void CloseMenu()
     {
-        if (volumeSlider.value / 100 != soundManager.GetVolume()) soundManager.ChangeVolume(volumeSlider.value / 100);
+        if (volumeSlider.value / 100 != GameSettings.soundVolume) GameSettings.soundVolume = volumeSlider.value / 100;
+        if (tex != null) tex.Stop();
 
         pointer.SetActive(true);
         pointer.transform.SetParent(transform.parent.transform.Find("Menu"));
@@ -227,27 +281,55 @@ public class SettingsMenu : MonoBehaviour
             }
         }
     }
-
-
-    void GetCameras()
+    void DisplayMicrophone()
     {
-        string camerasText = "";
-        WebCamDevice[] cameras = WebCamTexture.devices;
-        for (int i = 0; i < cameras.Length; i++) camerasText += " ||||| " + cameras[i].name;
-        Debug.Log(camerasText);
-    }
-
-    void GetMicrophones()
-    {
-        string microphonesText = "";
         string[] microphones = Microphone.devices;
-        for (int i = 0; i < microphones.Length; i++) microphonesText += " ||||| " + microphones[i];
-        Debug.Log(microphonesText);
+        menuOptions[1].transform.Find("Desc").GetComponent<TextMeshProUGUI>().text = GameSettings.microphoneName;
+        if (microphoneIndex > 0) menuOptions[1].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.SetActive(true);
+        else menuOptions[1].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.SetActive(false);
+
+        if (microphoneIndex < microphones.Length - 1) menuOptions[1].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.SetActive(true);
+        else menuOptions[1].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.SetActive(false);
+    }
+    void DisplayWebCam()
+    {
+        WebCamDevice[] cameras = WebCamTexture.devices;
+        menuOptions[2].transform.Find("Desc").GetComponent<TextMeshProUGUI>().text = GameSettings.webCamName;
+        if (webCamIndex > 0) menuOptions[2].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.SetActive(true);
+        else menuOptions[2].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.SetActive(false);
+
+        if (webCamIndex < cameras.Length - 1) menuOptions[2].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.SetActive(true);
+        else menuOptions[2].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.SetActive(false);
+
+        if(tex != null) tex.Stop();
+        
+        tex = new WebCamTexture(GameSettings.webCamName);
+        webcamVideoDisplay.texture = tex;
+        tex.Play();
+
+        float scale = (float)tex.height / (float)tex.width;
+        webcamVideoDisplayFrame.sizeDelta = new Vector2(webcamVideoDisplayFrame.sizeDelta.x, webcamVideoDisplayFrame.sizeDelta.x * scale);
+
+    }
+    void ChangeMicrophone()
+    {
+        string[] microphones = Microphone.devices;
+        if (microphoneIndex >= 0 && microphoneIndex < microphones.Length) GameSettings.microphoneName = microphones[microphoneIndex];
+        else
+        {
+            microphoneIndex = 0;
+            GameSettings.microphoneName = microphones[microphoneIndex];
+        }
     }
 
-    private void Start()
+    void ChangeWebCam()
     {
-        GetCameras();
-        GetMicrophones();
+        WebCamDevice[] cameras = WebCamTexture.devices;
+        if (webCamIndex >= 0 && webCamIndex < cameras.Length) GameSettings.webCamName = cameras[webCamIndex].name;
+        else
+        {
+            webCamIndex = 0;
+            GameSettings.webCamName = cameras[webCamIndex].name;
+        }
     }
 }

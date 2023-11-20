@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System;
 
 public class NewGameMenu : MonoBehaviour
 {
@@ -110,7 +111,10 @@ public class NewGameMenu : MonoBehaviour
                 {
                     ProgressSaving.saveName = saveName;
                     ProgressSaving.CreateNewSave(ProgressSaving.saveName);
-                    SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
+
+                    //There we need to check if mediapipeProcess is loaded
+                    if (!String.IsNullOrWhiteSpace(FindObjectOfType<UDPReceive>().data)) SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
+                    else SceneManager.LoadScene("Loading_Screen");
                 }
                 else
                 {
@@ -123,7 +127,10 @@ public class NewGameMenu : MonoBehaviour
                         }
                     }
                     ProgressSaving.CreateNewSave(ProgressSaving.saveName);
-                    SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
+
+                    //There we need to check if mediapipeProcess is loaded
+                    if (!String.IsNullOrWhiteSpace(FindObjectOfType<UDPReceive>().data)) SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
+                    else SceneManager.LoadScene("Loading_Screen");
                 }
             }
             else if (pointedOptionMenu == 1)
