@@ -75,6 +75,7 @@ public class Dialogue : MonoBehaviour
         selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
         if (guideVoiceline) voice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.VOICES_Guide);
         else voice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.VOICES_Mage);
+        voice.loop = true;
 
         //Create dicts of options, choices when options are chosen and text of options (indexed 1-4)
         options = new Dictionary<int, TextMeshProUGUI>();
