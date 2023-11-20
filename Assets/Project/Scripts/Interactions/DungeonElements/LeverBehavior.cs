@@ -58,20 +58,15 @@ public class LeverBehavior : MonoBehaviour
 
 
     // changing state in editor;
-    bool previousLeverState = false;
     private void OnValidate()
     {
-        if(previousLeverState != leverON)
+        if (leverON)
         {
-            previousLeverState = leverON;
-            if (leverON)
-            {
-                lever.transform.rotation *= Quaternion.Euler(50, 0, 0);
-            }
-            else
-            {
-                lever.transform.rotation *= Quaternion.Euler(-50, 0, 0);
-            }
+            lever.transform.localRotation = Quaternion.Euler(25, 0, 0);
+        }
+        else
+        {
+            lever.transform.localRotation = Quaternion.Euler(-25, 0, 0);
         }
     }
 }

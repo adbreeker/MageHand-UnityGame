@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class IconParameters : MonoBehaviour
 {
-    public GameObject originaObject;
+    public GameObject originalObject;
 }

@@ -3,20 +3,22 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Current tile position:")]
+    public Vector3 currentTilePos;
+    Vector3 _destination;
+
     [Header("Movement")]
     public float movementSpeed = 7f;
     public float tilesLenght = 4f;
     public LayerMask obstacleMask;
-    
-    [HideInInspector] public Vector3 destination;
-    [HideInInspector] public Vector3 previousTile;
     [HideInInspector] public bool isMoving = false;
 
     [Header("Rotation")]
     public float rotationSpeed = 300f;
     public float rotationThreshold = 0.01f;
-    private bool isRotating = false;
-    private Quaternion targetRotation;
+    [HideInInspector] public bool isRotating = false;
+
+    Quaternion _targetRotation;
 
     [Header("Movement-interfering options")]
     public bool stopMovement = false;
@@ -24,8 +26,8 @@ public class PlayerMovement : MonoBehaviour
     
 
     //enqueuing input
-    private Vector3 movementInputQueue = Vector3.zero;
-    private float rotationInputQueue = 0;
+    private Vector3 _movementInputQueue = Vector3.zero;
+    private float _rotationInputQueue = 0;
 
     //steps sounds
     private bool lastWasStep1 = false;
@@ -36,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
     {       
         stepStone1 = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_StepStone1);
         stepStone2 = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_StepStone2);
+        currentTilePos = transform.position;
     }
 
     void Update() //listen to movement inputs
@@ -62,9 +65,9 @@ public class PlayerMovement : MonoBehaviour
         {
             //calculate the position of the tile the player is moving towards
             Vector3 direction = SingleDirectionNormalization(transform.right * horizontalInput + transform.forward * verticalInput);
-            destination = transform.position + direction * tilesLenght;
-            destination.y = transform.position.y;
-            previousTile = transform.position;
+            _destination = transform.position + direction * tilesLenght;
+            _destination.y = transform.position.y;
+            //_previousTile = transform.position;
             if (CanMove())
             {
                 isMoving = true;
@@ -85,14 +88,15 @@ public class PlayerMovement : MonoBehaviour
         //move the player towards the destination
         if (isMoving)
         {
-            transform.position = Vector3.MoveTowards(transform.position, destination, movementSpeed * Time.deltaTime);
-            if (transform.position == destination)
+            transform.position = Vector3.MoveTowards(transform.position, _destination, movementSpeed * Time.deltaTime);
+            if (transform.position == _destination)
             {
                 isMoving = false; //stop moving when the destination is reached
+                currentTilePos = transform.position;
             }
             if (!CanMove())
             {
-                destination = previousTile; //back to previous tile if collide with something
+                _destination = currentTilePos; //back to previous tile if collide with something
             }
         }
     }
@@ -155,29 +159,29 @@ public class PlayerMovement : MonoBehaviour
         if(rotationQueue != 0 && !isRotating)
         {
             isRotating = true;
-            targetRotation = transform.rotation * Quaternion.Euler(0, rotationQueue, 0);
+            _targetRotation = transform.rotation * Quaternion.Euler(0, rotationQueue, 0);
         }
 
         //get target rotation
         if (Input.GetKeyDown(KeyCode.E) && !isRotating && !MovementInterfering())
         {
             isRotating = true;
-            targetRotation = transform.rotation * Quaternion.Euler(0, 90, 0);
+            _targetRotation = transform.rotation * Quaternion.Euler(0, 90, 0);
         }
         if (Input.GetKeyDown(KeyCode.Q) && !isRotating && !MovementInterfering())
         {
             isRotating = true;
-            targetRotation = transform.rotation * Quaternion.Euler(0, -90, 0);
+            _targetRotation = transform.rotation * Quaternion.Euler(0, -90, 0);
         }
 
         //rotate towards target rotation
         if (isRotating)
         {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            if (Quaternion.Angle(transform.rotation, targetRotation) < rotationThreshold)
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, _targetRotation, rotationSpeed * Time.deltaTime);
+            if (Quaternion.Angle(transform.rotation, _targetRotation) < rotationThreshold)
             {
                 isRotating = false;
-                transform.rotation = targetRotation;
+                transform.rotation = _targetRotation;
             }
         }
     }
@@ -189,16 +193,16 @@ public class PlayerMovement : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
             {
-                movementInputQueue.x = Input.GetAxisRaw("Horizontal");
-                movementInputQueue.z = Input.GetAxisRaw("Vertical");
+                _movementInputQueue.x = Input.GetAxisRaw("Horizontal");
+                _movementInputQueue.z = Input.GetAxisRaw("Vertical");
             }
         }
         else //initializing queued movement after last move
         {
-            if(movementInputQueue != Vector3.zero)
+            if(_movementInputQueue != Vector3.zero)
             {
-                MovementKeysListener(movementInputQueue.x, movementInputQueue.z);
-                movementInputQueue = Vector3.zero;
+                MovementKeysListener(_movementInputQueue.x, _movementInputQueue.z);
+                _movementInputQueue = Vector3.zero;
             }
         }
     }
@@ -212,20 +216,20 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.E)) //rotate queue right
                 {
-                    rotationInputQueue = 90;
+                    _rotationInputQueue = 90;
                 }
                 if (Input.GetKeyDown(KeyCode.Q)) //rotate queue left
                 {
-                    rotationInputQueue = -90;
+                    _rotationInputQueue = -90;
                 }
             }
         }
         else //initializing enqueued rotation after last rotation
         {
-            if (rotationInputQueue != 0)
+            if (_rotationInputQueue != 0)
             {
-                RotationKeyListener(rotationInputQueue);
-                rotationInputQueue = 0;
+                RotationKeyListener(_rotationInputQueue);
+                _rotationInputQueue = 0;
             }
         }
     }
@@ -244,10 +248,14 @@ public class PlayerMovement : MonoBehaviour
 
     public void TeleportTo(Vector3 tpDestination) //teleport to destination and stop movement enqued before teleportation
     {
-        destination = tpDestination;
+        _destination = tpDestination;
         transform.position = tpDestination;
         isMoving = false;
-        movementInputQueue = Vector3.zero;
+        isRotating = false;
+        _movementInputQueue = Vector3.zero;
+        _rotationInputQueue = 0;
+
+        currentTilePos = transform.position;
     }
 
 }

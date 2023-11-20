@@ -226,16 +226,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73d2c1e168c58544f8a4706d98c81300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentTilePos: {x: 0, y: 0, z: 0}
   movementSpeed: 7
   tilesLenght: 4
   obstacleMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  destination: {x: 0, y: 0, z: 0}
-  previousTile: {x: 0, y: 0, z: 0}
   isMoving: 0
   rotationSpeed: 300
   rotationThreshold: 0.01
+  isRotating: 0
   stopMovement: 0
   ghostmodeActive: 0
 --- !u!114 &8656529184073069794
@@ -726,6 +726,10 @@ PrefabInstance:
     - target: {fileID: -2652551327674569987, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
       propertyPath: timeOfFadingOutPopUp
       value: 0.007
+      objectReference: {fileID: 0}
+    - target: {fileID: -512354603722602875, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
+      propertyPath: manaRegen
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -512354603722602875, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
       propertyPath: spellbook
