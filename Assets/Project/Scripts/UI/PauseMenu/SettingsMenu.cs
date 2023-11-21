@@ -129,6 +129,11 @@ public class SettingsMenu : MonoBehaviour
             {
                 volumeSlider.value += 1;
             }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if (volumeSlider.value / 100 != GameSettings.soundVolume) GameSettings.soundVolume = volumeSlider.value / 100;
+            }
         }
         else
         {
@@ -229,6 +234,7 @@ public class SettingsMenu : MonoBehaviour
 
     void PointOption(int option, List<GameObject> allOptions)
     {
+        webcamVideoDisplayFrame.gameObject.SetActive(false);
         for (int i = 0; i < allOptions.Count; i++)
         {
             if(i != option)
@@ -272,6 +278,8 @@ public class SettingsMenu : MonoBehaviour
             }
             else if (option == 1 || option == 2)
             {
+                if (option == 2) webcamVideoDisplayFrame.gameObject.SetActive(true);
+
                 pointer.SetActive(false);
                 allOptions[option].transform.Find("Desc").Find("DoublePointer").gameObject.SetActive(true);
 

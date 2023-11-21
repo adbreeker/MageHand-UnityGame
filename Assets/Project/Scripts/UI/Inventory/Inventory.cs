@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Linq;
 
 public class Inventory : MonoBehaviour
 {
@@ -210,6 +211,7 @@ public class Inventory : MonoBehaviour
     public void AddItem(GameObject item)
     {
         inventory.Add(item);
+        inventory = inventory.OrderBy(go => go.GetComponent<ItemParameters>().itemName).ToList();
         item.SetActive(false);
         try
         {
