@@ -16,6 +16,7 @@ public class ChosenSaveMenu : MonoBehaviour
 
     private GameObject pointer;
     private int pointedOptionMenu;
+    private bool closing = false;
     private List<TextMeshProUGUI> menuOptions = new List<TextMeshProUGUI>();
     private TextMeshProUGUI title;
 
@@ -31,8 +32,11 @@ public class ChosenSaveMenu : MonoBehaviour
 
     void Update()
     {
-        KeysListener();
-        PointOption(pointedOptionMenu, menuOptions);
+        if (!closing)
+        {
+            KeysListener();
+            PointOption(pointedOptionMenu, menuOptions);
+        }
 
         if (keyTimeDelayer > 0)
         {
@@ -110,8 +114,9 @@ public class ChosenSaveMenu : MonoBehaviour
             if (pointedOptionMenu == 0)
             {
                 ProgressSaving.saveName = saveName;
-                if (!String.IsNullOrWhiteSpace(FindObjectOfType<UDPReceive>().data)) SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
-                else SceneManager.LoadScene("Loading_Screen");
+                closing = true;
+                if (!String.IsNullOrWhiteSpace(FindObjectOfType<UDPReceive>().data)) FindObjectOfType<FadeInFadeOut>().ChangeScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
+                else FindObjectOfType<FadeInFadeOut>().ChangeScene("Loading_Screen");
             }
             else if (pointedOptionMenu == 1)
             {

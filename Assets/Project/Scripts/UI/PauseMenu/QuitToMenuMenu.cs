@@ -8,6 +8,7 @@ public class QuitToMenuMenu : MonoBehaviour
 {
     private GameObject pointer;
     private int pointedOptionMenu;
+    private bool closing = false;
     private List<TextMeshProUGUI> menuOptions = new List<TextMeshProUGUI>();
 
     private AudioSource closeSound;
@@ -20,8 +21,11 @@ public class QuitToMenuMenu : MonoBehaviour
 
     void Update()
     {
-        KeysListener();
-        PointOption(pointedOptionMenu, menuOptions);
+        if (!closing)
+        {
+            KeysListener();
+            PointOption(pointedOptionMenu, menuOptions);
+        }
 
         if (keyTimeDelayer > 0)
         {
@@ -98,7 +102,8 @@ public class QuitToMenuMenu : MonoBehaviour
             selectSound.Play();
             if (pointedOptionMenu == 0)
             {
-                SceneManager.LoadScene("Menu");
+                closing = true;
+                FindObjectOfType<FadeInFadeOut>().ChangeScene("Menu");
             }
             else if (pointedOptionMenu == 1)
             {

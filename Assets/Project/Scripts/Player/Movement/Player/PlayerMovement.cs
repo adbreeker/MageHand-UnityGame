@@ -23,7 +23,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement-interfering options")]
     public bool stopMovement = false;
     public bool ghostmodeActive = false;
-    
 
     //enqueuing input
     private Vector3 _movementInputQueue = Vector3.zero;
@@ -33,11 +32,14 @@ public class PlayerMovement : MonoBehaviour
     private bool lastWasStep1 = false;
     private AudioSource stepStone1;
     private AudioSource stepStone2;
+    //private float stepTiming = 0;
 
     void Start()
     {       
         stepStone1 = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_StepStone1);
+        stepStone1.panStereo = -0.07f;
         stepStone2 = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_StepStone2);
+        stepStone2.panStereo = 0.07f;
         currentTilePos = transform.position;
     }
 
@@ -71,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
             if (CanMove())
             {
                 isMoving = true;
-
+                //stepTiming = 0;
                 if (lastWasStep1)
                 {
                     //if it is single step play delayed; if not play without delay
@@ -92,9 +94,11 @@ public class PlayerMovement : MonoBehaviour
         //move the player towards the destination
         if (isMoving)
         {
+            //stepTiming += Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, _destination, movementSpeed * Time.deltaTime);
             if (transform.position == _destination)
             {
+                //Debug.Log(stepTiming);
                 isMoving = false; //stop moving when the destination is reached
                 currentTilePos = transform.position;
             }

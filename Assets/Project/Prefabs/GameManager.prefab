@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 6322994209368972440}
   - component: {fileID: -1410173973553914173}
   - component: {fileID: 2920437737176594091}
+  - component: {fileID: 3717581574826844733}
   - component: {fileID: 7784286471385358420}
   - component: {fileID: 3603493736633032789}
   m_Layer: 0
@@ -142,6 +143,20 @@ MonoBehaviour:
   scrollOfFire: {fileID: 5973000855758016690, guid: 57f7db98b8ce5a844a11ecc4bee89398, type: 3}
   scrollOfMarkAndReturn: {fileID: 5126895042329327938, guid: 7480944496d88db428b802418f606e7f, type: 3}
   scrollOfPickUp: {fileID: 2640387059949778449, guid: 91cf9580dbe87384d90f783ba36ad72a, type: 3}
+--- !u!114 &3717581574826844733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4871858993183020671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f5d0918b00240d45b88219e2a3c81b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeInScene: 1
+  blackoutPrefab: {fileID: 3169089212800689837, guid: d723fcbd9bf929443bebfa68a7950749, type: 3}
 --- !u!114 &7784286471385358420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,7 +171,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startMusic: 3
   loopMusic: 3
-  playBackgroundMusic: 0
+  playBackgroundMusic: 1
+  startMusicAS: {fileID: 0}
+  loopMusicAS: {fileID: 0}
 --- !u!114 &3603493736633032789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,19 +188,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundAudioClipArray:
   - sound: 0
-    audioClip: {fileID: 8300000, guid: c5afbdc6a5580cf45abcc115b84e1f33, type: 3}
+    audioClip: {fileID: 8300000, guid: 061403ddead7cf5478fd7950b14a44bf, type: 3}
     baseVolume: 1
   - sound: 1
-    audioClip: {fileID: 8300000, guid: f49bdcaa3c3efc94d8f50175d4187fbf, type: 3}
+    audioClip: {fileID: 8300000, guid: af307d57257cd2442bcbfc9026ac147b, type: 3}
     baseVolume: 1
   - sound: 2
-    audioClip: {fileID: 8300000, guid: 6a913689717a6a44f91dc11987b637b5, type: 3}
+    audioClip: {fileID: 8300000, guid: 0a66458e3d8e7da4c836319aa8adc105, type: 3}
     baseVolume: 0.2
   - sound: 3
-    audioClip: {fileID: 8300000, guid: 6a913689717a6a44f91dc11987b637b5, type: 3}
+    audioClip: {fileID: 8300000, guid: 0a66458e3d8e7da4c836319aa8adc105, type: 3}
     baseVolume: 0.2
   - sound: 4
-    audioClip: {fileID: 8300000, guid: 6a913689717a6a44f91dc11987b637b5, type: 3}
+    audioClip: {fileID: 8300000, guid: 0a66458e3d8e7da4c836319aa8adc105, type: 3}
     baseVolume: 0.2
   - sound: 5
     audioClip: {fileID: 8300000, guid: 648011517ec9a06478ed6ecbb257faee, type: 3}

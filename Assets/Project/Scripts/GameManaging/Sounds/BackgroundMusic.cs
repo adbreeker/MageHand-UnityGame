@@ -7,10 +7,11 @@ public class BackgroundMusic : MonoBehaviour
     public SoundManager.Sound startMusic;
     public SoundManager.Sound loopMusic;
 
-    private AudioSource startMusicAS;
-    private AudioSource loopMusicAS;
-
     public bool playBackgroundMusic = true;
+
+    [Header("Read only")]
+    public AudioSource startMusicAS;
+    public AudioSource loopMusicAS;
 
     void Start()
     {
@@ -21,8 +22,14 @@ public class BackgroundMusic : MonoBehaviour
     }
     void Update()
     {
-        if(playBackgroundMusic && !PlayerParams.Controllers.pauseMenu.menuOpened && !startMusicAS.isPlaying && !loopMusicAS.isPlaying) loopMusicAS.Play();
-
+        if (playBackgroundMusic && !startMusicAS.isPlaying && !loopMusicAS.isPlaying)
+        {
+            if (PlayerParams.Controllers.pauseMenu != null)
+            {
+                if (!PlayerParams.Controllers.pauseMenu.menuOpened) loopMusicAS.Play();
+            }
+            else loopMusicAS.Play();
+        }
         if(!playBackgroundMusic)
         {
             startMusicAS.Stop();

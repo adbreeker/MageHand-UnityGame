@@ -23,6 +23,7 @@ public class MainMenu : MonoBehaviour
     private int pointedOptionMenu;
     private bool atMainMenu = true;
     private bool checkAtMainMenuChange = true;
+    private bool closing = false;
     private List<TextMeshProUGUI> menuOptions = new List<TextMeshProUGUI>();
 
     private AudioSource changeSound;
@@ -54,7 +55,7 @@ public class MainMenu : MonoBehaviour
             checkAtMainMenuChange = atMainMenu;
         }
 
-        if (atMainMenu)
+        if (atMainMenu && !closing)
         {
             KeysListenerMenu();
             PointOption(pointedOptionMenu, menuOptions);
@@ -108,8 +109,9 @@ public class MainMenu : MonoBehaviour
                 ProgressSaving.saveName = ProgressSaving.GetRecentlyChangedSave();
 
                 //There we need to check if mediapipeProcess is loaded
-                if (!String.IsNullOrWhiteSpace(FindObjectOfType<UDPReceive>().data)) SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
-                else SceneManager.LoadScene("Loading_Screen");
+                closing = true;
+                if (!String.IsNullOrWhiteSpace(FindObjectOfType<UDPReceive>().data)) FindObjectOfType<FadeInFadeOut>().ChangeScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
+                else FindObjectOfType<FadeInFadeOut>().ChangeScene("Loading_Screen");
             }
             else if (pointedOptionMenu == 1)
             {

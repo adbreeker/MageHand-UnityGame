@@ -12,7 +12,6 @@ public class Opening : MonoBehaviour
     public TextMeshProUGUI errorText;
 
     private float alpha;
-    private bool skip = false;
     private bool error = false;
     void Start()
     {
@@ -38,16 +37,16 @@ public class Opening : MonoBehaviour
         {
             alpha -= 0.01f;
             fade.color = new Color(0, 0, 0, alpha);
-            if (!skip) yield return new WaitForSeconds(0);
+            yield return new WaitForSeconds(0);
         }
 
-        if (!skip) yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(5);
 
         while (alpha < 1)
         {
             alpha += 0.01f;
             fade.color = new Color(0, 0, 0, alpha);
-            if (!skip) yield return new WaitForSeconds(0);
+            yield return new WaitForSeconds(0);
         }
 
         if (Microphone.devices.Length > 0 && WebCamTexture.devices.Length > 0) SceneManager.LoadScene("Menu");
@@ -66,7 +65,7 @@ public class Opening : MonoBehaviour
             {
                 alpha -= 0.01f;
                 fade.color = new Color(0, 0, 0, alpha);
-                if (!skip) yield return new WaitForSeconds(0);
+                yield return new WaitForSeconds(0);
             }
             error = true;
         }

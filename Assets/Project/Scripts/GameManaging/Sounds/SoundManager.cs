@@ -107,7 +107,6 @@ public class SoundManager : MonoBehaviour
             audioSource.Pause();
         }
     }
-
     public void UnPauseAllAudioSources()
     {
         AudioSource[] audioSources = FindObjectsOfType<AudioSource>();

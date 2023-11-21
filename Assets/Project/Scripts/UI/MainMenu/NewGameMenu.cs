@@ -17,6 +17,7 @@ public class NewGameMenu : MonoBehaviour
 
     private GameObject pointer;
     private int pointedOptionMenu;
+    private bool closing = false;
     private List<TextMeshProUGUI> menuOptions = new List<TextMeshProUGUI>();
 
     private AudioSource closeSound;
@@ -29,8 +30,11 @@ public class NewGameMenu : MonoBehaviour
 
     void Update()
     {
-        KeysListener();
-        PointOption(pointedOptionMenu, menuOptions);
+        if(!closing)
+        {
+            KeysListener();
+            PointOption(pointedOptionMenu, menuOptions);
+        }
 
         if (keyTimeDelayer > 0)
         {
@@ -107,14 +111,15 @@ public class NewGameMenu : MonoBehaviour
             selectSound.Play();
             if (pointedOptionMenu == 0)
             {
-                if(openSavesMenuOnQuit)
+                closing = true;
+                if (openSavesMenuOnQuit)
                 {
                     ProgressSaving.saveName = saveName;
                     ProgressSaving.CreateNewSave(ProgressSaving.saveName);
 
                     //There we need to check if mediapipeProcess is loaded
-                    if (!String.IsNullOrWhiteSpace(FindObjectOfType<UDPReceive>().data)) SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
-                    else SceneManager.LoadScene("Loading_Screen");
+                    if (!String.IsNullOrWhiteSpace(FindObjectOfType<UDPReceive>().data)) FindObjectOfType<FadeInFadeOut>().ChangeScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
+                    else FindObjectOfType<FadeInFadeOut>().ChangeScene("Loading_Screen");
                 }
                 else
                 {
@@ -129,8 +134,8 @@ public class NewGameMenu : MonoBehaviour
                     ProgressSaving.CreateNewSave(ProgressSaving.saveName);
 
                     //There we need to check if mediapipeProcess is loaded
-                    if (!String.IsNullOrWhiteSpace(FindObjectOfType<UDPReceive>().data)) SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
-                    else SceneManager.LoadScene("Loading_Screen");
+                    if (!String.IsNullOrWhiteSpace(FindObjectOfType<UDPReceive>().data)) FindObjectOfType<FadeInFadeOut>().ChangeScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
+                    else FindObjectOfType<FadeInFadeOut>().ChangeScene("Loading_Screen");
                 }
             }
             else if (pointedOptionMenu == 1)
