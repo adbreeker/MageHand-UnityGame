@@ -222,7 +222,7 @@ public class PauseMenu : MonoBehaviour
         //Disable other controls
         PlayerParams.Controllers.inventory.ableToInteract = false;
         PlayerParams.Controllers.spellbook.ableToInteract = false;
-        PlayerParams.Controllers.dialogueDiary.ableToInteract = false;
+        PlayerParams.Controllers.journal.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
 
@@ -260,7 +260,7 @@ public class PauseMenu : MonoBehaviour
         //Enable other controls
         PlayerParams.Controllers.inventory.ableToInteract = true;
         PlayerParams.Controllers.spellbook.ableToInteract = true;
-        PlayerParams.Controllers.dialogueDiary.ableToInteract = true;
+        PlayerParams.Controllers.journal.ableToInteract = true;
         PlayerParams.Variables.uiActive = false;
         PlayerParams.Objects.hand.SetActive(true);
 

@@ -22,6 +22,7 @@ public class Note : MonoBehaviour
     private int pageCount;
     private int pointedOption;
     private bool ableToChoose;
+    private bool fromJournal = false;
     private int updateCount = 0;
     private int framesToWait = 1;
 
@@ -74,6 +75,11 @@ public class Note : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.Escape) && openedNote && fromJournal && updateCount == framesToWait)
+        {
+            CloseNote();
+        }
+
         //Point option 1 or 2
         if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S)) && ableToChoose && openedNote)
         {
@@ -105,17 +111,25 @@ public class Note : MonoBehaviour
             keyTimeDelayer = keyTimeDelay;
         }
     }
-    public void OpenNote()
+    public void OpenNote(bool givenFromJournal = false)
     {
-        //Disable other controls (close first, because it activates movement and enable other ui)
-        PlayerParams.Controllers.inventory.CloseInventory();
-        PlayerParams.Controllers.spellbook.CloseSpellbook();
-        PlayerParams.Controllers.pauseMenu.CloseMenu();
+        fromJournal = givenFromJournal;
 
-        PlayerParams.Controllers.inventory.ableToInteract = false;
-        PlayerParams.Controllers.spellbook.ableToInteract = false;
-        PlayerParams.Controllers.dialogueDiary.ableToInteract = false;
-        PlayerParams.Controllers.pauseMenu.ableToInteract = false;
+        //Disable other controls (close first, because it activates movement and enable other ui)
+        if (!fromJournal)
+        {
+            PlayerParams.Controllers.inventory.CloseInventory();
+            PlayerParams.Controllers.spellbook.CloseSpellbook();
+            PlayerParams.Controllers.journal.CloseJournal();
+            PlayerParams.Controllers.pauseMenu.CloseMenu();
+
+            PlayerParams.Controllers.inventory.ableToInteract = false;
+            PlayerParams.Controllers.spellbook.ableToInteract = false;
+            PlayerParams.Controllers.journal.ableToInteract = false;
+            PlayerParams.Controllers.pauseMenu.ableToInteract = false;
+        }
+        else transform.Find("Background").Find("BlackoutBackground").gameObject.SetActive(false);
+
 
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
@@ -182,41 +196,6 @@ public class Note : MonoBehaviour
         else PointOption(option1);
     }
 
-    /*
-    void DisplayPage(int page)
-    {
-        //Display page of content text
-        content.pageToDisplay = page;
-
-        //Display proper buttons
-        if (page == 1 && page != pageCount)
-        {
-            ableToChoose = false;
-            option1.text = "Con";
-            option2.gameObject.SetActive(false);
-        }
-        else if (page == 1 && page == pageCount)
-        {
-            ableToChoose = false;
-            option1.text = "Close";
-            option2.gameObject.SetActive(false);
-        }
-        else if (page > 1 && page < pageCount)
-        {
-            ableToChoose = true;
-            option1.text = "Continue";
-            option2.gameObject.SetActive(true);
-        }
-        else if (page == pageCount)
-        {
-            ableToChoose = true;
-            option1.text = "Close";
-            option2.gameObject.SetActive(true);
-        }
-        PointOption(option1);
-    }
-    */
-
     void CloseNote()
     {
         Destroy(openSound.gameObject, openSound.clip.length);
@@ -225,20 +204,24 @@ public class Note : MonoBehaviour
         Destroy(gameObject);
 
         //Enable other controls
-        PlayerParams.Controllers.inventory.ableToInteract = true;
-        PlayerParams.Controllers.spellbook.ableToInteract = true;
-        PlayerParams.Controllers.pauseMenu.ableToInteract = true;
-        PlayerParams.Variables.uiActive = false;
-        PlayerParams.Objects.hand.SetActive(true);
+        if (!fromJournal)
+        {
+            PlayerParams.Controllers.inventory.ableToInteract = true;
+            PlayerParams.Controllers.spellbook.ableToInteract = true;
+            PlayerParams.Controllers.pauseMenu.ableToInteract = true;
+            PlayerParams.Controllers.journal.ableToInteract = true;
+            PlayerParams.Variables.uiActive = false;
+            PlayerParams.Objects.hand.SetActive(true);
+            if (!PlayerParams.Controllers.journal.notesJournal.ContainsKey(titleText))
+                PlayerParams.Controllers.journal.notesJournal.Add(titleText, contentText);
+        }
+        else PlayerParams.Controllers.journal.DisplayNamesBack();
+
         openedNote = false;
     }
 
     void PointOption(TextMeshProUGUI option)
     {
-        //Change color of all options to lightGrey (118, 118, 118)
-        //option1.color = new Color(0.4625f, 0.4625f, 0.4625f);
-        //option2.color = new Color(0.4625f, 0.4625f, 0.4625f);
-
         //Change color of all options to darkGrey (68, 68, 68)
         option1.color = new Color(0.2666f, 0.2666f, 0.2666f);
         option2.color = new Color(0.2666f, 0.2666f, 0.2666f);

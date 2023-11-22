@@ -19,7 +19,7 @@ public static class PlayerParams //static player parameters accessible from ever
         public static PauseMenu pauseMenu;
         public static HandInteractions handInteractions;
         public static SpellCasting spellCasting;
-        public static DialogueDiary dialogueDiary;
+        public static Journal journal;
         public static PointsManager pointsManager;
     }
 
@@ -46,7 +46,7 @@ public class PlayerManager : MonoBehaviour //assigning static PlayerParams on Aw
     public PauseMenu pauseMenu;
     public HandInteractions handInteractions;
     public SpellCasting spellCasting;
-    public DialogueDiary dialogueDiary;
+    public Journal journal;
     public PointsManager pointsManager;
 
     //[Header("Variables")] - no need yet
@@ -65,7 +65,7 @@ public class PlayerManager : MonoBehaviour //assigning static PlayerParams on Aw
         PlayerParams.Controllers.pauseMenu = pauseMenu;
         PlayerParams.Controllers.handInteractions = handInteractions;
         PlayerParams.Controllers.spellCasting = spellCasting;
-        PlayerParams.Controllers.dialogueDiary = dialogueDiary;
+        PlayerParams.Controllers.journal = journal;
         PlayerParams.Controllers.pointsManager = pointsManager;
 
         //Variables

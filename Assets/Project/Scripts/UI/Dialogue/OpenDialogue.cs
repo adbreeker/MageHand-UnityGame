@@ -25,9 +25,9 @@ public class OpenDialogue : MonoBehaviour
         {
             if (saveDialogue)
             {
-                if (!PlayerParams.Controllers.dialogueDiary.dialogueDiary.ContainsKey(dialogueSaveName))
+                if (!PlayerParams.Controllers.journal.dialoguesJournal.ContainsKey(dialogueSaveName))
                 {
-                    PlayerParams.Controllers.dialogueDiary.dialogueDiary.Add(dialogueSaveName, new List<List<string>>());
+                    PlayerParams.Controllers.journal.dialoguesJournal.Add(dialogueSaveName, new List<List<string>>());
                 }
             }
             dialogueCanvas.gameObject.SetActive(true);

@@ -72,9 +72,9 @@ public class ProgressSaving : MonoBehaviour
             spellbook.AddSpell(spellScrollsHolder.GiveScroll("Mark And Return"));
         }
 
-        //loading dialogue diary
-        DialogueDiary dialogueDiary = FindObjectOfType<DialogueDiary>();
-        dialogueDiary.dialogueDiary = new Dictionary<string, List<List<string>>>();
+        //loading journal
+        Journal journal = FindObjectOfType<Journal>();
+        journal.dialoguesJournal = new Dictionary<string, List<List<string>>>();
 
         for(int i = 0; i < saveData.dialogueDiarySave.diaryTitles.Count; i++)
         {
@@ -88,7 +88,7 @@ public class ProgressSaving : MonoBehaviour
                 }
                 note.Add(innerNote);
             }
-            dialogueDiary.dialogueDiary[saveData.dialogueDiarySave.diaryTitles[i]] = note;
+            journal.dialoguesJournal[saveData.dialogueDiarySave.diaryTitles[i]] = note;
         }
         
     }
@@ -127,7 +127,7 @@ public class ProgressSaving : MonoBehaviour
         saveData.spellsSave.markAndReturn = spells.Exists(s => string.Equals(s, "mark and return", StringComparison.OrdinalIgnoreCase));
     }
 
-    public void SaveDialogueDiary(Dictionary<string, List<List<string>>> diaryToSave)
+    public void SaveJournal(Dictionary<string, List<List<string>>> diaryToSave)
     {
         saveData.dialogueDiarySave.diaryTitles = new List<string>(diaryToSave.Keys);
         saveData.dialogueDiarySave.diaryNotes = new List<SaveData.DialogueDiarySave.DictionarySerializationNote>();

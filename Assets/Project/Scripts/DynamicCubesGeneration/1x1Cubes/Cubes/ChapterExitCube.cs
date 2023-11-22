@@ -16,7 +16,7 @@ public class ChapterExitCube : MonoBehaviour
     private ProgressSaving saveManager;
     private Spellbook spellbook;
     private Inventory inventory;
-    private DialogueDiary dialogueDiary;
+    private Journal journal;
 
     private void Start() //finding all necessary objects
     {
@@ -25,7 +25,7 @@ public class ChapterExitCube : MonoBehaviour
         saveManager = FindObjectOfType<ProgressSaving>();
         spellbook = PlayerParams.Controllers.spellbook;
         inventory = PlayerParams.Controllers.inventory;
-        dialogueDiary = PlayerParams.Controllers.dialogueDiary;
+        journal = PlayerParams.Controllers.journal;
     }
 
     private void Update() //checking if player is inside cube
@@ -55,8 +55,8 @@ public class ChapterExitCube : MonoBehaviour
         //items
         saveManager.SaveItems(inventory.inventory);
 
-        //dialogue diary
-        saveManager.SaveDialogueDiary(dialogueDiary.dialogueDiary);
+        //journal
+        saveManager.SaveJournal(journal.dialoguesJournal);
 
         //everything to file
         saveManager.SaveProgressToFile();

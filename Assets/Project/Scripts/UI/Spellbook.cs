@@ -162,7 +162,7 @@ public class Spellbook : MonoBehaviour
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.inventory.CloseInventory();
         PlayerParams.Controllers.pauseMenu.CloseMenu();
-        PlayerParams.Controllers.dialogueDiary.CloseDiary();
+        PlayerParams.Controllers.journal.CloseJournal();
         PlayerParams.Controllers.pauseMenu.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);

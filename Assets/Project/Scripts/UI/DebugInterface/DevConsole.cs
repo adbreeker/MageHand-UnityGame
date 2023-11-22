@@ -74,14 +74,14 @@ public class DevConsole : MonoBehaviour
             PlayerParams.Variables.uiActive = false;
             PlayerParams.Controllers.spellbook.ableToInteract = true;
             PlayerParams.Controllers.inventory.ableToInteract = true;
-            PlayerParams.Controllers.dialogueDiary.ableToInteract = true;
+            PlayerParams.Controllers.journal.ableToInteract = true;
         }
         else
         {
             PlayerParams.Variables.uiActive = true;
             PlayerParams.Controllers.spellbook.ableToInteract = false;
             PlayerParams.Controllers.inventory.ableToInteract = false;
-            PlayerParams.Controllers.dialogueDiary.ableToInteract = false;
+            PlayerParams.Controllers.journal.ableToInteract = false;
         }
     }
 
