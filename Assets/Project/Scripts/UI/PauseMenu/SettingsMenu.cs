@@ -196,14 +196,14 @@ public class SettingsMenu : MonoBehaviour
             if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.A))
             {
                 fpsSlider.value -= 1;
-                keyTimeDelayer = keyTimeDelayFirst;
+                keyTimeDelayer = keyTimeDelay;
                 GameSettings.fpsCap = (int)fpsSlider.value;
             }
 
             if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.D))
             {
                 fpsSlider.value += 1;
-                keyTimeDelayer = keyTimeDelayFirst;
+                keyTimeDelayer = keyTimeDelay;
                 GameSettings.fpsCap = (int)fpsSlider.value;
             }
         }
