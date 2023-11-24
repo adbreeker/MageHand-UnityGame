@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
+using static ProgressSaving.SaveData.JournalSave.DialoguesDict;
 
 public class ProgressSaving : MonoBehaviour
 {
@@ -72,25 +73,10 @@ public class ProgressSaving : MonoBehaviour
             spellbook.AddSpell(spellScrollsHolder.GiveScroll("Mark And Return"));
         }
 
-        //loading journal
+        //loading journal contents
         Journal journal = FindObjectOfType<Journal>();
-        journal.dialoguesJournal = new Dictionary<string, List<List<string>>>();
-
-        for(int i = 0; i < saveData.dialogueDiarySave.diaryTitles.Count; i++)
-        {
-            List<List<string>> note = new List<List<string>>();
-            foreach(SaveData.DialogueDiarySave.DictionarySerializationNote.InnerNote serializedNote in saveData.dialogueDiarySave.diaryNotes[i].innerNotes)
-            {
-                List<string> innerNote = new List<string>();
-                foreach(string innerSerializedNote in serializedNote.innerInnerNotes)
-                {
-                    innerNote.Add(innerSerializedNote);
-                }
-                note.Add(innerNote);
-            }
-            journal.dialoguesJournal[saveData.dialogueDiarySave.diaryTitles[i]] = note;
-        }
-        
+        journal.notesJournal = saveData.journalSave.notes.DeserializeNotes();
+        journal.dialoguesJournal = saveData.journalSave.dialogues.DeserializeDialogues();
     }
 
     // ------------------------------------------------------------- saving data
@@ -127,26 +113,10 @@ public class ProgressSaving : MonoBehaviour
         saveData.spellsSave.markAndReturn = spells.Exists(s => string.Equals(s, "mark and return", StringComparison.OrdinalIgnoreCase));
     }
 
-    public void SaveJournal(Dictionary<string, List<List<string>>> diaryToSave)
+    public void SaveJournal(Dictionary<string, string> notesJournal, Dictionary<string, List<List<string>>> dialoguesJournal) //saving journal contents
     {
-        saveData.dialogueDiarySave.diaryTitles = new List<string>(diaryToSave.Keys);
-        saveData.dialogueDiarySave.diaryNotes = new List<SaveData.DialogueDiarySave.DictionarySerializationNote>();
-
-        foreach(List<List<string>> note in diaryToSave.Values)
-        {
-            SaveData.DialogueDiarySave.DictionarySerializationNote noteToSerialize = new SaveData.DialogueDiarySave.DictionarySerializationNote();
-            foreach (List<string> innerNote in note)
-            {
-                SaveData.DialogueDiarySave.DictionarySerializationNote.InnerNote innerNoteToSerialize = new SaveData.DialogueDiarySave.DictionarySerializationNote.InnerNote();
-                foreach(string innerInnerNote in innerNote)
-                {
-                    innerNoteToSerialize.innerInnerNotes.Add(innerInnerNote);
-                }
-                noteToSerialize.innerNotes.Add(innerNoteToSerialize);
-            }
-            saveData.dialogueDiarySave.diaryNotes.Add(noteToSerialize);
-        }
-        
+        saveData.journalSave.notes.SerializeNotes(notesJournal);
+        saveData.journalSave.dialogues.SerializeDialogues(dialoguesJournal);
     }
 
     public void SaveProgressToFile() //saving progress to json file (the one from which data was loaded)
@@ -256,7 +226,7 @@ public class ProgressSaving : MonoBehaviour
         public GameStateSave gameStateSave = new GameStateSave();
         public ItemsSave itemsSave = new ItemsSave();
         public SpellsSave spellsSave = new SpellsSave();
-        public DialogueDiarySave dialogueDiarySave = new DialogueDiarySave();
+        public JournalSave journalSave = new JournalSave();
 
         [System.Serializable]
         public class GameStateSave //for saving current level
@@ -281,20 +251,92 @@ public class ProgressSaving : MonoBehaviour
         }
 
         [System.Serializable]
-        public class DialogueDiarySave
+        public class JournalSave //for saving dialogues and notes from journal
         {
-            public List<string> diaryTitles = new List<string>();
-            public List<DictionarySerializationNote> diaryNotes = new List<DictionarySerializationNote>();
+            public NotesDict notes = new NotesDict();
+            public DialoguesDict dialogues = new DialoguesDict();
 
             [System.Serializable]
-            public class DictionarySerializationNote
+            public class NotesDict
             {
-                public List<InnerNote> innerNotes = new List<InnerNote>();
+                public List<string> notesTitles = new List<string>();
+                public List<string> notesContents = new List<string>();
+
+                public void SerializeNotes(Dictionary<string, string> notesToSave)
+                {
+                    notesTitles = new List<string>(notesToSave.Keys);
+                    notesContents = new List<string>(notesToSave.Values);
+                }
+
+                public Dictionary<string, string> DeserializeNotes()
+                {
+                    Dictionary<string, string> notesDict = new Dictionary<string, string>();
+                    for (int i = 0; i < notesTitles.Count; i++)
+                    {
+                        notesDict[notesTitles[i]] = notesContents[i];
+                    }
+                    return notesDict;
+                }
+
+            }
+
+            [System.Serializable]
+            public class DialoguesDict
+            {
+                public List<string> dialoguesTitles = new List<string>();
+                public List<Serialization_Dialogues> dialoguesContents = new List<Serialization_Dialogues>();
+
+                public void SerializeDialogues(Dictionary<string, List<List<string>>> dialoguesToSave)
+                {
+                    dialoguesTitles = new List<string>(dialoguesToSave.Keys);
+                    dialoguesContents = new List<Serialization_Dialogues>();
+
+                    foreach (List<List<string>> dialogue in dialoguesToSave.Values)
+                    {
+                        Serialization_Dialogues dialogueToSerialize = new Serialization_Dialogues();
+                        foreach (List<string> speaker in dialogue)
+                        {
+                            Serialization_Dialogues.Serialization_Speakers speakerToSerialize = new Serialization_Dialogues.Serialization_Speakers();
+                            foreach (string text in speaker)
+                            {
+                                speakerToSerialize.text.Add(text);
+                            }
+                            dialogueToSerialize.speakers.Add(speakerToSerialize);
+                        }
+                        dialoguesContents.Add(dialogueToSerialize);
+                    }
+                }
+
+                public Dictionary<string, List<List<string>>> DeserializeDialogues()
+                {
+                    Dictionary<string, List<List<string>>> dialoguesDict = new Dictionary<string, List<List<string>>>();
+                    for (int i = 0; i < dialoguesTitles.Count; i++)
+                    {
+                        List<List<string>> dialogueToDeserialize = new List<List<string>>();
+                        foreach (Serialization_Dialogues.Serialization_Speakers speaker in dialoguesContents[i].speakers)
+                        {
+                            List<string> speakerToDeserialize = new List<string>();
+                            foreach (string text in speaker.text)
+                            {
+                                speakerToDeserialize.Add(text);
+                            }
+                            dialogueToDeserialize.Add(speakerToDeserialize);
+                        }
+                        dialoguesDict[dialoguesTitles[i]] = dialogueToDeserialize;
+                    }
+                    return dialoguesDict;
+                }
 
                 [System.Serializable]
-                public class InnerNote
+                public class Serialization_Dialogues
                 {
-                    public List<string> innerInnerNotes = new List<string>();
+                    public List<Serialization_Speakers> speakers = new List<Serialization_Speakers>();
+
+                    [System.Serializable]
+                    public class Serialization_Speakers
+                    {
+                        public List<string> text = new List<string>();
+                    }
                 }
             }
         }

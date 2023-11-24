@@ -56,7 +56,7 @@ public class ChapterExitCube : MonoBehaviour
         saveManager.SaveItems(inventory.inventory);
 
         //journal
-        saveManager.SaveJournal(journal.dialoguesJournal);
+        saveManager.SaveJournal(journal.notesJournal, journal.dialoguesJournal);
 
         //everything to file
         saveManager.SaveProgressToFile();
