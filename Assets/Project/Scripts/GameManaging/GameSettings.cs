@@ -66,7 +66,7 @@ public class GameSettings : MonoBehaviour
         checkerFpsCap = fpsCap;
 
         //set graphicsQuality
-        UpdateGraphicsQuality(true);
+        UpdateGraphicsQuality();
         checkerGraphicsQuality = graphicsQuality;
 
         //set vSync
@@ -192,10 +192,10 @@ public class GameSettings : MonoBehaviour
         else Application.targetFrameRate = -1;
     }
 
-    void UpdateGraphicsQuality(bool applyExpensiveChanges = false)
+    void UpdateGraphicsQuality()
     {
-        if (graphicsQuality == GraphicsQuality.Low) QualitySettings.SetQualityLevel(0, applyExpensiveChanges);
-        else if (graphicsQuality == GraphicsQuality.Medium) QualitySettings.SetQualityLevel(1, applyExpensiveChanges);
-        else if (graphicsQuality == GraphicsQuality.High) QualitySettings.SetQualityLevel(2, applyExpensiveChanges);
+        if (graphicsQuality == GraphicsQuality.Low) QualitySettings.SetQualityLevel(0);
+        else if (graphicsQuality == GraphicsQuality.Medium) QualitySettings.SetQualityLevel(1);
+        else if (graphicsQuality == GraphicsQuality.High) QualitySettings.SetQualityLevel(2);
     }
 }
