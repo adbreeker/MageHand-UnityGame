@@ -22,9 +22,9 @@ public class SettingsMenu : MonoBehaviour
     private AudioSource changeSound;
     private AudioSource selectSound;
 
-    private int keyTimeDelayFirst = 20;
-    private int keyTimeDelay = 10;
-    private int keyTimeDelayer = 0;
+    private float keyTimeDelayFirst = 20f;
+    private float keyTimeDelay = 10f;
+    private float keyTimeDelayer = 0;
 
     private int microphoneIndex = 0;
     private int webCamIndex = 0;
@@ -33,9 +33,8 @@ public class SettingsMenu : MonoBehaviour
         KeysListener();
         PointOption(pointedOptionMenu, menuOptions);
 
-        if (keyTimeDelayer > 0) keyTimeDelayer--;
-
-
+        if (keyTimeDelayer > 0) keyTimeDelayer -= 75 * Time.unscaledDeltaTime;
+        
         volumeValueText.text = volumeSlider.value.ToString();
         DisplayFPSText();
     }
@@ -77,7 +76,7 @@ public class SettingsMenu : MonoBehaviour
             keyTimeDelayer = keyTimeDelayFirst;
         }
 
-        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.S))
+        if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.S))
         {
             changeSound.Play();
             if (pointedOptionMenu < menuOptions.Count - 1)
@@ -91,7 +90,7 @@ public class SettingsMenu : MonoBehaviour
             keyTimeDelayer = keyTimeDelay;
         }
 
-        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.W))
+        if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.W))
         {
             changeSound.Play();
             if (pointedOptionMenu > 0)
@@ -122,15 +121,17 @@ public class SettingsMenu : MonoBehaviour
                 GameSettings.soundVolume = volumeSlider.value / 100;
             }
 
-            if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.A))
+            if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.A))
             {
                 volumeSlider.value -= 1;
+                keyTimeDelayer = 1f;
                 GameSettings.soundVolume = volumeSlider.value / 100;
             }
 
-            if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.D))
+            if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.D))
             {
                 volumeSlider.value += 1;
+                keyTimeDelayer = 1f;
                 GameSettings.soundVolume = volumeSlider.value / 100;
             }
         }
@@ -193,14 +194,14 @@ public class SettingsMenu : MonoBehaviour
             }
 
 
-            if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.A))
+            if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.A))
             {
                 fpsSlider.value -= 1;
                 keyTimeDelayer = keyTimeDelay;
                 GameSettings.fpsCap = (int)fpsSlider.value;
             }
 
-            if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.D))
+            if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.D))
             {
                 fpsSlider.value += 1;
                 keyTimeDelayer = keyTimeDelay;
@@ -312,8 +313,8 @@ public class SettingsMenu : MonoBehaviour
     {
         if (tex != null) tex.Stop();
 
-        pointer.SetActive(true);
         pointer.transform.SetParent(transform.parent.transform.Find("Menu"));
+        pointer.SetActive(true);
         menuOptions.Clear();
         transform.parent.transform.Find("Menu").gameObject.SetActive(true);
         Destroy(closeSound.gameObject, closeSound.clip.length);

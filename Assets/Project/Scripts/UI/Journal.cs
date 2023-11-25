@@ -60,9 +60,9 @@ public class Journal : MonoBehaviour
     public int pointedDialogueName;
     public int pointedNoteName;
 
-    private int keyTimeDelayFirst = 20;
-    private int keyTimeDelay = 5;
-    private int keyTimeDelayer = 0;
+    private float keyTimeDelayFirst = 20f;
+    private float keyTimeDelay = 10f;
+    private float keyTimeDelayer = 0;
     private float dialogueScrollSpeed;
 
     /*
@@ -154,10 +154,7 @@ public class Journal : MonoBehaviour
             KeysListener();
         }
 
-        if (keyTimeDelayer > 0)
-        {
-            keyTimeDelayer--;
-        }
+        if (keyTimeDelayer > 0) keyTimeDelayer -= 75 * Time.unscaledDeltaTime;
     }
 
     void KeysListener()
@@ -241,7 +238,7 @@ public class Journal : MonoBehaviour
                 }
             }
 
-            if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.W))
+            if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.W))
             {
                 if (atDialoguesNamesList && pointedDialogueName > 0)
                 {
@@ -262,7 +259,7 @@ public class Journal : MonoBehaviour
             }
 
 
-            if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.S))
+            if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.S))
             {
                 if (atDialoguesNamesList && pointedDialogueName < instantiatedDialoguesNames.Count - 1)
                 {
@@ -309,13 +306,13 @@ public class Journal : MonoBehaviour
 
             if (Input.GetKey(KeyCode.W))
             {
-                dialogueScrollSpeed = 10 / (dialogueLinesScrollView.GetComponent<ScrollRect>().content.sizeDelta.y - dialogueLinesScrollView.GetComponent<RectTransform>().sizeDelta.y);
+                dialogueScrollSpeed = 1000 * Time.unscaledDeltaTime / (dialogueLinesScrollView.GetComponent<ScrollRect>().content.sizeDelta.y - dialogueLinesScrollView.GetComponent<RectTransform>().sizeDelta.y);
                 dialogueLinesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += dialogueScrollSpeed;
             }   
 
             if (Input.GetKey(KeyCode.S))
             {
-                dialogueScrollSpeed = 10 / (dialogueLinesScrollView.GetComponent<ScrollRect>().content.sizeDelta.y - dialogueLinesScrollView.GetComponent<RectTransform>().sizeDelta.y);
+                dialogueScrollSpeed = 1000 * Time.unscaledDeltaTime / (dialogueLinesScrollView.GetComponent<ScrollRect>().content.sizeDelta.y - dialogueLinesScrollView.GetComponent<RectTransform>().sizeDelta.y);
                 dialogueLinesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -dialogueScrollSpeed;
             }
         }

@@ -29,9 +29,9 @@ public class MainMenu : MonoBehaviour
     private AudioSource changeSound;
     private AudioSource selectSound;
 
-    private int keyTimeDelayFirst = 20;
-    private int keyTimeDelay = 10;
-    private int keyTimeDelayer = 0;
+    private float keyTimeDelayFirst = 20f;
+    private float keyTimeDelay = 10f;
+    private float keyTimeDelayer = 0;
 
     private void Start()
     {
@@ -61,10 +61,7 @@ public class MainMenu : MonoBehaviour
             PointOption(pointedOptionMenu, menuOptions);
         }
 
-        if (keyTimeDelayer > 0)
-        {
-            keyTimeDelayer--;
-        }
+        if (keyTimeDelayer > 0) keyTimeDelayer -= 75 * Time.unscaledDeltaTime;
     }
 
     void KeysListenerMenu()
@@ -85,14 +82,14 @@ public class MainMenu : MonoBehaviour
             keyTimeDelayer = keyTimeDelayFirst;
         }
 
-        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.S))
+        if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.S))
         {
             changeSound.Play();
             GoDown(pointedOptionMenu);
             keyTimeDelayer = keyTimeDelay;
         }
 
-        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.W))
+        if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.W))
         {
             changeSound.Play();
             GoUp(pointedOptionMenu);

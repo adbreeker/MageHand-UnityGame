@@ -26,9 +26,9 @@ public class Note : MonoBehaviour
     private int updateCount = 0;
     private int framesToWait = 1;
 
-    private int keyTimeDelayFirst = 20;
-    private int keyTimeDelay = 10;
-    private int keyTimeDelayer = 0;
+    private float keyTimeDelayFirst = 20f;
+    private float keyTimeDelay = 10f;
+    private float keyTimeDelayer = 0;
 
     private void Update()
     {
@@ -47,10 +47,7 @@ public class Note : MonoBehaviour
             }
         }
 
-        if (keyTimeDelayer > 0)
-        {
-            keyTimeDelayer--;
-        }
+        if (keyTimeDelayer > 0) keyTimeDelayer -= 75 * Time.unscaledDeltaTime;
     }
 
     void KeysListener()
@@ -96,7 +93,7 @@ public class Note : MonoBehaviour
             keyTimeDelayer = keyTimeDelayFirst;
         }
 
-        if (keyTimeDelayer == 0 && (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S)) && ableToChoose && openedNote)
+        if (keyTimeDelayer <= 0 && (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S)) && ableToChoose && openedNote)
         {
             if (pointedOption == 1)
             {
