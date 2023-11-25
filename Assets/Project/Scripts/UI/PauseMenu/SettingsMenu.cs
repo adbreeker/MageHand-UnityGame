@@ -5,12 +5,18 @@ using UnityEngine.UI;
 
 public class SettingsMenu : MonoBehaviour
 {
+    [Header("Webcam display")]
     public RawImage webcamVideoDisplay;
     public RectTransform webcamVideoDisplayFrame;
+    [Header("Volume slider")]
     public Slider volumeSlider;
     public TextMeshProUGUI volumeValueText;
+    [Header("FPS slider")]
     public Slider fpsSlider;
     public TextMeshProUGUI fpsValueText;
+    [Header("vSync slider")]
+    public Slider vSyncSlider;
+    public TextMeshProUGUI vSyncValueText;
 
     private WebCamTexture tex;
 
@@ -36,7 +42,7 @@ public class SettingsMenu : MonoBehaviour
         if (keyTimeDelayer > 0) keyTimeDelayer -= 75 * Time.unscaledDeltaTime;
         
         volumeValueText.text = volumeSlider.value.ToString();
-        DisplayFPSText();
+        DisplayFPSOrVSyncSlider();
     }
 
     void KeysListener()
@@ -177,7 +183,7 @@ public class SettingsMenu : MonoBehaviour
         }
 
         //FPS cap
-        if (pointedOptionMenu == 3)
+        if (pointedOptionMenu == 3 && !GameSettings.vSync)
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
@@ -207,6 +213,41 @@ public class SettingsMenu : MonoBehaviour
                 keyTimeDelayer = keyTimeDelay;
                 GameSettings.fpsCap = (int)fpsSlider.value;
             }
+        }
+
+        //vSyncCount
+        if (pointedOptionMenu == 3 && GameSettings.vSync)
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                vSyncSlider.value -= 1;
+                keyTimeDelayer = keyTimeDelayFirst;
+                GameSettings.vSyncCount = 5 - (int)vSyncSlider.value;
+            }
+
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                vSyncSlider.value += 1;
+                keyTimeDelayer = keyTimeDelayFirst;
+                GameSettings.vSyncCount = 5 - (int)vSyncSlider.value;
+            }
+
+
+            if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.A))
+            {
+                vSyncSlider.value -= 1;
+                keyTimeDelayer = keyTimeDelay;
+                GameSettings.vSyncCount = 5 - (int)vSyncSlider.value;
+            }
+
+            if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.D))
+            {
+                vSyncSlider.value += 1;
+                keyTimeDelayer = keyTimeDelay;
+                GameSettings.vSyncCount = 5 - (int)vSyncSlider.value;
+            }
+
+
         }
 
         //Graphic quality
@@ -264,6 +305,7 @@ public class SettingsMenu : MonoBehaviour
     {
         volumeSlider.value = GameSettings.soundVolume * 100;
         fpsSlider.value = GameSettings.fpsCap;
+        vSyncSlider.value = 5 - GameSettings.vSyncCount;
         DisplayFPSText();
         pointer = givenPointer;
 
@@ -300,6 +342,8 @@ public class SettingsMenu : MonoBehaviour
         DisplayWebCam();
 
         DisplayGraphicQuality();
+
+        DisplayFPSOrVSyncSlider();
 
         menuOptions[5].transform.Find("CheckBackground").Find("Checker").gameObject.SetActive(GameSettings.vSync);
         menuOptions[6].transform.Find("CheckBackground").Find("Checker").gameObject.SetActive(GameSettings.fullscreen);
@@ -383,7 +427,7 @@ public class SettingsMenu : MonoBehaviour
             else if (option == 1 || option == 2 || option == 4)
             {
                 allOptions[option].transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
-                if (option == 2) webcamVideoDisplayFrame.gameObject.SetActive(true);
+                //if (option == 2) webcamVideoDisplayFrame.gameObject.SetActive(true);
 
                 pointer.SetActive(false);
                 allOptions[option].transform.Find("Desc").Find("DoublePointer").gameObject.SetActive(true);
@@ -427,7 +471,7 @@ public class SettingsMenu : MonoBehaviour
         
         tex = new WebCamTexture(GameSettings.webCamName);
         webcamVideoDisplay.texture = tex;
-        tex.Play();
+        //tex.Play();
 
         float scale = (float)tex.height / (float)tex.width;
         webcamVideoDisplayFrame.sizeDelta = new Vector2(webcamVideoDisplayFrame.sizeDelta.x, webcamVideoDisplayFrame.sizeDelta.x * scale);
@@ -474,6 +518,26 @@ public class SettingsMenu : MonoBehaviour
         }
     }
 
+    void DisplayFPSOrVSyncSlider()
+    {
+        if (GameSettings.vSync)
+        {
+            DisplayVSyncText();
+            vSyncSlider.gameObject.name = "Slider";
+            fpsSlider.gameObject.name = "X";
+            vSyncSlider.gameObject.SetActive(true);
+            fpsSlider.gameObject.SetActive(false);
+        }
+        else
+        {
+            DisplayFPSText();
+            vSyncSlider.gameObject.name = "X";
+            fpsSlider.gameObject.name = "Slider";
+            vSyncSlider.gameObject.SetActive(false);
+            fpsSlider.gameObject.gameObject.SetActive(true);
+        }
+    }
+
     void DisplayFPSText()
     {
         if (fpsSlider.value == 0) fpsValueText.text = "30";
@@ -488,5 +552,14 @@ public class SettingsMenu : MonoBehaviour
         else if (fpsSlider.value == 9) fpsValueText.text = "360";
         else if (fpsSlider.value == 10) fpsValueText.text = "No cap";
         else fpsValueText.text = "Error";
+    }
+
+    void DisplayVSyncText()
+    {
+        if (vSyncSlider.value == 1) vSyncValueText.text = ((int)(Screen.currentResolution.refreshRate / 4)).ToString();
+        else if (vSyncSlider.value == 2) vSyncValueText.text = ((int)(Screen.currentResolution.refreshRate / 3)).ToString();
+        else if (vSyncSlider.value == 3) vSyncValueText.text = ((int)(Screen.currentResolution.refreshRate / 2)).ToString();
+        else if (vSyncSlider.value == 4) vSyncValueText.text = ((int)(Screen.currentResolution.refreshRate / 1)).ToString();
+        else vSyncValueText.text = "Error";
     }
 }

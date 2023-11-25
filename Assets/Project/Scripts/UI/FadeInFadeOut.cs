@@ -49,10 +49,11 @@ public class FadeInFadeOut : MonoBehaviour
         float alpha = blackoutImage.color.a;
 
         BackgroundMusic backgroundMusic = FindObjectOfType<BackgroundMusic>();
-        float startVolumeDecrease = backgroundMusic.startMusicAS.volume / (1 / fadingSpeed);
-        float loopVolumeDecrease = backgroundMusic.loopMusicAS.volume / (1 / fadingSpeed);
+        float startVolumeDecrease = backgroundMusic.startMusicAS.volume * fadingSpeed;
+        float loopVolumeDecrease = backgroundMusic.loopMusicAS.volume * fadingSpeed;
 
         alpha = 0;
+
         while (alpha < 1)
         {
             backgroundMusic.startMusicAS.volume -= startVolumeDecrease;

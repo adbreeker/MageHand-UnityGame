@@ -86,7 +86,7 @@ public class SoundManager : MonoBehaviour
         return audioSource;
     }
 
-    public void ChangeVolume(float givenVolume)
+    public void ChangeVolume(float givenVolume, bool fromPauseMenu = false)
     {
         volume = Mathf.Clamp01(givenVolume);
 
@@ -94,26 +94,60 @@ public class SoundManager : MonoBehaviour
 
         foreach (AudioSource audioSource in audioSources)
         {
-            audioSource.volume = GetBaseVolume(GetFirstSoundEnumByAudioClip(audioSource.clip)) * volume;
+            if (fromPauseMenu && !GetFirstSoundEnumByAudioClip(audioSource.clip).ToString().StartsWith("MUSIC_"))
+                audioSource.volume = GetBaseVolume(GetFirstSoundEnumByAudioClip(audioSource.clip)) * volume;
+
+            if (!fromPauseMenu) audioSource.volume = GetBaseVolume(GetFirstSoundEnumByAudioClip(audioSource.clip)) * volume;
         }
     }
 
-    public void PauseAllAudioSources()
+    public void PauseAllAudioSources(bool onlyMusic = false)
     {
         AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
 
         foreach (AudioSource audioSource in audioSources)
         {
-            audioSource.Pause();
+            if (!GetFirstSoundEnumByAudioClip(audioSource.clip).ToString().StartsWith("MUSIC_") && !onlyMusic) audioSource.Pause();
+            else
+            {
+                StopAllCoroutines();
+                StartCoroutine(FadeOutMusicAndPause(audioSource));
+            }
         }
     }
-    public void UnPauseAllAudioSources()
+    public void UnPauseAllAudioSources(bool onlyMusic = false)
     {
         AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
 
         foreach (AudioSource audioSource in audioSources)
         {
-            audioSource.UnPause();
+            if (!GetFirstSoundEnumByAudioClip(audioSource.clip).ToString().StartsWith("MUSIC_") && !onlyMusic) audioSource.UnPause();
+            else
+            {
+                StopAllCoroutines();
+                StartCoroutine(FadeInMusicAndUnPause(audioSource));
+            }
+        }
+    }
+    IEnumerator FadeOutMusicAndPause(AudioSource audioSource)
+    {
+        float startVolume = audioSource.volume;
+        while (audioSource.volume > 0)
+        {
+            audioSource.volume -= startVolume * Time.unscaledDeltaTime * 5;
+            yield return new WaitForSecondsRealtime(0.02f);
+        }
+        audioSource.Pause();
+    }
+    IEnumerator FadeInMusicAndUnPause(AudioSource audioSource)
+    {
+        float targetVolume = GetBaseVolume(GetFirstSoundEnumByAudioClip(audioSource.clip)) * volume;
+        if(audioSource.volume == targetVolume) audioSource.volume = 0;
+        audioSource.UnPause();
+        while (audioSource.volume < targetVolume)
+        {
+            audioSource.volume += targetVolume * Time.unscaledDeltaTime * 5;
+            yield return new WaitForSecondsRealtime(0.02f);
         }
     }
 

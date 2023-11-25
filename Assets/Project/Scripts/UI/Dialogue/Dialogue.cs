@@ -243,19 +243,6 @@ public class Dialogue : MonoBehaviour
                 }
             }
 
-            /*
-            foreach (string key in PlayerParams.Controllers.dialogueDiary.dialogueDiary.Keys)
-            {
-                foreach (List<string> list in PlayerParams.Controllers.dialogueDiary.dialogueDiary[key])
-                {
-                    foreach(string text in list)
-                    {
-                        Debug.Log(text);
-                    }
-                }
-            }
-            */
-
             if (optionsChoices[choice] == null)
             {
                 gameObject.SetActive(false);

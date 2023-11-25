@@ -7,7 +7,6 @@ using UnityEngine;
 public class GameSettings : MonoBehaviour
 {
     static Process mediapipeHandProcess;
-
     private SoundManager soundManager;
     private BackgroundMusic backgroundMusic;
 
@@ -17,14 +16,23 @@ public class GameSettings : MonoBehaviour
     }
 
     public static float soundVolume = 0.3f;
+
     public static string microphoneName = null;
+
     public static string webCamName = null;
+
+    // 0 - 30; 1 - 60; 2 - 120; 3 - 144; 4 - 160; 5 - 165; 6 - 180; 7 - 200; 8 - 240; 9 - 360; 10 - unlimited
     public static int fpsCap = 1;
     private int checkerFpsCap;
+
     public static GraphicsQuality graphicsQuality = GraphicsQuality.High;
     private GraphicsQuality checkerGraphicsQuality;
+
     public static bool vSync = false;
+    public static int vSyncCount = 1;
+
     public static bool fullscreen = true;
+
     public static bool muteMusic = true;
 
     //always working settings for the game
@@ -62,8 +70,8 @@ public class GameSettings : MonoBehaviour
         checkerGraphicsQuality = graphicsQuality;
 
         //set vSync
-        if (vSync) QualitySettings.vSyncCount = 0;
-        else QualitySettings.vSyncCount = 1;
+        if (vSync) QualitySettings.vSyncCount = vSyncCount;
+        else QualitySettings.vSyncCount = 0;
 
         //set fullscreen
         Screen.fullScreen = fullscreen;
@@ -75,7 +83,7 @@ public class GameSettings : MonoBehaviour
     private void Update()
     {
         //update soundVolume
-        if (soundVolume != soundManager.GetVolume()) soundManager.ChangeVolume(soundVolume);
+        if (soundVolume != soundManager.GetVolume()) soundManager.ChangeVolume(soundVolume, fromPauseMenu: true);
         
         //update fpsCap
         if (checkerFpsCap != fpsCap)
@@ -92,8 +100,8 @@ public class GameSettings : MonoBehaviour
         }    
 
         //update vSync
-        if(vSync && QualitySettings.vSyncCount != 0) QualitySettings.vSyncCount = 0;
-        else if(!vSync && QualitySettings.vSyncCount != 1) QualitySettings.vSyncCount = 1;
+        if(vSync && QualitySettings.vSyncCount != vSyncCount) QualitySettings.vSyncCount = vSyncCount;
+        else if(!vSync && QualitySettings.vSyncCount != 0) QualitySettings.vSyncCount = 0;
 
         //fullscreen
         if (Screen.fullScreen != fullscreen) Screen.fullScreen = fullscreen;
