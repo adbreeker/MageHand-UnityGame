@@ -8,6 +8,8 @@ public class SoundDebugButton : MonoBehaviour
     public GameObject button;
 
     public SoundManager.Sound sound;
+    public float maxHearingDistance = 20;
+    public float minHearingDistance = 4;
 
     bool buttonChanging = false;
     private AudioSource clickSound;
@@ -16,13 +18,14 @@ public class SoundDebugButton : MonoBehaviour
     {
         if (!buttonChanging)
         {
+            if(clickSound != null) Destroy(clickSound);
             StartCoroutine(ButtonAnimation());
         }
     }
 
     IEnumerator ButtonAnimation() //button animation
     {
-        clickSound = FindObjectOfType<SoundManager>().CreateAudioSource(sound);
+        clickSound = FindObjectOfType<SoundManager>().CreateAudioSource(sound: sound, soundParent: button, minHearingDistance: minHearingDistance, maxHearingDistance: maxHearingDistance);
         clickSound.Play();
         Destroy(clickSound,clickSound.clip.length);
 

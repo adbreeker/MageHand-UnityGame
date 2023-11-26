@@ -89,6 +89,7 @@ public class SoundManager : MonoBehaviour
             audioSource.spatialBlend = 1f;
             audioSource.minDistance = minHearingDistance;
             audioSource.maxDistance = maxHearingDistance;
+            audioSource.rolloffMode = AudioRolloffMode.Linear;
         }
         else
         {
