@@ -7,6 +7,10 @@ public class LightSpellBehavior : MonoBehaviour
     [Header("Flash effect prefab")]
     public GameObject flashEffectPrefab;
 
+    [Header("Sound distance")]
+    public float minHearingDistance = 10.0f;
+    public float maxHearingDistance = 30.0f;
+
     private GameObject instantiatedEffect;
 
     private AudioSource spellRemaining;
@@ -14,7 +18,7 @@ public class LightSpellBehavior : MonoBehaviour
 
     private void Start()
     {
-        spellRemaining = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_SpellLightRemaining, gameObject, 10f, 30f);
+        spellRemaining = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_SpellLightRemaining, gameObject, minHearingDistance, maxHearingDistance);
         spellRemaining.loop = true;
         spellRemaining.Play();
     }
