@@ -6,14 +6,23 @@ public class SoundManager : MonoBehaviour
 {
     public enum Sound
     {
-        VOICES_Mage, //? PLACEHOLDER
-        VOICES_Guide, //? PLACEHOLDER
+        VOICES_Mage, //1
+        VOICES_Guide, //1
 
-        MUSIC_ForestAmbient, //? PLACEHOLDER
-        MUSIC_Dungeon, //? PLACEHOLDER
-        MUSIC_Menu, //? PLACEHOLDER
-
-        READING_Light, //1
+        MUSIC_Dungeon1Start, //?? PLACEHOLDER
+        MUSIC_Dungeon1Loop, //?? PLACEHOLDER
+        MUSIC_Dungeon2Start,
+        MUSIC_Dungeon2Loop,
+        MUSIC_Dungeon3Start,
+        MUSIC_Dungeon3Loop,
+        MUSIC_Dungeon4Start,
+        MUSIC_Dungeon4Loop,
+        MUSIC_Dungeon5Start,
+        MUSIC_Dungeon5Loop,
+        MUSIC_MenuStart, //?? PLACEHOLDER
+        MUSIC_MenuLoop, //?? PLACEHOLDER
+        MUSIC_LoadingAmbientStart, //?? PLACEHOLDER
+        MUSIC_LoadingAmbientLoop, //?? PLACEHOLDER
 
         UI_ChangeOption, //1
         UI_SelectOption, //1
@@ -43,8 +52,17 @@ public class SoundManager : MonoBehaviour
         SFX_CastingSpellFailed, //1
         SFX_CastingSpellFinished, //1
 
+        READING_Light, //1
+        READING_PickUp, //1
+        READING_Fire,
+        READING_Mark,
+        READING_Return,
+        READING_Levitate,
+
         SFX_SpellLightRemaining, //1
-        SFX_SpellLightBurst //0.6
+        SFX_SpellLightBurst, //0.6
+        SFX_SpellPickUpActivation, //0.9
+        SFX_MagicalTeleportation //0.8
     }
 
     private float volume;

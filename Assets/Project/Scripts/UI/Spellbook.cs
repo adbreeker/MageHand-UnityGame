@@ -23,6 +23,7 @@ public class Spellbook : MonoBehaviour
     private AudioSource openSound;
     private AudioSource changeSound;
     private AudioSource lightVoice;
+    private AudioSource pickUpVoice;
     
     private int page;
     private int pointed;
@@ -81,15 +82,14 @@ public class Spellbook : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && spellbookOpened)
         {
 
-
-            //Change it to TTS?
-            if (lightVoice.isPlaying) voiceIsPlaying = true;
+            if (lightVoice.isPlaying || pickUpVoice.isPlaying) voiceIsPlaying = true;
             //if (lightVoice.isPlaying || fireVoice.isPlaying etc.) voiceIsPlaying = true; ^in place of that
             else voiceIsPlaying = false;
 
             if (!voiceIsPlaying)
             {
                 if (spellbookPages[page][pointed - 1].spellName == "Light") lightVoice.Play();
+                if (spellbookPages[page][pointed - 1].spellName == "Pick up") pickUpVoice.Play();
                 //if (spellbookPages[page][pointed - 1].spellName == "Fire") fireVoice.Play(); etc.
             }
         
@@ -158,6 +158,8 @@ public class Spellbook : MonoBehaviour
         changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
         lightVoice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.READING_Light);
         lightVoice.volume *= 2f;
+        pickUpVoice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.READING_PickUp);
+        pickUpVoice.volume *= 2f;
 
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.inventory.CloseInventory();
