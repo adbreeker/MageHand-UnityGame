@@ -57,8 +57,8 @@ public class Journal : MonoBehaviour
     private bool atNamesList = false;
     public bool atDialoguesNamesList = false;
     public bool atNotesNamesList = false;
-    public int pointedDialogueName;
-    public int pointedNoteName;
+    private int pointedDialogueName;
+    private int pointedNoteName;
 
     private float keyTimeDelayFirst = 20f;
     private float keyTimeDelay = 10f;
@@ -199,20 +199,36 @@ public class Journal : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.W))
             {
-                if (atDialoguesNamesList && pointedDialogueName > 0)
+                if (atDialoguesNamesList)
                 {
                     changeSound.Play();
-                    pointedDialogueName--;
+                    if(pointedDialogueName > 0)
+                    {
+                        pointedDialogueName--;
+                        dialoguesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 1f / (instantiatedDialoguesNames.Count - 1);
+                    } 
+                    else
+                    {
+                        pointedDialogueName = instantiatedDialoguesNames.Count - 1;
+                        dialoguesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition = 0f;
+                    }
                     PointName(pointedDialogueName);
-                    dialoguesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 1f / (instantiatedDialoguesNames.Count - 1);
                     keyTimeDelayer = keyTimeDelayFirst;
                 }
-                if (atNotesNamesList && pointedNoteName > 0)
+                if (atNotesNamesList)
                 {
                     changeSound.Play();
-                    pointedNoteName--;
+                    if (pointedNoteName > 0)
+                    {
+                        pointedNoteName--;
+                        notesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 1f / (instantiatedNotesNames.Count - 1);
+                    }
+                    else
+                    {
+                        pointedNoteName = instantiatedNotesNames.Count - 1;
+                        notesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition = 0f;
+                    }
                     PointName(pointedNoteName);
-                    notesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 1f / (instantiatedNotesNames.Count - 1);
                     keyTimeDelayer = keyTimeDelayFirst;
                 }
             }
@@ -220,40 +236,72 @@ public class Journal : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.S))
             {
-                if (atDialoguesNamesList && pointedDialogueName < instantiatedDialoguesNames.Count - 1)
+                if (atDialoguesNamesList)
                 {
                     changeSound.Play();
-                    pointedDialogueName++;
+                    if(pointedDialogueName < instantiatedDialoguesNames.Count - 1)
+                    {
+                        pointedDialogueName++;
+                        dialoguesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -1f / (instantiatedDialoguesNames.Count - 1);
+                    }
+                    else
+                    {
+                        pointedDialogueName = 0;
+                        dialoguesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition = 1f;
+                    }
                     PointName(pointedDialogueName);
-                    dialoguesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -1f / (instantiatedDialoguesNames.Count - 1);
                     keyTimeDelayer = keyTimeDelayFirst;
                 }
-                if (atNotesNamesList && pointedNoteName < instantiatedNotesNames.Count - 1)
+                if (atNotesNamesList)
                 {
                     changeSound.Play();
-                    pointedNoteName++;
+                    if(pointedNoteName < instantiatedNotesNames.Count - 1)
+                    {
+                        pointedNoteName++;
+                        notesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -1f / (instantiatedNotesNames.Count - 1);
+                    }
+                    else
+                    {
+                        pointedNoteName = 0;
+                        notesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition = 1;
+                    }
                     PointName(pointedNoteName);
-                    notesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -1f / (instantiatedNotesNames.Count - 1);
                     keyTimeDelayer = keyTimeDelayFirst;
                 }
             }
 
             if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.W))
             {
-                if (atDialoguesNamesList && pointedDialogueName > 0)
+                if (atDialoguesNamesList)
                 {
                     changeSound.Play();
-                    pointedDialogueName--;
+                    if (pointedDialogueName > 0)
+                    {
+                        pointedDialogueName--;
+                        dialoguesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 1f / (instantiatedDialoguesNames.Count - 1);
+                    }
+                    else
+                    {
+                        pointedDialogueName = instantiatedDialoguesNames.Count - 1;
+                        dialoguesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition = 0f;
+                    }
                     PointName(pointedDialogueName);
-                    dialoguesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 1f / (instantiatedDialoguesNames.Count - 1);
                     keyTimeDelayer = keyTimeDelay;
                 }
-                if (atNotesNamesList && pointedNoteName > 0)
+                if (atNotesNamesList)
                 {
                     changeSound.Play();
-                    pointedNoteName--;
+                    if (pointedNoteName > 0)
+                    {
+                        pointedNoteName--;
+                        notesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 1f / (instantiatedNotesNames.Count - 1);
+                    }
+                    else
+                    {
+                        pointedNoteName = instantiatedNotesNames.Count - 1;
+                        notesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition = 0f;
+                    }
                     PointName(pointedNoteName);
-                    notesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 1f / (instantiatedNotesNames.Count - 1);
                     keyTimeDelayer = keyTimeDelay;
                 }
             }
@@ -261,26 +309,43 @@ public class Journal : MonoBehaviour
 
             if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.S))
             {
-                if (atDialoguesNamesList && pointedDialogueName < instantiatedDialoguesNames.Count - 1)
+                if (atDialoguesNamesList)
                 {
                     changeSound.Play();
-                    pointedDialogueName++;
+                    if (pointedDialogueName < instantiatedDialoguesNames.Count - 1)
+                    {
+                        pointedDialogueName++;
+                        dialoguesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -1f / (instantiatedDialoguesNames.Count - 1);
+                    }
+                    else
+                    {
+                        pointedDialogueName = 0;
+                        dialoguesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition = 1f;
+                    }
                     PointName(pointedDialogueName);
-                    dialoguesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -1f / (instantiatedDialoguesNames.Count - 1);
                     keyTimeDelayer = keyTimeDelay;
                 }
-                if (atNotesNamesList && pointedNoteName < instantiatedNotesNames.Count - 1)
+                if (atNotesNamesList)
                 {
                     changeSound.Play();
-                    pointedNoteName++;
+                    if (pointedNoteName < instantiatedNotesNames.Count - 1)
+                    {
+                        pointedNoteName++;
+                        notesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -1f / (instantiatedNotesNames.Count - 1);
+                    }
+                    else
+                    {
+                        pointedNoteName = 0;
+                        notesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition = 1;
+                    }
                     PointName(pointedNoteName);
-                    notesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -1f / (instantiatedNotesNames.Count - 1);
                     keyTimeDelayer = keyTimeDelay;
                 }
             }
 
             if (Input.GetKeyDown(KeyCode.A) && atNotesNamesList && pointedDialogueName < instantiatedDialoguesNames.Count)
             {
+                changeSound.Play();
                 atDialoguesNamesList = true;
                 atNotesNamesList = false;
                 PointName(pointedDialogueName);
@@ -288,6 +353,7 @@ public class Journal : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.D) && atDialoguesNamesList && pointedNoteName < instantiatedNotesNames.Count)
             {
+                changeSound.Play();
                 atDialoguesNamesList = false;
                 atNotesNamesList = true;
                 PointName(pointedNoteName);

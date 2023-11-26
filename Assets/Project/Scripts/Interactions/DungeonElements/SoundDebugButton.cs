@@ -2,35 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ButtonBehavior : MonoBehaviour
+public class SoundDebugButton : MonoBehaviour
 {
     [Header("Button object")]
     public GameObject button;
 
-    [Header("Button clicks counter")]
-    public int clickCounter = 0;
+    public SoundManager.Sound sound;
 
     bool buttonChanging = false;
     private AudioSource clickSound;
 
-    public void OnClick() //on click invoke interaction on connected object and increase click counter
+    public void OnClick()
     {
         if (!buttonChanging)
         {
-            clickCounter++;
             StartCoroutine(ButtonAnimation());
-            GetComponent<SwitchInteraction>().Interact();
         }
     }
 
     IEnumerator ButtonAnimation() //button animation
     {
-        clickSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Button, button);
+        clickSound = FindObjectOfType<SoundManager>().CreateAudioSource(sound);
         clickSound.Play();
-        Destroy(clickSound, clickSound.clip.length);
+        Destroy(clickSound,clickSound.clip.length);
 
         buttonChanging = true;
-        for(int i=0; i<10; i++)
+        for (int i = 0; i < 10; i++)
         {
             yield return new WaitForFixedUpdate();
             Vector3 newPos = button.transform.localPosition;

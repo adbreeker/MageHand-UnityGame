@@ -89,7 +89,7 @@ public class Spellbook : MonoBehaviour
             if (!voiceIsPlaying)
             {
                 if (spellbookPages[page][pointed - 1].spellName == "Light") lightVoice.Play();
-                if (spellbookPages[page][pointed - 1].spellName == "Pick up") pickUpVoice.Play();
+                if (spellbookPages[page][pointed - 1].spellName == "Pick Up") pickUpVoice.Play();
                 //if (spellbookPages[page][pointed - 1].spellName == "Fire") fireVoice.Play(); etc.
             }
         
