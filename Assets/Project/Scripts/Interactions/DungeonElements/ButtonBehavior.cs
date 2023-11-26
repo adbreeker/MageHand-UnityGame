@@ -19,7 +19,10 @@ public class ButtonBehavior : MonoBehaviour
         {
             clickCounter++;
             StartCoroutine(ButtonAnimation());
-            GetComponent<SwitchInteraction>().Interact();
+            foreach(SwitchInteraction switchInteraction in GetComponents<SwitchInteraction>())
+            {
+                switchInteraction.Interact();
+            }
         }
     }
 
