@@ -13,9 +13,13 @@ public class WallsListTunnels : MonoBehaviour
         Tunnel_Wall_1,
         Tunnel_Wall_2,
         Tunnel_Wall_3,
+        Tunnel_Wall_TwoSided,
+        Tunnel_Wall_TwoSided_Mix,
         Tunnel_Wall_Passage,
-        Tunnel_Wall_Passage_Dungeon,
+        Tunnel_Wall_Passage_Mix,
         Tunnel_Wall_PassageLockedDoors,
+        Tunnel_Wall_PassageLockedDoors_Mix,
         Tunnel_Wall_Torch,
+        Tunnel_Wall_Torch_NoLight
     }
 }

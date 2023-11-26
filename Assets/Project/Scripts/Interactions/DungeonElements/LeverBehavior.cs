@@ -18,7 +18,10 @@ public class LeverBehavior : MonoBehaviour
         if(!leverChanging)
         {
             StartCoroutine(LeverAnimation());
-            GetComponent<SwitchInteraction>().Interact();
+            foreach(SwitchInteraction switchInteraction in GetComponents<SwitchInteraction>())
+            {
+                switchInteraction.Interact();
+            }
         }
     }
 
