@@ -40,10 +40,6 @@ public class GameSettings : MonoBehaviour
     {
         RunMediapipeExe();
         Application.quitting += CloseMediapipeExeOnQuit;
-
-        //hide cursor
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Confined;
     }
 
     //applying player setting from saves (now it's hardcoded)
@@ -75,6 +71,9 @@ public class GameSettings : MonoBehaviour
 
         //set fullscreen
         Screen.fullScreen = fullscreen;
+        Cursor.visible = !fullscreen;
+        if(fullscreen) Cursor.lockState = CursorLockMode.Confined;
+        else Cursor.lockState = CursorLockMode.None;
 
         //set muteMusice
         backgroundMusic.muteBackgroundMusic = muteMusic;
@@ -104,7 +103,13 @@ public class GameSettings : MonoBehaviour
         else if(!vSync && QualitySettings.vSyncCount != 0) QualitySettings.vSyncCount = 0;
 
         //fullscreen
-        if (Screen.fullScreen != fullscreen) Screen.fullScreen = fullscreen;
+        if (Screen.fullScreen != fullscreen)
+        {
+            Screen.fullScreen = fullscreen;
+            Cursor.visible = !fullscreen;
+            if (fullscreen) Cursor.lockState = CursorLockMode.Confined;
+            else Cursor.lockState = CursorLockMode.None;
+        }
 
         //update muteMusic
         if (backgroundMusic.muteBackgroundMusic != muteMusic) backgroundMusic.muteBackgroundMusic = muteMusic;

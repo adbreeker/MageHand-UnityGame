@@ -66,7 +66,6 @@ public class PauseMenu : MonoBehaviour
 
         if (keyTimeDelayer > 0) keyTimeDelayer -= 75 * Time.unscaledDeltaTime;
 
-
         if (menuOpened) Time.timeScale = 0f;
         else Time.timeScale = 1f;
     }

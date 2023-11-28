@@ -163,8 +163,8 @@ public class Spellbook : MonoBehaviour
 
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.inventory.CloseInventory();
-        PlayerParams.Controllers.pauseMenu.CloseMenu();
         PlayerParams.Controllers.journal.CloseJournal();
+        PlayerParams.Controllers.pauseMenu.CloseMenu();
         PlayerParams.Controllers.pauseMenu.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
@@ -221,14 +221,15 @@ public class Spellbook : MonoBehaviour
             Destroy(closeSound.gameObject, closeSound.clip.length);
             Destroy(changeSound.gameObject, changeSound.clip.length);
             Destroy(lightVoice.gameObject, lightVoice.clip.length);
+            Destroy(pickUpVoice.gameObject, pickUpVoice.clip.length);
             //Destroy(fireVoice.gameObject); etc.
         }
         Destroy(instantiatedSpellbook);
         spellbookOpened = false;
 
         //Enable other controls
-        PlayerParams.Controllers.pauseMenu.ableToInteract = true;
         PlayerParams.Variables.uiActive = false;
+        PlayerParams.Controllers.pauseMenu.ableToInteract = true;
         PlayerParams.Objects.hand.SetActive(true);
     }
     void PointOption(int option)

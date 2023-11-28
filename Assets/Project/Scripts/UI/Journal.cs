@@ -389,8 +389,8 @@ public class Journal : MonoBehaviour
 
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.inventory.CloseInventory();
-        PlayerParams.Controllers.pauseMenu.CloseMenu();
         PlayerParams.Controllers.spellbook.CloseSpellbook();
+        PlayerParams.Controllers.pauseMenu.CloseMenu();
         PlayerParams.Controllers.pauseMenu.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
@@ -506,8 +506,8 @@ public class Journal : MonoBehaviour
         journalOpened = false;
 
         //Enable other controls
-        PlayerParams.Controllers.pauseMenu.ableToInteract = true;
         PlayerParams.Variables.uiActive = false;
+        PlayerParams.Controllers.pauseMenu.ableToInteract = true;
         PlayerParams.Objects.hand.SetActive(true);
     }
 
