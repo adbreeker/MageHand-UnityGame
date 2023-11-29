@@ -7,23 +7,31 @@ public class BackgroundMusic : MonoBehaviour
     public SoundManager.Sound startMusic;
     public SoundManager.Sound loopMusic;
 
-    private AudioSource startMusicAS;
-    private AudioSource loopMusicAS;
+    public bool muteBackgroundMusic = false;
 
-    public bool playBackgroundMusic = true;
+    [Header("Read only")]
+    public AudioSource startMusicAS;
+    public AudioSource loopMusicAS;
 
     void Start()
     {
         startMusicAS = FindObjectOfType<SoundManager>().CreateAudioSource(startMusic);
         loopMusicAS = FindObjectOfType<SoundManager>().CreateAudioSource(loopMusic);
 
-        if(playBackgroundMusic) startMusicAS.Play();
+        if(!muteBackgroundMusic) startMusicAS.Play();
     }
     void Update()
     {
-        if(playBackgroundMusic && !PlayerParams.Controllers.pauseMenu.menuOpened && !startMusicAS.isPlaying && !loopMusicAS.isPlaying) loopMusicAS.Play();
+        if (!muteBackgroundMusic && !startMusicAS.isPlaying && !loopMusicAS.isPlaying)
+        {
+            if (PlayerParams.Controllers.pauseMenu != null)
+            {
+                if (!PlayerParams.Controllers.pauseMenu.menuOpened) loopMusicAS.Play();
+            }
+            else loopMusicAS.Play();
+        }
 
-        if(!playBackgroundMusic)
+        if(muteBackgroundMusic)
         {
             startMusicAS.Stop();
             loopMusicAS.Stop();

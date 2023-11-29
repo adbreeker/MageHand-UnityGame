@@ -37,9 +37,9 @@ public class PauseMenu : MonoBehaviour
     private AudioSource changeSound;
     private AudioSource selectSound;
 
-    private int keyTimeDelayFirst = 20;
-    private int keyTimeDelay = 10;
-    private int keyTimeDelayer = 0;
+    private float keyTimeDelayFirst = 20f;
+    private float keyTimeDelay = 10f;
+    private float keyTimeDelayer = 0;
 
     void Update()
     {
@@ -64,10 +64,7 @@ public class PauseMenu : MonoBehaviour
             PointOption(pointedOptionMenu);
         }
 
-        if (keyTimeDelayer > 0)
-        {
-            keyTimeDelayer--;
-        }
+        if (keyTimeDelayer > 0) keyTimeDelayer -= 75 * Time.unscaledDeltaTime;
 
         if (menuOpened) Time.timeScale = 0f;
         else Time.timeScale = 1f;
@@ -121,7 +118,7 @@ public class PauseMenu : MonoBehaviour
             keyTimeDelayer = keyTimeDelayFirst;
         }
 
-        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.S))
+        if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.S))
         {
             changeSound.Play();
             if (pointedOptionMenu < menuOptions.Count - 1)
@@ -135,7 +132,7 @@ public class PauseMenu : MonoBehaviour
             keyTimeDelayer = keyTimeDelay;
         }
 
-        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.W))
+        if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.W))
         {
             changeSound.Play();
             if (pointedOptionMenu > 0)
@@ -222,7 +219,7 @@ public class PauseMenu : MonoBehaviour
         //Disable other controls
         PlayerParams.Controllers.inventory.ableToInteract = false;
         PlayerParams.Controllers.spellbook.ableToInteract = false;
-        PlayerParams.Controllers.dialogueDiary.ableToInteract = false;
+        PlayerParams.Controllers.journal.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
 
@@ -260,7 +257,7 @@ public class PauseMenu : MonoBehaviour
         //Enable other controls
         PlayerParams.Controllers.inventory.ableToInteract = true;
         PlayerParams.Controllers.spellbook.ableToInteract = true;
-        PlayerParams.Controllers.dialogueDiary.ableToInteract = true;
+        PlayerParams.Controllers.journal.ableToInteract = true;
         PlayerParams.Variables.uiActive = false;
         PlayerParams.Objects.hand.SetActive(true);
 

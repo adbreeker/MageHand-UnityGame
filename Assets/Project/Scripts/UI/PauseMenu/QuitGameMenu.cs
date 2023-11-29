@@ -7,25 +7,26 @@ public class QuitGameMenu : MonoBehaviour
 {
     private GameObject pointer;
     private int pointedOptionMenu;
+    private bool closing = false;
     private List<TextMeshProUGUI> menuOptions = new List<TextMeshProUGUI>();
 
     private AudioSource closeSound;
     private AudioSource changeSound;
     private AudioSource selectSound;
 
-    private int keyTimeDelayFirst = 20;
-    private int keyTimeDelay = 10;
-    private int keyTimeDelayer = 0;
+    private float keyTimeDelayFirst = 20f;
+    private float keyTimeDelay = 10f;
+    private float keyTimeDelayer = 0;
 
     void Update()
     {
-        KeysListener();
-        PointOption(pointedOptionMenu, menuOptions);
-
-        if (keyTimeDelayer > 0)
+        if (!closing)
         {
-            keyTimeDelayer--;
+            KeysListener();
+            PointOption(pointedOptionMenu, menuOptions);
         }
+
+        if (keyTimeDelayer > 0) keyTimeDelayer -= 75 * Time.unscaledDeltaTime;
     }
 
     void KeysListener()
@@ -64,7 +65,7 @@ public class QuitGameMenu : MonoBehaviour
             keyTimeDelayer = keyTimeDelayFirst;
         }
 
-        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.S))
+        if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.S))
         {
             changeSound.Play();
             if (pointedOptionMenu < menuOptions.Count - 1)
@@ -78,7 +79,7 @@ public class QuitGameMenu : MonoBehaviour
             keyTimeDelayer = keyTimeDelay;
         }
 
-        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.W))
+        if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.W))
         {
             changeSound.Play();
             if (pointedOptionMenu > 0)
@@ -97,10 +98,8 @@ public class QuitGameMenu : MonoBehaviour
             selectSound.Play();
             if (pointedOptionMenu == 0)
             {
-                #if UNITY_EDITOR
-                    UnityEditor.EditorApplication.isPlaying = false;
-                #endif
-                    Application.Quit();
+                closing = true;
+                FindObjectOfType<FadeInFadeOut>().CloseGame();
             }
             else if (pointedOptionMenu == 1)
             {

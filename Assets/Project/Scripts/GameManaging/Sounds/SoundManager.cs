@@ -6,14 +6,23 @@ public class SoundManager : MonoBehaviour
 {
     public enum Sound
     {
-        VOICES_Mage, //? PLACEHOLDER
-        VOICES_Guide, //? PLACEHOLDER
+        VOICES_Mage, //1
+        VOICES_Guide, //1
 
-        MUSIC_ForestAmbient, //? PLACEHOLDER
-        MUSIC_Dungeon, //? PLACEHOLDER
-        MUSIC_Menu, //? PLACEHOLDER
-
-        READING_Light, //1
+        MUSIC_Dungeon1Start, //?? PLACEHOLDER
+        MUSIC_Dungeon1Loop, //?? PLACEHOLDER
+        MUSIC_Dungeon2Start,
+        MUSIC_Dungeon2Loop,
+        MUSIC_Dungeon3Start,
+        MUSIC_Dungeon3Loop,
+        MUSIC_Dungeon4Start,
+        MUSIC_Dungeon4Loop,
+        MUSIC_Dungeon5Start,
+        MUSIC_Dungeon5Loop,
+        MUSIC_MenuStart, //?? PLACEHOLDER
+        MUSIC_MenuLoop, //?? PLACEHOLDER
+        MUSIC_LoadingAmbientStart, //?? PLACEHOLDER
+        MUSIC_LoadingAmbientLoop, //?? PLACEHOLDER
 
         UI_ChangeOption, //1
         UI_SelectOption, //1
@@ -43,8 +52,17 @@ public class SoundManager : MonoBehaviour
         SFX_CastingSpellFailed, //1
         SFX_CastingSpellFinished, //1
 
+        READING_Light, //1
+        READING_PickUp, //1
+        READING_Fire,
+        READING_Mark,
+        READING_Return,
+        READING_Levitate,
+
         SFX_SpellLightRemaining, //1
-        SFX_SpellLightBurst //0.6
+        SFX_SpellLightBurst, //0.6
+        SFX_SpellPickUpActivation, //0.9
+        SFX_MagicalTeleportation //0.8
     }
 
     private float volume;
@@ -71,6 +89,7 @@ public class SoundManager : MonoBehaviour
             audioSource.spatialBlend = 1f;
             audioSource.minDistance = minHearingDistance;
             audioSource.maxDistance = maxHearingDistance;
+            audioSource.rolloffMode = AudioRolloffMode.Linear;
         }
         else
         {
@@ -86,7 +105,7 @@ public class SoundManager : MonoBehaviour
         return audioSource;
     }
 
-    public void ChangeVolume(float givenVolume)
+    public void ChangeVolume(float givenVolume, bool fromPauseMenu = false)
     {
         volume = Mathf.Clamp01(givenVolume);
 
@@ -94,27 +113,60 @@ public class SoundManager : MonoBehaviour
 
         foreach (AudioSource audioSource in audioSources)
         {
-            audioSource.volume = GetBaseVolume(GetFirstSoundEnumByAudioClip(audioSource.clip)) * volume;
+            if (fromPauseMenu && !GetFirstSoundEnumByAudioClip(audioSource.clip).ToString().StartsWith("MUSIC_"))
+                audioSource.volume = GetBaseVolume(GetFirstSoundEnumByAudioClip(audioSource.clip)) * volume;
+
+            if (!fromPauseMenu) audioSource.volume = GetBaseVolume(GetFirstSoundEnumByAudioClip(audioSource.clip)) * volume;
         }
     }
 
-    public void PauseAllAudioSources()
+    public void PauseAllAudioSources(bool onlyMusic = false)
     {
         AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
 
         foreach (AudioSource audioSource in audioSources)
         {
-            audioSource.Pause();
+            if (!GetFirstSoundEnumByAudioClip(audioSource.clip).ToString().StartsWith("MUSIC_") && !onlyMusic) audioSource.Pause();
+            else
+            {
+                StopAllCoroutines();
+                StartCoroutine(FadeOutMusicAndPause(audioSource));
+            }
         }
     }
-
-    public void UnPauseAllAudioSources()
+    public void UnPauseAllAudioSources(bool onlyMusic = false)
     {
         AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
 
         foreach (AudioSource audioSource in audioSources)
         {
-            audioSource.UnPause();
+            if (!GetFirstSoundEnumByAudioClip(audioSource.clip).ToString().StartsWith("MUSIC_") && !onlyMusic) audioSource.UnPause();
+            else
+            {
+                StopAllCoroutines();
+                StartCoroutine(FadeInMusicAndUnPause(audioSource));
+            }
+        }
+    }
+    IEnumerator FadeOutMusicAndPause(AudioSource audioSource)
+    {
+        float startVolume = audioSource.volume;
+        while (audioSource.volume > 0)
+        {
+            audioSource.volume -= startVolume * Time.unscaledDeltaTime * 5;
+            yield return new WaitForSecondsRealtime(0.02f);
+        }
+        audioSource.Pause();
+    }
+    IEnumerator FadeInMusicAndUnPause(AudioSource audioSource)
+    {
+        float targetVolume = GetBaseVolume(GetFirstSoundEnumByAudioClip(audioSource.clip)) * volume;
+        if(audioSource.volume == targetVolume) audioSource.volume = 0;
+        audioSource.UnPause();
+        while (audioSource.volume < targetVolume)
+        {
+            audioSource.volume += targetVolume * Time.unscaledDeltaTime * 5;
+            yield return new WaitForSecondsRealtime(0.02f);
         }
     }
 
