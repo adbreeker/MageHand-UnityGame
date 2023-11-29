@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Linq;
 
 public class Inventory : MonoBehaviour
 {
@@ -105,9 +106,8 @@ public class Inventory : MonoBehaviour
 
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.spellbook.CloseSpellbook();
+        PlayerParams.Controllers.journal.CloseJournal();
         PlayerParams.Controllers.pauseMenu.CloseMenu();
-        PlayerParams.Controllers.dialogueDiary.CloseDiary();
-        //PlayerParams.Controllers.spellbook.ableToInteract = false;
         PlayerParams.Controllers.pauseMenu.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
 
@@ -172,7 +172,6 @@ public class Inventory : MonoBehaviour
 
         //Enable other controls
         PlayerParams.Variables.uiActive = false;
-        //PlayerParams.Controllers.spellbook.ableToInteract = true;
         PlayerParams.Controllers.pauseMenu.ableToInteract = true;
     }
 
@@ -210,6 +209,7 @@ public class Inventory : MonoBehaviour
     public void AddItem(GameObject item)
     {
         inventory.Add(item);
+        inventory = inventory.OrderBy(go => go.GetComponent<ItemParameters>().itemName).ToList();
         item.SetActive(false);
         try
         {

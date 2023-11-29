@@ -47,9 +47,9 @@ public class Dialogue : MonoBehaviour
     private bool skip = false;
     private int choice;
 
-    private int keyTimeDelayFirst = 20;
-    private int keyTimeDelay = 10;
-    private int keyTimeDelayer = 0;
+    private float keyTimeDelayFirst = 20f;
+    private float keyTimeDelay = 10f;
+    private float keyTimeDelayer = 0;
 
     void Start()
     {
@@ -59,11 +59,12 @@ public class Dialogue : MonoBehaviour
         PlayerParams.Controllers.inventory.CloseInventory();
         PlayerParams.Controllers.spellbook.CloseSpellbook();
         PlayerParams.Controllers.pauseMenu.CloseMenu();
-        PlayerParams.Controllers.dialogueDiary.CloseDiary();
+        PlayerParams.Controllers.journal.CloseJournal();
+
         PlayerParams.Controllers.inventory.ableToInteract = false;
         PlayerParams.Controllers.spellbook.ableToInteract = false;
         PlayerParams.Controllers.pauseMenu.ableToInteract = false;
-        PlayerParams.Controllers.dialogueDiary.ableToInteract = false;
+        PlayerParams.Controllers.journal.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
 
@@ -109,10 +110,7 @@ public class Dialogue : MonoBehaviour
         if (listen) KeysListener();
         else KeysListenerSkip();
 
-        if (keyTimeDelayer > 0)
-        {
-            keyTimeDelayer--;
-        }
+        if (keyTimeDelayer > 0) keyTimeDelayer -= 75 * Time.unscaledDeltaTime;
     }
 
     void PointOption(TextMeshProUGUI option)
@@ -182,7 +180,7 @@ public class Dialogue : MonoBehaviour
             keyTimeDelayer = keyTimeDelayFirst;
         }
 
-        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.W))
+        if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.W))
         {
             if (choice == 1)
             {
@@ -206,7 +204,7 @@ public class Dialogue : MonoBehaviour
             keyTimeDelayer = keyTimeDelay;
         }
 
-        if (keyTimeDelayer == 0 && Input.GetKey(KeyCode.S))
+        if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.S))
         {
 
             if (choice == 4)
@@ -238,25 +236,12 @@ public class Dialogue : MonoBehaviour
             //Save dialogue to player's diary
             if (transform.parent.GetComponent<OpenDialogue>().saveDialogue)
             {
-                PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { nameText, contentText });
+                PlayerParams.Controllers.journal.dialoguesJournal[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { nameText, contentText });
                 if (optionsTexts[choice] != "(Continue.)")
                 {
-                    PlayerParams.Controllers.dialogueDiary.dialogueDiary[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { "You", optionsTexts[choice] });
+                    PlayerParams.Controllers.journal.dialoguesJournal[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { "You", optionsTexts[choice] });
                 }
             }
-
-            /*
-            foreach (string key in PlayerParams.Controllers.dialogueDiary.dialogueDiary.Keys)
-            {
-                foreach (List<string> list in PlayerParams.Controllers.dialogueDiary.dialogueDiary[key])
-                {
-                    foreach(string text in list)
-                    {
-                        Debug.Log(text);
-                    }
-                }
-            }
-            */
 
             if (optionsChoices[choice] == null)
             {
@@ -268,7 +253,7 @@ public class Dialogue : MonoBehaviour
                 PlayerParams.Controllers.inventory.ableToInteract = true;
                 PlayerParams.Controllers.spellbook.ableToInteract = true;
                 PlayerParams.Controllers.pauseMenu.ableToInteract = true;
-                PlayerParams.Controllers.dialogueDiary.ableToInteract = true;
+                PlayerParams.Controllers.journal.ableToInteract = true;
             }
             else
             {
@@ -355,15 +340,18 @@ public class Dialogue : MonoBehaviour
 
     IEnumerator FadeOutVoice(float speed)
     {
-        float startVolume = voice.volume;
-
-        while (voice.volume > 0)
+        if (voice != null)
         {
-            voice.volume -= startVolume * Time.deltaTime / speed;
+            float startVolume = voice.volume;
 
-            if (!skip) yield return new WaitForSeconds(textSpeed);
+            while (voice.volume > 0)
+            {
+                voice.volume -= startVolume * Time.deltaTime / speed;
+
+                if (!skip) yield return new WaitForSeconds(textSpeed);
+            }
+
+            voice.Stop();
         }
-
-        voice.Stop();
     }
 }

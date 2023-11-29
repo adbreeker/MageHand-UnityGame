@@ -25,13 +25,13 @@ public class ButtonBehavior : MonoBehaviour
 
     IEnumerator ButtonAnimation() //button animation
     {
-        clickSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Button, gameObject);
+        clickSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Button, button);
         clickSound.Play();
+        Destroy(clickSound, clickSound.clip.length);
 
         buttonChanging = true;
         for(int i=0; i<10; i++)
         {
-
             yield return new WaitForFixedUpdate();
             Vector3 newPos = button.transform.localPosition;
             newPos.z -= 0.005f;
@@ -45,10 +45,6 @@ public class ButtonBehavior : MonoBehaviour
             newPos.z += 0.005f;
             button.transform.localPosition = newPos;
         }
-
-        while (clickSound.isPlaying) yield return null;
-
-        Destroy(clickSound);
         buttonChanging = false;
     }
 }

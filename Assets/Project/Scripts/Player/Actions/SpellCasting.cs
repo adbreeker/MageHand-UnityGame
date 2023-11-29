@@ -191,7 +191,7 @@ public class SpellCasting : MonoBehaviour
         }
         else if (NormalizeTranscribedText(spellWhispered) == "pickup")
         {
-            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
+            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_SpellPickUpActivation);
             castingFinishedSound.Play();
             Destroy(castingFinishedSound, castingFinishedSound.clip.length);
             PickUpSpell();

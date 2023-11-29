@@ -16,7 +16,7 @@ public class LevelExitCube : MonoBehaviour
     private ProgressSaving saveManager;
     private Spellbook spellbook;
     private Inventory inventory;
-    private DialogueDiary dialogueDiary;
+    private Journal journal;
 
     bool _isAnimationGoing = false;
 
@@ -27,7 +27,7 @@ public class LevelExitCube : MonoBehaviour
         saveManager = FindObjectOfType<ProgressSaving>();
         spellbook = PlayerParams.Controllers.spellbook;
         inventory = PlayerParams.Controllers.inventory;
-        dialogueDiary = PlayerParams.Controllers.dialogueDiary;
+        journal = PlayerParams.Controllers.journal;
     }
 
     private void Update() //checking if player is inside cube
@@ -57,8 +57,8 @@ public class LevelExitCube : MonoBehaviour
         //items
         saveManager.SaveItems(inventory.inventory);
 
-        //dialogue diary
-        saveManager.SaveDialogueDiary(dialogueDiary.dialogueDiary);
+        //journal
+        saveManager.SaveJournal(journal.notesJournal ,journal.dialoguesJournal);
 
         //everything to file
         saveManager.SaveProgressToFile();

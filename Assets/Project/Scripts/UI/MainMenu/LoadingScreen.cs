@@ -24,7 +24,8 @@ public class LoadingScreen : MonoBehaviour
     private void Update()
     {
         //There we need to check if mediapipeProcess is loaded
-        if(!String.IsNullOrWhiteSpace(receive.data)) SceneManager.LoadScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
+        if(!String.IsNullOrWhiteSpace(receive.data))
+            FindObjectOfType<FadeInFadeOut>().ChangeScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
     }
 
     IEnumerator Pulls()
