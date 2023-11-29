@@ -65,7 +65,7 @@ public class Journal : MonoBehaviour
     private float keyTimeDelayer = 0;
     private float dialogueScrollSpeed;
 
-    /*
+
     private void Start()
     {
         dialoguesJournal.Add("1", new List<List<string>> { new List<string> { null, "tekscik taki o" }});
@@ -145,7 +145,7 @@ public class Journal : MonoBehaviour
         notesJournal.Add( "Name17", "text of note" );
         notesJournal.Add( "Name18", "text of note" );
     }
-    */
+
 
     void Update()
     {
@@ -364,21 +364,26 @@ public class Journal : MonoBehaviour
 
         if (!atNamesList && journalOpened)
         {
+
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 closeSound.Play();
                 DisplayNamesBack();
             }
 
-            if (Input.GetKey(KeyCode.W))
+            if (Input.GetKey(KeyCode.W) && dialogueLinesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition < 1)
             {
-                dialogueScrollSpeed = 1000 * Time.unscaledDeltaTime / (dialogueLinesScrollView.GetComponent<ScrollRect>().content.sizeDelta.y - dialogueLinesScrollView.GetComponent<RectTransform>().sizeDelta.y);
+                dialogueScrollSpeed = 1000 * Time.unscaledDeltaTime / 
+                    (dialogueLinesScrollView.GetComponent<ScrollRect>().content.sizeDelta.y 
+                    - dialogueLinesScrollView.GetComponent<RectTransform>().sizeDelta.y);
                 dialogueLinesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += dialogueScrollSpeed;
             }   
 
-            if (Input.GetKey(KeyCode.S))
+            if (Input.GetKey(KeyCode.S) && dialogueLinesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition > 0)
             {
-                dialogueScrollSpeed = 1000 * Time.unscaledDeltaTime / (dialogueLinesScrollView.GetComponent<ScrollRect>().content.sizeDelta.y - dialogueLinesScrollView.GetComponent<RectTransform>().sizeDelta.y);
+                dialogueScrollSpeed = 1000 * Time.unscaledDeltaTime / 
+                    (dialogueLinesScrollView.GetComponent<ScrollRect>().content.sizeDelta.y 
+                    - dialogueLinesScrollView.GetComponent<RectTransform>().sizeDelta.y);
                 dialogueLinesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -dialogueScrollSpeed;
             }
         }
