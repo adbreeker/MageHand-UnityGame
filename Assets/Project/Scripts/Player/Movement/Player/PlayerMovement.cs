@@ -34,13 +34,17 @@ public class PlayerMovement : MonoBehaviour
     private AudioSource stepStone2;
     //private float stepTiming = 0;
 
+    private void Awake()
+    {
+        currentTilePos = transform.position;
+    }
+
     void Start()
     {       
         stepStone1 = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_StepStone1);
         stepStone1.panStereo = -0.07f;
         stepStone2 = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_StepStone2);
         stepStone2.panStereo = 0.07f;
-        currentTilePos = transform.position;
     }
 
     void Update() //listen to movement inputs
@@ -55,6 +59,8 @@ public class PlayerMovement : MonoBehaviour
     {
         float horizontalInput = horizontalInputQueue;
         float verticalInput = verticalInputQueue;
+
+        
 
         //check if no movement is enqueued
         if (horizontalInputQueue == 0 && verticalInputQueue ==0 && !MovementInterfering())
@@ -265,5 +271,4 @@ public class PlayerMovement : MonoBehaviour
 
         currentTilePos = transform.position;
     }
-
 }
