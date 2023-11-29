@@ -43,6 +43,6 @@ public class TutorialEndingPickUp : MonoBehaviour
         _saveManager.SaveGameState(_nextLevel, PlayerParams.Controllers.plotPointsManager.plotPoints);
         _saveManager.SaveProgressToFile();
 
-        SceneManager.LoadScene(_nextLevel);
+        FindObjectOfType<FadeInFadeOut>().ChangeScene(_nextLevel);
     }
 }

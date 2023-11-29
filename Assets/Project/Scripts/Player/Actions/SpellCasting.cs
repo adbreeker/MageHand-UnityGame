@@ -71,7 +71,7 @@ public class SpellCasting : MonoBehaviour
         }
     }
 
-    public void PickUpSpell() //casting pick up spell
+    public IEnumerator PickUpSpell() //casting pick up spell
     {
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Pick Up");
         if(scroll != null)
@@ -81,7 +81,13 @@ public class SpellCasting : MonoBehaviour
             Collider[] nearItems = Physics.OverlapSphere(castPos, 3.0f, LayerMask.GetMask("Item"));
             if(nearItems.Length > 0)
             {
-                PlayerParams.Controllers.handInteractions.AddToHand(nearItems[0].gameObject);
+                PlayerParams.Controllers.handInteractions.AddToHand(nearItems[0].gameObject, false);
+                while (nearItems[0].transform.position != PlayerParams.Controllers.handInteractions.holdingPoint.position)
+                {
+                    nearItems[0].transform.position = Vector3.MoveTowards(nearItems[0].transform.position, PlayerParams.Controllers.handInteractions.holdingPoint.position, 7.0f * Time.fixedDeltaTime);
+                    yield return new WaitForFixedUpdate();
+                }
+                PlayerParams.Controllers.handInteractions.AddToHand(nearItems[0].gameObject, true);
             }
             mana -= scroll.manaCost;
         }
@@ -212,7 +218,7 @@ public class SpellCasting : MonoBehaviour
             castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_SpellPickUpActivation);
             castingFinishedSound.Play();
             Destroy(castingFinishedSound, castingFinishedSound.clip.length);
-            PickUpSpell();
+            StartCoroutine(PickUpSpell());
         }
         else if(NormalizeTranscribedText(spellWhispered) == "fire")
         {
