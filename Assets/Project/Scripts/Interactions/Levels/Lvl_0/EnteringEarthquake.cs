@@ -44,12 +44,12 @@ public class EnteringEarthquake : MonoBehaviour
 
             _enteringLight.range -= lightRemovingStep;
 
-            if((i+1)%20 == 0)
+            if((i+1)%10 == 0)
             {
                 Vector3 fallingPos = new Vector3(
-                    _baseFallingPosition.x + Random.Range(-1.5f, 1.5f),
+                    _baseFallingPosition.x + Random.Range(-1.9f, 1.9f),
                     _baseFallingPosition.y,
-                    _baseFallingPosition.z + Random.Range(-1.5f, 1.5f));
+                    _baseFallingPosition.z + Random.Range(-4.0f, 5.5f));
                 Instantiate(_fallingRock, fallingPos, Random.rotation);
             }
 
