@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 3067802443841232320}
   - component: {fileID: 3067802443841232447}
   - component: {fileID: 3067802443841232446}
+  - component: {fileID: 3871115017098165434}
   m_Layer: 5
   m_Name: HUD
   m_TagString: Untagged
@@ -208,6 +209,27 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &3871115017098165434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3067802443841232445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46c4fa46ecd3ce54da85efe0bbd385de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuPrefab: {fileID: 5456896378254272011, guid: d841ec79da37da24b92b49a8fe72eda9, type: 3}
+  resetMenuPrefab: {fileID: 6236865643641680914, guid: 63ad547cd1373ce4aaa6e5cd3854add9, type: 3}
+  settingsMenuPrefab: {fileID: 361958599663213053, guid: fa1302617d5ceb146a9c77687d496c63, type: 3}
+  controlsMenuPrefab: {fileID: 5396804530760133275, guid: f1ebc6ddfede590469e3af3b43cbd704, type: 3}
+  gesturesMenuPrefab: {fileID: 1080270870217481088, guid: bad47cfa6dbf4984da605107254c845b, type: 3}
+  quitToMenuMenuPrefab: {fileID: 5767043202872973856, guid: 4ed065d8845456b459b71e3f3eb4fcb2, type: 3}
+  quitGameMenuPrefab: {fileID: 6650014217863840498, guid: b2177b3a07547fc498f7b7e178e1746b, type: 3}
+  ableToInteract: 1
+  menuOpened: 0
 --- !u!1 &4383706096908192335
 GameObject:
   m_ObjectHideFlags: 0
