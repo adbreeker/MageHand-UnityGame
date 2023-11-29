@@ -10,6 +10,7 @@ public class SpellScrollsHolder : MonoBehaviour
     public GameObject scrollOfFire;
     public GameObject scrollOfMarkAndReturn;
     public GameObject scrollOfPickUp;
+    public GameObject scrollOfBreakIn;
 
     public SpellScrollInfo GiveScroll(string spellName) //returning requested scroll
     {
@@ -30,6 +31,11 @@ public class SpellScrollsHolder : MonoBehaviour
             return scrollOfPickUp.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
         }
 
+        if((spellName == "Break In"))
+        {
+            return scrollOfBreakIn.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
+        }
+
         return null;
     }
 
@@ -40,6 +46,7 @@ public class SpellScrollsHolder : MonoBehaviour
         allScrolls.Add(scrollOfFire.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
         allScrolls.Add(scrollOfMarkAndReturn.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
         allScrolls.Add(scrollOfPickUp.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
+        allScrolls.Add(scrollOfBreakIn.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
 
         return allScrolls;
     }

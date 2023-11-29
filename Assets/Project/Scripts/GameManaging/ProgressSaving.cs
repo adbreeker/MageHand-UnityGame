@@ -42,6 +42,10 @@ public class ProgressSaving : MonoBehaviour
 
     void ManageLoadedData() //managing loaded data
     {
+        //loading game state
+        PlotPointsManager plotPointsManager = FindObjectOfType<PlotPointsManager>();
+        plotPointsManager.plotPoints = saveData.gameStateSave.plotPoints;
+
         //loading inventory
         Inventory inventory = FindObjectOfType<Inventory>();
         foreach(string itemInData in saveData.itemsSave.items)
@@ -89,9 +93,10 @@ public class ProgressSaving : MonoBehaviour
             Debug.Log("Directory status: " + Directory.Exists(Path.Combine(Application.persistentDataPath, "Saves")));
         }
     }
-    public void SaveGameState(string currentLvl)
+    public void SaveGameState(string currentLvl, float plotPoints)
     {
         saveData.gameStateSave.currentLvl = currentLvl;
+        saveData.gameStateSave.plotPoints = plotPoints;
     }
 
     public void SaveItems(List<GameObject> itemsToSave) //saving all "itemsToSave"
@@ -231,7 +236,8 @@ public class ProgressSaving : MonoBehaviour
         [System.Serializable]
         public class GameStateSave //for saving current level
         {
-            public string currentLvl = "Level_1_Chapter_1";
+            public string currentLvl = "Level_0_Tutorial";
+            public float plotPoints = 0.0f;
         }
 
         [System.Serializable]

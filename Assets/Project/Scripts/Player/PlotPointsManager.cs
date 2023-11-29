@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PointsManager : MonoBehaviour
+public class PlotPointsManager : MonoBehaviour
 {
-    public float points = 0;
+    public float plotPoints = 0;
 }

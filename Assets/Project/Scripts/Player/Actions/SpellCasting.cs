@@ -71,7 +71,7 @@ public class SpellCasting : MonoBehaviour
         }
     }
 
-    public void PickUpSpell()
+    public void PickUpSpell() //casting pick up spell
     {
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Pick Up");
         if(scroll != null)
@@ -133,6 +133,24 @@ public class SpellCasting : MonoBehaviour
                 magicMark.GetComponent<MarkAndReturnSpellBehavior>().TeleportationPerformed();
                 mana -= scroll.manaCost;
             }
+        }
+    }
+
+    public void BreakInSpell() //casting break in spell - occurs in tutorial only
+    {
+        SpellScrollInfo scroll = spellbook.GetSpellInfo("Break In");
+        if (scroll != null)
+        {
+            Vector3 castPos = PlayerParams.Objects.player.transform.position;
+            Collider[] nearObjects = Physics.OverlapSphere(castPos, 2.0f, LayerMask.GetMask("Default"));
+            foreach(Collider potentialLock in nearObjects) 
+            {
+                if(potentialLock.tag == "Lock")
+                {
+                    potentialLock.GetComponent<OpenLockedDoorsPassage>().OpenDoors();
+                }
+            }
+            mana -= scroll.manaCost;
         }
     }
 
@@ -216,6 +234,13 @@ public class SpellCasting : MonoBehaviour
             castingFinishedSound.Play();
             Destroy(castingFinishedSound, castingFinishedSound.clip.length);
             ReturnSpell();
+        }
+        else if (NormalizeTranscribedText(spellWhispered) == "breakin")
+        {
+            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
+            castingFinishedSound.Play();
+            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
+            BreakInSpell();
         }
         else
         {
