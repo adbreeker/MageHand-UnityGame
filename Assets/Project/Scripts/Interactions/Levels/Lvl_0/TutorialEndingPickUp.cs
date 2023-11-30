@@ -56,8 +56,8 @@ public class TutorialEndingPickUp : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         Instantiate(_flashbangEffect, _hud);
         yield return new WaitForSeconds(1f);
-        hitSound.Play();
-        yield return new WaitForSeconds(hitSound.clip.length);
+        //hitSound.Play();
+        //yield return new WaitForSeconds(hitSound.clip.length);
 
         RawImage blackoutImage = Instantiate(_flashbangEffect, _hud).GetComponent<RawImage>();
         float alpha = 0;
