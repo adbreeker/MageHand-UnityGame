@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class TutorialEndingPickUp : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class TutorialEndingPickUp : MonoBehaviour
 
     ProgressSaving _saveManager;
     string _nextLevel = "Level_1_Chapter_1";
+    AudioSource hitSound;
+    AudioSource fallingSound;
 
     private void Start()
     {
@@ -26,7 +29,22 @@ public class TutorialEndingPickUp : MonoBehaviour
         {
             if (PlayerParams.Controllers.handInteractions.inHand == _gobletInTreasury)
             {
-                _isEndingOnGoing=true;
+                PlayerParams.Controllers.inventory.CloseInventory();
+                PlayerParams.Controllers.spellbook.CloseSpellbook();
+                PlayerParams.Controllers.pauseMenu.CloseMenu();
+                PlayerParams.Controllers.journal.CloseJournal();
+
+                PlayerParams.Controllers.inventory.ableToInteract = false;
+                PlayerParams.Controllers.spellbook.ableToInteract = false;
+                PlayerParams.Controllers.pauseMenu.ableToInteract = false;
+                PlayerParams.Controllers.journal.ableToInteract = false;
+                PlayerParams.Variables.uiActive = true;
+                PlayerParams.Objects.hand.SetActive(false);
+
+                hitSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Punch);
+                fallingSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_BodyFall);
+
+                _isEndingOnGoing =true;
                 StartCoroutine(TutorialEnding());
             }
         }
@@ -35,10 +53,23 @@ public class TutorialEndingPickUp : MonoBehaviour
     IEnumerator TutorialEnding()
     {
         _lightInTreasury.OnImpact();
-        yield return new WaitForSeconds(0.15f);
-
+        yield return new WaitForSeconds(0.3f);
         Instantiate(_flashbangEffect, _hud);
         yield return new WaitForSeconds(1f);
+        hitSound.Play();
+        yield return new WaitForSeconds(hitSound.clip.length);
+
+        RawImage blackoutImage = Instantiate(_flashbangEffect, _hud).GetComponent<RawImage>();
+        float alpha = 0;
+        while (alpha < 1)
+        {
+            alpha += 0.05f;
+            blackoutImage.color = new Color(0, 0, 0, alpha);
+            yield return new WaitForSeconds(0);
+        }
+
+        fallingSound.Play();
+        yield return new WaitForSeconds(fallingSound.clip.length + 0.5f);
 
         _saveManager.SaveGameState(_nextLevel, PlayerParams.Controllers.plotPointsManager.plotPoints);
         _saveManager.SaveProgressToFile();

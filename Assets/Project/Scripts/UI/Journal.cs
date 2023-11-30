@@ -65,7 +65,7 @@ public class Journal : MonoBehaviour
     private float keyTimeDelayer = 0;
     private float dialogueScrollSpeed;
 
-
+    /*
     private void Start()
     {
         dialoguesJournal.Add("1", new List<List<string>> { new List<string> { null, "tekscik taki o" }});
@@ -145,7 +145,7 @@ public class Journal : MonoBehaviour
         notesJournal.Add( "Name17", "text of note" );
         notesJournal.Add( "Name18", "text of note" );
     }
-
+    */
 
     void Update()
     {

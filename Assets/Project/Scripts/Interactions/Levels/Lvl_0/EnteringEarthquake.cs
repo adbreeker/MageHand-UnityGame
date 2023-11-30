@@ -10,12 +10,14 @@ public class EnteringEarthquake : MonoBehaviour
     [SerializeField] Vector3 _baseFallingPosition;
 
     Vector3 _firstTilePos;
+    AudioSource earthquakeSound;
 
     void Start()
     {
         PlayerParams.Controllers.playerMovement.stopMovement = true;
         _firstTilePos = PlayerParams.Objects.player.transform.position;
         PlayerParams.Objects.player.transform.position = _enteringPosition;
+        earthquakeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Earthquake);
 
         StartCoroutine(EarthquakeSimulation());
     }
@@ -30,10 +32,12 @@ public class EnteringEarthquake : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
+        earthquakeSound.Play();
+        Destroy(earthquakeSound, earthquakeSound.clip.length);
         yield return new WaitForSeconds(0.3f);
 
         float lightRemovingStep = _enteringLight.range / 100.0f;
-        for(int i = 0; i<150; i++)
+        for(int i = 0; i<200; i++)
         {
             PlayerParams.Objects.playerCamera.transform.localPosition = Vector3.MoveTowards(
                 PlayerParams.Objects.playerCamera.transform.localPosition,
