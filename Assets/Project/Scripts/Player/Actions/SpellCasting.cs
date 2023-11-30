@@ -42,6 +42,8 @@ public class SpellCasting : MonoBehaviour
     private MicrophoneRecord microphoneRecord;
     private WhisperManager whisper;
 
+    private bool isTranscribing = false;
+
     private void Start()
     {
         PlayerParams.Variables.startingManaRegen = manaRegen;
@@ -65,9 +67,19 @@ public class SpellCasting : MonoBehaviour
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Light");
         if(scroll != null)
         {
+            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
+            castingFinishedSound.Play();
+            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
+
             currentSpell = "Light";
             PlayerParams.Controllers.handInteractions.inHand = Instantiate(lightPrefab, hand);
             mana -= scroll.manaCost;
+        }
+        else
+        {
+            castingFailSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
+            castingFailSound.Play();
+            Destroy(castingFailSound, castingFailSound.clip.length);
         }
     }
 
@@ -76,6 +88,10 @@ public class SpellCasting : MonoBehaviour
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Pick Up");
         if(scroll != null)
         {
+            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_SpellPickUpActivation);
+            castingFinishedSound.Play();
+            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
+
             Vector3 castPos = PlayerParams.Objects.player.transform.position;
             castPos.y = PlayerParams.Objects.player.transform.position.y - 1.0f;
             Collider[] nearItems = Physics.OverlapSphere(castPos, 3.0f, LayerMask.GetMask("Item"));
@@ -90,6 +106,12 @@ public class SpellCasting : MonoBehaviour
                 PlayerParams.Controllers.handInteractions.AddToHand(nearItems[0].gameObject, true);
             }
             mana -= scroll.manaCost;
+        }
+        else
+        {
+            castingFailSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
+            castingFailSound.Play();
+            Destroy(castingFailSound, castingFailSound.clip.length);
         }
     }
 
@@ -147,6 +169,10 @@ public class SpellCasting : MonoBehaviour
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Break In");
         if (scroll != null)
         {
+            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
+            castingFinishedSound.Play();
+            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
+
             Vector3 castPos = PlayerParams.Objects.player.transform.position;
             Collider[] nearObjects = Physics.OverlapSphere(castPos, 2.0f, LayerMask.GetMask("Default"));
             foreach(Collider potentialLock in nearObjects) 
@@ -157,6 +183,13 @@ public class SpellCasting : MonoBehaviour
                 }
             }
             mana -= scroll.manaCost;
+        }
+        else
+        {
+            //Later there will be an easter egg
+            castingFailSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
+            castingFailSound.Play();
+            Destroy(castingFailSound, castingFailSound.clip.length);
         }
     }
 
@@ -177,7 +210,7 @@ public class SpellCasting : MonoBehaviour
     {
         if(spellbook.spells.Count > 0)
         {
-            if (!microphoneRecord.IsRecording)
+            if (!microphoneRecord.IsRecording && !isTranscribing)
             {
                 GameObject popUp = Instantiate(popUpPrefab, new Vector3(0, 0, 0), Quaternion.identity);
                 popUp.GetComponent<PopUp>().ActivatePopUp("", "Cast a Spell.", timeToFadeOutPopUp, timeOfFadingOutPopUp);
@@ -193,6 +226,8 @@ public class SpellCasting : MonoBehaviour
 
     private async void Transcribe(float[] data, int frequency, int channels, float length) //transcribing speach to text
     {
+        isTranscribing = true;
+
         var res = await whisper.GetTextAsync(data, frequency, channels);
 
         if (res == null)
@@ -202,50 +237,33 @@ public class SpellCasting : MonoBehaviour
         Debug.Log(NormalizeTranscribedText(spellWhispered));
 
         GameObject popUp = Instantiate(popUpPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        popUp.GetComponent<PopUp>().ActivatePopUp("", "Detected word:<br>" + NormalizeTranscribedText(spellWhispered), timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
+        popUp.GetComponent<PopUp>().ActivatePopUp("", "Casting word:<br>" + NormalizeTranscribedTextToDisplay(spellWhispered), timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
 
         Destroy(castingSound);
+        isTranscribing = false;
 
         if (NormalizeTranscribedText(spellWhispered) == "light")
         {
-            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
-            castingFinishedSound.Play();
-            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
             LightSpell();
         }
         else if (NormalizeTranscribedText(spellWhispered) == "pickup")
         {
-            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_SpellPickUpActivation);
-            castingFinishedSound.Play();
-            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
             StartCoroutine(PickUpSpell());
         }
         else if(NormalizeTranscribedText(spellWhispered) == "fire")
         {
-            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
-            castingFinishedSound.Play();
-            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
             FireSpell();
         }
         else if(NormalizeTranscribedText(spellWhispered) == "mark")
         {
-            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
-            castingFinishedSound.Play();
-            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
             MarkSpell();
         }
         else if (NormalizeTranscribedText(spellWhispered) == "return")
         {
-            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
-            castingFinishedSound.Play();
-            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
             ReturnSpell();
         }
         else if (NormalizeTranscribedText(spellWhispered) == "breakin")
         {
-            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
-            castingFinishedSound.Play();
-            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
             BreakInSpell();
         }
         else
@@ -266,4 +284,15 @@ public class SpellCasting : MonoBehaviour
         return normalized;
     }
 
+
+    static string NormalizeTranscribedTextToDisplay(string input)
+    {
+        // Remove punctuation and convert to lowercase
+        string cleanedString = new string(input
+            .Where(c => !char.IsPunctuation(c))
+            .ToArray())
+            .ToLower();
+
+        return cleanedString;
+    }
 }
