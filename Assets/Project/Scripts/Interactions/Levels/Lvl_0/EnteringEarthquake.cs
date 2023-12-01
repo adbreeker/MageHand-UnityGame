@@ -8,6 +8,7 @@ public class EnteringEarthquake : MonoBehaviour
     [SerializeField] Vector3 _enteringPosition;
     [SerializeField] GameObject _fallingRock;
     [SerializeField] Vector3 _baseFallingPosition;
+    [SerializeField] GameObject _firstTutorial;
 
     Vector3 _firstTilePos;
     AudioSource earthquakeSound;
@@ -62,6 +63,11 @@ public class EnteringEarthquake : MonoBehaviour
         Destroy(_enteringLight.gameObject);
         PlayerParams.Objects.playerCamera.transform.localPosition = cameraStartPos;
         PlayerParams.Objects.player.transform.rotation = Quaternion.identity;
+
+        yield return new WaitForSeconds(0.5f);
+        _firstTutorial.SetActive(true);
+
+        yield return new WaitForSeconds(0.1f);
         PlayerParams.Controllers.playerMovement.stopMovement = false;
     }
 }

@@ -23,7 +23,7 @@ public class HUD : MonoBehaviour
         if (!PlayerParams.Variables.uiActive || PlayerParams.Controllers.inventory.inventoryOpened)
         {
             ununnormalizedGestureText = GameObject.FindGameObjectWithTag("MainCamera").transform.Find("Hand").GetComponent<MoveHandPoints>().gesture;
-            if (ununnormalizedGestureText == "Pointing_Up") gestureText.text = "Click";
+            if (ununnormalizedGestureText == "Pointing_Up") gestureText.text = "Interact";
             else if (ununnormalizedGestureText == "Closed_Fist") gestureText.text = "Grab";
             else if (ununnormalizedGestureText == "Thumb_Up") gestureText.text = "Throw";
             else if (ununnormalizedGestureText == "Victory") gestureText.text = "Cast";
