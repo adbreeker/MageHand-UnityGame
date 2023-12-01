@@ -212,8 +212,7 @@ public class SpellCasting : MonoBehaviour
         {
             if (!microphoneRecord.IsRecording && !isTranscribing)
             {
-                GameObject popUp = Instantiate(popUpPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-                popUp.GetComponent<PopUp>().ActivatePopUp("", "Cast a Spell.", timeToFadeOutPopUp, timeOfFadingOutPopUp);
+                FindObjectOfType<HUD>().SpawnPopUp("", "Cast a Spell.", timeToFadeOutPopUp, timeOfFadingOutPopUp);
 
                 castingSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpell);
                 castingSound.Play();
@@ -236,8 +235,7 @@ public class SpellCasting : MonoBehaviour
         var spellWhispered = res.Result;
         Debug.Log(NormalizeTranscribedText(spellWhispered));
 
-        GameObject popUp = Instantiate(popUpPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        popUp.GetComponent<PopUp>().ActivatePopUp("", "Casting word:<br>" + NormalizeTranscribedTextToDisplay(spellWhispered), timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
+        FindObjectOfType<HUD>().SpawnPopUp("", "Casting word:<br>" + NormalizeTranscribedTextToDisplay(spellWhispered), timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
 
         Destroy(castingSound);
         isTranscribing = false;
