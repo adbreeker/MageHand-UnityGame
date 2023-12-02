@@ -112,7 +112,7 @@ public class GameSettings : MonoBehaviour
             if (fullscreen)
             {
                 Cursor.lockState = CursorLockMode.Confined;
-                Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, fullscreen);
+                Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
             }
             else Cursor.lockState = CursorLockMode.None;
         }

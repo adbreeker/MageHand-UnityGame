@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnteringEarthquake : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class EnteringEarthquake : MonoBehaviour
 
     Vector3 _firstTilePos;
     AudioSource earthquakeSound;
+    ProgressSaving progressSaving;
 
     void Start()
     {
@@ -19,6 +21,10 @@ public class EnteringEarthquake : MonoBehaviour
         _firstTilePos = PlayerParams.Objects.player.transform.position;
         PlayerParams.Objects.player.transform.position = _enteringPosition;
         earthquakeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Earthquake);
+
+        progressSaving = FindObjectOfType<ProgressSaving>();
+        progressSaving.SaveGameState(SceneManager.GetActiveScene().name, 0f);
+        progressSaving.SaveProgressToFile();
 
         StartCoroutine(EarthquakeSimulation());
     }
