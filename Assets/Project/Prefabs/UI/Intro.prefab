@@ -106,8 +106,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 385, y: -350}
-  m_SizeDelta: {x: 531.1914, y: 207.941}
+  m_AnchoredPosition: {x: 385, y: -308}
+  m_SizeDelta: {x: 531.1914, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9030789952365342152
 CanvasRenderer:
@@ -137,10 +137,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Placeholder text. Placeholder text. Placeholder text. Placeholder text.
-    Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder
-    text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.
-    Placeholder text.
+  m_text: You managed to find a secret passage, an entrance to a tunnel hidden in
+    the forest near the tower. You expected traps, so you tried to take each step
+    as carefully as possible.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb218ab571150b84c88ce3da9f3be483, type: 2}
   m_sharedMaterial: {fileID: 611106172734456367, guid: bb218ab571150b84c88ce3da9f3be483, type: 2}
@@ -175,7 +174,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -221,7 +220,7 @@ GameObject:
   - component: {fileID: 5878457835605516867}
   - component: {fileID: 8594935329048178988}
   m_Layer: 5
-  m_Name: Black
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -315,8 +314,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 4}
-  m_SizeDelta: {x: 482, y: 8}
+  m_AnchoredPosition: {x: -0.0000027418, y: 4}
+  m_SizeDelta: {x: 466, y: 8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7192079391310023260
 CanvasRenderer:
@@ -501,7 +500,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9181198801198745628}
   - component: {fileID: 7867850357899773895}
-  - component: {fileID: 3319868738698348465}
   m_Layer: 5
   m_Name: SingleBlackFrame/Mid
   m_TagString: Untagged
@@ -527,8 +525,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 34}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 568.7756, y: 24}
+  m_AnchoredPosition: {x: -0.0244, y: -0.0166}
+  m_SizeDelta: {x: 563.2656, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7867850357899773895
 CanvasRenderer:
@@ -538,33 +536,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1126169460608181474}
   m_CullTransparentMesh: 1
---- !u!114 &3319868738698348465
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1126169460608181474}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Texture: {fileID: 0}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
 --- !u!1 &1159361091901953002
 GameObject:
   m_ObjectHideFlags: 0
@@ -688,7 +659,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3406519433940494811}
   - component: {fileID: 6939906936802214182}
-  - component: {fileID: 7105731260058021719}
   m_Layer: 5
   m_Name: SingleBlackFrame/Bottom
   m_TagString: Untagged
@@ -714,8 +684,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 34}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 156}
-  m_SizeDelta: {x: 568.7756, y: 24}
+  m_AnchoredPosition: {x: 0.8712, y: 156.5876}
+  m_SizeDelta: {x: 563.3048, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6939906936802214182
 CanvasRenderer:
@@ -725,33 +695,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1198964214178595128}
   m_CullTransparentMesh: 1
---- !u!114 &7105731260058021719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1198964214178595128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Texture: {fileID: 0}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
 --- !u!1 &1342645138181859298
 GameObject:
   m_ObjectHideFlags: 0
@@ -786,8 +729,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -385, y: -350}
-  m_SizeDelta: {x: 531.1914, y: 207.941}
+  m_AnchoredPosition: {x: -385, y: -308}
+  m_SizeDelta: {x: 531.1914, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2442259749601679012
 CanvasRenderer:
@@ -817,10 +760,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Placeholder text. Placeholder text. Placeholder text. Placeholder text.
-    Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder
-    text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.
-    Placeholder text.
+  m_text: While sneaking underground, you accidentally stepped on a pressure plate,
+    which caused everything to start falling apart. You managed to escape, but you
+    know that you don't have much time before the mages realize what happened, so
+    you want to get to the chalice and escape from there as quickly as possible.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb218ab571150b84c88ce3da9f3be483, type: 2}
   m_sharedMaterial: {fileID: 611106172734456367, guid: bb218ab571150b84c88ce3da9f3be483, type: 2}
@@ -855,7 +798,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1449,8 +1392,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -385, y: 0}
-  m_SizeDelta: {x: 531.1914, y: 207.941}
+  m_AnchoredPosition: {x: -385, y: 16}
+  m_SizeDelta: {x: 531.1914, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5405009309249108364
 CanvasRenderer:
@@ -1480,10 +1423,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Placeholder text. Placeholder text. Placeholder text. Placeholder text.
-    Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder
-    text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.
-    Placeholder text.
+  m_text: The members of the Mage Hand circle are based in a monumental tower in
+    the middle of nowhere. When you got there, you started looking for a way to get
+    inside unnoticed.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb218ab571150b84c88ce3da9f3be483, type: 2}
   m_sharedMaterial: {fileID: 611106172734456367, guid: bb218ab571150b84c88ce3da9f3be483, type: 2}
@@ -1518,7 +1460,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1562,9 +1504,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3655336317463714921}
   - component: {fileID: 7418874596658706469}
-  - component: {fileID: 7471752723752420872}
-  - component: {fileID: 2290495609725432346}
   - component: {fileID: 3286085347269882038}
+  - component: {fileID: 8214099266468459740}
   m_Layer: 5
   m_Name: Comic
   m_TagString: Untagged
@@ -1601,48 +1542,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3866433768942078233}
   m_CullTransparentMesh: 1
---- !u!114 &7471752723752420872
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3866433768942078233}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Texture: {fileID: 0}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
---- !u!114 &2290495609725432346
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3866433768942078233}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.27058825, g: 0.27058825, b: 0.27058825, a: 1}
-  m_EffectDistance: {x: 8, y: 8}
-  m_UseGraphicAlpha: 1
 --- !u!225 &3286085347269882038
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1655,6 +1554,33 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &8214099266468459740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3866433768942078233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 0}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
 --- !u!1 &4124350565596893556
 GameObject:
   m_ObjectHideFlags: 0
@@ -1968,8 +1894,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 385, y: 0}
-  m_SizeDelta: {x: 531.1914, y: 207.941}
+  m_AnchoredPosition: {x: 385, y: 16}
+  m_SizeDelta: {x: 531.1914, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3228294268969848796
 CanvasRenderer:
@@ -1999,10 +1925,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Placeholder text. Placeholder text. Placeholder text. Placeholder text.
-    Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder
-    text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.
-    Placeholder text.
+  m_text: By coincidence, you knew that the chalice was in the possession of mages
+    from the Mage Hand circle. You contacted the baron to discuss the details of
+    the contract and set off on your journey.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb218ab571150b84c88ce3da9f3be483, type: 2}
   m_sharedMaterial: {fileID: 611106172734456367, guid: bb218ab571150b84c88ce3da9f3be483, type: 2}
@@ -2037,7 +1962,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -2194,10 +2119,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3861427186661687409}
   - component: {fileID: 8393123030964034066}
-  - component: {fileID: 1227514129377139136}
-  - component: {fileID: 8104133868948552838}
   m_Layer: 5
-  m_Name: FrameBlack
+  m_Name: Pictures
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2236,48 +2159,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4652211187381564580}
   m_CullTransparentMesh: 1
---- !u!114 &1227514129377139136
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4652211187381564580}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Texture: {fileID: 0}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
---- !u!114 &8104133868948552838
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4652211187381564580}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 1, g: 1, b: 1, a: 0}
-  m_EffectDistance: {x: 8, y: 8}
-  m_UseGraphicAlpha: 1
 --- !u!1 &4762927764658085004
 GameObject:
   m_ObjectHideFlags: 0
@@ -2506,8 +2387,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 385, y: 350}
-  m_SizeDelta: {x: 531.1914, y: 207.941}
+  m_AnchoredPosition: {x: 385, y: 340}
+  m_SizeDelta: {x: 531.1914, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2695142795703639646
 CanvasRenderer:
@@ -2537,10 +2418,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Placeholder text. Placeholder text. Placeholder text. Placeholder text.
-    Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder
-    text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.
-    Placeholder text.
+  m_text: In a world where magic is an art for the gifted, you are one of those who
+    sell it to those, that are gifted less. You are a wizard who makes a living by
+    performing magical contracts. You are traveling from city to city searching for
+    clients.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb218ab571150b84c88ce3da9f3be483, type: 2}
   m_sharedMaterial: {fileID: 611106172734456367, guid: bb218ab571150b84c88ce3da9f3be483, type: 2}
@@ -2575,7 +2456,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -2619,7 +2500,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7544070990467878286}
   - component: {fileID: 6637018726120020217}
-  - component: {fileID: 1607010404039841416}
   m_Layer: 5
   m_Name: SingleBlackFrame/Top
   m_TagString: Untagged
@@ -2645,8 +2525,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 34}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -156}
-  m_SizeDelta: {x: 568.7756, y: 24}
+  m_AnchoredPosition: {x: -0.8539, y: -156.576}
+  m_SizeDelta: {x: 563.1245, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6637018726120020217
 CanvasRenderer:
@@ -2656,33 +2536,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5845321636927469520}
   m_CullTransparentMesh: 1
---- !u!114 &1607010404039841416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5845321636927469520}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Texture: {fileID: 0}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
 --- !u!1 &6516358445073538096
 GameObject:
   m_ObjectHideFlags: 0
@@ -2790,7 +2643,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: -4}
-  m_SizeDelta: {x: 482, y: 8}
+  m_SizeDelta: {x: 466, y: 8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1662123936328723803
 CanvasRenderer:
@@ -3096,7 +2949,7 @@ GameObject:
   - component: {fileID: 8111691974967837041}
   - component: {fileID: 4692639113239087768}
   m_Layer: 5
-  m_Name: Black
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3353,7 +3206,7 @@ GameObject:
   - component: {fileID: 2390910212412768433}
   - component: {fileID: 1290039177840843386}
   m_Layer: 5
-  m_Name: Black
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3632,8 +3485,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -385, y: 350}
-  m_SizeDelta: {x: 531.1914, y: 207.941}
+  m_AnchoredPosition: {x: -385, y: 340}
+  m_SizeDelta: {x: 531.1914, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &37437216804300399
 CanvasRenderer:
@@ -3663,10 +3516,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Placeholder text. Placeholder text. Placeholder text. Placeholder text.
-    Placeholder text. Placeholder text. Placeholder text. Placeholder text. Placeholder
-    text. Placeholder text. Placeholder text. Placeholder text. Placeholder text.
-    Placeholder text.
+  m_text: A few days ago, you came across a well-paid contrat posted by Baron Galmungor.
+    It was about finding some magical artifact known as the Chalice of Taluna.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb218ab571150b84c88ce3da9f3be483, type: 2}
   m_sharedMaterial: {fileID: 611106172734456367, guid: bb218ab571150b84c88ce3da9f3be483, type: 2}
@@ -3701,7 +3552,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0

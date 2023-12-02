@@ -43,9 +43,11 @@ public class Intro : MonoBehaviour
         {
             alphaFrame += 0.01f;
             frame.alpha = alphaFrame;
+
             yield return new WaitForSeconds(0);
         }
-        yield return new WaitForSeconds(0);
+
+        yield return new WaitForSeconds(1);
 
 
         //Display all panels
@@ -58,17 +60,20 @@ public class Intro : MonoBehaviour
                 alpha += 0.0025f;
                 pics[i].color = new Color(1, 1, 1, alpha);
                 texts[i].alpha = alpha;
+
                 yield return new WaitForSeconds(0);
             }
-            yield return new WaitForSeconds(0);
+
+            yield return new WaitForSeconds(6);
         }
 
         //Display continue button
         float alphaContinue = 0;
         while (alphaContinue < 1)
         {
-            alphaContinue += 0.025f;
+            alphaContinue += 0.01f;
             continueButton.alpha = alphaContinue;
+
             yield return new WaitForSeconds(0);
         }
         animationEnded = true;
