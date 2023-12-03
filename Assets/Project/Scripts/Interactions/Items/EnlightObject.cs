@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class EnlightItem : MonoBehaviour //component added to object to enlight it
+public class EnlightObject : MonoBehaviour //component added to object to enlight it
 {
     [Header("Enlightening time")]
     public int enlightenTime = 10;
+
+    [Header("Material type")]
+    public MaterialHolder.Materials materialType;
 
     Material enlighten; //enlighten material
     Material[] previousMaterials; //before enlight materials
@@ -15,14 +18,7 @@ public class EnlightItem : MonoBehaviour //component added to object to enlight 
 
     void Start() //enlightening this mesh or first mesh in children
     {
-        if (gameObject.layer == LayerMask.NameToLayer("Item") || gameObject.layer == LayerMask.NameToLayer("UI"))
-        {
-            enlighten = FindObjectOfType<MaterialHolder>().enlightenItem;
-        }
-        if(gameObject.layer == LayerMask.NameToLayer("Switch") || gameObject.layer == LayerMask.NameToLayer("Chest"))
-        {
-            enlighten = FindObjectOfType<MaterialHolder>().enlightenInteraction;
-        }
+        enlighten = FindObjectOfType<MaterialHolder>().GetMaterial(materialType);
             
         if(this.GetComponent<MeshRenderer>() != null)
         {
