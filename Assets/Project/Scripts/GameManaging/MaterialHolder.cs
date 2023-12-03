@@ -6,5 +6,6 @@ public class MaterialHolder : MonoBehaviour
 {
     //holder for special materials
 
-    public Material enlightenObject; //material for pointed objects (enlightening them)
+    public Material enlightenItem; //material for pointed items (enlightening them)
+    public Material enlightenInteraction; //material for pointed interactions (enlightening them)
 }

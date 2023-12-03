@@ -15,7 +15,15 @@ public class EnlightItem : MonoBehaviour //component added to object to enlight 
 
     void Start() //enlightening this mesh or first mesh in children
     {
-        enlighten = FindObjectOfType<MaterialHolder>().enlightenObject;
+        if (gameObject.layer == LayerMask.NameToLayer("Item") || gameObject.layer == LayerMask.NameToLayer("UI"))
+        {
+            enlighten = FindObjectOfType<MaterialHolder>().enlightenItem;
+        }
+        if(gameObject.layer == LayerMask.NameToLayer("Switch") || gameObject.layer == LayerMask.NameToLayer("Chest"))
+        {
+            enlighten = FindObjectOfType<MaterialHolder>().enlightenInteraction;
+        }
+            
         if(this.GetComponent<MeshRenderer>() != null)
         {
             mr = this.GetComponent<MeshRenderer>();
