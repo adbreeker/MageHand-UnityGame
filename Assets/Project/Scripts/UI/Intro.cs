@@ -26,7 +26,8 @@ public class Intro : MonoBehaviour
 
     private void Update()
     {
-        if (animationEnded && Input.GetKeyDown(KeyCode.Space))
+        //if (animationEnded && Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             FindObjectOfType<FadeInFadeOut>().ChangeScene(nextLevel);
         }

@@ -7,8 +7,9 @@ using UnityEngine.SceneManagement;
 public class FadeInFadeOut : MonoBehaviour
 {
     public bool fadeInScene = true;
-    public float fadingSpeed = 0.05f;
     public GameObject blackoutPrefab;
+
+    private float fadingSpeed = 0.025f;
 
     void Start()
     {
