@@ -57,15 +57,27 @@ public class GetObjectsNearHand : MonoBehaviour
         if(pointingAt != PlayerParams.Controllers.handInteractions.inHand) //only if no object currently in hand
         {
             //if pointing on item, switch or UI then enlightening only this item
-            if (pointingAt.layer == LayerMask.NameToLayer("Item") || pointingAt.layer == LayerMask.NameToLayer("Switch") || pointingAt.layer == LayerMask.NameToLayer("UI"))
+            if (pointingAt.layer == LayerMask.NameToLayer("Item") || pointingAt.layer == LayerMask.NameToLayer("UI"))
             {
-                if (pointingAt.GetComponent<EnlightItem>() != null)
+                if (pointingAt.GetComponent<EnlightObject>() != null)
                 {
-                    pointingAt.GetComponent<EnlightItem>().enlightenTime = 10;
+                    pointingAt.GetComponent<EnlightObject>().enlightenTime = 10;
                 }
                 else
                 {
-                    pointingAt.AddComponent<EnlightItem>();
+                    pointingAt.AddComponent<EnlightObject>().materialType = MaterialHolder.Materials.enlightenItem;
+                }
+            }
+
+            if(pointingAt.layer == LayerMask.NameToLayer("Switch"))
+            {
+                if (pointingAt.GetComponent<EnlightObject>() != null)
+                {
+                    pointingAt.GetComponent<EnlightObject>().enlightenTime = 10;
+                }
+                else
+                {
+                    pointingAt.AddComponent<EnlightObject>().materialType = MaterialHolder.Materials.enlightenInteraction;
                 }
             }
 
@@ -76,13 +88,13 @@ public class GetObjectsNearHand : MonoBehaviour
                 {
                     if (child.gameObject.GetComponent<MeshRenderer>() != null)
                     {
-                        if (child.gameObject.GetComponent<EnlightItem>() != null)
+                        if (child.gameObject.GetComponent<EnlightObject>() != null)
                         {
-                            child.gameObject.GetComponent<EnlightItem>().enlightenTime = 10;
+                            child.gameObject.GetComponent<EnlightObject>().enlightenTime = 10;
                         }
                         else
                         {
-                            child.gameObject.AddComponent<EnlightItem>();
+                            child.gameObject.AddComponent<EnlightObject>().materialType = MaterialHolder.Materials.enlightenInteraction;
                         }
                     }
                 }

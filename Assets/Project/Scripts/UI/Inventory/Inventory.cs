@@ -229,7 +229,7 @@ public class Inventory : MonoBehaviour
             for (int i = 0; i < itemIconActiveInstances.Count; i++)
             {
                 //Change background of pointed item to white (255, 255, 255)
-                if (itemIconActiveInstances[i].transform.Find("Icon").GetComponent<EnlightItem>() != null)
+                if (itemIconActiveInstances[i].transform.Find("Icon").GetComponent<EnlightObject>() != null)
                 {
                     itemIconActiveInstances[i].transform.parent.GetComponent<RawImage>().color = new Color(1f, 1f, 1f);
                     //itemIconActiveInstances[i].transform.parent.transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);

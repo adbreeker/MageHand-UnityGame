@@ -4,7 +4,26 @@ using UnityEngine;
 
 public class MaterialHolder : MonoBehaviour
 {
-    //holder for special materials
+    public enum Materials
+    {
+        enlightenItem,
+        enlightenInteraction
+    }
 
-    public Material enlightenObject; //material for pointed objects (enlightening them)
+    public Material enlightenItem; //material for pointed items (enlightening them)
+    public Material enlightenInteraction; //material for pointed interactions (enlightening them)
+
+    public Material GetMaterial(Materials material)
+    {
+        if(material == Materials.enlightenItem)
+        {
+            return enlightenItem;
+        }
+        if(material == Materials.enlightenInteraction)
+        {
+            return enlightenInteraction;
+        }
+
+        return null;
+    }
 }

@@ -63,13 +63,13 @@ public class SimpleTestHand : MonoBehaviour //relic of old times, before gesture
     {
         if(pointingAt.layer == LayerMask.NameToLayer("Item") && pointingAt != GetComponent<HandInteractions>().inHand)
         {
-            if (pointingAt.GetComponent<EnlightItem>() != null)
+            if (pointingAt.GetComponent<EnlightObject>() != null)
             {
-                pointingAt.GetComponent<EnlightItem>().enlightenTime = 10;
+                pointingAt.GetComponent<EnlightObject>().enlightenTime = 10;
             }
             else
             {
-                pointingAt.AddComponent<EnlightItem>();
+                pointingAt.AddComponent<EnlightObject>();
             }
         }
     }
