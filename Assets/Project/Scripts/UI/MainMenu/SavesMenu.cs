@@ -154,14 +154,23 @@ public class SavesMenu : MonoBehaviour
                 menuOptions[i - 1].transform.Find("Description").Find("Date").GetComponent<TextMeshProUGUI>().text =
                     ProgressSaving.GetChangeDateOfSaveByName("save" + i);
 
-
-                string chapter = ProgressSaving.GetSaveByName("save" + i).gameStateSave.currentLvl.Replace("_", " ");
-                int firstSpaceIndex = chapter.IndexOf(' ');
-                int secondSpaceIndex = chapter.IndexOf(' ', firstSpaceIndex + 1);
-                if (firstSpaceIndex >= 0 && secondSpaceIndex > firstSpaceIndex)
+                string chapter = "";
+                if (ProgressSaving.GetSaveByName("save" + i).gameStateSave.currentLvl != "Level_0_Tutorial")
                 {
-                    chapter = chapter.Substring(0, secondSpaceIndex) + "<br>" + chapter.Substring(secondSpaceIndex + 1);
+                    chapter = ProgressSaving.GetSaveByName("save" + i).gameStateSave.currentLvl.Replace("_", " ");
+                    int firstSpaceIndex = chapter.IndexOf(' ');
+                    int secondSpaceIndex = chapter.IndexOf(' ', firstSpaceIndex + 1);
+                    if (firstSpaceIndex >= 0 && secondSpaceIndex > firstSpaceIndex)
+                    {
+                        chapter = chapter.Substring(0, secondSpaceIndex) + "<br>" + chapter.Substring(secondSpaceIndex + 1);
+                    }
                 }
+                else
+                {
+                    chapter = "Tutorial";
+                }
+
+
                 menuOptions[i - 1].transform.Find("Description").Find("Chapter").GetComponent<TextMeshProUGUI>().text = chapter;
             }
         }

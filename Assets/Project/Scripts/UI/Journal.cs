@@ -364,21 +364,26 @@ public class Journal : MonoBehaviour
 
         if (!atNamesList && journalOpened)
         {
+
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 closeSound.Play();
                 DisplayNamesBack();
             }
 
-            if (Input.GetKey(KeyCode.W))
+            if (Input.GetKey(KeyCode.W) && dialogueLinesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition < 1)
             {
-                dialogueScrollSpeed = 1000 * Time.unscaledDeltaTime / (dialogueLinesScrollView.GetComponent<ScrollRect>().content.sizeDelta.y - dialogueLinesScrollView.GetComponent<RectTransform>().sizeDelta.y);
+                dialogueScrollSpeed = 1000 * Time.unscaledDeltaTime / 
+                    (dialogueLinesScrollView.GetComponent<ScrollRect>().content.sizeDelta.y 
+                    - dialogueLinesScrollView.GetComponent<RectTransform>().sizeDelta.y);
                 dialogueLinesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += dialogueScrollSpeed;
             }   
 
-            if (Input.GetKey(KeyCode.S))
+            if (Input.GetKey(KeyCode.S) && dialogueLinesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition > 0)
             {
-                dialogueScrollSpeed = 1000 * Time.unscaledDeltaTime / (dialogueLinesScrollView.GetComponent<ScrollRect>().content.sizeDelta.y - dialogueLinesScrollView.GetComponent<RectTransform>().sizeDelta.y);
+                dialogueScrollSpeed = 1000 * Time.unscaledDeltaTime / 
+                    (dialogueLinesScrollView.GetComponent<ScrollRect>().content.sizeDelta.y 
+                    - dialogueLinesScrollView.GetComponent<RectTransform>().sizeDelta.y);
                 dialogueLinesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -dialogueScrollSpeed;
             }
         }

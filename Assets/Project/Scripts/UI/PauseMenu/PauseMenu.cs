@@ -44,42 +44,30 @@ public class PauseMenu : MonoBehaviour
     void Update()
     {
         //Change status of atMenu depending of that if it is active or not
-        if (menuOpened && instantiatedMenu.transform.Find("Menu").gameObject.activeSelf == true)
+        if (menuOpened && instantiatedMenu.transform.Find("Menu").gameObject.activeSelf == true) atMainMenu = true;
+        else atMainMenu = false;
+
+        //Open menu if possible
+        if (ableToInteract && !PlayerParams.Variables.uiActive && Input.GetKeyDown(KeyCode.Escape))
         {
-            atMainMenu = true;
-        }
-        else
-        {
-            atMainMenu = false;
+            OpenMenu();
+            openSound.Play();
         }
 
-        if (ableToInteract)
-        {
-            KeysListener();
-        }
-
+        //if menu is opened and is at main page listen to keys
         if (menuOpened && atMainMenu)
         {
-            KeysListenerMenu();
+            KeysListener();
             PointOption(pointedOptionMenu);
         }
 
         if (keyTimeDelayer > 0) keyTimeDelayer -= 75 * Time.unscaledDeltaTime;
 
+        //freeze game while menu is opened
         if (menuOpened) Time.timeScale = 0f;
         else Time.timeScale = 1f;
     }
-
     void KeysListener()
-    {
-        //Open menu
-        if (Input.GetKeyDown(KeyCode.Escape) && !PlayerParams.Variables.uiActive)
-        {
-            OpenMenu();
-            openSound.Play();
-        }
-    }
-    void KeysListenerMenu()
     {
         //Close menu
         if (Input.GetKeyDown(KeyCode.Escape) && menuOpened && atMainMenu)

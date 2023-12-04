@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnteringEarthquake : MonoBehaviour
 {
@@ -8,14 +9,22 @@ public class EnteringEarthquake : MonoBehaviour
     [SerializeField] Vector3 _enteringPosition;
     [SerializeField] GameObject _fallingRock;
     [SerializeField] Vector3 _baseFallingPosition;
+    [SerializeField] GameObject _firstTutorial;
 
     Vector3 _firstTilePos;
+    AudioSource earthquakeSound;
+    ProgressSaving progressSaving;
 
     void Start()
     {
         PlayerParams.Controllers.playerMovement.stopMovement = true;
         _firstTilePos = PlayerParams.Objects.player.transform.position;
         PlayerParams.Objects.player.transform.position = _enteringPosition;
+        earthquakeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Earthquake);
+
+        progressSaving = FindObjectOfType<ProgressSaving>();
+        progressSaving.SaveGameState(SceneManager.GetActiveScene().name, 0f);
+        progressSaving.SaveProgressToFile();
 
         StartCoroutine(EarthquakeSimulation());
     }
@@ -30,10 +39,12 @@ public class EnteringEarthquake : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
+        earthquakeSound.Play();
+        Destroy(earthquakeSound, earthquakeSound.clip.length);
         yield return new WaitForSeconds(0.3f);
 
         float lightRemovingStep = _enteringLight.range / 100.0f;
-        for(int i = 0; i<150; i++)
+        for(int i = 0; i<200; i++)
         {
             PlayerParams.Objects.playerCamera.transform.localPosition = Vector3.MoveTowards(
                 PlayerParams.Objects.playerCamera.transform.localPosition,
@@ -58,6 +69,11 @@ public class EnteringEarthquake : MonoBehaviour
         Destroy(_enteringLight.gameObject);
         PlayerParams.Objects.playerCamera.transform.localPosition = cameraStartPos;
         PlayerParams.Objects.player.transform.rotation = Quaternion.identity;
+
+        yield return new WaitForSeconds(0.5f);
+        _firstTutorial.SetActive(true);
+
+        yield return new WaitForSeconds(0.1f);
         PlayerParams.Controllers.playerMovement.stopMovement = false;
     }
 }

@@ -281,14 +281,22 @@ public class MainMenu : MonoBehaviour
                 allOptions[option].transform.Find("Save").Find("SaveInfo").Find("Description").Find("Date").GetComponent<TextMeshProUGUI>().text =
                     ProgressSaving.GetChangeDateOfSaveByName(ProgressSaving.GetRecentlyChangedSave());
 
-
-                string chapter = ProgressSaving.GetSaveByName(ProgressSaving.GetRecentlyChangedSave()).gameStateSave.currentLvl.Replace("_", " ");
-                int firstSpaceIndex = chapter.IndexOf(' ');
-                int secondSpaceIndex = chapter.IndexOf(' ', firstSpaceIndex + 1);
-                if (firstSpaceIndex >= 0 && secondSpaceIndex > firstSpaceIndex)
+                string chapter = "";
+                if (ProgressSaving.GetSaveByName(ProgressSaving.GetRecentlyChangedSave()).gameStateSave.currentLvl != "Level_0_Tutorial")
                 {
-                    chapter = chapter.Substring(0, secondSpaceIndex) + "<br>" + chapter.Substring(secondSpaceIndex + 1);
+                    chapter = ProgressSaving.GetSaveByName(ProgressSaving.GetRecentlyChangedSave()).gameStateSave.currentLvl.Replace("_", " ");
+                    int firstSpaceIndex = chapter.IndexOf(' ');
+                    int secondSpaceIndex = chapter.IndexOf(' ', firstSpaceIndex + 1);
+                    if (firstSpaceIndex >= 0 && secondSpaceIndex > firstSpaceIndex)
+                    {
+                        chapter = chapter.Substring(0, secondSpaceIndex) + "<br>" + chapter.Substring(secondSpaceIndex + 1);
+                    }
                 }
+                else
+                {
+                    chapter = "Tutorial";
+                }
+
                 allOptions[option].transform.transform.Find("Save").Find("SaveInfo").Find("Description").Find("Chapter").GetComponent<TextMeshProUGUI>().text = chapter;
 
                 allOptions[option].transform.Find("Save").gameObject.SetActive(true);

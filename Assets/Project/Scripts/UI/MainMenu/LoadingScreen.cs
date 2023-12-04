@@ -35,6 +35,7 @@ public class LoadingScreen : MonoBehaviour
             text.fontSize += 0.05f;
             yield return new WaitForSeconds(0);
         }
+        yield return new WaitForSeconds(0);
 
         while (text.fontSize > fontSmall)
         {

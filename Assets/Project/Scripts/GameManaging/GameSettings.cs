@@ -32,6 +32,8 @@ public class GameSettings : MonoBehaviour
     public static int vSyncCount = 1;
 
     public static bool fullscreen = true;
+    private float lastWidth;
+    private float lastHeight;
 
     public static bool muteMusic = true;
 
@@ -107,12 +109,27 @@ public class GameSettings : MonoBehaviour
         {
             Screen.fullScreen = fullscreen;
             Cursor.visible = !fullscreen;
-            if (fullscreen) Cursor.lockState = CursorLockMode.Confined;
+            if (fullscreen)
+            {
+                Cursor.lockState = CursorLockMode.Confined;
+                Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
+            }
             else Cursor.lockState = CursorLockMode.None;
         }
 
         //update muteMusic
         if (backgroundMusic.muteBackgroundMusic != muteMusic) backgroundMusic.muteBackgroundMusic = muteMusic;
+
+
+        //resizing resolution while in window mode to stay in 16/9
+        if (!Screen.fullScreen)
+        {
+            if (lastWidth != Screen.width) Screen.SetResolution(Screen.width, (int)(Screen.width * (9f / 16f)), false);
+            else if (lastHeight != Screen.height) Screen.SetResolution((int)(Screen.height * (16f / 9f)), Screen.height, false);
+
+            lastWidth = Screen.width;
+            lastHeight = Screen.height;
+        }
     }
 
     void RunMediapipeExe()

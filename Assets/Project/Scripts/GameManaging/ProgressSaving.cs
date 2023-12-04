@@ -236,7 +236,7 @@ public class ProgressSaving : MonoBehaviour
         [System.Serializable]
         public class GameStateSave //for saving current level
         {
-            public string currentLvl = "Level_0_Tutorial";
+            public string currentLvl = "Intro";
             public float plotPoints = 0.0f;
         }
 

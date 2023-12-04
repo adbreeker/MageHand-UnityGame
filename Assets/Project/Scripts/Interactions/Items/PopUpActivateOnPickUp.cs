@@ -14,17 +14,10 @@ public class PopUpActivateOnPickUp : MonoBehaviour
     [Header("Destroy on pick up")]
     public bool destroy = false;
 
-    [Header("Prefabs")]
-    public GameObject popUpPrefab;
-
     public void OnPickUp() //instantiate pop up prefab
     {
-        GameObject popUp = Instantiate(popUpPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        popUp.GetComponent<PopUp>().ActivatePopUp(title, content, timeToFadeOut, timeOfFadingOut);
+        FindObjectOfType<HUD>().SpawnPopUp(title, content, timeToFadeOut, timeOfFadingOut);
 
-        if (destroy)
-        {
-            Destroy(gameObject);
-        }
+        if (destroy) Destroy(gameObject);
     }
 }
