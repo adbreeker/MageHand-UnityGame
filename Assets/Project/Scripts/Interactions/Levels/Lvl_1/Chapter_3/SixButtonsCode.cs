@@ -52,11 +52,11 @@ public class SixButtonsCode : MonoBehaviour
     void CheckCode()
     {
         if(
-        _button1.clickCounter == 3 && //moon
-        _button2.clickCounter == 2 && //mountain
-        _button3.clickCounter == 1 && //deer
+        _button1.clickCounter == 5 && //night
+        _button2.clickCounter == 3 && //mountain
+        _button3.clickCounter == 3 && //deer
         _button4.clickCounter == 4 && //forest
-        _button5.clickCounter == 3 && //day
+        _button5.clickCounter == 6 && //day
         _button6.clickCounter == 1) //lake
         {
             _passage.Interaction();
