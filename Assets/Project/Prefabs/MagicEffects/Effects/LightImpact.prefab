@@ -44,13 +44,13 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 358637981425055526}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.233564, g: 0.67854375, b: 0.99264705, a: 1}
-  m_Intensity: 1.5
-  m_Range: 10
+  m_Intensity: 50
+  m_Range: 30
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -94,7 +94,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 1e-45, z: 3e-45, w: 6.9292465e-19}
+  m_BoundingSphereOverride: {x: 1.8754505e+28, y: 9.565714e+20, z: 7.2064716e+31, w: 6.530188e+28}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -4010,7 +4010,7 @@ ParticleSystem:
   LightsModule:
     enabled: 0
     ratio: 0
-    light: {fileID: 0}
+    light: {fileID: 7018177365474031861}
     randomDistribution: 1
     color: 1
     range: 1
@@ -13707,15 +13707,15 @@ ParticleSystem:
   LightsModule:
     enabled: 1
     ratio: 1
-    light: {fileID: 7018177365474031861}
-    randomDistribution: 1
+    light: {fileID: -4973024085551694395, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+    randomDistribution: 0
     color: 1
     range: 1
     intensity: 0
     rangeCurve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 7
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -13768,7 +13768,7 @@ ParticleSystem:
     intensityCurve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 5
       minScalar: 1
       maxCurve:
         serializedVersion: 2
