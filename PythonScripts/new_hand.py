@@ -7,15 +7,17 @@ import sys
 import cv2
 import os
 
+#Get .task path
+base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+task_file_path = os.path.join(base_path, 'gesture_recognizer.task')
+
+
 class HandDetector:
     def __init__(self):
         self.mp = mp
         self.cap = None
         self.landmarker = None
         self.options = None
-
-        self.base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
-        self.task_file_path = os.path.join(self.base_path, 'gesture_recognizer.task')
 
         self.base_options = mp.tasks.BaseOptions
         self.hand_landmarker = mp.tasks.vision.GestureRecognizer
@@ -102,7 +104,7 @@ class HandDetector:
         
         self.options = self.hand_landmarker_options(
             base_options=self.base_options(
-                model_asset_path=self.task_file_path),
+                model_asset_path=task_file_path),
             running_mode=self.vision_running_mode.LIVE_STREAM,
             min_hand_detection_confidence= 0.5,
             min_hand_presence_confidence= 0.5,
