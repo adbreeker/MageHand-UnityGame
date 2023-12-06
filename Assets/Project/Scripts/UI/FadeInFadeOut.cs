@@ -18,12 +18,14 @@ public class FadeInFadeOut : MonoBehaviour
 
     public void ChangeScene(string sceneName, bool fadeOut = true)
     {
-        if(fadeOut) StartCoroutine(FadeOutScene(sceneName));
+        FindObjectOfType<BackgroundMusic>().modifyBackgroundMusicVolume = true;
+        if (fadeOut) StartCoroutine(FadeOutScene(sceneName));
         else SceneManager.LoadScene(sceneName);
     }
 
     public void CloseGame()
     {
+        FindObjectOfType<BackgroundMusic>().modifyBackgroundMusicVolume = true;
         StartCoroutine(FadeOutGame());
     }
 
