@@ -43,7 +43,7 @@ public class EnteringEarthquake : MonoBehaviour
         Destroy(earthquakeSound, earthquakeSound.clip.length);
         yield return new WaitForSeconds(0.3f);
 
-        float lightRemovingStep = _enteringLight.range / 100.0f;
+        float lightRemovingStep = _enteringLight.intensity / 150.0f;
         for(int i = 0; i<200; i++)
         {
             PlayerParams.Objects.playerCamera.transform.localPosition = Vector3.MoveTowards(
@@ -53,7 +53,7 @@ public class EnteringEarthquake : MonoBehaviour
 
             PlayerParams.Objects.player.transform.rotation = Quaternion.Euler(0, 0, Random.Range(-3f, 3f));
 
-            _enteringLight.range -= lightRemovingStep;
+            _enteringLight.intensity -= lightRemovingStep;
 
             if((i+1)%10 == 0)
             {
