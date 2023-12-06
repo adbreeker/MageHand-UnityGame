@@ -8,20 +8,16 @@ using TMPro;
 public class Intro : MonoBehaviour
 {
     public List<CanvasGroup> texts;
-
     public CanvasGroup frame;
-
     public CanvasGroup continueButton;
-
     public List<RawImage> pics;
-
-
     public string nextLevel = "Level_0_Tutorial";
+
     private bool animationEnded = false;
 
     void Start()
     {
-        StartCoroutine(Animation());
+        StartCoroutine(IntroAnimation());
     }
 
     private void Update()
@@ -34,7 +30,7 @@ public class Intro : MonoBehaviour
     }
 
 
-    IEnumerator Animation()
+    IEnumerator IntroAnimation()
     {
         yield return new WaitForSeconds(1);
 
@@ -50,11 +46,9 @@ public class Intro : MonoBehaviour
 
         yield return new WaitForSeconds(1);
 
-
         //Display all panels
         for (int i = 0; i < pics.Count && i < texts.Count; i++)
         {
-
             float alpha = 0;
             while (alpha < 1)
             {
@@ -65,7 +59,7 @@ public class Intro : MonoBehaviour
                 yield return new WaitForSeconds(0);
             }
 
-            yield return new WaitForSeconds(6);
+            yield return new WaitForSeconds(5);
         }
 
         //Display continue button

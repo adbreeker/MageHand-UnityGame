@@ -62,6 +62,10 @@ public class FadeInFadeOut : MonoBehaviour
             blackoutImage.color = new Color(0, 0, 0, alpha);
             yield return new WaitForSeconds(0);
         }
+
+        if (PlayerParams.Controllers.pauseMenu != null) PlayerParams.Controllers.pauseMenu.freezeTime = false;
+        yield return new WaitForFixedUpdate();
+
         SceneManager.LoadScene(sceneName);
     }
 
