@@ -35,7 +35,7 @@ public class GameSettings : MonoBehaviour
     private float lastWidth;
     private float lastHeight;
 
-    public static bool muteMusic = false;
+    public static bool muteMusic = true;
 
     //always working settings for the game
     void Awake()
