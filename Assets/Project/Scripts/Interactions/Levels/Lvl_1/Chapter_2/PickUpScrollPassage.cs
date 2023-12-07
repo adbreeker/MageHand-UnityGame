@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PickUpKnifePassage : MonoBehaviour
+public class PickUpScrollPassage : MonoBehaviour
 {
-    [Header("Knife")]
-    public GameObject knife;
+    [Header("Scroll")]
+    public GameObject scroll;
 
     [Header("Bars passage")]
     public GameObject bars;
@@ -14,12 +14,17 @@ public class PickUpKnifePassage : MonoBehaviour
 
     private void Start() //get knife possition
     {
-        prevPos = knife.transform.position;
+        prevPos = scroll.transform.position;
     }
 
     void Update() //if knife position changes (player picked it up) then open passage
     {
-        if(knife.transform.position != prevPos)
+        if(scroll == null)
+        {
+            bars.SendMessage("Interaction");
+            Destroy(this);
+        }
+        else if(scroll.transform.position != prevPos)
         {
             bars.SendMessage("Interaction");
             Destroy(this);
