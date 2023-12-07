@@ -18,6 +18,14 @@ public class SixButtonsCode : MonoBehaviour
     [SerializeField] ButtonBehavior _button5;
     [SerializeField] ButtonBehavior _button6;
 
+    [Header("Code tablets:")]
+    [SerializeField] TextTabletBehavior _TextTablet1;
+    [SerializeField] TextTabletBehavior _TextTablet2;
+    [SerializeField] TextTabletBehavior _TextTablet3;
+    [SerializeField] TextTabletBehavior _TextTablet4;
+    [SerializeField] TextTabletBehavior _TextTablet5;
+    [SerializeField] TextTabletBehavior _TextTablet6;
+
     // Update is called once per frame
     void Update()
     {
@@ -27,6 +35,8 @@ public class SixButtonsCode : MonoBehaviour
         {
             CheckCode();
         }
+
+        UpdateTextTablets();
     }
 
     void CheckResetButton()
@@ -61,5 +71,15 @@ public class SixButtonsCode : MonoBehaviour
         {
             _passage.Interaction();
         }
+    }
+
+    void UpdateTextTablets()
+    {
+        _TextTablet1.tabletText = _button1.clickCounter.ToString();
+        _TextTablet2.tabletText = _button2.clickCounter.ToString();
+        _TextTablet3.tabletText = _button3.clickCounter.ToString();
+        _TextTablet4.tabletText = _button4.clickCounter.ToString();
+        _TextTablet5.tabletText = _button5.clickCounter.ToString();
+        _TextTablet6.tabletText = _button6.clickCounter.ToString();
     }
 }
