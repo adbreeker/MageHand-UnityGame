@@ -18,12 +18,14 @@ public class FadeInFadeOut : MonoBehaviour
 
     public void ChangeScene(string sceneName, bool fadeOut = true)
     {
-        if(fadeOut) StartCoroutine(FadeOutScene(sceneName));
+        FindObjectOfType<BackgroundMusic>().modifyBackgroundMusicVolume = true;
+        if (fadeOut) StartCoroutine(FadeOutScene(sceneName));
         else SceneManager.LoadScene(sceneName);
     }
 
     public void CloseGame()
     {
+        FindObjectOfType<BackgroundMusic>().modifyBackgroundMusicVolume = true;
         StartCoroutine(FadeOutGame());
     }
 
@@ -62,6 +64,10 @@ public class FadeInFadeOut : MonoBehaviour
             blackoutImage.color = new Color(0, 0, 0, alpha);
             yield return new WaitForSeconds(0);
         }
+
+        if (PlayerParams.Controllers.pauseMenu != null) PlayerParams.Controllers.pauseMenu.freezeTime = false;
+        yield return new WaitForFixedUpdate();
+
         SceneManager.LoadScene(sceneName);
     }
 

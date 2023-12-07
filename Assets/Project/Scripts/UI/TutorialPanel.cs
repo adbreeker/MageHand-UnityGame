@@ -5,6 +5,9 @@ using UnityEngine;
 public class TutorialPanel : MonoBehaviour
 {
     public GameObject tutorialPanelPrefab;
+
+    public GameObject tutorialPanelHitboxToActivate;
+    public GameObject tutorialPanelHitboxToDestroy;
     private GameObject tutorialPanel;
     private bool activatePanel = true;
 
@@ -68,8 +71,11 @@ public class TutorialPanel : MonoBehaviour
         PlayerParams.Controllers.pauseMenu.ableToInteract = true;
         PlayerParams.Controllers.journal.ableToInteract = true;
 
+        if (tutorialPanelHitboxToActivate != null) tutorialPanelHitboxToActivate.SetActive(true);
+
         Destroy(openSound.gameObject, openSound.clip.length);
 
+        if (tutorialPanelHitboxToDestroy != null) Destroy(tutorialPanelHitboxToDestroy);
         Destroy(gameObject);
         Destroy(tutorialPanel);
     }

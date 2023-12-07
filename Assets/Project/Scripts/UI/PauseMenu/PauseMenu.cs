@@ -18,6 +18,7 @@ public class PauseMenu : MonoBehaviour
     [Header("Settings")]
     public bool ableToInteract = true;
     public bool menuOpened = false;
+    public bool freezeTime = false;
 
     private GameObject instantiatedMenu;
     private GameObject instantiatedResetMenu;
@@ -64,7 +65,7 @@ public class PauseMenu : MonoBehaviour
         if (keyTimeDelayer > 0) keyTimeDelayer -= 75 * Time.unscaledDeltaTime;
 
         //freeze game while menu is opened
-        if (menuOpened) Time.timeScale = 0f;
+        if (freezeTime) Time.timeScale = 0f;
         else Time.timeScale = 1f;
     }
     void KeysListener()
@@ -227,6 +228,7 @@ public class PauseMenu : MonoBehaviour
 
         pointedOptionMenu = 0;
         PointOption(pointedOptionMenu);
+        freezeTime = true;
         menuOpened = true;
     }
 
@@ -249,6 +251,7 @@ public class PauseMenu : MonoBehaviour
         PlayerParams.Variables.uiActive = false;
         PlayerParams.Objects.hand.SetActive(true);
 
+        freezeTime = false;
         menuOpened = false;
         atMainMenu = false;
         menuOptions.Clear();

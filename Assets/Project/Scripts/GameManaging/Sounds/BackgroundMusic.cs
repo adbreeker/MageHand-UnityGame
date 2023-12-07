@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class BackgroundMusic : MonoBehaviour
 {
@@ -8,33 +10,41 @@ public class BackgroundMusic : MonoBehaviour
     public SoundManager.Sound loopMusic;
 
     public bool muteBackgroundMusic = false;
+    public bool modifyBackgroundMusicVolume = false;
 
     [Header("Read only")]
     public AudioSource startMusicAS;
     public AudioSource loopMusicAS;
 
+    private SoundManager soundManager;
+
     void Start()
     {
-        startMusicAS = FindObjectOfType<SoundManager>().CreateAudioSource(startMusic);
-        loopMusicAS = FindObjectOfType<SoundManager>().CreateAudioSource(loopMusic);
+        soundManager = FindObjectOfType<SoundManager>();
+
+        startMusicAS = soundManager.CreateAudioSource(startMusic);
+        loopMusicAS = soundManager.CreateAudioSource(loopMusic);
 
         if(!muteBackgroundMusic) startMusicAS.Play();
     }
     void Update()
     {
-        if (!muteBackgroundMusic && !startMusicAS.isPlaying && !loopMusicAS.isPlaying)
-        {
-            if (PlayerParams.Controllers.pauseMenu != null)
-            {
-                if (!PlayerParams.Controllers.pauseMenu.menuOpened) loopMusicAS.Play();
-            }
-            else loopMusicAS.Play();
-        }
+        if (!muteBackgroundMusic && !startMusicAS.isPlaying && !loopMusicAS.isPlaying) loopMusicAS.Play();
 
-        if(muteBackgroundMusic)
+        if (muteBackgroundMusic && startMusicAS.volume != 0) startMusicAS.volume = 0;
+        if (muteBackgroundMusic && loopMusicAS.volume != 0) loopMusicAS.volume = 0;
+
+        if (!muteBackgroundMusic && PlayerParams.Controllers.pauseMenu == null && !modifyBackgroundMusicVolume)
         {
-            startMusicAS.Stop();
-            loopMusicAS.Stop();
-        }
+            if(startMusicAS.volume != soundManager.GetBaseVolume(soundManager.GetFirstSoundEnumByAudioClip(startMusicAS.clip)) * GameSettings.soundVolume)
+            {
+                startMusicAS.volume = soundManager.GetBaseVolume(soundManager.GetFirstSoundEnumByAudioClip(startMusicAS.clip)) * GameSettings.soundVolume;
+            }
+
+            if (loopMusicAS.volume != soundManager.GetBaseVolume(soundManager.GetFirstSoundEnumByAudioClip(loopMusicAS.clip)) * GameSettings.soundVolume)
+            {
+                loopMusicAS.volume = soundManager.GetBaseVolume(soundManager.GetFirstSoundEnumByAudioClip(loopMusicAS.clip)) * GameSettings.soundVolume;
+            }
+        }  
     }
 }

@@ -8,35 +8,30 @@ using TMPro;
 public class Intro : MonoBehaviour
 {
     public List<CanvasGroup> texts;
-
     public CanvasGroup frame;
-
     public CanvasGroup continueButton;
-
     public List<RawImage> pics;
-
-
     public string nextLevel = "Level_0_Tutorial";
+
     private bool animationEnded = false;
+    private bool skip = false;
 
     void Start()
     {
-        StartCoroutine(Animation());
+        StartCoroutine(IntroAnimation());
     }
 
     private void Update()
     {
-        //if (animationEnded && Input.GetKeyDown(KeyCode.Space))
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            FindObjectOfType<FadeInFadeOut>().ChangeScene(nextLevel);
-        }
+        if (animationEnded && Input.GetKeyDown(KeyCode.Space)) FindObjectOfType<FadeInFadeOut>().ChangeScene(nextLevel);
+
+        if (Input.GetKeyDown(KeyCode.Space)) skip = true;
     }
 
 
-    IEnumerator Animation()
+    IEnumerator IntroAnimation()
     {
-        yield return new WaitForSeconds(1);
+        if(!skip) yield return new WaitForSeconds(1);
 
         //Display frame
         float alphaFrame = 0;
@@ -45,16 +40,14 @@ public class Intro : MonoBehaviour
             alphaFrame += 0.01f;
             frame.alpha = alphaFrame;
 
-            yield return new WaitForSeconds(0);
+            if (!skip) yield return new WaitForSeconds(0);
         }
 
-        yield return new WaitForSeconds(1);
-
+        if (!skip) yield return new WaitForSeconds(1);
 
         //Display all panels
         for (int i = 0; i < pics.Count && i < texts.Count; i++)
         {
-
             float alpha = 0;
             while (alpha < 1)
             {
@@ -62,10 +55,11 @@ public class Intro : MonoBehaviour
                 pics[i].color = new Color(1, 1, 1, alpha);
                 texts[i].alpha = alpha;
 
-                yield return new WaitForSeconds(0);
+                if (!skip) yield return new WaitForSeconds(0);
             }
 
-            yield return new WaitForSeconds(6);
+            if (!skip) yield return new WaitForSeconds(5);
+            else if(i != pics.Count - 1) skip = false;
         }
 
         //Display continue button
@@ -75,8 +69,9 @@ public class Intro : MonoBehaviour
             alphaContinue += 0.01f;
             continueButton.alpha = alphaContinue;
 
-            yield return new WaitForSeconds(0);
+            if (!skip) yield return new WaitForSeconds(0);
         }
+
         animationEnded = true;
     }
 }
