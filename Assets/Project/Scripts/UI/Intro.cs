@@ -14,6 +14,7 @@ public class Intro : MonoBehaviour
     public string nextLevel = "Level_0_Tutorial";
 
     private bool animationEnded = false;
+    private bool skip = false;
 
     void Start()
     {
@@ -22,17 +23,15 @@ public class Intro : MonoBehaviour
 
     private void Update()
     {
-        //if (animationEnded && Input.GetKeyDown(KeyCode.Space))
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            FindObjectOfType<FadeInFadeOut>().ChangeScene(nextLevel);
-        }
+        if (animationEnded && Input.GetKeyDown(KeyCode.Space)) FindObjectOfType<FadeInFadeOut>().ChangeScene(nextLevel);
+
+        if (Input.GetKeyDown(KeyCode.Space)) skip = true;
     }
 
 
     IEnumerator IntroAnimation()
     {
-        yield return new WaitForSeconds(1);
+        if(!skip) yield return new WaitForSeconds(1);
 
         //Display frame
         float alphaFrame = 0;
@@ -41,10 +40,10 @@ public class Intro : MonoBehaviour
             alphaFrame += 0.01f;
             frame.alpha = alphaFrame;
 
-            yield return new WaitForSeconds(0);
+            if (!skip) yield return new WaitForSeconds(0);
         }
 
-        yield return new WaitForSeconds(1);
+        if (!skip) yield return new WaitForSeconds(1);
 
         //Display all panels
         for (int i = 0; i < pics.Count && i < texts.Count; i++)
@@ -56,10 +55,11 @@ public class Intro : MonoBehaviour
                 pics[i].color = new Color(1, 1, 1, alpha);
                 texts[i].alpha = alpha;
 
-                yield return new WaitForSeconds(0);
+                if (!skip) yield return new WaitForSeconds(0);
             }
 
-            yield return new WaitForSeconds(5);
+            if (!skip) yield return new WaitForSeconds(5);
+            else if(i != pics.Count - 1) skip = false;
         }
 
         //Display continue button
@@ -69,8 +69,9 @@ public class Intro : MonoBehaviour
             alphaContinue += 0.01f;
             continueButton.alpha = alphaContinue;
 
-            yield return new WaitForSeconds(0);
+            if (!skip) yield return new WaitForSeconds(0);
         }
+
         animationEnded = true;
     }
 }
