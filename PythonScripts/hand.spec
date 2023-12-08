@@ -2,12 +2,12 @@
 
 
 a = Analysis(
-    ['new_hand.py'],
-    pathex=['path_to_project\\python_c#'],
+    ['hand.py'],
+    pathex=['C:\\Users\\versi\\MageHand-UnityGame\\PythonScripts'],
     binaries=[],
     datas=[
-    ('path_to_library\\Lib\\site-packages\\mediapipe\\python\\solutions\\*.*', 'mediapipe\\python\\solutions'),
-    ('path_to_model\\python_c#\\gesture_recognizer.task', '.')
+    ('C:\\Users\\versi\\anaconda3\\Lib\\site-packages\\mediapipe\\python\\solutions\\*.*', 'mediapipe\\python\\solutions'),
+    ('C:\\Users\\versi\\MageHand-UnityGame\\PythonScripts\\gesture_recognizer.task', '.')
     ],
     hiddenimports=[],
     hookspath=[],
@@ -44,5 +44,5 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='new_hand',
+    name='hand',
 )
