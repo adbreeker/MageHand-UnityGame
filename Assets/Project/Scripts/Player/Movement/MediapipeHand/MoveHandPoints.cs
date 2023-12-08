@@ -4,8 +4,8 @@ using System.Text;
 using UnityEngine;
 using System;
 using System.Globalization;
-using System.IO;
-using System.IO.MemoryMappedFiles;
+using System.Linq;
+
 
 public class MoveHandPoints : MonoBehaviour //move points of hand generated with mediapipe
 {
@@ -35,14 +35,8 @@ public class MoveHandPoints : MonoBehaviour //move points of hand generated with
 
     private void Update() 
     {
-        //Vector3 newPos = RotateAroundPoint(handPosition, PlayerParams.Objects.playerCamera.transform.position, PlayerParams.Objects.playerCamera.transform.eulerAngles.y);
-
-   
-        MemoryMappedFile mmf_points = MemoryMappedFile.OpenExisting("points");
-        MemoryMappedViewStream stream_points= mmf_points.CreateViewStream();
-        BinaryReader reader_points= new BinaryReader(stream_points);
-        byte[] framePoints= reader_points.ReadBytes(600);
-        string data = System.Text.Encoding.UTF8.GetString(framePoints, 0, 600);
+        Vector3 newPos = RotateAroundPoint(handPosition, PlayerParams.Objects.playerCamera.transform.position, PlayerParams.Objects.playerCamera.transform.eulerAngles.y);
+        string data = udpReceive.data;
         vec = StringToVector3(data);
         
         if (vec != null)
@@ -114,18 +108,14 @@ public class MoveHandPoints : MonoBehaviour //move points of hand generated with
     public Vector3[] StringToVector3(string sVector)
     {
         string[] vectors = sVector.Split(';');
-
+        
         // Labels of gestures:
         // None, Closed_Fist, Open_Palm, Pointing_Up, Thumb_Down, Thumb_Up, Victory, ILoveYou
-        MemoryMappedFile mmf_gesture = MemoryMappedFile.OpenExisting("gestures");
-        MemoryMappedViewStream stream_gesture = mmf_gesture.CreateViewStream();
-        BinaryReader reader_gesture = new BinaryReader(stream_gesture);
-        byte[] frameGesture = reader_gesture.ReadBytes(12);
-        gesture = System.Text.Encoding.UTF8.GetString(frameGesture, 0, 12);
+        gesture = vectors[0];
         
         Vector3[] temp = new Vector3[vectors.Length-1];
     
-        for (int i = 0; i < vectors.Length-1; i++) {
+        for (int i = 1; i < vectors.Length; i++) {
 
             string[] coordinates = vectors[i].Split(',');
             
@@ -136,7 +126,7 @@ public class MoveHandPoints : MonoBehaviour //move points of hand generated with
                 float zAxis = z; //- 5.0f*float.Parse(coordinates[2], CultureInfo.InvariantCulture); //zAxis is for some reason moved 1 forward
 
                 Vector3 position = new Vector3(x, y, zAxis);
-                temp[i] = position;
+                temp[i-1] = position;
                 
             }
         }
