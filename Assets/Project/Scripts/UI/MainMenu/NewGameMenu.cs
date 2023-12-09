@@ -115,8 +115,7 @@ public class NewGameMenu : MonoBehaviour
                     ProgressSaving.CreateNewSave(ProgressSaving.saveName);
 
                     //There we need to check if mediapipeProcess is loaded
-                    if (!String.IsNullOrWhiteSpace(FindObjectOfType<UDPReceive>().data)) FindObjectOfType<FadeInFadeOut>().ChangeScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
-                    else FindObjectOfType<FadeInFadeOut>().ChangeScene("Loading_Screen");
+                    FindObjectOfType<FadeInFadeOut>().ChangeScene("Loading_Screen");
                 }
                 else
                 {
@@ -131,8 +130,7 @@ public class NewGameMenu : MonoBehaviour
                     ProgressSaving.CreateNewSave(ProgressSaving.saveName);
 
                     //There we need to check if mediapipeProcess is loaded
-                    if (!String.IsNullOrWhiteSpace(FindObjectOfType<UDPReceive>().data)) FindObjectOfType<FadeInFadeOut>().ChangeScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
-                    else FindObjectOfType<FadeInFadeOut>().ChangeScene("Loading_Screen");
+                    FindObjectOfType<FadeInFadeOut>().ChangeScene("Loading_Screen");
                 }
             }
             else if (pointedOptionMenu == 1)

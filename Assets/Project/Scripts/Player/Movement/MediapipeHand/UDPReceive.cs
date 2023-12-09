@@ -24,6 +24,7 @@ public class UDPReceive : MonoBehaviour //udp socket for mediapipe in python
         receiveThread = new Thread(new ThreadStart(ReceiveData));
         receiveThread.IsBackground = true;
         receiveThread.Start();
+        Debug.Log(gameObject.name);
     }
 
     public void OnDestroy() //close client on destroy

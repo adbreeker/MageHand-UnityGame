@@ -112,8 +112,7 @@ public class ChosenSaveMenu : MonoBehaviour
             {
                 ProgressSaving.saveName = saveName;
                 closing = true;
-                if (!String.IsNullOrWhiteSpace(FindObjectOfType<UDPReceive>().data)) FindObjectOfType<FadeInFadeOut>().ChangeScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
-                else FindObjectOfType<FadeInFadeOut>().ChangeScene("Loading_Screen");
+                FindObjectOfType<FadeInFadeOut>().ChangeScene("Loading_Screen");
             }
             else if (pointedOptionMenu == 1)
             {
