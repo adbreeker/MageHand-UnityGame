@@ -23,27 +23,19 @@ public class LoadingScreen : MonoBehaviour
     private void Update()
     {
         //There we need to check if mediapipeProcess is loaded
-        try
+         try
         {
-            MemoryMappedFile mmf_gesture = MemoryMappedFile.OpenExisting("gestures");
-            MemoryMappedViewStream stream_gesture = mmf_gesture.CreateViewStream();
-            BinaryReader reader_gesture = new BinaryReader(stream_gesture);
-            byte[] frameGesture = reader_gesture.ReadBytes(12);
-            string gesture = System.Text.Encoding.UTF8.GetString(frameGesture, 0, 12);
-            if (gesture[0] == '\0')
+            using (MemoryMappedFile mmf = MemoryMappedFile.OpenExisting("points"))
             {
-                return;
+                Debug.Log("Loaded mediapipe");
+                FindObjectOfType<FadeInFadeOut>().ChangeScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
             }
         }
-        catch
+        catch (FileNotFoundException)
         {
             return;
         }
-
         //Watch out!!! - it execudes code few more times before scene is changed (mind it if something wrong with loading game)
-
-        Debug.Log("Loaded mediapipe");
-        FindObjectOfType<FadeInFadeOut>().ChangeScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
     }
 
     IEnumerator Pulls()
