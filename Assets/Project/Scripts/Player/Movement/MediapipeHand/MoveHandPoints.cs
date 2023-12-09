@@ -4,8 +4,8 @@ using System.Text;
 using UnityEngine;
 using System;
 using System.Globalization;
-using System.Linq;
-
+using System.IO;
+using System.IO.MemoryMappedFiles;
 
 public class MoveHandPoints : MonoBehaviour //move points of hand generated with mediapipe
 {
@@ -16,9 +16,6 @@ public class MoveHandPoints : MonoBehaviour //move points of hand generated with
     [Header("All hand points objects")]
     public GameObject[] handPoints;
 
-    [Header("UDP receiver")]
-    public UDPReceive udpReceive;
-   
     [Header("Current gesture")]
     public string gesture;
 
@@ -26,19 +23,30 @@ public class MoveHandPoints : MonoBehaviour //move points of hand generated with
     private Vector3 maxPoint;
     private float z;
 
-    bool running;
-
     private void Start()
     {
         CalculateNearPlaneBounds();
     }
 
-    private void Update() 
+    private void Update()
     {
-        Vector3 newPos = RotateAroundPoint(handPosition, PlayerParams.Objects.playerCamera.transform.position, PlayerParams.Objects.playerCamera.transform.eulerAngles.y);
-        string data = udpReceive.data;
-        vec = StringToVector3(data);
+        //Vector3 newPos = RotateAroundPoint(handPosition, PlayerParams.Objects.playerCamera.transform.position, PlayerParams.Objects.playerCamera.transform.eulerAngles.y);
+        MemoryMappedFile mmf_points;
+        try
+        {
+            mmf_points = MemoryMappedFile.OpenExisting("points");
+        }
+        catch
+        {
+            return;
+        }
         
+        MemoryMappedViewStream stream_points = mmf_points.CreateViewStream();
+        BinaryReader reader_points = new BinaryReader(stream_points);
+        byte[] framePoints = reader_points.ReadBytes(600);
+        string data = System.Text.Encoding.UTF8.GetString(framePoints, 0, 600);
+        vec = StringToVector3(data);
+
         if (vec != null)
         {
             for (int i = 0; i < vec.Length; i++)
@@ -69,14 +77,16 @@ public class MoveHandPoints : MonoBehaviour //move points of hand generated with
 
 
         if (objectPosition.x >= minPoint.x && objectPosition.x <= maxPoint.x &&
-        objectPosition.y >= minPoint.y && objectPosition.y <= maxPoint.y )
+        objectPosition.y >= minPoint.y && objectPosition.y <= maxPoint.y)
         {
             //Debug.Log("Object is visible on the camera");
             handPosition = new Vector3(
                 objectPosition.x,
                 objectPosition.y,
                 objectPosition.z);
-        } else {
+        }
+        else
+        {
             //Debug.Log("Object is not visible on the camera");
             handPosition = new Vector3(
                 maxPoint.x - Math.Abs(maxPoint.x + minPoint.x) / 2,
@@ -108,30 +118,35 @@ public class MoveHandPoints : MonoBehaviour //move points of hand generated with
     public Vector3[] StringToVector3(string sVector)
     {
         string[] vectors = sVector.Split(';');
-        
+
         // Labels of gestures:
         // None, Closed_Fist, Open_Palm, Pointing_Up, Thumb_Down, Thumb_Up, Victory, ILoveYou
-        gesture = vectors[0];
-        
-        Vector3[] temp = new Vector3[vectors.Length-1];
-    
-        for (int i = 1; i < vectors.Length; i++) {
+        MemoryMappedFile mmf_gesture = MemoryMappedFile.OpenExisting("gestures");
+        MemoryMappedViewStream stream_gesture = mmf_gesture.CreateViewStream();
+        BinaryReader reader_gesture = new BinaryReader(stream_gesture);
+        byte[] frameGesture = reader_gesture.ReadBytes(12);
+        gesture = System.Text.Encoding.UTF8.GetString(frameGesture, 0, 12).Split(';')[0];
+
+        Vector3[] temp = new Vector3[vectors.Length - 1];
+
+        for (int i = 0; i < vectors.Length - 1; i++)
+        {
 
             string[] coordinates = vectors[i].Split(',');
-            
-            if (coordinates.Length == 3) {
+
+            if (coordinates.Length == 3)
+            {
 
                 float x = (maxPoint.x - (Math.Abs(maxPoint.x - minPoint.x)) * float.Parse(coordinates[0], CultureInfo.InvariantCulture)) * 2;
                 float y = (maxPoint.y - (Math.Abs(maxPoint.y - minPoint.y)) * float.Parse(coordinates[1], CultureInfo.InvariantCulture)) * 2;
                 float zAxis = z; //- 5.0f*float.Parse(coordinates[2], CultureInfo.InvariantCulture); //zAxis is for some reason moved 1 forward
 
                 Vector3 position = new Vector3(x, y, zAxis);
-                temp[i-1] = position;
-                
+                temp[i] = position;
+
             }
         }
         return temp;
     }
 
 }
-

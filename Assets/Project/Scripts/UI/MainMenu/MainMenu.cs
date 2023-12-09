@@ -33,6 +33,11 @@ public class MainMenu : MonoBehaviour
     private float keyTimeDelay = 10f;
     private float keyTimeDelayer = 0;
 
+    private void Awake()
+    {
+        ProgressSaving.CreateSavesDirectory();
+    }
+
     private void Start()
     {
         DisplayMenu();
@@ -107,8 +112,7 @@ public class MainMenu : MonoBehaviour
 
                 //There we need to check if mediapipeProcess is loaded
                 closing = true;
-                if (!String.IsNullOrWhiteSpace(FindObjectOfType<UDPReceive>().data)) FindObjectOfType<FadeInFadeOut>().ChangeScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
-                else FindObjectOfType<FadeInFadeOut>().ChangeScene("Loading_Screen");
+                FindObjectOfType<FadeInFadeOut>().ChangeScene("Loading_Screen");
             }
             else if (pointedOptionMenu == 1)
             {
