@@ -84,7 +84,7 @@ public class ProgressSaving : MonoBehaviour
     }
 
     // ------------------------------------------------------------- saving data
-    void CreateSavesDirectory()
+    public static void CreateSavesDirectory()
     {
         if(!Directory.Exists(Path.Combine(Application.persistentDataPath, "Saves")))
         {
@@ -93,6 +93,7 @@ public class ProgressSaving : MonoBehaviour
             Debug.Log("Directory status: " + Directory.Exists(Path.Combine(Application.persistentDataPath, "Saves")));
         }
     }
+
     public void SaveGameState(string currentLvl, float plotPoints)
     {
         saveData.gameStateSave.currentLvl = currentLvl;

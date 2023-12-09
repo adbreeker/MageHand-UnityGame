@@ -4,6 +4,8 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System;
+using System.IO.MemoryMappedFiles;
+using System.IO;
 
 public class LoadingScreen : MonoBehaviour
 {
@@ -12,11 +14,8 @@ public class LoadingScreen : MonoBehaviour
     public float fontBig = 42f;
     public float fontSmall = 38f;
 
-    private UDPReceive receive;
     void Start()
     {
-        receive = FindObjectOfType<UDPReceive>();
-
         text.fontSize = fontSmall;
         StartCoroutine(Pulls());
     }
@@ -24,8 +23,27 @@ public class LoadingScreen : MonoBehaviour
     private void Update()
     {
         //There we need to check if mediapipeProcess is loaded
-        if(!String.IsNullOrWhiteSpace(receive.data))
-            FindObjectOfType<FadeInFadeOut>().ChangeScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
+        try
+        {
+            MemoryMappedFile mmf_gesture = MemoryMappedFile.OpenExisting("gestures");
+            MemoryMappedViewStream stream_gesture = mmf_gesture.CreateViewStream();
+            BinaryReader reader_gesture = new BinaryReader(stream_gesture);
+            byte[] frameGesture = reader_gesture.ReadBytes(12);
+            string gesture = System.Text.Encoding.UTF8.GetString(frameGesture, 0, 12);
+            if (gesture[0] == '\0')
+            {
+                return;
+            }
+        }
+        catch
+        {
+            return;
+        }
+
+        //Watch out!!! - it execudes code few more times before scene is changed (mind it if something wrong with loading game)
+
+        Debug.Log("Loaded mediapipe");
+        FindObjectOfType<FadeInFadeOut>().ChangeScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
     }
 
     IEnumerator Pulls()

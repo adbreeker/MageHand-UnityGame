@@ -1,25 +1,21 @@
+from multiprocessing.shared_memory import SharedMemory
+import os
+import sys
+
+import numpy as np
 import mediapipe as mp
 import cv2
-import socket
-import numpy as np
-import sys
-import os
 
-#Get .task path
 base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
 task_file_path = os.path.join(base_path, 'gesture_recognizer.task')
 
-                
-class HandLandmarkerDetector:
+
+class HandDetector:
     def __init__(self):
         self.mp = mp
         self.cap = None
         self.landmarker = None
         self.options = None
-
-        self.host = "127.0.0.1"
-        self.port = 25001
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
         self.base_options = mp.tasks.BaseOptions
         self.hand_landmarker = mp.tasks.vision.GestureRecognizer
@@ -28,15 +24,27 @@ class HandLandmarkerDetector:
         self.vision_running_mode = mp.tasks.vision.RunningMode
 
         self.data = np.zeros((21, 3), dtype=np.float32)
-        self.gesture = None
+        self.gesture = 'None'
+        self.frame_shape = frame_shape = (480, 640, 3)  
 
-        self.eps = 0.013  # Lower values make the hand more "stable", but hand points movement can look artificial
-
-    def run(self, debug: bool = False):
+        self.shared_mem_video = SharedMemory(name='video_unity', create=True, 
+                                   size=frame_shape[0] * frame_shape[1] * frame_shape[2])
+        self.shared_mem_gestures = SharedMemory(name='gestures', create=True,
+                                      size=12)
+        self.shared_mem_points = SharedMemory(name='points', create=True,
+                                      size=530)
+        
+        self.eps = 0.013
+        
+    def run(self):
         if self.landmarker is None:
             self._initialize()
         while self.cap.isOpened():
             success, image = self.cap.read()
+
+            np.copyto(np.frombuffer(self.shared_mem_video.buf, 
+                                    dtype=np.uint8).reshape(self.frame_shape), 
+                                    cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
             
             if not success:
                 print("Ignoring empty camera frame.")
@@ -52,23 +60,27 @@ class HandLandmarkerDetector:
             self.landmarker.recognize_async(
                 mp_image, timestamp_ms=int(timestamp_ms))
             
-            self.sock.sendto(str.encode(f'{self.gesture};'+';'.join([f'{x:.5f},{y:.5f},{z:.5f}' for x, y, z in self.data])), (self.host, self.port))
+            points_hand = ';'.join([f'{x:.5f},{y:.5f},{z:.5f}' for x, y, z in self.data]) + ';' + ('a' * (530 - len(';'.join([f'{x:.5f},{y:.5f},{z:.5f}' for x, y, z in self.data]))-1))
+            self.shared_mem_points.buf[:len(points_hand)] = bytearray(points_hand.encode('utf-8'))
+            self.shared_mem_gestures.buf[:len(self.gesture)] = bytearray(self.gesture.encode('utf-8'))
         
-            # NOTE: this is to visualize the point
-            if debug:
-                for x, y, z in self.data:
-                   center = (int(x * image.shape[1]), int(y * image.shape[0]))
-                   cv2.circle(image, center, 5, (0, 0, 255), -1)
-                cv2.imshow('MediaPipe Hands', cv2.flip(image, 1))
             if cv2.waitKey(5) & 0xFF == 27:
                 break
 
         self.cap.release()
         cv2.destroyAllWindows()
 
+        self.shared_mem_video.close()
+        self.shared_mem_points.close()
+        self.shared_mem_gestures.close()
+
+        self.shared_mem_video.unlink()
+        self.shared_mem_points.unlink()
+        self.shared_mem_gestures.unlink()
+
     def _callback(self, result, output_image: mp.Image, timestamp_ms: int):        
         if result.hand_landmarks:
-            self.gesture = result.gestures[0][0].category_name
+            self.gesture = result.gestures[0][0].category_name + ';' + ('a' * (12 - len(result.gestures[0][0].category_name)-1))
             for i in range(21):
                 """
                 This calculates the difference between last updated hand position points and their current position 
@@ -90,6 +102,7 @@ class HandLandmarkerDetector:
         
         self.options = self.hand_landmarker_options(
             base_options=self.base_options(
+                #model_asset_path='Assets\StreamingAssets\Mediapipe\gesture_recognizer.task'),
                 model_asset_path=task_file_path),
             running_mode=self.vision_running_mode.LIVE_STREAM,
             min_hand_detection_confidence= 0.5,
@@ -102,7 +115,6 @@ class HandLandmarkerDetector:
         
         print('connected to unity')
 
-
-if __name__ == '__main__':
-    detector = HandLandmarkerDetector()
-    detector.run(debug=False)
+if __name__ == "__main__":    
+    detector = HandDetector()
+    detector.run()
