@@ -33,6 +33,9 @@ public class Opening : MonoBehaviour
     }
     IEnumerator Animation()
     {
+        //Check if saves directory exists, if not create
+        ProgressSaving.CreateSavesDirectory();
+
         while (alpha > 0)
         {
             alpha -= 0.01f;

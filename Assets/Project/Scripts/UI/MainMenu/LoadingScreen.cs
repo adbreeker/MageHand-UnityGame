@@ -17,13 +17,13 @@ public class LoadingScreen : MonoBehaviour
     void Start()
     {
         text.fontSize = fontSmall;
-        StartCoroutine(CheckMediapipeWithDeley(2.0f));
+        StartCoroutine(CheckMediapipeWithDelay(2.0f));
         StartCoroutine(Pulls());
     }
 
-    IEnumerator CheckMediapipeWithDeley(float deley)
+    IEnumerator CheckMediapipeWithDelay(float delay)
     {
-        yield return new WaitForSeconds(deley);
+        yield return new WaitForSeconds(delay);
 
         bool loaded = false;
         while(!loaded)
