@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GameSettings : MonoBehaviour
 {
-    static Process mediapipeHandProcess;
+    public static Process mediapipeHandProcess;
     private SoundManager soundManager;
     private BackgroundMusic backgroundMusic;
 

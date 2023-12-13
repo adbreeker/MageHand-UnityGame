@@ -211,7 +211,7 @@ namespace Whisper
             return res;
 #else
             // load model weights
-            Debug.Log($"Trying to load Whisper model from {modelPath}...");
+            //Debug.Log($"Trying to load Whisper model from {modelPath}...");
         
             // some sanity checks
             if (string.IsNullOrEmpty(modelPath))
@@ -243,7 +243,7 @@ namespace Whisper
 
         public static WhisperWrapper InitFromBuffer(byte[] buffer)
         {
-            Debug.Log($"Trying to load Whisper model from buffer...");
+            //Debug.Log($"Trying to load Whisper model from buffer...");
             if (buffer == null || buffer.Length == 0)
             {
                 Debug.LogError("Whisper model buffer is null or empty!");

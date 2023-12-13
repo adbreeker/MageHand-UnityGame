@@ -143,7 +143,7 @@ public class MainMenu : MonoBehaviour
                 instantiatedSettingsMenu = Instantiate(settingsMenuPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity, transform);
                 instantiatedSettingsMenu.transform.localPosition = new Vector3(0, 0, 0);
 
-                instantiatedSettingsMenu.GetComponent<SettingsMenu>().OpenMenu(pointer);
+                instantiatedSettingsMenu.GetComponent<SettingsMenu>().OpenMenu(pointer, true);
             }
             else if(pointedOptionMenu == 4)
             {

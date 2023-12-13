@@ -77,12 +77,12 @@ namespace Whisper
             // check if model is already loaded or actively loading
             if (IsLoaded)
             {
-                Debug.LogWarning("Whisper model is already loaded and ready for use!");
+                //Debug.LogWarning("Whisper model is already loaded and ready for use!");
                 return;
             } 
             if (IsLoading)
             {
-                Debug.LogWarning("Whisper model is already loading!");
+                //Debug.LogWarning("Whisper model is already loading!");
                 return;
             }
             

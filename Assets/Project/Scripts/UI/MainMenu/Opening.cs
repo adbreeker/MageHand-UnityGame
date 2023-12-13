@@ -22,13 +22,10 @@ public class Opening : MonoBehaviour
     private void Update()
     {
         //if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Escape)) skip = true;
-        if (error && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Escape)))
+        if (error && Input.GetKeyDown(KeyCode.Space))
         {
             FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption).Play();
-            #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-            #endif
-                Application.Quit();
+            FindObjectOfType<FadeInFadeOut>().CloseGame();
         }
     }
     IEnumerator Animation()

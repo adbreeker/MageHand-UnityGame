@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.IO.MemoryMappedFiles;
+using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,6 +36,8 @@ public class SettingsMenu : MonoBehaviour
 
     private int microphoneIndex = 0;
     private int webCamIndex = 0;
+
+    private bool fromMainMenu;
     void Update()
     {
         KeysListener();
@@ -43,6 +47,8 @@ public class SettingsMenu : MonoBehaviour
         
         volumeValueText.text = volumeSlider.value.ToString();
         DisplayFPSOrVSyncSlider();
+
+        if(!fromMainMenu) ShowCamera();
     }
 
     void KeysListener()
@@ -57,7 +63,7 @@ public class SettingsMenu : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S))
         {
             changeSound.Play();
-            if (pointedOptionMenu < menuOptions.Count - 1)
+            if (pointedOptionMenu < menuOptions.Count - 2) //-2 to disable going to option 8 that now doesn't work
             {
                 pointedOptionMenu++;
             }
@@ -77,7 +83,7 @@ public class SettingsMenu : MonoBehaviour
             }
             else
             {
-                pointedOptionMenu = menuOptions.Count - 1;
+                pointedOptionMenu = menuOptions.Count - 2; //-2 to disable going to option 8 that now doesn't work
             }
             keyTimeDelayer = keyTimeDelayFirst;
         }
@@ -85,7 +91,7 @@ public class SettingsMenu : MonoBehaviour
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.S))
         {
             changeSound.Play();
-            if (pointedOptionMenu < menuOptions.Count - 1)
+            if (pointedOptionMenu < menuOptions.Count - 2) //-2 to disable going to option 8 that now doesn't work
             {
                 pointedOptionMenu++;
             }
@@ -105,7 +111,7 @@ public class SettingsMenu : MonoBehaviour
             }
             else
             {
-                pointedOptionMenu = menuOptions.Count - 1;
+                pointedOptionMenu = menuOptions.Count - 2; //-2 to disable going to option 8 that now doesn't work
             }
             keyTimeDelayer = keyTimeDelay;
         }
@@ -301,8 +307,9 @@ public class SettingsMenu : MonoBehaviour
             }
         }
     }
-    public void OpenMenu(GameObject givenPointer)
+    public void OpenMenu(GameObject givenPointer, bool givenFromMainMenu = false)
     {
+        fromMainMenu = givenFromMainMenu;
         volumeSlider.value = GameSettings.soundVolume * 100;
         fpsSlider.value = GameSettings.fpsCap;
         vSyncSlider.value = 5 - GameSettings.vSyncCount;
@@ -369,7 +376,6 @@ public class SettingsMenu : MonoBehaviour
 
     void PointOption(int option, List<GameObject> allOptions)
     {
-        webcamVideoDisplayFrame.gameObject.SetActive(false);
         for (int i = 0; i < allOptions.Count; i++)
         {
             if (i != option)
@@ -427,7 +433,6 @@ public class SettingsMenu : MonoBehaviour
             else if (option == 4 || option == 6 || option == 7)
             {
                 allOptions[option].transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
-                if (option == 7) webcamVideoDisplayFrame.gameObject.SetActive(true);
 
                 pointer.SetActive(false);
                 allOptions[option].transform.Find("Desc").Find("DoublePointer").gameObject.SetActive(true);
@@ -561,5 +566,40 @@ public class SettingsMenu : MonoBehaviour
         else if (vSyncSlider.value == 3) vSyncValueText.text = ((int)(Screen.currentResolution.refreshRate / 2)).ToString();
         else if (vSyncSlider.value == 4) vSyncValueText.text = ((int)(Screen.currentResolution.refreshRate / 1)).ToString();
         else vSyncValueText.text = "Error";
+    }
+
+    void ShowCamera()
+    {
+        webcamVideoDisplayFrame.gameObject.SetActive(true);
+
+        try
+        {
+            using (MemoryMappedFile mmf = MemoryMappedFile.OpenExisting("video_unity"))
+            {
+                using (MemoryMappedViewStream stream = mmf.CreateViewStream())
+                {
+                    BinaryReader reader = new BinaryReader(stream);
+                    byte[] frameBuffer = reader.ReadBytes(480 * 640 * 3);
+
+                    int width = 640;
+                    int height = 480;
+
+                    Texture2D texture = new Texture2D(width, height, TextureFormat.RGB24, false);
+                    texture.LoadRawTextureData(frameBuffer);
+                    texture.Apply();
+
+                    webcamVideoDisplay.gameObject.SetActive(true);
+                    webcamVideoDisplay.texture = texture;
+
+                }
+            }
+        }
+        catch (FileNotFoundException)
+        {
+            webcamVideoDisplay.gameObject.SetActive(false);
+            Debug.Log("video_unity doesn't exist");
+        }
+
+
     }
 }
