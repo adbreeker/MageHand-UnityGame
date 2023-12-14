@@ -178,8 +178,8 @@ public class Spellbook : MonoBehaviour
         pointerRight = instantiatedSpellbook.transform.Find("Right spell").Find("Title").Find("Pointer right").gameObject;
         descriptionLeft = instantiatedSpellbook.transform.Find("Left spell").Find("Description").gameObject;
         descriptionRight = instantiatedSpellbook.transform.Find("Right spell").Find("Description").gameObject;
-        pictureLeft = instantiatedSpellbook.transform.Find("Left spell").Find("Picture").gameObject;
-        pictureRight = instantiatedSpellbook.transform.Find("Right spell").Find("Picture").gameObject;
+        pictureLeft = instantiatedSpellbook.transform.Find("Left spell").Find("Frame").gameObject;
+        pictureRight = instantiatedSpellbook.transform.Find("Right spell").Find("Frame").gameObject;
         numberLeft = instantiatedSpellbook.transform.Find("Left spell").Find("Number").gameObject;
         numberRight = instantiatedSpellbook.transform.Find("Right spell").Find("Number").gameObject;
 
@@ -267,7 +267,7 @@ public class Spellbook : MonoBehaviour
             titleLeft.SetActive(true);
             descriptionLeft.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][0].spellDescription;
             descriptionLeft.SetActive(true);
-            pictureLeft.GetComponent<RawImage>().texture = spellbookPages[pageToDisplay][0].spellPicture;
+            pictureLeft.transform.Find("Picture").GetComponent<RawImage>().texture = spellbookPages[pageToDisplay][0].spellPicture;
             pictureLeft.SetActive(true);
             numberLeft.GetComponent<TextMeshProUGUI>().text = (((pageToDisplay + 1) * 2) - 1).ToString();
             numberLeft.SetActive(true);
@@ -279,7 +279,7 @@ public class Spellbook : MonoBehaviour
             titleRight.SetActive(true);
             descriptionRight.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][1].spellDescription;
             descriptionRight.SetActive(true);
-            pictureRight.GetComponent<RawImage>().texture = spellbookPages[pageToDisplay][1].spellPicture;
+            pictureRight.transform.Find("Picture").GetComponent<RawImage>().texture = spellbookPages[pageToDisplay][1].spellPicture;
             pictureRight.SetActive(true);
             numberRight.GetComponent<TextMeshProUGUI>().text = ((pageToDisplay + 1) * 2).ToString();
             numberRight.SetActive(true);

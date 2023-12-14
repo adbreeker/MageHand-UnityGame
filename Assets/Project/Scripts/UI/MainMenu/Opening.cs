@@ -21,7 +21,6 @@ public class Opening : MonoBehaviour
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Escape)) skip = true;
         if (error && Input.GetKeyDown(KeyCode.Space))
         {
             FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption).Play();

@@ -60,9 +60,16 @@ public class TutorialEndingPickUp : MonoBehaviour
         //yield return new WaitForSeconds(hitSound.clip.length);
 
         RawImage blackoutImage = Instantiate(_flashbangEffect, _hud).GetComponent<RawImage>();
+        BackgroundMusic backgroundMusic = FindObjectOfType<BackgroundMusic>();
+        float startVolumeDecrease = backgroundMusic.startMusicAS.volume * 0.05f;
+        float loopVolumeDecrease = backgroundMusic.loopMusicAS.volume * 0.05f;
+
         float alpha = 0;
+
         while (alpha < 1)
         {
+            backgroundMusic.startMusicAS.volume -= startVolumeDecrease;
+            backgroundMusic.loopMusicAS.volume -= loopVolumeDecrease;
             alpha += 0.05f;
             blackoutImage.color = new Color(0, 0, 0, alpha);
             yield return new WaitForSeconds(0);

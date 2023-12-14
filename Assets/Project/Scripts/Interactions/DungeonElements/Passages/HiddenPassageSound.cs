@@ -5,7 +5,7 @@ using UnityEngine;
 public class HiddenPassageSound : MonoBehaviour
 {
     private AudioSource sound;
-    private bool activateSound = true;
+    private bool activateSound = false; //to activate it make it true here
 
     private void Start()
     {

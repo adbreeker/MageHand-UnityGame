@@ -1,19 +1,37 @@
+using System.Diagnostics;
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CheckPython : MonoBehaviour
 {
     void Update()
     {
-        if(FindObjectOfType<MoveHandPoints>() != null) CheckIfPythonWorks();
+        if (SceneManager.GetActiveScene().name != "Opening") CheckIfPythonWorks();
     }
 
     void CheckIfPythonWorks()
     {
+        foreach (Process current in Process.GetProcesses())
+        {
+            if ((current.Id == GameSettings.mediapipeHandProcess.Id) && current.HasExited)
+            {
+                {
+                    UnityEngine.Debug.Log("Python process has exited - crashed");
+                    FindObjectOfType<FadeInFadeOut>().ChangeScene("Python_Crashed");
+                }
+            }
+        }
+
+
+        /*
         if (GameSettings.mediapipeHandProcess.HasExited)
         {
-            Debug.Log("Python process has exited - crashed");
-            FindObjectOfType<FadeInFadeOut>().ChangeScene("Python_Crashed");
+            UnityEngine.Debug.Log("Python process has exited - crashed");
+            //FindObjectOfType<FadeInFadeOut>().ChangeScene("Python_Crashed");
         }
+        */
+
 
         /*
         Debug.Log("checking");
