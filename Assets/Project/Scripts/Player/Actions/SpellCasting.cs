@@ -218,7 +218,7 @@ public class SpellCasting : MonoBehaviour
                 castingSound.Play();
 
                 //Debug.Log("started recording ------------------------ started recording");
-                microphoneRecord.StartRecord();
+                microphoneRecord.StartRecord(GameSettings.microphoneName);
             }
         }
     }
@@ -240,27 +240,32 @@ public class SpellCasting : MonoBehaviour
         Destroy(castingSound);
         isTranscribing = false;
 
-        if (NormalizeTranscribedText(spellWhispered) == "light")
+        CastSpellFromName(spellWhispered);
+    }
+
+    public void CastSpellFromName(string name)
+    {
+        if (NormalizeTranscribedText(name) == "light")
         {
             LightSpell();
         }
-        else if (NormalizeTranscribedText(spellWhispered) == "pickup")
+        else if (NormalizeTranscribedText(name) == "pickup")
         {
             StartCoroutine(PickUpSpell());
         }
-        else if(NormalizeTranscribedText(spellWhispered) == "fire")
+        else if (NormalizeTranscribedText(name) == "fire")
         {
             FireSpell();
         }
-        else if(NormalizeTranscribedText(spellWhispered) == "mark")
+        else if (NormalizeTranscribedText(name) == "mark")
         {
             MarkSpell();
         }
-        else if (NormalizeTranscribedText(spellWhispered) == "return")
+        else if (NormalizeTranscribedText(name) == "return")
         {
             ReturnSpell();
         }
-        else if (NormalizeTranscribedText(spellWhispered) == "breakin")
+        else if (NormalizeTranscribedText(name) == "breakin")
         {
             BreakInSpell();
         }

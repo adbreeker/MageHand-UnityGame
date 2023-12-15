@@ -20,8 +20,6 @@ public class SettingsMenu : MonoBehaviour
     public Slider vSyncSlider;
     public TextMeshProUGUI vSyncValueText;
 
-    private WebCamTexture tex;
-
     private GameObject pointer;
     private int pointedOptionMenu;
     private List<GameObject> menuOptions = new List<GameObject>();
@@ -29,6 +27,8 @@ public class SettingsMenu : MonoBehaviour
     private AudioSource closeSound;
     private AudioSource changeSound;
     private AudioSource selectSound;
+
+    private bool speechChangeable = true;
 
     private float keyTimeDelayFirst = 20f;
     private float keyTimeDelay = 10f;
@@ -40,6 +40,9 @@ public class SettingsMenu : MonoBehaviour
     private bool fromMainMenu;
     void Update()
     {
+        DisplayMicrophone();
+        DisplayWebCam();
+
         KeysListener();
         PointOption(pointedOptionMenu, menuOptions);
 
@@ -63,7 +66,7 @@ public class SettingsMenu : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S))
         {
             changeSound.Play();
-            if (pointedOptionMenu < menuOptions.Count - 2) //-2 to disable going to option 8 that now doesn't work
+            if (pointedOptionMenu < menuOptions.Count - 2) //-2 to disable going to option 9 that now doesn't work
             {
                 pointedOptionMenu++;
             }
@@ -83,7 +86,7 @@ public class SettingsMenu : MonoBehaviour
             }
             else
             {
-                pointedOptionMenu = menuOptions.Count - 2; //-2 to disable going to option 8 that now doesn't work
+                pointedOptionMenu = menuOptions.Count - 2; //-2 to disable going to option 9 that now doesn't work
             }
             keyTimeDelayer = keyTimeDelayFirst;
         }
@@ -91,7 +94,7 @@ public class SettingsMenu : MonoBehaviour
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.S))
         {
             changeSound.Play();
-            if (pointedOptionMenu < menuOptions.Count - 2) //-2 to disable going to option 8 that now doesn't work
+            if (pointedOptionMenu < menuOptions.Count - 2) //-2 to disable going to option 9 that now doesn't work
             {
                 pointedOptionMenu++;
             }
@@ -111,7 +114,7 @@ public class SettingsMenu : MonoBehaviour
             }
             else
             {
-                pointedOptionMenu = menuOptions.Count - 2; //-2 to disable going to option 8 that now doesn't work
+                pointedOptionMenu = menuOptions.Count - 2; //-2 to disable going to option 9 that now doesn't work
             }
             keyTimeDelayer = keyTimeDelay;
         }
@@ -156,7 +159,6 @@ public class SettingsMenu : MonoBehaviour
                 changeSound.Play();
                 microphoneIndex += -1;
                 ChangeMicrophone();
-                DisplayMicrophone();
             }
 
             if (Input.GetKeyDown(KeyCode.D) && menuOptions[pointedOptionMenu].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.activeSelf)
@@ -164,19 +166,17 @@ public class SettingsMenu : MonoBehaviour
                 changeSound.Play();
                 microphoneIndex += 1;
                 ChangeMicrophone();
-                DisplayMicrophone();
             }
         }
 
         //Webcam
-        if (pointedOptionMenu == 7)
+        if (pointedOptionMenu == 8)
         {
             if (Input.GetKeyDown(KeyCode.A) && menuOptions[pointedOptionMenu].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.activeSelf)
             {
                 changeSound.Play();
                 webCamIndex += -1;
                 ChangeWebCam();
-                DisplayWebCam();
             }
 
             if (Input.GetKeyDown(KeyCode.D) && menuOptions[pointedOptionMenu].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.activeSelf)
@@ -184,7 +184,6 @@ public class SettingsMenu : MonoBehaviour
                 changeSound.Play();
                 webCamIndex += 1;
                 ChangeWebCam();
-                DisplayWebCam();
             }
         }
 
@@ -306,6 +305,17 @@ public class SettingsMenu : MonoBehaviour
                 menuOptions[pointedOptionMenu].transform.Find("CheckBackground").Find("Checker").gameObject.SetActive(GameSettings.muteMusic);
             }
         }
+
+        //Speech
+        if (pointedOptionMenu == 7)
+        {
+            if (Input.GetKeyDown(KeyCode.Space) && speechChangeable)
+            {
+                selectSound.Play();
+                GameSettings.useSpeech = !GameSettings.useSpeech;
+                menuOptions[pointedOptionMenu].transform.Find("CheckBackground").Find("Checker").gameObject.SetActive(GameSettings.useSpeech);
+            }
+        }
     }
     public void OpenMenu(GameObject givenPointer, bool givenFromMainMenu = false)
     {
@@ -320,32 +330,13 @@ public class SettingsMenu : MonoBehaviour
         changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
         selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
 
-        for (int i = 1; i < 9; i++)
+        for (int i = 1; i < 10; i++)
         {
             string text = i.ToString();
             menuOptions.Add(transform.Find("Menu").Find("Options").Find(text).gameObject);
         }
 
-        string[] microphones = Microphone.devices;
-        for (int i = 0; i < microphones.Length; i++)
-        {
-            if (microphones[i] == GameSettings.microphoneName)
-            {
-                microphoneIndex = i;
-                break;
-            }
-        }
         DisplayMicrophone();
-
-        WebCamDevice[] cameras = WebCamTexture.devices;
-        for (int i = 0; i < cameras.Length; i++)
-        {
-            if (cameras[i].name == GameSettings.webCamName)
-            {
-                webCamIndex = i;
-                break;
-            }
-        }
         DisplayWebCam();
 
         DisplayGraphicQuality();
@@ -355,6 +346,7 @@ public class SettingsMenu : MonoBehaviour
         menuOptions[1].transform.Find("CheckBackground").Find("Checker").gameObject.SetActive(GameSettings.muteMusic);
         menuOptions[3].transform.Find("CheckBackground").Find("Checker").gameObject.SetActive(GameSettings.vSync);
         menuOptions[5].transform.Find("CheckBackground").Find("Checker").gameObject.SetActive(GameSettings.fullscreen);
+        menuOptions[7].transform.Find("CheckBackground").Find("Checker").gameObject.SetActive(GameSettings.useSpeech);
 
         pointedOptionMenu = 0;
         PointOption(pointedOptionMenu, menuOptions);
@@ -362,8 +354,6 @@ public class SettingsMenu : MonoBehaviour
 
     public void CloseMenu()
     {
-        if (tex != null) tex.Stop();
-
         pointer.transform.SetParent(transform.parent.transform.Find("Menu"));
         pointer.SetActive(true);
         menuOptions.Clear();
@@ -393,7 +383,7 @@ public class SettingsMenu : MonoBehaviour
                     allOptions[i].transform.Find("Slider").Find("Handle Slide Area").Find("Handle").GetComponent<Image>().color = new Color(0.4625f, 0.4625f, 0.4625f);
                     allOptions[i].transform.Find("Slider").Find("Fill Area").Find("Fill").GetComponent<Image>().color = new Color(0.4625f, 0.4625f, 0.4625f);
                 }
-                else if (i == 4 || i == 6 || i == 7)
+                else if (i == 4 || i == 6 || i == 8)
                 {
    
                     allOptions[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
@@ -403,7 +393,7 @@ public class SettingsMenu : MonoBehaviour
                     allOptions[i].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").Find("Arrow").GetComponent<RawImage>().color = new Color(0.2666f, 0.2666f, 0.2666f);
                     allOptions[i].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").Find("Arrow").GetComponent<RawImage>().color = new Color(0.2666f, 0.2666f, 0.2666f);
                 }
-                else if (i == 1 || i == 3 || i == 5)
+                else if (i == 1 || i == 3 || i == 5 || i == 7)
                 {
                     allOptions[i].GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
                     allOptions[i].transform.Find("CheckBackground").GetComponent<RawImage>().color = new Color(0.2666f, 0.2666f, 0.2666f);
@@ -430,7 +420,7 @@ public class SettingsMenu : MonoBehaviour
                 allOptions[option].transform.Find("Slider").Find("Handle Slide Area").Find("Handle").GetComponent<Image>().color = new Color(1f, 1f, 1f);
                 allOptions[option].transform.Find("Slider").Find("Fill Area").Find("Fill").GetComponent<Image>().color = new Color(1f, 1f, 1f);
             }
-            else if (option == 4 || option == 6 || option == 7)
+            else if (option == 4 || option == 6 || option == 8)
             {
                 allOptions[option].transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
 
@@ -441,7 +431,7 @@ public class SettingsMenu : MonoBehaviour
                 allOptions[option].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").Find("Arrow").GetComponent<RawImage>().color = new Color(1f, 1f, 1f);
                 allOptions[option].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").Find("Arrow").GetComponent<RawImage>().color = new Color(1f, 1f, 1f);
             }
-            else if (option == 1 || option == 3 || option == 5)
+            else if (option == 1 || option == 3 || option == 5 || option == 7)
             {
                 pointer.transform.SetParent(allOptions[option].transform);
                 pointer.SetActive(true);
@@ -452,40 +442,10 @@ public class SettingsMenu : MonoBehaviour
             }
         }
     }
-    void DisplayMicrophone()
-    {
-        string[] microphones = Microphone.devices;
-        menuOptions[6].transform.Find("Desc").GetComponent<TextMeshProUGUI>().text = GameSettings.microphoneName;
-        if (microphoneIndex > 0) menuOptions[6].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.SetActive(true);
-        else menuOptions[6].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.SetActive(false);
-
-        if (microphoneIndex < microphones.Length - 1) menuOptions[6].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.SetActive(true);
-        else menuOptions[6].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.SetActive(false);
-    }
-    void DisplayWebCam()
-    {
-        WebCamDevice[] cameras = WebCamTexture.devices;
-        menuOptions[7].transform.Find("Desc").GetComponent<TextMeshProUGUI>().text = GameSettings.webCamName;
-        if (webCamIndex > 0) menuOptions[7].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.SetActive(true);
-        else menuOptions[7].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.SetActive(false);
-
-        if (webCamIndex < cameras.Length - 1) menuOptions[7].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.SetActive(true);
-        else menuOptions[7].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.SetActive(false);
-
-        if(tex != null) tex.Stop();
-        
-        tex = new WebCamTexture(GameSettings.webCamName);
-        webcamVideoDisplay.texture = tex;
-        //tex.Play();
-
-        float scale = (float)tex.height / (float)tex.width;
-        webcamVideoDisplayFrame.sizeDelta = new Vector2(webcamVideoDisplayFrame.sizeDelta.x, webcamVideoDisplayFrame.sizeDelta.x * scale);
-    }
-
     void DisplayGraphicQuality()
     {
         menuOptions[4].transform.Find("Desc").GetComponent<TextMeshProUGUI>().text = GameSettings.graphicsQuality.ToString();
-        if(GameSettings.graphicsQuality == GameSettings.GraphicsQuality.Low)
+        if (GameSettings.graphicsQuality == GameSettings.GraphicsQuality.Low)
         {
             menuOptions[4].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.SetActive(false);
             menuOptions[4].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.SetActive(true);
@@ -501,6 +461,67 @@ public class SettingsMenu : MonoBehaviour
             menuOptions[4].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.SetActive(false);
         }
     }
+
+    void DisplayMicrophone()
+    {
+        string[] microphones = Microphone.devices;
+        microphoneIndex = -1;
+        for (int i = 0; i < microphones.Length; i++)
+        {
+            if (microphones[i] == GameSettings.microphoneName)
+            {
+                microphoneIndex = i;
+                break;
+            }
+        }
+
+        menuOptions[6].transform.Find("Desc").GetComponent<TextMeshProUGUI>().text = GameSettings.microphoneName;
+
+        if (microphoneIndex > 0) menuOptions[6].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.SetActive(true);
+        else menuOptions[6].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.SetActive(false);
+
+        if (microphoneIndex < microphones.Length - 1) menuOptions[6].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.SetActive(true);
+        else menuOptions[6].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.SetActive(false);
+
+        if (microphoneIndex == -1)
+        {
+            menuOptions[6].transform.Find("Desc").GetComponent<TextMeshProUGUI>().text = "no Microphone detected";
+            menuOptions[6].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.SetActive(false);
+            menuOptions[6].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.SetActive(false);
+
+            menuOptions[7].transform.Find("CheckBackground").Find("Checker").gameObject.SetActive(false);
+            speechChangeable = false;
+        }
+        else speechChangeable = true;
+    }
+    void DisplayWebCam()
+    {
+        WebCamDevice[] cameras = WebCamTexture.devices;
+        webCamIndex = -1;
+        for (int i = 0; i < cameras.Length; i++)
+        {
+            if (cameras[i].name == GameSettings.webCamName)
+            {
+                webCamIndex = i;
+                break;
+            }
+        }
+
+        menuOptions[8].transform.Find("Desc").GetComponent<TextMeshProUGUI>().text = GameSettings.webCamName;
+        if (webCamIndex > 0) menuOptions[8].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.SetActive(true);
+        else menuOptions[8].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.SetActive(false);
+
+        if (webCamIndex < cameras.Length - 1) menuOptions[8].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.SetActive(true);
+        else menuOptions[8].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.SetActive(false);
+
+        if (webCamIndex == -1)
+        {
+            menuOptions[8].transform.Find("Desc").GetComponent<TextMeshProUGUI>().text = "no Camera detected";
+            menuOptions[8].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.SetActive(false);
+            menuOptions[8].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.SetActive(false);
+        }
+    }
+
     void ChangeMicrophone()
     {
         string[] microphones = Microphone.devices;
@@ -588,7 +609,11 @@ public class SettingsMenu : MonoBehaviour
                     texture.LoadRawTextureData(frameBuffer);
                     texture.Apply();
 
+                    float scale = (float)texture.height / (float)texture.width;
+                    webcamVideoDisplayFrame.sizeDelta = new Vector2(webcamVideoDisplayFrame.sizeDelta.x, webcamVideoDisplayFrame.sizeDelta.x * scale);
+
                     webcamVideoDisplay.gameObject.SetActive(true);
+
                     webcamVideoDisplay.texture = texture;
 
                 }
@@ -599,7 +624,5 @@ public class SettingsMenu : MonoBehaviour
             webcamVideoDisplay.gameObject.SetActive(false);
             Debug.Log("video_unity doesn't exist");
         }
-
-
     }
 }

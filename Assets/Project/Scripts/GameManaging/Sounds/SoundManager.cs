@@ -89,6 +89,8 @@ public class SoundManager : MonoBehaviour
 
     public Transform SoundsParent;
 
+    private List<Coroutine> fadingOutCoroutines = new List<Coroutine>();
+    private List<Coroutine> fadingInCoroutines = new List<Coroutine>();
     public AudioSource CreateAudioSource(Sound sound, GameObject soundParent = null, float minHearingDistance = 4f, float maxHearingDistance = 20f)
     {
         AudioSource audioSource;
@@ -134,13 +136,16 @@ public class SoundManager : MonoBehaviour
     {
         AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
 
+        fadingOutCoroutines = new List<Coroutine>();
+
+        foreach(Coroutine coroutine in fadingInCoroutines) if (coroutine != null) StopCoroutine(coroutine);
+
         foreach (AudioSource audioSource in audioSources)
         {
             if (!GetFirstSoundEnumByAudioClip(audioSource.clip).ToString().StartsWith("MUSIC_") && !onlyMusic) audioSource.Pause();
             else
             {
-                StopAllCoroutines();
-                StartCoroutine(FadeOutMusic(audioSource));
+                fadingOutCoroutines.Add(StartCoroutine(FadeOutMusic(audioSource)));
             }
         }
     }
@@ -148,13 +153,16 @@ public class SoundManager : MonoBehaviour
     {
         AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
 
+        fadingInCoroutines = new List<Coroutine>();
+
+        foreach (Coroutine coroutine in fadingOutCoroutines) if (coroutine != null) StopCoroutine(coroutine);
+
         foreach (AudioSource audioSource in audioSources)
         {
             if (!GetFirstSoundEnumByAudioClip(audioSource.clip).ToString().StartsWith("MUSIC_") && !onlyMusic) audioSource.UnPause();
-            else if(!FindObjectOfType<BackgroundMusic>().muteBackgroundMusic)
+            else if(!GameSettings.muteMusic)
             {
-                StopAllCoroutines();
-                StartCoroutine(FadeInMusic(audioSource));
+                fadingOutCoroutines.Add(StartCoroutine(FadeInMusic(audioSource)));
             }
         }
     }

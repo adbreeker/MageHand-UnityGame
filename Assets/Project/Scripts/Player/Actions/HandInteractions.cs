@@ -7,9 +7,6 @@ public class HandInteractions : MonoBehaviour
     [Header("In Hand")]
     public GameObject inHand = null;
 
-    [Header("Use speach to text")]
-    public bool useSpeach = true;
-
     [Header("Needed objects")]
     public GameObject player;
     public Transform holdingPoint;
@@ -114,7 +111,8 @@ public class HandInteractions : MonoBehaviour
         if (pointer.currentlyPointing != null)
         {
             CooldownClick = true;
-            if (LayerMask.LayerToName(pointer.currentlyPointing.layer) == "Switch")
+            if (LayerMask.LayerToName(pointer.currentlyPointing.layer) == "Switch" || 
+                (LayerMask.LayerToName(pointer.currentlyPointing.layer) == "UI" && PlayerParams.Controllers.spellsMenu.menuOpened))
             {
                 pointer.currentlyPointing.SendMessage("OnClick");
             }
@@ -134,10 +132,10 @@ public class HandInteractions : MonoBehaviour
             {
                 AddToHand(pointer.currentlyPointing, true);
             }
-            if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("UI")) //picking item from inventory
+            if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("UI") 
+                && PlayerParams.Controllers.inventory.inventoryOpened) //picking item from inventory
             {
-                if (pointer.currentlyPointing.GetComponent<ReadableBehavior>() == null
-                    && pointer.currentlyPointing.GetComponent<PopUpActivateOnPickUp>() == null) pickUpItemSound.Play();
+                if (pointer.currentlyPointing.GetComponent<ReadableBehavior>() == null && pointer.currentlyPointing.GetComponent<PopUpActivateOnPickUp>() == null) pickUpItemSound.Play();
                 //getting item from inventory
                 inHand = pointer.currentlyPointing.transform.parent.GetComponent<IconParameters>().originalObject;
                 PlayerParams.Controllers.inventory.inventory.Remove(inHand);
@@ -177,13 +175,13 @@ public class HandInteractions : MonoBehaviour
     void CastSpell() //cast spell with SpellCasting class
     {
         CooldownCast = true;
-        if(useSpeach) //if using speach then microphone starting to record
+        if(GameSettings.useSpeech && !PlayerParams.Variables.uiActive) //if using speach then microphone starting to record
         {
             PlayerParams.Controllers.spellCasting.RecordSpellCasting();
         }
-        else //else just instantly cast light spell
+        else if(!PlayerParams.Variables.uiActive) //open spells menu if using speech is off
         {
-            PlayerParams.Controllers.spellCasting.LightSpell();
+            PlayerParams.Controllers.spellsMenu.OpenMenu();
         }
     }
 
