@@ -12,17 +12,15 @@ public class FadeInFadeOut : MonoBehaviour
     public float fadeInSpeed = 0.025f;
     public float fadeOutSpeed = 0.025f;
 
-    public bool fadeOutAndChangeMusic = true;
-
     void Start()
     {
         if(fadeInScene) StartCoroutine(FadeInScene());
     }
 
-    public void ChangeScene(string sceneName, bool fadeOut = true)
+    public void ChangeScene(string sceneName, bool fadeOut = true, bool fadeOutAndChangeMusic = true)
     {
         FindObjectOfType<BackgroundMusic>().modifyBackgroundMusicVolume = true;
-        if (fadeOut) StartCoroutine(FadeOutScene(sceneName));
+        if (fadeOut) StartCoroutine(FadeOutScene(sceneName, fadeOutAndChangeMusic));
         else SceneManager.LoadScene(sceneName);
     }
 
@@ -48,7 +46,7 @@ public class FadeInFadeOut : MonoBehaviour
         Destroy(instantiatedBlackoutGameObject);
     }
 
-    IEnumerator FadeOutScene(string sceneName)
+    IEnumerator FadeOutScene(string sceneName, bool fadeOutAndChangeMusic)
     {
         GameObject instantiatedBlackoutGameObject = Instantiate(blackoutPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         RawImage blackoutImage = instantiatedBlackoutGameObject.transform.Find("Img").GetComponent<RawImage>();

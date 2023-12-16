@@ -37,8 +37,7 @@ public class ChapterExitCube : MonoBehaviour
         if (colliders.Length > 0)
         {
             SaveProgress();
-            FindObjectOfType<FadeInFadeOut>().fadeOutAndChangeMusic = changeMusic;
-            FindObjectOfType<FadeInFadeOut>().ChangeScene(chapter);
+            FindObjectOfType<FadeInFadeOut>().ChangeScene(chapter, fadeOutAndChangeMusic: changeMusic);
         }
     }
 

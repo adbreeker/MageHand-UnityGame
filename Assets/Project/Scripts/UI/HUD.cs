@@ -24,7 +24,7 @@ public class HUD : MonoBehaviour
 
     void ShowGesture()
     {
-        if (!PlayerParams.Variables.uiActive || PlayerParams.Controllers.inventory.inventoryOpened)
+        if (!PlayerParams.Variables.uiActive || PlayerParams.Controllers.inventory.inventoryOpened || PlayerParams.Controllers.spellsMenu.menuOpened)
         {
             ununnormalizedGestureText = GameObject.FindGameObjectWithTag("MainCamera").transform.Find("Hand").GetComponent<MoveHandPoints>().gesture;
             if (ununnormalizedGestureText == "Pointing_Up") gestureText.text = "Interact";

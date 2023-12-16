@@ -97,7 +97,6 @@ public class LevelExitCube : MonoBehaviour
             }
         }
         SaveProgress();
-        FindObjectOfType<FadeInFadeOut>().fadeOutAndChangeMusic = changeMusic;
-        FindObjectOfType<FadeInFadeOut>().ChangeScene(chapter);
+        FindObjectOfType<FadeInFadeOut>().ChangeScene(chapter, fadeOutAndChangeMusic: changeMusic);
     }
 }
