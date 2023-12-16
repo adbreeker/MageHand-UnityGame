@@ -10,6 +10,8 @@ public class LevelExitCube : MonoBehaviour
     [Header("Searching only on player layer")]
     public LayerMask playerMask;
 
+    public bool changeMusic = false;
+
     BoxCollider box;
 
     //objects needed for saving progress:
@@ -95,6 +97,7 @@ public class LevelExitCube : MonoBehaviour
             }
         }
         SaveProgress();
+        FindObjectOfType<FadeInFadeOut>().fadeOutAndChangeMusic = changeMusic;
         FindObjectOfType<FadeInFadeOut>().ChangeScene(chapter);
     }
 }

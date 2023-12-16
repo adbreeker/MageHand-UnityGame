@@ -10,6 +10,8 @@ public class ChapterExitCube : MonoBehaviour
     [Header("Searching only on player layer")]
     public LayerMask playerMask;
 
+    public bool changeMusic = false;
+
     BoxCollider box;
 
     //objects needed for saving progress:
@@ -35,6 +37,7 @@ public class ChapterExitCube : MonoBehaviour
         if (colliders.Length > 0)
         {
             SaveProgress();
+            FindObjectOfType<FadeInFadeOut>().fadeOutAndChangeMusic = changeMusic;
             FindObjectOfType<FadeInFadeOut>().ChangeScene(chapter);
         }
     }

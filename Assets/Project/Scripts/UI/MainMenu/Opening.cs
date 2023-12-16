@@ -48,7 +48,7 @@ public class Opening : MonoBehaviour
             yield return new WaitForSeconds(0);
         }
 
-        if (WebCamTexture.devices.Length > 0) SceneManager.LoadScene("Menu");
+        if (WebCamTexture.devices.Length > 0) FindObjectOfType<FadeInFadeOut>().ChangeScene("Menu");
         else
         {
             info.SetActive(false);

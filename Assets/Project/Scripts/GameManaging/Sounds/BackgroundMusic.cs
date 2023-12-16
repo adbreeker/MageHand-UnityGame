@@ -19,10 +19,16 @@ public class BackgroundMusic : MonoBehaviour
 
     void Start()
     {
+        DontDestroyOnLoad(gameObject);
+
         soundManager = FindObjectOfType<SoundManager>();
 
         startMusicAS = soundManager.CreateAudioSource(startMusic);
         loopMusicAS = soundManager.CreateAudioSource(loopMusic);
+
+        startMusicAS.transform.parent = transform;
+        loopMusicAS.transform.parent = transform;
+                
 
         if(!GameSettings.muteMusic) startMusicAS.Play();
     }
