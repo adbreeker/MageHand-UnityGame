@@ -76,11 +76,16 @@ public class FadeInFadeOut : MonoBehaviour
     {
         GameObject instantiatedBlackoutGameObject = Instantiate(blackoutPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         RawImage blackoutImage = instantiatedBlackoutGameObject.transform.Find("Img").GetComponent<RawImage>();
-        float alpha = blackoutImage.color.a;
 
-        alpha = 0;
+        BackgroundMusic backgroundMusic = FindObjectOfType<BackgroundMusic>();
+        float startVolumeDecrease = backgroundMusic.startMusicAS.volume * fadeOutSpeed;
+        float loopVolumeDecrease = backgroundMusic.loopMusicAS.volume * fadeOutSpeed;
+
+        float alpha = 0;
         while (alpha < 1)
         {
+            backgroundMusic.startMusicAS.volume -= startVolumeDecrease;
+            backgroundMusic.loopMusicAS.volume -= loopVolumeDecrease;
             alpha += fadeOutSpeed;
             blackoutImage.color = new Color(0, 0, 0, alpha);
             yield return new WaitForSeconds(0);

@@ -109,10 +109,10 @@ public class SpellsMenu : MonoBehaviour
             {
                 if (spellIcons[i].GetComponent<EnlightObject>() != null)
                 {
-                    spellIcons[i].GetComponent<SpellIcon>().background.GetComponent<Image>().color = new Color(0.2666f, 0.2666f, 0.2666f);
-                    spellIcons[i].GetComponent<TextMeshProUGUI>().color = new Color(1f, 0.482f, 0f);
+                    spellIcons[i].GetComponent<SpellIcon>().background.GetComponent<Image>().color = new Color(1f, 0.482f, 0f);
+                    spellIcons[i].GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
                 }
-                else if (spellIcons[i].GetComponent<SpellIcon>().background.GetComponent<Image>().color == new Color(0.2666f, 0.2666f, 0.2666f))
+                else if (spellIcons[i].GetComponent<SpellIcon>().background.GetComponent<Image>().color == new Color(1f, 0.482f, 0f))
                 {
                     spellIcons[i].GetComponent<SpellIcon>().background.GetComponent<Image>().color = new Color(0f, 0f, 0f);
                     spellIcons[i].GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class CheckPython : MonoBehaviour
 {
+    public bool changeScene = true;
     void Update()
     {
         if (SceneManager.GetActiveScene().name != "Opening") CheckIfPythonWorks();
@@ -18,7 +19,7 @@ public class CheckPython : MonoBehaviour
             {
                 {
                     UnityEngine.Debug.Log("Python process has exited - crashed");
-                    FindObjectOfType<FadeInFadeOut>().ChangeScene("Python_Crashed");
+                    if(changeScene) FindObjectOfType<FadeInFadeOut>().ChangeScene("Python_Crashed");
                 }
             }
         }

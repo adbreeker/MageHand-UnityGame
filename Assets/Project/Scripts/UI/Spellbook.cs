@@ -79,7 +79,7 @@ public class Spellbook : MonoBehaviour
         }
 
         //Play pointed voice
-        if (Input.GetKeyDown(KeyCode.Space) && spellbookOpened)
+        if (Input.GetKeyDown(KeyCode.Space) && spellbookOpened && GameSettings.useSpeech)
         {
 
             if (lightVoice.isPlaying || pickUpVoice.isPlaying) voiceIsPlaying = true;
