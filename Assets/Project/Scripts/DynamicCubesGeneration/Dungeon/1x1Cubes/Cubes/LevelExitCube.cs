@@ -14,13 +14,13 @@ public class LevelExitCube : MonoBehaviour
 
     BoxCollider box;
 
+    bool _isAnimationGoing = false;
     //objects needed for saving progress:
     private ProgressSaving saveManager;
     private Spellbook spellbook;
     private Inventory inventory;
     private Journal journal;
 
-    bool _isAnimationGoing = false;
 
     private void Start() //finding all necessary objects
     {

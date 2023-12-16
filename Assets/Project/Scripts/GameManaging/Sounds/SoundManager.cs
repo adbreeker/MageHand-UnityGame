@@ -132,7 +132,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void PauseAllAudioSources(bool onlyMusic = false)
+    public void PauseAllAudioSourcesAndFadeOutMusic()
     {
         AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
 
@@ -142,14 +142,14 @@ public class SoundManager : MonoBehaviour
 
         foreach (AudioSource audioSource in audioSources)
         {
-            if (!GetFirstSoundEnumByAudioClip(audioSource.clip).ToString().StartsWith("MUSIC_") && !onlyMusic) audioSource.Pause();
+            if (!GetFirstSoundEnumByAudioClip(audioSource.clip).ToString().StartsWith("MUSIC_")) audioSource.Pause();
             else
             {
-                fadingOutCoroutines.Add(StartCoroutine(FadeOutMusic(audioSource)));
+                fadingOutCoroutines.Add(StartCoroutine(FadeOutAudioSource(audioSource)));
             }
         }
     }
-    public void UnPauseAllAudioSources(bool onlyMusic = false)
+    public void UnPauseAllAudioSourcesFadeInMusic()
     {
         AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
 
@@ -159,15 +159,16 @@ public class SoundManager : MonoBehaviour
 
         foreach (AudioSource audioSource in audioSources)
         {
-            if (!GetFirstSoundEnumByAudioClip(audioSource.clip).ToString().StartsWith("MUSIC_") && !onlyMusic) audioSource.UnPause();
+            if (!GetFirstSoundEnumByAudioClip(audioSource.clip).ToString().StartsWith("MUSIC_")) audioSource.UnPause();
             else if(!GameSettings.muteMusic)
             {
-                fadingOutCoroutines.Add(StartCoroutine(FadeInMusic(audioSource)));
+                fadingOutCoroutines.Add(StartCoroutine(FadeInAudioSource(audioSource)));
             }
         }
     }
-    IEnumerator FadeOutMusic(AudioSource audioSource)
+    IEnumerator FadeOutAudioSource(AudioSource audioSource)
     {
+        Debug.Log(audioSource.name);
         float startVolume = audioSource.volume;
         while (audioSource.volume > 0)
         {
@@ -175,7 +176,7 @@ public class SoundManager : MonoBehaviour
             yield return new WaitForSecondsRealtime(0.02f);
         }
     }
-    IEnumerator FadeInMusic(AudioSource audioSource)
+    IEnumerator FadeInAudioSource(AudioSource audioSource)
     {
         float targetVolume = GetBaseVolume(GetFirstSoundEnumByAudioClip(audioSource.clip)) * volume;
         if(audioSource.volume == targetVolume) audioSource.volume = 0;
@@ -183,6 +184,19 @@ public class SoundManager : MonoBehaviour
         {
             audioSource.volume += targetVolume * Time.unscaledDeltaTime * 5;
             yield return new WaitForSecondsRealtime(0.02f);
+        }
+    }
+
+    public void FadeOutSFXs()
+    {
+        AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
+
+        foreach (AudioSource audioSource in audioSources)
+        {
+            if (GetFirstSoundEnumByAudioClip(audioSource.clip).ToString().StartsWith("SFX_"))
+            {
+                StartCoroutine(FadeOutAudioSource(audioSource));
+            }
         }
     }
 

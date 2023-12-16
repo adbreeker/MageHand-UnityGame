@@ -58,6 +58,8 @@ public class FadeInFadeOut : MonoBehaviour
 
         float alpha = 0;
 
+        FindAnyObjectByType<SoundManager>().FadeOutSFXs();
+
         while (alpha < 1)
         {
             if(fadeOutAndChangeMusic)
