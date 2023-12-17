@@ -21,7 +21,7 @@ public class GameSettings : MonoBehaviour
     public static string webCamName = null;
 
     // 0 - 30; 1 - 60; 2 - 120; 3 - 144; 4 - 160; 5 - 165; 6 - 180; 7 - 200; 8 - 240; 9 - 360; 10 - unlimited
-    public static int fpsCap = 1;
+    public static int fpsCap = 10;
     private int checkerFpsCap;
 
     public static GraphicsQuality graphicsQuality = GraphicsQuality.High;
