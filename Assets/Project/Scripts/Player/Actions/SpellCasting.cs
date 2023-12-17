@@ -97,13 +97,21 @@ public class SpellCasting : MonoBehaviour
             Collider[] nearItems = Physics.OverlapSphere(castPos, 3.0f, LayerMask.GetMask("Item"));
             if(nearItems.Length > 0)
             {
-                PlayerParams.Controllers.handInteractions.AddToHand(nearItems[0].gameObject, false);
-                while (nearItems[0].transform.position != PlayerParams.Controllers.handInteractions.holdingPoint.position)
+                GameObject nearestItem = nearItems[0].gameObject;
+                foreach(Collider item in nearItems) 
                 {
-                    nearItems[0].transform.position = Vector3.MoveTowards(nearItems[0].transform.position, PlayerParams.Controllers.handInteractions.holdingPoint.position, 7.0f * Time.fixedDeltaTime);
+                    if(Vector3.Distance(item.transform.position, hand.transform.position) < Vector3.Distance(nearestItem.transform.position, hand.transform.position))
+                    {
+                        nearestItem = item.gameObject;
+                    }
+                }
+                PlayerParams.Controllers.handInteractions.AddToHand(nearestItem, false);
+                while (nearestItem.transform.position != PlayerParams.Controllers.handInteractions.holdingPoint.position)
+                {
+                    nearestItem.transform.position = Vector3.MoveTowards(nearestItem.transform.position, PlayerParams.Controllers.handInteractions.holdingPoint.position, 7.0f * Time.fixedDeltaTime);
                     yield return new WaitForFixedUpdate();
                 }
-                PlayerParams.Controllers.handInteractions.AddToHand(nearItems[0].gameObject, true);
+                PlayerParams.Controllers.handInteractions.AddToHand(nearestItem.gameObject, true);
             }
             mana -= scroll.manaCost;
         }
