@@ -10,8 +10,11 @@ public class ChapterExitCube : MonoBehaviour
     [Header("Searching only on player layer")]
     public LayerMask playerMask;
 
+    public bool changeMusic = false;
+
     BoxCollider box;
 
+    private bool _isAnimationGoing = false;
     //objects needed for saving progress:
     private ProgressSaving saveManager;
     private Spellbook spellbook;
@@ -32,10 +35,12 @@ public class ChapterExitCube : MonoBehaviour
     {
         Collider[] colliders;
         colliders = Physics.OverlapBox(box.bounds.center, box.bounds.extents, Quaternion.identity, playerMask);
-        if (colliders.Length > 0)
+        if (colliders.Length > 0 && !_isAnimationGoing)
         {
             SaveProgress();
-            FindObjectOfType<FadeInFadeOut>().ChangeScene(chapter);
+            
+            FindObjectOfType<FadeInFadeOut>().ChangeScene(chapter, fadeOutAndChangeMusic: changeMusic);
+            _isAnimationGoing = true;
         }
     }
 

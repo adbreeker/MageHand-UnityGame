@@ -89,6 +89,8 @@ public class SoundManager : MonoBehaviour
 
     public Transform SoundsParent;
 
+    private List<Coroutine> fadingOutCoroutines = new List<Coroutine>();
+    private List<Coroutine> fadingInCoroutines = new List<Coroutine>();
     public AudioSource CreateAudioSource(Sound sound, GameObject soundParent = null, float minHearingDistance = 4f, float maxHearingDistance = 20f)
     {
         AudioSource audioSource;
@@ -130,36 +132,43 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void PauseAllAudioSources(bool onlyMusic = false)
+    public void PauseAllAudioSourcesAndFadeOutMusic()
     {
         AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
 
+        fadingOutCoroutines = new List<Coroutine>();
+
+        foreach(Coroutine coroutine in fadingInCoroutines) if (coroutine != null) StopCoroutine(coroutine);
+
         foreach (AudioSource audioSource in audioSources)
         {
-            if (!GetFirstSoundEnumByAudioClip(audioSource.clip).ToString().StartsWith("MUSIC_") && !onlyMusic) audioSource.Pause();
+            if (!GetFirstSoundEnumByAudioClip(audioSource.clip).ToString().StartsWith("MUSIC_")) audioSource.Pause();
             else
             {
-                StopAllCoroutines();
-                StartCoroutine(FadeOutMusic(audioSource));
+                fadingOutCoroutines.Add(StartCoroutine(FadeOutAudioSource(audioSource)));
             }
         }
     }
-    public void UnPauseAllAudioSources(bool onlyMusic = false)
+    public void UnPauseAllAudioSourcesFadeInMusic()
     {
         AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
 
+        fadingInCoroutines = new List<Coroutine>();
+
+        foreach (Coroutine coroutine in fadingOutCoroutines) if (coroutine != null) StopCoroutine(coroutine);
+
         foreach (AudioSource audioSource in audioSources)
         {
-            if (!GetFirstSoundEnumByAudioClip(audioSource.clip).ToString().StartsWith("MUSIC_") && !onlyMusic) audioSource.UnPause();
-            else if(!FindObjectOfType<BackgroundMusic>().muteBackgroundMusic)
+            if (!GetFirstSoundEnumByAudioClip(audioSource.clip).ToString().StartsWith("MUSIC_")) audioSource.UnPause();
+            else if(!GameSettings.muteMusic)
             {
-                StopAllCoroutines();
-                StartCoroutine(FadeInMusic(audioSource));
+                fadingOutCoroutines.Add(StartCoroutine(FadeInAudioSource(audioSource)));
             }
         }
     }
-    IEnumerator FadeOutMusic(AudioSource audioSource)
+    IEnumerator FadeOutAudioSource(AudioSource audioSource)
     {
+        Debug.Log(audioSource.name);
         float startVolume = audioSource.volume;
         while (audioSource.volume > 0)
         {
@@ -167,7 +176,7 @@ public class SoundManager : MonoBehaviour
             yield return new WaitForSecondsRealtime(0.02f);
         }
     }
-    IEnumerator FadeInMusic(AudioSource audioSource)
+    IEnumerator FadeInAudioSource(AudioSource audioSource)
     {
         float targetVolume = GetBaseVolume(GetFirstSoundEnumByAudioClip(audioSource.clip)) * volume;
         if(audioSource.volume == targetVolume) audioSource.volume = 0;
@@ -175,6 +184,19 @@ public class SoundManager : MonoBehaviour
         {
             audioSource.volume += targetVolume * Time.unscaledDeltaTime * 5;
             yield return new WaitForSecondsRealtime(0.02f);
+        }
+    }
+
+    public void FadeOutSFXs()
+    {
+        AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
+
+        foreach (AudioSource audioSource in audioSources)
+        {
+            if (GetFirstSoundEnumByAudioClip(audioSource.clip).ToString().StartsWith("SFX_"))
+            {
+                StartCoroutine(FadeOutAudioSource(audioSource));
+            }
         }
     }
 

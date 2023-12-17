@@ -10,15 +10,17 @@ public class LevelExitCube : MonoBehaviour
     [Header("Searching only on player layer")]
     public LayerMask playerMask;
 
+    public bool changeMusic = false;
+
     BoxCollider box;
 
+    bool _isAnimationGoing = false;
     //objects needed for saving progress:
     private ProgressSaving saveManager;
     private Spellbook spellbook;
     private Inventory inventory;
     private Journal journal;
 
-    bool _isAnimationGoing = false;
 
     private void Start() //finding all necessary objects
     {
@@ -95,6 +97,6 @@ public class LevelExitCube : MonoBehaviour
             }
         }
         SaveProgress();
-        FindObjectOfType<FadeInFadeOut>().ChangeScene(chapter);
+        FindObjectOfType<FadeInFadeOut>().ChangeScene(chapter, fadeOutAndChangeMusic: changeMusic);
     }
 }

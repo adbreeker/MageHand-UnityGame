@@ -9,7 +9,6 @@ public class BackgroundMusic : MonoBehaviour
     public SoundManager.Sound startMusic;
     public SoundManager.Sound loopMusic;
 
-    public bool muteBackgroundMusic = false;
     public bool modifyBackgroundMusicVolume = false;
 
     [Header("Read only")]
@@ -20,21 +19,27 @@ public class BackgroundMusic : MonoBehaviour
 
     void Start()
     {
+        DontDestroyOnLoad(gameObject);
+
         soundManager = FindObjectOfType<SoundManager>();
 
         startMusicAS = soundManager.CreateAudioSource(startMusic);
         loopMusicAS = soundManager.CreateAudioSource(loopMusic);
 
-        if(!muteBackgroundMusic) startMusicAS.Play();
+        startMusicAS.transform.parent = transform;
+        loopMusicAS.transform.parent = transform;
+                
+
+        if(!GameSettings.muteMusic) startMusicAS.Play();
     }
     void Update()
     {
-        if (!muteBackgroundMusic && !startMusicAS.isPlaying && !loopMusicAS.isPlaying) loopMusicAS.Play();
+        if (!GameSettings.muteMusic && !startMusicAS.isPlaying && !loopMusicAS.isPlaying) loopMusicAS.Play();
 
-        if (muteBackgroundMusic && startMusicAS.volume != 0) startMusicAS.volume = 0;
-        if (muteBackgroundMusic && loopMusicAS.volume != 0) loopMusicAS.volume = 0;
+        if (GameSettings.muteMusic && startMusicAS.volume != 0) startMusicAS.volume = 0;
+        if (GameSettings.muteMusic && loopMusicAS.volume != 0) loopMusicAS.volume = 0;
 
-        if (!muteBackgroundMusic && PlayerParams.Controllers.pauseMenu == null && !modifyBackgroundMusicVolume)
+        if (!GameSettings.muteMusic && PlayerParams.Controllers.pauseMenu == null && !modifyBackgroundMusicVolume)
         {
             if(startMusicAS.volume != soundManager.GetBaseVolume(soundManager.GetFirstSoundEnumByAudioClip(startMusicAS.clip)) * GameSettings.soundVolume)
             {

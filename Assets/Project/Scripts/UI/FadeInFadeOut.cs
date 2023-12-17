@@ -9,17 +9,18 @@ public class FadeInFadeOut : MonoBehaviour
     public bool fadeInScene = true;
     public GameObject blackoutPrefab;
 
-    private float fadingSpeed = 0.025f;
+    public float fadeInSpeed = 0.025f;
+    public float fadeOutSpeed = 0.025f;
 
     void Start()
     {
         if(fadeInScene) StartCoroutine(FadeInScene());
     }
 
-    public void ChangeScene(string sceneName, bool fadeOut = true)
+    public void ChangeScene(string sceneName, bool fadeOut = true, bool fadeOutAndChangeMusic = true)
     {
         FindObjectOfType<BackgroundMusic>().modifyBackgroundMusicVolume = true;
-        if (fadeOut) StartCoroutine(FadeOutScene(sceneName));
+        if (fadeOut) StartCoroutine(FadeOutScene(sceneName, fadeOutAndChangeMusic));
         else SceneManager.LoadScene(sceneName);
     }
 
@@ -38,32 +39,40 @@ public class FadeInFadeOut : MonoBehaviour
         alpha = 1;
         while (alpha > 0)
         {
-            alpha -= fadingSpeed;
+            alpha -= fadeInSpeed;
             blackoutImage.color = new Color(0, 0, 0, alpha);
             yield return new WaitForSeconds(0);
         }
         Destroy(instantiatedBlackoutGameObject);
     }
 
-    IEnumerator FadeOutScene(string sceneName)
+    IEnumerator FadeOutScene(string sceneName, bool fadeOutAndChangeMusic)
     {
         GameObject instantiatedBlackoutGameObject = Instantiate(blackoutPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         RawImage blackoutImage = instantiatedBlackoutGameObject.transform.Find("Img").GetComponent<RawImage>();
 
+
         BackgroundMusic backgroundMusic = FindObjectOfType<BackgroundMusic>();
-        float startVolumeDecrease = backgroundMusic.startMusicAS.volume * fadingSpeed;
-        float loopVolumeDecrease = backgroundMusic.loopMusicAS.volume * fadingSpeed;
+        float startVolumeDecrease = backgroundMusic.startMusicAS.volume * fadeOutSpeed;
+        float loopVolumeDecrease = backgroundMusic.loopMusicAS.volume * fadeOutSpeed;
 
         float alpha = 0;
 
+        FindAnyObjectByType<SoundManager>().FadeOutSFXs();
+
         while (alpha < 1)
         {
-            backgroundMusic.startMusicAS.volume -= startVolumeDecrease;
-            backgroundMusic.loopMusicAS.volume -= loopVolumeDecrease;
-            alpha += fadingSpeed;
+            if(fadeOutAndChangeMusic)
+            {
+                backgroundMusic.startMusicAS.volume -= startVolumeDecrease;
+                backgroundMusic.loopMusicAS.volume -= loopVolumeDecrease;
+            }
+            alpha += fadeOutSpeed;
             blackoutImage.color = new Color(0, 0, 0, alpha);
             yield return new WaitForSeconds(0);
         }
+
+        if (fadeOutAndChangeMusic) Destroy(backgroundMusic.gameObject);
 
         if (PlayerParams.Controllers.pauseMenu != null) PlayerParams.Controllers.pauseMenu.freezeTime = false;
         yield return new WaitForFixedUpdate();
@@ -75,12 +84,17 @@ public class FadeInFadeOut : MonoBehaviour
     {
         GameObject instantiatedBlackoutGameObject = Instantiate(blackoutPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         RawImage blackoutImage = instantiatedBlackoutGameObject.transform.Find("Img").GetComponent<RawImage>();
-        float alpha = blackoutImage.color.a;
 
-        alpha = 0;
+        BackgroundMusic backgroundMusic = FindObjectOfType<BackgroundMusic>();
+        float startVolumeDecrease = backgroundMusic.startMusicAS.volume * fadeOutSpeed;
+        float loopVolumeDecrease = backgroundMusic.loopMusicAS.volume * fadeOutSpeed;
+
+        float alpha = 0;
         while (alpha < 1)
         {
-            alpha += fadingSpeed;
+            backgroundMusic.startMusicAS.volume -= startVolumeDecrease;
+            backgroundMusic.loopMusicAS.volume -= loopVolumeDecrease;
+            alpha += fadeOutSpeed;
             blackoutImage.color = new Color(0, 0, 0, alpha);
             yield return new WaitForSeconds(0);
         }

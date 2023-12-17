@@ -284,9 +284,9 @@ namespace Whisper
          public static WhisperParams GetDefaultParams(WhisperSamplingStrategy strategy =
              WhisperSamplingStrategy.WHISPER_SAMPLING_GREEDY)
          {
-             Debug.Log($"Requesting default Whisper params for strategy {strategy}...");
+             //Debug.Log($"Requesting default Whisper params for strategy {strategy}...");
              var nativeParams = WhisperNative.whisper_full_default_params(strategy);
-             Debug.Log("Default params generated!");
+             //Debug.Log("Default params generated!");
 
              var param = new WhisperParams(nativeParams)
              {

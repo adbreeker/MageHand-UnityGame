@@ -23,7 +23,11 @@ public class Intro : MonoBehaviour
 
     private void Update()
     {
-        if (animationEnded && Input.GetKeyDown(KeyCode.Space)) FindObjectOfType<FadeInFadeOut>().ChangeScene(nextLevel);
+        if (animationEnded && Input.GetKeyDown(KeyCode.Space))
+        {
+            FindObjectOfType<FadeInFadeOut>().ChangeScene(nextLevel);
+            FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption).Play();
+        }
 
         if (Input.GetKeyDown(KeyCode.Space)) skip = true;
     }

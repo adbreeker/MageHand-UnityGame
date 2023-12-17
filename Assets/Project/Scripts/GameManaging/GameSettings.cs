@@ -6,9 +6,8 @@ using UnityEngine;
 
 public class GameSettings : MonoBehaviour
 {
-    static Process mediapipeHandProcess;
+    public static Process mediapipeHandProcess;
     private SoundManager soundManager;
-    private BackgroundMusic backgroundMusic;
 
     public enum GraphicsQuality
     {
@@ -35,7 +34,9 @@ public class GameSettings : MonoBehaviour
     private float lastWidth;
     private float lastHeight;
 
-    public static bool muteMusic = true;
+    public static bool muteMusic = false;
+
+    public static bool useSpeech = true;
 
     //always working settings for the game
     void Awake()
@@ -48,16 +49,15 @@ public class GameSettings : MonoBehaviour
     private void Start()
     {
         soundManager = FindObjectOfType<SoundManager>();
-        backgroundMusic = FindObjectOfType<BackgroundMusic>();
 
         //set volume
         soundManager.ChangeVolume(soundVolume);
 
         //set microphone
-        ChangeMicrophoneOnStartIfAble();
+        UpdateMicrophone();
 
         //set webcam
-        ChangeWebcamOnStartIfAble();
+        UpdateWebCam();
 
         //set fpsCap
         UpdateFPSCap();
@@ -76,16 +76,17 @@ public class GameSettings : MonoBehaviour
         Cursor.visible = !fullscreen;
         if(fullscreen) Cursor.lockState = CursorLockMode.Confined;
         else Cursor.lockState = CursorLockMode.None;
-
-        //set muteMusice
-        backgroundMusic.muteBackgroundMusic = muteMusic;
     }
 
     private void Update()
     {
         //update soundVolume
         if (soundVolume != soundManager.GetVolume()) soundManager.ChangeVolume(soundVolume, fromPauseMenu: true);
-        
+
+        //update webcam and microphone
+        UpdateMicrophone();
+        UpdateWebCam();
+
         //update fpsCap
         if (checkerFpsCap != fpsCap)
         {
@@ -117,9 +118,8 @@ public class GameSettings : MonoBehaviour
             else Cursor.lockState = CursorLockMode.None;
         }
 
-        //update muteMusic
-        if (backgroundMusic.muteBackgroundMusic != muteMusic) backgroundMusic.muteBackgroundMusic = muteMusic;
-
+        //useSpeech
+        if (microphoneName == null) useSpeech = false;
 
         //resizing resolution while in window mode to stay in 16/9
         if (!Screen.fullScreen)
@@ -161,41 +161,51 @@ public class GameSettings : MonoBehaviour
     }
 
     //change microphone to chosen from settings if it is able to find it
-    void ChangeMicrophoneOnStartIfAble()
+    void UpdateMicrophone()
     {
-        if (microphoneName == null && Microphone.devices.Length > 0) microphoneName = Microphone.devices[0];
-        else
+        if (Microphone.devices.Length > 0)
         {
-            bool found = false;
-            foreach (string name in Microphone.devices)
+            if (microphoneName == null) microphoneName = Microphone.devices[0];
+            else
             {
-                if (name == microphoneName)
+                bool found = false;
+                foreach (string name in Microphone.devices)
                 {
-                    found = true;
-                    break;
+                    if (name == microphoneName)
+                    {
+                        found = true;
+                        break;
+                    }
                 }
+
+                if (!found) microphoneName = Microphone.devices[0];
             }
-            if (!found && Microphone.devices.Length > 0) microphoneName = Microphone.devices[0];
         }
+        else microphoneName = null;
     }
 
     //change webcam to chosen from settings if it is able to find it
-    void ChangeWebcamOnStartIfAble()
+    void UpdateWebCam()
     {
-        if (webCamName == null && WebCamTexture.devices.Length > 0) webCamName = WebCamTexture.devices[0].name;
-        else
+        if(WebCamTexture.devices.Length > 0)
         {
-            bool found = false;
-            foreach (WebCamDevice webCamDevice in WebCamTexture.devices)
+            if (webCamName == null) webCamName = WebCamTexture.devices[0].name;
+            else
             {
-                if (webCamDevice.name == microphoneName)
+                bool found = false;
+                foreach (WebCamDevice webCamDevice in WebCamTexture.devices)
                 {
-                    found = true;
-                    break;
+                    if (webCamDevice.name == webCamName)
+                    {
+                        found = true;
+                        break;
+                    }
                 }
+
+                if (!found) webCamName = WebCamTexture.devices[0].name;
             }
-            if (!found && WebCamTexture.devices.Length > 0) webCamName = WebCamTexture.devices[0].name;
         }
+        else webCamName = null;
     }
 
     void UpdateFPSCap()

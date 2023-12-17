@@ -59,11 +59,13 @@ public class Dialogue : MonoBehaviour
         PlayerParams.Controllers.inventory.CloseInventory();
         PlayerParams.Controllers.spellbook.CloseSpellbook();
         PlayerParams.Controllers.pauseMenu.CloseMenu();
+        PlayerParams.Controllers.spellsMenu.CloseMenu();
         PlayerParams.Controllers.journal.CloseJournal();
 
         PlayerParams.Controllers.inventory.ableToInteract = false;
         PlayerParams.Controllers.spellbook.ableToInteract = false;
         PlayerParams.Controllers.pauseMenu.ableToInteract = false;
+        PlayerParams.Controllers.spellsMenu.ableToInteract = false;
         PlayerParams.Controllers.journal.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
@@ -253,6 +255,7 @@ public class Dialogue : MonoBehaviour
                 PlayerParams.Controllers.inventory.ableToInteract = true;
                 PlayerParams.Controllers.spellbook.ableToInteract = true;
                 PlayerParams.Controllers.pauseMenu.ableToInteract = true;
+                PlayerParams.Controllers.spellsMenu.ableToInteract = true;
                 PlayerParams.Controllers.journal.ableToInteract = true;
             }
             else

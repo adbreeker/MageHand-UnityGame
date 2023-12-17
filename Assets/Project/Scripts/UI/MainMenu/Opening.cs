@@ -21,18 +21,17 @@ public class Opening : MonoBehaviour
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Escape)) skip = true;
-        if (error && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Escape)))
+        if (error && Input.GetKeyDown(KeyCode.Space))
         {
             FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption).Play();
-            #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-            #endif
-                Application.Quit();
+            FindObjectOfType<FadeInFadeOut>().CloseGame();
         }
     }
     IEnumerator Animation()
     {
+        //Check if saves directory exists, if not create
+        ProgressSaving.CreateSavesDirectory();
+
         while (alpha > 0)
         {
             alpha -= 0.01f;
@@ -49,17 +48,9 @@ public class Opening : MonoBehaviour
             yield return new WaitForSeconds(0);
         }
 
-        if (Microphone.devices.Length > 0 && WebCamTexture.devices.Length > 0) SceneManager.LoadScene("Menu");
+        if (WebCamTexture.devices.Length > 0) FindObjectOfType<FadeInFadeOut>().ChangeScene("Menu");
         else
         {
-            if (Microphone.devices.Length <= 0 && WebCamTexture.devices.Length <= 0) errorText.text =
-                    "Camera and Microphone were not detected.<br>Those devices are necessary for the game to work properly.<br>Connect them and restart the game.";
-            else if (Microphone.devices.Length <= 0) errorText.text =
-                    "Microphone was not detected.<br>This device is necessary for the game to work properly.<br>Connect it and restart the game.";
-            else if (WebCamTexture.devices.Length <= 0) errorText.text =
-                    "Camera was not detected.<br>This device is necessary for the game to work properly.<br>Connect it and restart the game.";
-
-
             info.SetActive(false);
             while (alpha > 0)
             {
