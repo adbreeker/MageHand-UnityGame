@@ -168,7 +168,6 @@ public class SoundManager : MonoBehaviour
     }
     IEnumerator FadeOutAudioSource(AudioSource audioSource)
     {
-        Debug.Log(audioSource.name);
         float startVolume = audioSource.volume;
         while (audioSource.volume > 0)
         {
