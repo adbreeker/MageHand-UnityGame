@@ -43,8 +43,8 @@ public class MoveHandPoints : MonoBehaviour //move points of hand generated with
         
         MemoryMappedViewStream stream_points = mmf_points.CreateViewStream();
         BinaryReader reader_points = new BinaryReader(stream_points);
-        byte[] framePoints = reader_points.ReadBytes(600);
-        string data = System.Text.Encoding.UTF8.GetString(framePoints, 0, 600);
+        byte[] framePoints = reader_points.ReadBytes(700);
+        string data = System.Text.Encoding.UTF8.GetString(framePoints, 0, 700);
         vec = StringToVector3(data);
 
         if (vec != null)
