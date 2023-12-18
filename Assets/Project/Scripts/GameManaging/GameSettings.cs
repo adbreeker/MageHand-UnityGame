@@ -43,6 +43,8 @@ public class GameSettings : MonoBehaviour
     {
         RunMediapipeExe();
         Application.quitting += CloseMediapipeExeOnQuit;
+
+        LoadGameSettings();
     }
 
     //applying player setting from saves (now it's hardcoded)
@@ -130,6 +132,20 @@ public class GameSettings : MonoBehaviour
             lastWidth = Screen.width;
             lastHeight = Screen.height;
         }
+    }
+
+    void LoadGameSettings()
+    {
+        soundVolume = PlayerPrefs.GetFloat("soundVolume", 0.3f);
+        microphoneName = PlayerPrefs.GetString("microphoneName", null);
+        webCamName = PlayerPrefs.GetString("webCamName", null);
+        fpsCap = PlayerPrefs.GetInt("fpsCap", 10);
+        graphicsQuality = (GraphicsQuality)PlayerPrefs.GetInt("graphicsQuality", 2);
+        vSync = PlayerPrefs.GetInt("vSync", 0) != 0;
+        vSyncCount = PlayerPrefs.GetInt("vSyncCount", 1);
+        fullscreen = PlayerPrefs.GetInt("fullScreen", 1) != 0;
+        muteMusic = PlayerPrefs.GetInt("muteMusic", 0) != 0;
+        useSpeech = PlayerPrefs.GetInt("useSpeach", 1) != 0;
     }
 
     void RunMediapipeExe()
