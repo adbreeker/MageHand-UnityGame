@@ -32,7 +32,7 @@ class HandDetector:
         self.shared_mem_gestures = SharedMemory(name='gestures', create=True,
                                       size=12)
         self.shared_mem_points = SharedMemory(name='points', create=True,
-                                      size=530)
+                                      size=700)
         
         self.eps = 0.013
         
@@ -60,7 +60,7 @@ class HandDetector:
             self.landmarker.recognize_async(
                 mp_image, timestamp_ms=int(timestamp_ms))
             
-            points_hand = ';'.join([f'{x:.5f},{y:.5f},{z:.5f}' for x, y, z in self.data]) + ';' + ('a' * (530 - len(';'.join([f'{x:.5f},{y:.5f},{z:.5f}' for x, y, z in self.data]))-1))
+            points_hand = ';'.join([f'{x:.5f},{y:.5f},{z:.5f}' for x, y, z in self.data]) + ';' + ('a' * (700 - len(';'.join([f'{x:.5f},{y:.5f},{z:.5f}' for x, y, z in self.data]))-1))
             self.shared_mem_points.buf[:len(points_hand)] = bytearray(points_hand.encode('utf-8'))
             self.shared_mem_gestures.buf[:len(self.gesture)] = bytearray(self.gesture.encode('utf-8'))
         
