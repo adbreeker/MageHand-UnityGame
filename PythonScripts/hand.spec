@@ -1,13 +1,19 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+def get_mediapipe_path():
+    import mediapipe
+    mediapipe_path = mediapipe.__path__[0]
+    return mediapipe_path
+
 
 a = Analysis(
     ['hand.py'],
-    pathex=['C:\\Users\\versi\\MageHand-UnityGame\\PythonScripts'],
+    pathex=['M:\\inzynierka\\PythonScripts'],
     binaries=[],
     datas=[
-    ('C:\\Users\\versi\\anaconda3\\Lib\\site-packages\\mediapipe\\python\\solutions\\*.*', 'mediapipe\\python\\solutions'),
-    ('C:\\Users\\versi\\MageHand-UnityGame\\PythonScripts\\gesture_recognizer.task', '.')
+    ('M:\\PythonScripts\\Lib\\site-packages\\mediapipe\\python\\solutions\\*.*', 'mediapipe\\python\\solutions'),
+    ('M:\\PythonScripts\\Lib\\site-packages\\mediapipe\\python\\*.*', 'mediapipe\\python'),
+    ('M:\\inzynierka\\PythonScripts\\hand_classifier.tflite', '.')
     ],
     hiddenimports=[],
     hookspath=[],
@@ -19,6 +25,11 @@ a = Analysis(
     noarchive=False,
 )
 pyz = PYZ(a.pure)
+
+mediapipe_tree = Tree(get_mediapipe_path(), prefix='mediapipe', excludes=["*.pyc"])
+a.datas += mediapipe_tree
+a.binaries = filter(lambda x: 'mediapipe' not in x[0], a.binaries)
+
 
 exe = EXE(
     pyz,

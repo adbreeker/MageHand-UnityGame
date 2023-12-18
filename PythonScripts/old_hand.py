@@ -68,7 +68,6 @@ class HandLandmarkerDetector:
         self.cv2.destroyAllWindows()
 
     def _callback(self, result, output_image: mp.Image, timestamp_ms: int):
-        
         if result.hand_landmarks != []:
             print(result.gestures[0][0].category_name)  
             for i in range(21):
@@ -90,6 +89,7 @@ class HandLandmarkerDetector:
 
         #self.sock.connect((self.host, self.port))
         print('connected to unity')
+
 
 if __name__ == '__main__':
     detector = HandLandmarkerDetector()
