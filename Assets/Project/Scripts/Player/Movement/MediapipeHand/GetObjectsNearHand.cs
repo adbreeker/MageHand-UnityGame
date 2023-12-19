@@ -44,6 +44,13 @@ public class GetObjectsNearHand : MonoBehaviour
         if(colliders.Length > 0) //first found object becomes currently pointed
         {
             currentlyPointing = colliders[0].gameObject;
+            foreach(Collider collider in colliders)
+            {
+                if(Vector3.Distance(collider.transform.position, middlePoint) < Vector3.Distance(currentlyPointing.transform.position, middlePoint))
+                {
+                    currentlyPointing = collider.gameObject;
+                }
+            }
             EnlightObject(currentlyPointing);
         }
         else //if no objects then currently pointed is null
