@@ -13,7 +13,7 @@ a = Analysis(
     datas=[
     ('M:\\PythonScripts\\Lib\\site-packages\\mediapipe\\python\\solutions\\*.*', 'mediapipe\\python\\solutions'),
     ('M:\\PythonScripts\\Lib\\site-packages\\mediapipe\\python\\*.*', 'mediapipe\\python'),
-    ('M:\\inzynierka\\PythonScripts\\hand_classifier.tflite', '.')
+    ('M:\\inzynierka_2\\PythonScripts\\hand_classifier.tflite', '.')
     ],
     hiddenimports=[],
     hookspath=[],

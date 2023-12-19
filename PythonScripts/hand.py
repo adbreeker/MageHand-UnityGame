@@ -7,7 +7,7 @@ import itertools
 import numpy as np
 import mediapipe as mp
 import cv2
-import tflite as tf
+import tensorflow as tf
 
 base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
 task_file_path = os.path.join(base_path, 'hand_classifier.tflite')
@@ -29,7 +29,7 @@ class HandDetector:
         self.shared_mem_gestures = SharedMemory(name='gestures', create=True,
                                                 size=12)
         self.shared_mem_points = SharedMemory(name='points', create=True,
-                                              size=530)
+                                              size=700)
 
         self.eps = 0.013
 
@@ -55,7 +55,7 @@ class HandDetector:
 
             image.flags.writeable = False
             self._callback(self.landmarker.process(image), timestamp_ms=int(timestamp_ms), image=image)
-            points_hand = ';'.join([f'{x:.5f},{y:.5f},{z:.5f}' for x, y, z in self.data]) + ';' + ('a' * (530 - len(';'.join([f'{x:.5f},{y:.5f},{z:.5f}' for x, y, z in self.data]))-1))
+            points_hand = ';'.join([f'{x:.5f},{y:.5f},{z:.5f}' for x, y, z in self.data]) + ';' + ('a' * (700 - len(';'.join([f'{x:.5f},{y:.5f},{z:.5f}' for x, y, z in self.data]))-1))
 
             self.shared_mem_points.buf[:len(points_hand)] = bytearray(points_hand.encode('utf-8'))
             self.shared_mem_gestures.buf[:len(self.gesture)] = bytearray(self.gesture.encode('utf-8'))
@@ -122,7 +122,6 @@ class HandDetector:
 
         temp_landmark_list = []
 
-        # Keypoint
         for _, landmark in enumerate(landmarks.landmark):
             landmark_x = min(int(landmark.x * image_width), image_width - 1)
             landmark_y = min(int(landmark.y * image_height), image_height - 1)
@@ -140,7 +139,6 @@ class HandDetector:
         temp_landmark_list = list(
             itertools.chain.from_iterable(temp_landmark_list))
 
-        # Normalization
         max_value = max(list(map(abs, temp_landmark_list)))
 
         def normalize_(n):
