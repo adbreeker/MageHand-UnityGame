@@ -233,6 +233,7 @@ public class SpellCasting : MonoBehaviour
             return;
 
         var spellWhispered = res.Result;
+
         Debug.Log(NormalizeTranscribedText(spellWhispered));
 
         FindObjectOfType<HUD>().SpawnPopUp("", "Casting word:<br>" + NormalizeTranscribedTextToDisplay(spellWhispered), timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
