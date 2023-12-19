@@ -8,7 +8,7 @@ from faster_whisper import WhisperModel
 from multiprocessing.shared_memory import SharedMemory
 
 
-STEP_IN_SEC: int = 2    
+STEP_IN_SEC: int = 2
 LENGHT_IN_SEC: int = 3    
 NB_CHANNELS = 1
 RATE = 16000
