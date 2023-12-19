@@ -6,7 +6,7 @@ a = Analysis(
     pathex=['C:\\Users\\versi\\MageHand-UnityGame\\PythonScripts'],
     binaries=[],
     datas=[
-    ('C:\\Users\\versi\\anaconda3\\Lib\\site-packages\\mediapipe\\python\\solutions\\*.*', 'mediapipe\\python\\solutions'),
+    ('C:\\Users\\versi\\anaconda3\\envs\\hand\\Lib\\site-packages\\mediapipe\\python\\solutions\\*.*', 'mediapipe\\python\\solutions'),
     ('C:\\Users\\versi\\MageHand-UnityGame\\PythonScripts\\gesture_recognizer.task', '.')
     ],
     hiddenimports=[],
