@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO.MemoryMappedFiles;
+using System.IO;
 using UnityEngine;
 
 public class HandInteractions : MonoBehaviour
@@ -23,6 +25,8 @@ public class HandInteractions : MonoBehaviour
     bool CooldownPutDown = false;
     bool CooldownDrink = false;
 
+    private string word;
+
     private AudioSource pickUpItemSound;
     private AudioSource putToInventorySound;
     private AudioSource drinkSound;
@@ -43,7 +47,7 @@ public class HandInteractions : MonoBehaviour
         DecreaseCooldowns(); //decrease cooldowns for all actions
 
         //listen to player gestures
-        if(gestureHandler.gesture == "Pointing_Up" && !CooldownClick)
+        if (gestureHandler.gesture == "Pointing_Up" && !CooldownClick)
         {
             ClickObject();
         }
@@ -177,7 +181,8 @@ public class HandInteractions : MonoBehaviour
         CooldownCast = true;
         if(GameSettings.useSpeech && !PlayerParams.Variables.uiActive) //if using speach then microphone starting to record
         {
-            PlayerParams.Controllers.spellCasting.RecordSpellCasting();
+            StartCoroutine(PlayerParams.Controllers.spellCasting.WaitForSpell());
+          
         }
         else if(!PlayerParams.Variables.uiActive) //open spells menu if using speech is off
         {

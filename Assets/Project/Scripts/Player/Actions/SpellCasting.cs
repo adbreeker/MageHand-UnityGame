@@ -5,6 +5,8 @@ using Whisper;
 using Whisper.Utils;
 using System.Linq;
 using UnityEngine.Rendering;
+using System.IO.MemoryMappedFiles;
+using System.IO;
 
 public class SpellCasting : MonoBehaviour
 {
@@ -298,5 +300,35 @@ public class SpellCasting : MonoBehaviour
             .ToLower();
 
         return cleanedString;
+    }
+
+    public IEnumerator WaitForSpell()
+    {
+
+
+        string word = "None";
+
+        while (word == "None")
+        {
+            MemoryMappedFile mmf_gesture = MemoryMappedFile.OpenExisting("whisper");
+            MemoryMappedViewStream stream_gesture = mmf_gesture.CreateViewStream();
+            BinaryReader reader_gesture = new BinaryReader(stream_gesture);
+            byte[] frameGesture = reader_gesture.ReadBytes(10);
+            word = System.Text.Encoding.UTF8.GetString(frameGesture, 0, 10).Split(";")[0];
+            Debug.Log(word);
+
+            yield return new WaitForFixedUpdate();
+        }
+
+        Debug.Log(word);
+        CastSpellFromName(word);
+
+        //string noneString = "None;";
+        //byte[] noneBytes = System.Text.Encoding.UTF8.GetBytes(noneString);
+
+        //write_gesture.Write(noneBytes, 0, noneBytes.Length);
+
+        //Debug.Log(word);
+
     }
 }
