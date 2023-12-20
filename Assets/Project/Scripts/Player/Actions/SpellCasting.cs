@@ -321,6 +321,11 @@ public class SpellCasting : MonoBehaviour
             yield break;
         }
 
+        Debug.Log("Whisper listening");
+        FindObjectOfType<HUD>().SpawnPopUp("", "Cast a Spell.", timeToFadeOutPopUp, timeOfFadingOutPopUp);
+        castingSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpell);
+        castingSound.Play();
+
         isListening = true;
 
         MemoryMappedFile mmf_delete = MemoryMappedFile.OpenExisting("whisper");
@@ -354,8 +359,9 @@ public class SpellCasting : MonoBehaviour
 
         word = System.Text.Encoding.UTF8.GetString(frame, 0, 10).Split(";")[0];
         Debug.Log("Whisper transcribed word: " + word);
+        FindObjectOfType<HUD>().SpawnPopUp("", "Casting word:<br>" + word, timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
+        Destroy(castingSound);
 
-        
 
         MemoryMappedFile mmf_run = MemoryMappedFile.OpenExisting("whisper_run");
         MemoryMappedViewStream stream_run = mmf_run.CreateViewStream();
