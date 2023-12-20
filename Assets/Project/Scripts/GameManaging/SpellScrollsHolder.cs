@@ -9,8 +9,8 @@ public class SpellScrollsHolder : MonoBehaviour
     public GameObject scrollOfLight;
     public GameObject scrollOfFire;
     public GameObject scrollOfMarkAndReturn;
-    public GameObject scrollOfPickUp;
-    public GameObject scrollOfBreakIn;
+    public GameObject scrollOfCollect;
+    public GameObject scrollOfOpen;
 
     public SpellScrollInfo GiveScroll(string spellName) //returning requested scroll
     {
@@ -26,14 +26,14 @@ public class SpellScrollsHolder : MonoBehaviour
         {
             return scrollOfMarkAndReturn.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
         }
-        if(spellName == "Pick Up")
+        if(spellName == "Collect")
         {
-            return scrollOfPickUp.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
+            return scrollOfCollect.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
         }
 
-        if((spellName == "Break In"))
+        if((spellName == "Open"))
         {
-            return scrollOfBreakIn.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
+            return scrollOfOpen.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
         }
 
         return null;
@@ -45,8 +45,8 @@ public class SpellScrollsHolder : MonoBehaviour
         allScrolls.Add(scrollOfLight.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
         allScrolls.Add(scrollOfFire.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
         allScrolls.Add(scrollOfMarkAndReturn.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
-        allScrolls.Add(scrollOfPickUp.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
-        allScrolls.Add(scrollOfBreakIn.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
+        allScrolls.Add(scrollOfCollect.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
+        allScrolls.Add(scrollOfOpen.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
 
         return allScrolls;
     }

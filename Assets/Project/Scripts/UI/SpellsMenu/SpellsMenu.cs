@@ -61,17 +61,18 @@ public class SpellsMenu : MonoBehaviour
         spellCastingSound.Play();
 
         closeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Close);
-
         spellIcons = new List<GameObject>();
 
-        for (int i = 1; i < 6; i++)
+        GameObject iconsParent = instantiatedMenu.transform.Find("Spell " + (PlayerParams.Controllers.spellbook.spells.Count).ToString()).gameObject;
+        iconsParent.SetActive(true);
+        for (int i = 1; i < PlayerParams.Controllers.spellbook.spells.Count + 1; i++)
         {
             string text = i.ToString();
-            spellIcons.Add(instantiatedMenu.transform.Find("SpellIcons").Find(text).gameObject);
+            spellIcons.Add(iconsParent.transform.Find(text).gameObject);
         }
 
         //activate propper spells (as much as there are in spellbook)
-        for (int i = 0; i < PlayerParams.Controllers.spellbook.spells.Count; i++)
+        for (int i = 0; i < spellIcons.Count; i++)
         {
             spellIcons[i].SetActive(true);
             spellIcons[i].GetComponent<TextMeshProUGUI>().text = PlayerParams.Controllers.spellbook.spells[i].spellName;
@@ -109,12 +110,12 @@ public class SpellsMenu : MonoBehaviour
             {
                 if (spellIcons[i].GetComponent<EnlightObject>() != null)
                 {
-                    spellIcons[i].GetComponent<SpellIcon>().background.GetComponent<Image>().color = new Color(1f, 0.482f, 0f);
+                    spellIcons[i].GetComponent<SpellIcon>().background.GetComponent<Image>().color = new Color(1f, 0.482f, 0f, 1f);
                     spellIcons[i].GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
                 }
-                else if (spellIcons[i].GetComponent<SpellIcon>().background.GetComponent<Image>().color == new Color(1f, 0.482f, 0f))
+                else if (spellIcons[i].GetComponent<SpellIcon>().background.GetComponent<Image>().color == new Color(1f, 0.482f, 0f, 1f))
                 {
-                    spellIcons[i].GetComponent<SpellIcon>().background.GetComponent<Image>().color = new Color(0f, 0f, 0f);
+                    spellIcons[i].GetComponent<SpellIcon>().background.GetComponent<Image>().color = new Color(1f, 0.482f, 0f, 0f);
                     spellIcons[i].GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
                 }
             }

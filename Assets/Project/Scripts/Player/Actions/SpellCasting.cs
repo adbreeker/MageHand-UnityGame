@@ -90,7 +90,7 @@ public class SpellCasting : MonoBehaviour
 
     public IEnumerator PickUpSpell() //casting pick up spell
     {
-        SpellScrollInfo scroll = spellbook.GetSpellInfo("Pick Up");
+        SpellScrollInfo scroll = spellbook.GetSpellInfo("Collect");
         if(scroll != null)
         {
             castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_SpellPickUpActivation);
@@ -102,13 +102,21 @@ public class SpellCasting : MonoBehaviour
             Collider[] nearItems = Physics.OverlapSphere(castPos, 3.0f, LayerMask.GetMask("Item"));
             if(nearItems.Length > 0)
             {
-                PlayerParams.Controllers.handInteractions.AddToHand(nearItems[0].gameObject, false);
-                while (nearItems[0].transform.position != PlayerParams.Controllers.handInteractions.holdingPoint.position)
+                GameObject nearestItem = nearItems[0].gameObject;
+                foreach(Collider item in nearItems) 
                 {
-                    nearItems[0].transform.position = Vector3.MoveTowards(nearItems[0].transform.position, PlayerParams.Controllers.handInteractions.holdingPoint.position, 7.0f * Time.fixedDeltaTime);
+                    if(Vector3.Distance(item.transform.position, hand.transform.position) < Vector3.Distance(nearestItem.transform.position, hand.transform.position))
+                    {
+                        nearestItem = item.gameObject;
+                    }
+                }
+                PlayerParams.Controllers.handInteractions.AddToHand(nearestItem, false);
+                while (nearestItem.transform.position != PlayerParams.Controllers.handInteractions.holdingPoint.position)
+                {
+                    nearestItem.transform.position = Vector3.MoveTowards(nearestItem.transform.position, PlayerParams.Controllers.handInteractions.holdingPoint.position, 7.0f * Time.fixedDeltaTime);
                     yield return new WaitForFixedUpdate();
                 }
-                PlayerParams.Controllers.handInteractions.AddToHand(nearItems[0].gameObject, true);
+                PlayerParams.Controllers.handInteractions.AddToHand(nearestItem.gameObject, true);
             }
             mana -= scroll.manaCost;
         }
@@ -171,7 +179,7 @@ public class SpellCasting : MonoBehaviour
 
     public void BreakInSpell() //casting break in spell - occurs in tutorial only
     {
-        SpellScrollInfo scroll = spellbook.GetSpellInfo("Break In");
+        SpellScrollInfo scroll = spellbook.GetSpellInfo("Open");
         if (scroll != null)
         {
             castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
@@ -255,7 +263,7 @@ public class SpellCasting : MonoBehaviour
         {
             LightSpell();
         }
-        else if (NormalizeTranscribedText(name) == "pickup")
+        else if (NormalizeTranscribedText(name) == "collect")
         {
             StartCoroutine(PickUpSpell());
         }
@@ -271,7 +279,7 @@ public class SpellCasting : MonoBehaviour
         {
             ReturnSpell();
         }
-        else if (NormalizeTranscribedText(name) == "breakin")
+        else if (NormalizeTranscribedText(name) == "open")
         {
             BreakInSpell();
         }

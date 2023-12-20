@@ -22,8 +22,11 @@ public class OpenLockedDoorsPassage : MonoBehaviour
         {
             yield return new WaitForFixedUpdate();
             doors.transform.localRotation *= Quaternion.Euler(0, -1, 0);
+            if(i == 60)
+            {
+                doors.tag = "Untagged";
+            }
         }
-        doors.tag = "Untagged";
 
         Destroy(openDoorsSound, openDoorsSound.clip.length);
         gameObject.SetActive(false);

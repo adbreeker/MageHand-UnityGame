@@ -4,6 +4,7 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static GameSettings;
 
 public class SettingsMenu : MonoBehaviour
 {
@@ -127,6 +128,7 @@ public class SettingsMenu : MonoBehaviour
                 volumeSlider.value -= 1;
                 keyTimeDelayer = keyTimeDelayFirst;
                 GameSettings.soundVolume = volumeSlider.value / 100;
+                PlayerPrefs.SetFloat("soundVolume", GameSettings.soundVolume);
             }
 
             if (Input.GetKeyDown(KeyCode.D))
@@ -134,6 +136,7 @@ public class SettingsMenu : MonoBehaviour
                 volumeSlider.value += 1;
                 keyTimeDelayer = keyTimeDelayFirst;
                 GameSettings.soundVolume = volumeSlider.value / 100;
+                PlayerPrefs.SetFloat("soundVolume", GameSettings.soundVolume);
             }
 
             if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.A))
@@ -141,6 +144,7 @@ public class SettingsMenu : MonoBehaviour
                 volumeSlider.value -= 1;
                 keyTimeDelayer = 1f;
                 GameSettings.soundVolume = volumeSlider.value / 100;
+                PlayerPrefs.SetFloat("soundVolume", GameSettings.soundVolume);
             }
 
             if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.D))
@@ -148,6 +152,7 @@ public class SettingsMenu : MonoBehaviour
                 volumeSlider.value += 1;
                 keyTimeDelayer = 1f;
                 GameSettings.soundVolume = volumeSlider.value / 100;
+                PlayerPrefs.SetFloat("soundVolume", GameSettings.soundVolume);
             }
         }
 
@@ -159,6 +164,7 @@ public class SettingsMenu : MonoBehaviour
                 changeSound.Play();
                 microphoneIndex += -1;
                 ChangeMicrophone();
+                PlayerPrefs.SetString("microphoneName", GameSettings.microphoneName);
             }
 
             if (Input.GetKeyDown(KeyCode.D) && menuOptions[pointedOptionMenu].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.activeSelf)
@@ -166,6 +172,7 @@ public class SettingsMenu : MonoBehaviour
                 changeSound.Play();
                 microphoneIndex += 1;
                 ChangeMicrophone();
+                PlayerPrefs.SetString("microphoneName", GameSettings.microphoneName);
             }
         }
 
@@ -177,6 +184,7 @@ public class SettingsMenu : MonoBehaviour
                 changeSound.Play();
                 webCamIndex += -1;
                 ChangeWebCam();
+                PlayerPrefs.SetString("webCamName", GameSettings.webCamName);
             }
 
             if (Input.GetKeyDown(KeyCode.D) && menuOptions[pointedOptionMenu].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.activeSelf)
@@ -184,6 +192,7 @@ public class SettingsMenu : MonoBehaviour
                 changeSound.Play();
                 webCamIndex += 1;
                 ChangeWebCam();
+                PlayerPrefs.SetString("webCamName", GameSettings.webCamName);
             }
         }
 
@@ -195,6 +204,7 @@ public class SettingsMenu : MonoBehaviour
                 fpsSlider.value -= 1;
                 keyTimeDelayer = keyTimeDelayFirst;
                 GameSettings.fpsCap = (int)fpsSlider.value;
+                PlayerPrefs.SetInt("fpsCap", GameSettings.fpsCap);
             }
 
             if (Input.GetKeyDown(KeyCode.D))
@@ -202,6 +212,7 @@ public class SettingsMenu : MonoBehaviour
                 fpsSlider.value += 1;
                 keyTimeDelayer = keyTimeDelayFirst;
                 GameSettings.fpsCap = (int)fpsSlider.value;
+                PlayerPrefs.SetInt("fpsCap", GameSettings.fpsCap);
             }
 
 
@@ -210,6 +221,7 @@ public class SettingsMenu : MonoBehaviour
                 fpsSlider.value -= 1;
                 keyTimeDelayer = keyTimeDelay;
                 GameSettings.fpsCap = (int)fpsSlider.value;
+                PlayerPrefs.SetInt("fpsCap", GameSettings.fpsCap);
             }
 
             if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.D))
@@ -217,6 +229,7 @@ public class SettingsMenu : MonoBehaviour
                 fpsSlider.value += 1;
                 keyTimeDelayer = keyTimeDelay;
                 GameSettings.fpsCap = (int)fpsSlider.value;
+                PlayerPrefs.SetInt("fpsCap", GameSettings.fpsCap);
             }
         }
 
@@ -228,6 +241,7 @@ public class SettingsMenu : MonoBehaviour
                 vSyncSlider.value -= 1;
                 keyTimeDelayer = keyTimeDelayFirst;
                 GameSettings.vSyncCount = 5 - (int)vSyncSlider.value;
+                PlayerPrefs.SetInt("vSyncCount", GameSettings.vSyncCount);
             }
 
             if (Input.GetKeyDown(KeyCode.D))
@@ -235,6 +249,7 @@ public class SettingsMenu : MonoBehaviour
                 vSyncSlider.value += 1;
                 keyTimeDelayer = keyTimeDelayFirst;
                 GameSettings.vSyncCount = 5 - (int)vSyncSlider.value;
+                PlayerPrefs.SetInt("vSyncCount", GameSettings.vSyncCount);
             }
 
 
@@ -243,6 +258,7 @@ public class SettingsMenu : MonoBehaviour
                 vSyncSlider.value -= 1;
                 keyTimeDelayer = keyTimeDelay;
                 GameSettings.vSyncCount = 5 - (int)vSyncSlider.value;
+                PlayerPrefs.SetInt("vSyncCount", GameSettings.vSyncCount);
             }
 
             if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.D))
@@ -250,6 +266,7 @@ public class SettingsMenu : MonoBehaviour
                 vSyncSlider.value += 1;
                 keyTimeDelayer = keyTimeDelay;
                 GameSettings.vSyncCount = 5 - (int)vSyncSlider.value;
+                PlayerPrefs.SetInt("vSyncCount", GameSettings.vSyncCount);
             }
 
 
@@ -263,6 +280,7 @@ public class SettingsMenu : MonoBehaviour
                 changeSound.Play();
                 GameSettings.graphicsQuality -= 1;
                 DisplayGraphicQuality();
+                PlayerPrefs.SetInt("graphicsQuality", (int)GameSettings.graphicsQuality);
             }
 
             if (Input.GetKeyDown(KeyCode.D) && menuOptions[pointedOptionMenu].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.activeSelf)
@@ -270,6 +288,7 @@ public class SettingsMenu : MonoBehaviour
                 changeSound.Play();
                 GameSettings.graphicsQuality += 1;
                 DisplayGraphicQuality();
+                PlayerPrefs.SetInt("graphicsQuality", (int)GameSettings.graphicsQuality);
             }
         }
 
@@ -281,6 +300,7 @@ public class SettingsMenu : MonoBehaviour
                 selectSound.Play();
                 GameSettings.vSync = !GameSettings.vSync;
                 menuOptions[pointedOptionMenu].transform.Find("CheckBackground").Find("Checker").gameObject.SetActive(GameSettings.vSync);
+                PlayerPrefs.SetInt("vSync", (GameSettings.vSync ? 1 : 0));
             }
         }
 
@@ -292,6 +312,7 @@ public class SettingsMenu : MonoBehaviour
                 selectSound.Play();
                 GameSettings.fullscreen = !GameSettings.fullscreen;
                 menuOptions[pointedOptionMenu].transform.Find("CheckBackground").Find("Checker").gameObject.SetActive(GameSettings.fullscreen);
+                PlayerPrefs.SetInt("fullScreen", (GameSettings.fullscreen ? 1 : 0));
             }
         }
 
@@ -303,6 +324,7 @@ public class SettingsMenu : MonoBehaviour
                 selectSound.Play();
                 GameSettings.muteMusic = !GameSettings.muteMusic;
                 menuOptions[pointedOptionMenu].transform.Find("CheckBackground").Find("Checker").gameObject.SetActive(GameSettings.muteMusic);
+                PlayerPrefs.SetInt("muteMusic", (GameSettings.muteMusic ? 1 : 0));
             }
         }
 
@@ -314,6 +336,7 @@ public class SettingsMenu : MonoBehaviour
                 selectSound.Play();
                 GameSettings.useSpeech = !GameSettings.useSpeech;
                 menuOptions[pointedOptionMenu].transform.Find("CheckBackground").Find("Checker").gameObject.SetActive(GameSettings.useSpeech);
+                PlayerPrefs.SetInt("useSpeach", (GameSettings.useSpeech ? 1 : 0));
             }
         }
     }
@@ -370,6 +393,7 @@ public class SettingsMenu : MonoBehaviour
         {
             if (i != option)
             {
+                allOptions[i].transform.Find("Info").gameObject.SetActive(false);
                 if (i == 0 || i == 2)
                 {
                     allOptions[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
@@ -404,6 +428,7 @@ public class SettingsMenu : MonoBehaviour
 
         if (option < allOptions.Count)
         {
+            allOptions[option].transform.Find("Info").gameObject.SetActive(true);
             if (option == 0 || option == 2)
             {
                 allOptions[option].transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);

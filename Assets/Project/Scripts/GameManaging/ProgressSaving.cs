@@ -64,9 +64,9 @@ public class ProgressSaving : MonoBehaviour
         {
             spellbook.AddSpell(spellScrollsHolder.GiveScroll("Light"));
         }
-        if (saveData.spellsSave.pickUp)
+        if (saveData.spellsSave.collect)
         {
-            spellbook.AddSpell(spellScrollsHolder.GiveScroll("Pick Up"));
+            spellbook.AddSpell(spellScrollsHolder.GiveScroll("Collect"));
         }
         if (saveData.spellsSave.fire)
         {
@@ -114,7 +114,7 @@ public class ProgressSaving : MonoBehaviour
         saveData.spellsSave.spellBook = spellBook;
 
         saveData.spellsSave.light = spells.Exists(s => string.Equals(s, "light", StringComparison.OrdinalIgnoreCase));
-        saveData.spellsSave.pickUp = spells.Exists(s => string.Equals(s, "pick up", StringComparison.OrdinalIgnoreCase));
+        saveData.spellsSave.collect = spells.Exists(s => string.Equals(s, "collect", StringComparison.OrdinalIgnoreCase));
         saveData.spellsSave.fire = spells.Exists(s => string.Equals(s, "fire", StringComparison.OrdinalIgnoreCase));
         saveData.spellsSave.markAndReturn = spells.Exists(s => string.Equals(s, "mark and return", StringComparison.OrdinalIgnoreCase));
     }
@@ -252,7 +252,7 @@ public class ProgressSaving : MonoBehaviour
         {
             public bool spellBook = false;
             public bool light = false;
-            public bool pickUp = false;
+            public bool collect = false;
             public bool fire = false;
             public bool markAndReturn = false;
         }
