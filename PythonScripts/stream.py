@@ -24,9 +24,8 @@ task_file_path = os.path.join(base_path, 'models')
   
 whisper = WhisperModel("tiny", device="cpu", compute_type="int8", cpu_threads=WHISPER_THREADS, download_root=task_file_path, local_files_only=True)
 
-shared_mem_gestures = SharedMemory(name='gestures', create=False, size=12)
 shared_mem_whisper = SharedMemory(name='whisper', create=True, size=15)
-shared_mem_run  =SharedMemory(name='whisper_run', create=True, size=2)
+shared_mem_run = SharedMemory(name='whisper_run', create=True, size=2)
 
 run = 'no'
 shared_mem_run.buf[:2] = bytearray(run.encode('utf-8'))
