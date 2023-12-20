@@ -181,6 +181,14 @@ public class HandInteractions : MonoBehaviour
         CooldownCast = true;
         if(GameSettings.useSpeech && !PlayerParams.Variables.uiActive) //if using speach then microphone starting to record
         {
+            MemoryMappedFile mmf_word = MemoryMappedFile.OpenExisting("whisper_run");
+            MemoryMappedViewStream stream_word = mmf_word.CreateViewStream();
+            BinaryWriter write_word = new BinaryWriter(stream_word);
+
+            string noneString = "ok";
+            byte[] noneBytes = System.Text.Encoding.UTF8.GetBytes(noneString);
+            write_word.Write(noneBytes, 0, noneBytes.Length);
+
             StartCoroutine(PlayerParams.Controllers.spellCasting.WaitForSpell());
           
         }

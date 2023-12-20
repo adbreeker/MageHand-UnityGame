@@ -316,24 +316,28 @@ public class SpellCasting : MonoBehaviour
             byte[] frameGesture = reader_gesture.ReadBytes(10);
             word = System.Text.Encoding.UTF8.GetString(frameGesture, 0, 10).Split(";")[0];
             word_none = word.Substring(0, 4);
-            Debug.Log(word);
 
             yield return new WaitForFixedUpdate();
         }
 
-        Debug.Log(word);
         CastSpellFromName(word);
 
         MemoryMappedFile mmf_word = MemoryMappedFile.OpenExisting("whisper");
         MemoryMappedViewStream stream_word = mmf_word.CreateViewStream();
-        BinaryReader reader_word = new BinaryReader(stream_word);
         BinaryWriter write_word = new BinaryWriter(stream_word);
 
-        // Writing "None" to shared memory
         string noneString = "None";
         byte[] noneBytes = System.Text.Encoding.UTF8.GetBytes(noneString);
         write_word.Write(noneBytes, 0, noneBytes.Length);
-        //Debug.Log(word);
+
+        MemoryMappedFile mmf_run = MemoryMappedFile.OpenExisting("whisper_run");
+        MemoryMappedViewStream stream_run = mmf_run.CreateViewStream();
+        BinaryWriter write_run = new BinaryWriter(stream_run);
+
+        string runString = "no";
+        byte[] runBytes = System.Text.Encoding.UTF8.GetBytes(runString);
+        write_run.Write(runBytes, 0, runBytes.Length);
+
 
     }
 }
