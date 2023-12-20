@@ -184,13 +184,12 @@ public class HandInteractions : MonoBehaviour
             MemoryMappedFile mmf_word = MemoryMappedFile.OpenExisting("whisper_run");
             MemoryMappedViewStream stream_word = mmf_word.CreateViewStream();
             BinaryWriter write_word = new BinaryWriter(stream_word);
-
             string noneString = "ok";
             byte[] noneBytes = System.Text.Encoding.UTF8.GetBytes(noneString);
             write_word.Write(noneBytes, 0, noneBytes.Length);
 
             StartCoroutine(PlayerParams.Controllers.spellCasting.WaitForSpell());
-          
+
         }
         else if(!PlayerParams.Variables.uiActive) //open spells menu if using speech is off
         {

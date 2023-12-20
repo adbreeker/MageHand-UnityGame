@@ -8,7 +8,7 @@ from faster_whisper import WhisperModel
 from multiprocessing.shared_memory import SharedMemory
 
 
-STEP_IN_SEC: int = 2
+STEP_IN_SEC: int = 5
 LENGHT_IN_SEC: int = 2    
 NB_CHANNELS = 1
 RATE = 16000
@@ -40,10 +40,11 @@ stream = audio.open(
     rate=RATE,
     input=True,
     frames_per_buffer=CHUNK,    
-)
+    )
 
 while True:
     if shared_mem_run.buf[:2].tobytes().decode('utf-8') == "ok":
+       
         audio_data = b""
         for _ in range(STEP_IN_SEC):
             chunk = stream.read(RATE)    
@@ -69,8 +70,8 @@ while True:
         elif len(transcription) > 10 and transcription != '':
             transcription = transcription[:10] + ';'
             shared_mem_whisper.buf[:10] = bytearray(transcription[:10].encode('utf-8'))
-        
-        
+
+        shared_mem_run.buf[:2] = bytearray(run.encode('utf-8'))
     else:
         continue
     
