@@ -7,6 +7,8 @@ using UnityEngine;
 public class GameSettings : MonoBehaviour
 {
     public static Process mediapipeHandProcess;
+    public static Process whisperProcess;
+
     private SoundManager soundManager;
 
     public enum GraphicsQuality
@@ -43,6 +45,8 @@ public class GameSettings : MonoBehaviour
     {
         RunMediapipeExe();
         Application.quitting += CloseMediapipeExeOnQuit;
+        RunWhisperExe();
+        Application.quitting += CloseWhisperExeOnQuit;
 
         LoadGameSettings();
     }
@@ -173,6 +177,34 @@ public class GameSettings : MonoBehaviour
             UnityEngine.Debug.Log("Killing mediapipe");
             mediapipeHandProcess.Kill();
             mediapipeHandProcess.Dispose();
+        }
+    }
+
+    void RunWhisperExe()
+    {
+        if (whisperProcess == null)
+        {
+            UnityEngine.Debug.Log("Running whisper");
+            string handPath = Path.Combine(Application.streamingAssetsPath, "Whisper", "stream.exe");
+
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = handPath;
+            startInfo.CreateNoWindow = true;
+            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
+            whisperProcess = new Process();
+            whisperProcess.StartInfo = startInfo;
+            whisperProcess.Start();
+        }
+    }
+
+    void CloseWhisperExeOnQuit()
+    {
+        if (whisperProcess != null && !whisperProcess.HasExited)
+        {
+            UnityEngine.Debug.Log("Killing whisper");
+            whisperProcess.Kill();
+            whisperProcess.Dispose();
         }
     }
 
