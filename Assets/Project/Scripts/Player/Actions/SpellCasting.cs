@@ -211,12 +211,12 @@ public class SpellCasting : MonoBehaviour
 
     private void Awake() //initiation on awake
     {
-        microphoneRecord = FindObjectOfType<MicrophoneRecord>();
-        whisper = FindObjectOfType<WhisperManager>();
+        //microphoneRecord = FindObjectOfType<MicrophoneRecord>();
+        //whisper = FindObjectOfType<WhisperManager>();
 
-        _ = whisper.InitModel();
+        //_ = whisper.InitModel();
 
-        microphoneRecord.OnRecordStop += Transcribe;
+        //microphoneRecord.OnRecordStop += Transcribe;
     }
 
     public void RecordSpellCasting() //recording player speach
@@ -317,6 +317,7 @@ public class SpellCasting : MonoBehaviour
     {
         if (isListening)
         {
+            Debug.Log("Whisper is currently listening - preventing new cast");
             yield break;
         }
 
@@ -341,7 +342,7 @@ public class SpellCasting : MonoBehaviour
             byte[] frameGesture = reader_gesture.ReadBytes(2);
 
             okString = System.Text.Encoding.UTF8.GetString(frameGesture, 0, 2);
-            Debug.Log(word);
+            //Debug.Log(word);
             yield return new WaitForFixedUpdate();
         }
 
@@ -352,7 +353,7 @@ public class SpellCasting : MonoBehaviour
         byte[] frame = read_word.ReadBytes(10);
 
         word = System.Text.Encoding.UTF8.GetString(frame, 0, 10).Split(";")[0];
-        Debug.Log(word);
+        Debug.Log("Whisper transcribed word: " + word);
 
         
 
