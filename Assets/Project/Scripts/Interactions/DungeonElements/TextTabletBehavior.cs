@@ -16,4 +16,10 @@ public class TextTabletBehavior : MonoBehaviour
         textObject.text = tabletText;
         textObject.color = textColor;
     }
+
+    private void OnValidate()
+    {
+        textObject.text = tabletText;
+        textObject.color = textColor;
+    }
 }

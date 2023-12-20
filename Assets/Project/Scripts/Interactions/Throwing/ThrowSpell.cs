@@ -32,6 +32,10 @@ public class ThrowSpell : MonoBehaviour //script added to spell on throw
         //checking if collision layer is not in notColliders layer mask with use of bitwise operation
         if ((1 << collision.gameObject.layer & notColliders.value) == 0) 
         {
+            if(collision.gameObject.GetComponent<SpellImpactInteraction>() != null)
+            {
+                collision.gameObject.GetComponent<SpellImpactInteraction>().OnSpellImpact(gameObject);
+            }
             //do something on impact, then destroy
             gameObject.SendMessage("OnImpact");
             Destroy(gameObject);
