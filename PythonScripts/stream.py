@@ -25,10 +25,10 @@ task_file_path = os.path.join(base_path, 'models')
 whisper = WhisperModel("tiny", device="cpu", compute_type="int8", cpu_threads=WHISPER_THREADS, download_root=task_file_path, local_files_only=True)
 
 shared_mem_gestures = SharedMemory(name='gestures', create=False, size=12)
-shared_mem_whsiper = SharedMemory(name='whisper', create=True, size=15)
+shared_mem_whisper = SharedMemory(name='whisper', create=True, size=15)
 
 running = 'None' + ';' + ('a' * (9 - len('None')))
-shared_mem_whsiper.buf[:len(running)] = bytearray(running.encode('utf-8'))
+shared_mem_whisper.buf[:len(running)] = bytearray(running.encode('utf-8'))
 
 audio = pyaudio.PyAudio()
 stream = audio.open(
@@ -40,7 +40,7 @@ stream = audio.open(
 )
 
 while True:
-    if shared_mem_gestures.buf[0:7].tobytes().decode('utf-8') == "Victory":
+    if shared_mem_gestures.buf[0:7].tobytes().decode('utf-8') == "Victory" and shared_mem_whisper.buf[:4].tobytes().decode('utf-8') == "None":
         audio_data = b""
         for _ in range(STEP_IN_SEC):
             chunk = stream.read(RATE)    
@@ -62,15 +62,10 @@ while True:
         
         if len(transcription) != 0 and len(transcription) <= 9 and transcription != '':
             transcription = transcription + ';' + ('a' * (9 - len(transcription)))
-            shared_mem_whsiper.buf[:len(transcription)] = bytearray(transcription.encode('utf-8'))
+            shared_mem_whisper.buf[:len(transcription)] = bytearray(transcription.encode('utf-8'))
         elif len(transcription) > 10 and transcription != '':
             transcription = transcription[:10] + ';'
-            shared_mem_whsiper.buf[:10] = bytearray(transcription[:10].encode('utf-8'))
-
-        print(transcription)
-        print()
-        
-        
+            shared_mem_whisper.buf[:10] = bytearray(transcription[:10].encode('utf-8'))
     else:
         continue
     

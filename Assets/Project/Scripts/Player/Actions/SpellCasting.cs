@@ -8,6 +8,7 @@ using UnityEngine.Rendering;
 using System.IO.MemoryMappedFiles;
 using System.IO;
 
+
 public class SpellCasting : MonoBehaviour
 {
     [Header("Spellbook")]
@@ -304,17 +305,17 @@ public class SpellCasting : MonoBehaviour
 
     public IEnumerator WaitForSpell()
     {
-
-
+        string word_none = "None";
         string word = "None";
 
-        while (word == "None")
+        while (word_none == "None")
         {
             MemoryMappedFile mmf_gesture = MemoryMappedFile.OpenExisting("whisper");
             MemoryMappedViewStream stream_gesture = mmf_gesture.CreateViewStream();
             BinaryReader reader_gesture = new BinaryReader(stream_gesture);
             byte[] frameGesture = reader_gesture.ReadBytes(10);
             word = System.Text.Encoding.UTF8.GetString(frameGesture, 0, 10).Split(";")[0];
+            word_none = word.Substring(0, 4);
             Debug.Log(word);
 
             yield return new WaitForFixedUpdate();
@@ -323,11 +324,15 @@ public class SpellCasting : MonoBehaviour
         Debug.Log(word);
         CastSpellFromName(word);
 
-        //string noneString = "None;";
-        //byte[] noneBytes = System.Text.Encoding.UTF8.GetBytes(noneString);
+        MemoryMappedFile mmf_word = MemoryMappedFile.OpenExisting("whisper");
+        MemoryMappedViewStream stream_word = mmf_word.CreateViewStream();
+        BinaryReader reader_word = new BinaryReader(stream_word);
+        BinaryWriter write_word = new BinaryWriter(stream_word);
 
-        //write_gesture.Write(noneBytes, 0, noneBytes.Length);
-
+        // Writing "None" to shared memory
+        string noneString = "None";
+        byte[] noneBytes = System.Text.Encoding.UTF8.GetBytes(noneString);
+        write_word.Write(noneBytes, 0, noneBytes.Length);
         //Debug.Log(word);
 
     }
