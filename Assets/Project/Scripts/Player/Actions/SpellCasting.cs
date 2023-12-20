@@ -5,6 +5,9 @@ using Whisper;
 using Whisper.Utils;
 using System.Linq;
 using UnityEngine.Rendering;
+using System.IO.MemoryMappedFiles;
+using System.IO;
+
 
 public class SpellCasting : MonoBehaviour
 {
@@ -43,6 +46,8 @@ public class SpellCasting : MonoBehaviour
     private WhisperManager whisper;
 
     private bool isTranscribing = false;
+
+    private bool isListening = false;
 
     private void Start()
     {
@@ -241,6 +246,7 @@ public class SpellCasting : MonoBehaviour
             return;
 
         var spellWhispered = res.Result;
+
         Debug.Log(NormalizeTranscribedText(spellWhispered));
 
         FindObjectOfType<HUD>().SpawnPopUp("", "Casting word:<br>" + NormalizeTranscribedTextToDisplay(spellWhispered), timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
@@ -305,5 +311,63 @@ public class SpellCasting : MonoBehaviour
             .ToLower();
 
         return cleanedString;
+    }
+
+    public IEnumerator WaitForSpell()
+    {
+        if (isListening)
+        {
+            yield break;
+        }
+
+        isListening = true;
+
+        MemoryMappedFile mmf_delete = MemoryMappedFile.OpenExisting("whisper");
+        MemoryMappedViewStream stream_delete = mmf_delete.CreateViewStream();
+        BinaryWriter write_delete = new BinaryWriter(stream_delete);
+
+        string noneString = "None";
+        byte[] noneBytes = System.Text.Encoding.UTF8.GetBytes(noneString);
+        write_delete.Write(noneBytes, 0, noneBytes.Length);
+
+        string word = "None";
+        string okString = "ok";
+
+        while (okString == "ok")
+        {
+            MemoryMappedFile mmf_gesture = MemoryMappedFile.OpenExisting("whisper_run");
+            MemoryMappedViewStream stream_gesture = mmf_gesture.CreateViewStream();
+            BinaryReader reader_gesture = new BinaryReader(stream_gesture);
+            byte[] frameGesture = reader_gesture.ReadBytes(2);
+
+            okString = System.Text.Encoding.UTF8.GetString(frameGesture, 0, 2);
+            Debug.Log(word);
+            yield return new WaitForFixedUpdate();
+        }
+
+        MemoryMappedFile mmf_word = MemoryMappedFile.OpenExisting("whisper");
+        MemoryMappedViewStream stream_word = mmf_word.CreateViewStream();
+        BinaryReader read_word = new BinaryReader(stream_word);
+
+        byte[] frame = read_word.ReadBytes(10);
+
+        word = System.Text.Encoding.UTF8.GetString(frame, 0, 10).Split(";")[0];
+        Debug.Log(word);
+
+        
+
+        MemoryMappedFile mmf_run = MemoryMappedFile.OpenExisting("whisper_run");
+        MemoryMappedViewStream stream_run = mmf_run.CreateViewStream();
+        BinaryWriter write_run = new BinaryWriter(stream_run);
+
+        string runString = "no";
+        byte[] runBytes = System.Text.Encoding.UTF8.GetBytes(runString);
+        write_run.Write(runBytes, 0, runBytes.Length);
+
+
+        CastSpellFromName(word);
+
+        isListening = false;
+
     }
 }

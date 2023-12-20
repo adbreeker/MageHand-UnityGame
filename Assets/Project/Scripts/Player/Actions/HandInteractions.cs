@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO.MemoryMappedFiles;
+using System.IO;
 using UnityEngine;
 
 public class HandInteractions : MonoBehaviour
@@ -23,6 +25,8 @@ public class HandInteractions : MonoBehaviour
     bool CooldownPutDown = false;
     bool CooldownDrink = false;
 
+    private string word;
+
     private AudioSource pickUpItemSound;
     private AudioSource putToInventorySound;
     private AudioSource drinkSound;
@@ -43,7 +47,7 @@ public class HandInteractions : MonoBehaviour
         DecreaseCooldowns(); //decrease cooldowns for all actions
 
         //listen to player gestures
-        if(gestureHandler.gesture == "Pointing_Up" && !CooldownClick)
+        if (gestureHandler.gesture == "Pointing_Up" && !CooldownClick)
         {
             ClickObject();
         }
@@ -174,12 +178,19 @@ public class HandInteractions : MonoBehaviour
 
     void CastSpell() //cast spell with SpellCasting class
     {
+        CooldownCast = true;
         if (PlayerParams.Controllers.spellbook.spells.Count > 0)
         {
-            CooldownCast = true;
             if (GameSettings.useSpeech && !PlayerParams.Variables.uiActive) //if using speach then microphone starting to record
             {
-                PlayerParams.Controllers.spellCasting.RecordSpellCasting();
+                MemoryMappedFile mmf_word = MemoryMappedFile.OpenExisting("whisper_run");
+                MemoryMappedViewStream stream_word = mmf_word.CreateViewStream();
+                BinaryWriter write_word = new BinaryWriter(stream_word);
+                string noneString = "ok";
+                byte[] noneBytes = System.Text.Encoding.UTF8.GetBytes(noneString);
+                write_word.Write(noneBytes, 0, noneBytes.Length);
+
+                StartCoroutine(PlayerParams.Controllers.spellCasting.WaitForSpell());
             }
             else if (!PlayerParams.Variables.uiActive) //open spells menu if using speech is off
             {
