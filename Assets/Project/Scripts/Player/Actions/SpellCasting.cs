@@ -85,7 +85,7 @@ public class SpellCasting : MonoBehaviour
 
     public IEnumerator PickUpSpell() //casting pick up spell
     {
-        SpellScrollInfo scroll = spellbook.GetSpellInfo("Pick Up");
+        SpellScrollInfo scroll = spellbook.GetSpellInfo("Collect");
         if(scroll != null)
         {
             castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_SpellPickUpActivation);
@@ -174,7 +174,7 @@ public class SpellCasting : MonoBehaviour
 
     public void BreakInSpell() //casting break in spell - occurs in tutorial only
     {
-        SpellScrollInfo scroll = spellbook.GetSpellInfo("Break In");
+        SpellScrollInfo scroll = spellbook.GetSpellInfo("Open");
         if (scroll != null)
         {
             castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
@@ -257,7 +257,7 @@ public class SpellCasting : MonoBehaviour
         {
             LightSpell();
         }
-        else if (NormalizeTranscribedText(name) == "pickup")
+        else if (NormalizeTranscribedText(name) == "collect")
         {
             StartCoroutine(PickUpSpell());
         }
@@ -273,7 +273,7 @@ public class SpellCasting : MonoBehaviour
         {
             ReturnSpell();
         }
-        else if (NormalizeTranscribedText(name) == "breakin")
+        else if (NormalizeTranscribedText(name) == "open")
         {
             BreakInSpell();
         }

@@ -393,6 +393,7 @@ public class SettingsMenu : MonoBehaviour
         {
             if (i != option)
             {
+                allOptions[i].transform.Find("Info").gameObject.SetActive(false);
                 if (i == 0 || i == 2)
                 {
                     allOptions[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
@@ -427,6 +428,7 @@ public class SettingsMenu : MonoBehaviour
 
         if (option < allOptions.Count)
         {
+            allOptions[option].transform.Find("Info").gameObject.SetActive(true);
             if (option == 0 || option == 2)
             {
                 allOptions[option].transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
