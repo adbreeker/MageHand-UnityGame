@@ -174,14 +174,17 @@ public class HandInteractions : MonoBehaviour
 
     void CastSpell() //cast spell with SpellCasting class
     {
-        CooldownCast = true;
-        if(GameSettings.useSpeech && !PlayerParams.Variables.uiActive) //if using speach then microphone starting to record
+        if (PlayerParams.Controllers.spellbook.spells.Count > 0)
         {
-            PlayerParams.Controllers.spellCasting.RecordSpellCasting();
-        }
-        else if(!PlayerParams.Variables.uiActive) //open spells menu if using speech is off
-        {
-            PlayerParams.Controllers.spellsMenu.OpenMenu();
+            CooldownCast = true;
+            if (GameSettings.useSpeech && !PlayerParams.Variables.uiActive) //if using speach then microphone starting to record
+            {
+                PlayerParams.Controllers.spellCasting.RecordSpellCasting();
+            }
+            else if (!PlayerParams.Variables.uiActive) //open spells menu if using speech is off
+            {
+                PlayerParams.Controllers.spellsMenu.OpenMenu();
+            }
         }
     }
 
