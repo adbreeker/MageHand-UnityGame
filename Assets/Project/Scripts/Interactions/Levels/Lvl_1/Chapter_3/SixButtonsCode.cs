@@ -10,13 +10,28 @@ public class SixButtonsCode : MonoBehaviour
     [Header("Reset button")]
     [SerializeField] ButtonBehavior _buttonReset;
 
-    [Header("Code buttons:")]
+    [Header("Code buttons add:")]
     [SerializeField] ButtonBehavior _button1;
     [SerializeField] ButtonBehavior _button2;
     [SerializeField] ButtonBehavior _button3;
     [SerializeField] ButtonBehavior _button4;
     [SerializeField] ButtonBehavior _button5;
     [SerializeField] ButtonBehavior _button6;
+
+    [Header("Code buttons subtract:")]
+    [SerializeField] ButtonBehavior _button1s;
+    [SerializeField] ButtonBehavior _button2s;
+    [SerializeField] ButtonBehavior _button3s;
+    [SerializeField] ButtonBehavior _button4s;
+    [SerializeField] ButtonBehavior _button5s;
+    [SerializeField] ButtonBehavior _button6s;
+
+    int code1 = 0;
+    int code2 = 0;
+    int code3 = 0;
+    int code4 = 0;
+    int code5 = 0;
+    int code6 = 0;
 
     [Header("Code tablets:")]
     [SerializeField] TextTabletBehavior _TextTablet1;
@@ -31,7 +46,14 @@ public class SixButtonsCode : MonoBehaviour
     {
         CheckResetButton();
 
-        if(!_passage.passageOpen)
+        code1 = ((_button1.clickCounter - _button1s.clickCounter) % 10 + 10) % 10;
+        code2 = ((_button2.clickCounter - _button2s.clickCounter) % 10 + 10) % 10;
+        code3 = ((_button3.clickCounter - _button3s.clickCounter) % 10 + 10) % 10;
+        code4 = ((_button4.clickCounter - _button4s.clickCounter) % 10 + 10) % 10;
+        code5 = ((_button5.clickCounter - _button5s.clickCounter) % 10 + 10) % 10;
+        code6 = ((_button6.clickCounter - _button6s.clickCounter) % 10 + 10) % 10;
+
+        if (!_passage.passageOpen)
         {
             CheckCode();
         }
@@ -52,7 +74,14 @@ public class SixButtonsCode : MonoBehaviour
             _button5.clickCounter = 0;
             _button6.clickCounter = 0;
 
-            if(_passage.passageOpen)
+            _button1s.clickCounter = 0;
+            _button2s.clickCounter = 0;
+            _button3s.clickCounter = 0;
+            _button4s.clickCounter = 0;
+            _button5s.clickCounter = 0;
+            _button6s.clickCounter = 0;
+
+            if (_passage.passageOpen)
             {
                 _passage.Interaction();
             }
@@ -62,12 +91,12 @@ public class SixButtonsCode : MonoBehaviour
     void CheckCode()
     {
         if(
-        _button1.clickCounter == 5 && //night
-        _button2.clickCounter == 3 && //mountain
-        _button3.clickCounter == 3 && //deer
-        _button4.clickCounter == 4 && //forest
-        _button5.clickCounter == 6 && //day
-        _button6.clickCounter == 1) //lake
+        code1 == 5 && //night
+        code2 == 3 && //mountain
+        code3 == 3 && //deer
+        code4 == 4 && //forest
+        code5 == 6 && //day
+        code6 == 1) //lake
         {
             _passage.Interaction();
         }
@@ -75,11 +104,11 @@ public class SixButtonsCode : MonoBehaviour
 
     void UpdateTextTablets()
     {
-        _TextTablet1.tabletText = _button1.clickCounter.ToString();
-        _TextTablet2.tabletText = _button2.clickCounter.ToString();
-        _TextTablet3.tabletText = _button3.clickCounter.ToString();
-        _TextTablet4.tabletText = _button4.clickCounter.ToString();
-        _TextTablet5.tabletText = _button5.clickCounter.ToString();
-        _TextTablet6.tabletText = _button6.clickCounter.ToString();
+        _TextTablet1.tabletText = code1.ToString();
+        _TextTablet2.tabletText = code2.ToString();
+        _TextTablet3.tabletText = code3.ToString();
+        _TextTablet4.tabletText = code4.ToString();
+        _TextTablet5.tabletText = code5.ToString();
+        _TextTablet6.tabletText = code6.ToString();
     }
 }
