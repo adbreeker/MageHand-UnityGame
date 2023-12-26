@@ -12,7 +12,6 @@ public class ActivateTutorialOnNoteEnd : MonoBehaviour
     {
         if (activatePanel && note == null && !PlayerParams.Variables.uiActive)
         {
-            Debug.Log("kupa");
             tutorialEntryToActivate.SetActive(true);
             foreach (ActivateTutorialOnNoteEnd activator in FindObjectsOfType<ActivateTutorialOnNoteEnd>())
             {
