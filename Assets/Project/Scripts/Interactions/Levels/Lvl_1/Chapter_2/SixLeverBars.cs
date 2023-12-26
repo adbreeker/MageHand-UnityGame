@@ -20,7 +20,7 @@ public class SixLeverBars : MonoBehaviour
     private void Update() //listen to all levers state
     {
         //if all lever are in necessary state, then open passage
-        if (lever1.leverON && lever2.leverON && !lever3.leverON && !lever4.leverON && lever5.leverON && !lever6.leverON)
+        if (!lever1.leverON && !lever2.leverON && lever3.leverON && lever4.leverON && !lever5.leverON && lever6.leverON)
         {
             if (!barsOpen)
             {
