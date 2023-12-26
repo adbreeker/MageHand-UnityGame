@@ -4,38 +4,55 @@ using UnityEngine;
 
 public class TutorialPanel : MonoBehaviour
 {
-    public GameObject tutorialPanelPrefab;
+    public List<GameObject> tutorialPanelPrefabs;
 
-    public GameObject tutorialPanelHitboxToActivate;
-    public GameObject tutorialPanelHitboxToDestroy;
+    //public GameObject tutorialPanelHitboxToActivate;
+    public GameObject tutorialPanelHitboxToDeactivate;
+    public bool wasLatelyOpened = false;
+
     private GameObject tutorialPanel;
-    private bool activatePanel = true;
+    private bool activatePanelOnEntry = true;
 
     private bool openedPanel;
+    private int currentPanelNumber;
 
     private AudioSource openSound;
     private AudioSource closeSound;
+    private AudioSource selectSound;
 
     private void Update()
     {
-        if(openedPanel) KeysListener();
+        KeysListener();
 
         //Activates panel while player enters bounds of object that this script is connected to
         Bounds cubeBounds = GetComponent<Renderer>().bounds;
-        if (cubeBounds.Contains(PlayerParams.Objects.player.transform.position) && activatePanel)
+        if (cubeBounds.Contains(PlayerParams.Objects.player.transform.position) && activatePanelOnEntry)
         {
             OpenPanel();
             openSound.Play();
-            activatePanel = false;
+            activatePanelOnEntry = false;
         }
     }
 
     private void KeysListener()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Space))
+        if (currentPanelNumber == tutorialPanelPrefabs.Count - 1 && openedPanel && Input.GetKeyDown(KeyCode.Space))
         {
             closeSound.Play();
             ClosePanel();
+        }
+        else if (openedPanel && Input.GetKeyDown(KeyCode.Space))
+        {
+            selectSound.Play();
+            Destroy(tutorialPanel);
+            currentPanelNumber++;
+            tutorialPanel = Instantiate(tutorialPanelPrefabs[currentPanelNumber], new Vector3(0, 0, 0), Quaternion.identity);
+        }
+
+        if (wasLatelyOpened && !openedPanel && !PlayerParams.Variables.uiActive && Input.GetKeyDown(KeyCode.T))
+        {
+            OpenPanel();
+            openSound.Play();
         }
     }
 
@@ -56,8 +73,16 @@ public class TutorialPanel : MonoBehaviour
 
         openSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Open);
         closeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Close);
+        selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
 
-        tutorialPanel = Instantiate(tutorialPanelPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        foreach (TutorialPanel panel in FindObjectsOfType<TutorialPanel>())
+        {
+            panel.wasLatelyOpened = false;
+        }
+        wasLatelyOpened = true;
+
+        currentPanelNumber = 0;
+        tutorialPanel = Instantiate(tutorialPanelPrefabs[currentPanelNumber], new Vector3(0, 0, 0), Quaternion.identity);
         openedPanel = true;
     }
 
@@ -72,12 +97,11 @@ public class TutorialPanel : MonoBehaviour
         PlayerParams.Controllers.pauseMenu.ableToInteract = true;
         PlayerParams.Controllers.journal.ableToInteract = true;
 
-        if (tutorialPanelHitboxToActivate != null) tutorialPanelHitboxToActivate.SetActive(true);
 
         Destroy(openSound.gameObject, openSound.clip.length);
 
-        if (tutorialPanelHitboxToDestroy != null) Destroy(tutorialPanelHitboxToDestroy);
-        Destroy(gameObject);
+        //if (tutorialPanelHitboxToActivate != null) tutorialPanelHitboxToActivate.SetActive(true);
+        if (tutorialPanelHitboxToDeactivate != null) tutorialPanelHitboxToDeactivate.GetComponent<TutorialPanel>().activatePanelOnEntry = false;
         Destroy(tutorialPanel);
     }
 }
