@@ -77,7 +77,7 @@ public class LightPathPuzzle : MonoBehaviour
         tpSound.Play();
         Destroy(tpSound, tpSound.clip.length);
 
-        PlayerParams.Objects.player.transform.rotation = Quaternion.Euler(0, 0, 0);
+        PlayerParams.Objects.player.transform.rotation = Quaternion.Euler(0, 90, 0);
         PlayerParams.Controllers.playerMovement.TeleportTo(TileToPlayerPos(_enterRoomPos.position));
         Instantiate(_teleportationEffectPrefab, PlayerParams.Objects.player.transform);
     }

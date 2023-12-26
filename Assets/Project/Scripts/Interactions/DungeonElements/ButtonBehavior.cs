@@ -9,6 +9,7 @@ public class ButtonBehavior : MonoBehaviour
 
     [Header("Button clicks counter")]
     public int clickCounter = 0;
+    public int clickCounterCap = 0;
 
     bool buttonChanging = false;
     private AudioSource clickSound;
@@ -18,12 +19,18 @@ public class ButtonBehavior : MonoBehaviour
         if (!buttonChanging)
         {
             clickCounter++;
+            if(clickCounterCap > 0) { ClickCounterCaping(); }
             StartCoroutine(ButtonAnimation());
             foreach(SwitchInteraction switchInteraction in GetComponents<SwitchInteraction>())
             {
                 switchInteraction.Interact();
             }
         }
+    }
+
+    void ClickCounterCaping()
+    {
+        clickCounter = clickCounter % (clickCounterCap + 1);
     }
 
     IEnumerator ButtonAnimation() //button animation

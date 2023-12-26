@@ -10,11 +10,18 @@ public class LeverBehavior : MonoBehaviour
     [Header("Is lever currenlty active")]
     public bool leverON = false;
 
+    [Header("Is lever single use")]
+    public bool singleUse = false;
+
     bool leverChanging = false;
     private AudioSource changingSound;
 
     public void OnClick() //on lever click invoke interaction on connected object
     {
+        if(singleUse)
+        {
+            gameObject.layer = LayerMask.NameToLayer("Default");
+        }
         if(!leverChanging)
         {
             StartCoroutine(LeverAnimation());
