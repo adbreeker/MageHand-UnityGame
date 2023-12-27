@@ -8,6 +8,7 @@ public class TutorialPanel : MonoBehaviour
 
     //public GameObject tutorialPanelHitboxToActivate;
     public GameObject tutorialPanelHitboxToDeactivate;
+    public bool playOpenSound = true;
     public bool wasLatelyOpened = false;
 
     private GameObject tutorialPanel;
@@ -29,7 +30,7 @@ public class TutorialPanel : MonoBehaviour
         if (cubeBounds.Contains(PlayerParams.Objects.player.transform.position) && activatePanelOnEntry)
         {
             OpenPanel();
-            openSound.Play();
+            if (playOpenSound) openSound.Play();
             activatePanelOnEntry = false;
         }
     }

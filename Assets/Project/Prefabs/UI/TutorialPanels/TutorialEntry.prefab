@@ -31,6 +31,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4}
   m_LocalScale: {x: 1, y: 3, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -81,8 +82,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 096b7f84c2b6b9d4daa83575c1cc5bc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tutorialPanelPrefab: {fileID: 0}
-  tutorialPageArray: []
+  tutorialPanelPrefabs: []
+  tutorialPanelHitboxToDeactivate: {fileID: 0}
+  wasLatelyOpened: 0
 --- !u!23 &4367082417442510878
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -94,6 +96,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
