@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RotatingPath : MonoBehaviour
+public class TwistingHallway : MonoBehaviour
 {
     [SerializeField] GameObject _rotationCube;
 
