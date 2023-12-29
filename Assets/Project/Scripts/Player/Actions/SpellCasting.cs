@@ -37,7 +37,7 @@ public class SpellCasting : MonoBehaviour
     public GameObject markPrefab;
 
 
-    private AudioSource castingSound;
+    //private AudioSource castingSound;
     private AudioSource castingFailSound;
     private AudioSource castingFinishedSound;
 
@@ -45,7 +45,7 @@ public class SpellCasting : MonoBehaviour
     private MicrophoneRecord microphoneRecord;
     private WhisperManager whisper;
 
-    private bool isTranscribing = false;
+    //private bool isTranscribing = false;
 
     private bool isListening = false;
 
@@ -209,6 +209,7 @@ public class SpellCasting : MonoBehaviour
 
     //whisper --------------------------------------------------------------------------------------------- whisper
 
+    /*
     private void Awake() //initiation on awake
     {
         //microphoneRecord = FindObjectOfType<MicrophoneRecord>();
@@ -256,6 +257,7 @@ public class SpellCasting : MonoBehaviour
 
         CastSpellFromName(spellWhispered);
     }
+    */
 
     public void CastSpellFromName(string name)
     {
@@ -363,8 +365,11 @@ public class SpellCasting : MonoBehaviour
         string word = System.Text.Encoding.UTF8.GetString(frameWord).Split(";")[0];
         Debug.Log("Whisper transcribed word: " + word);
 
-        FindObjectOfType<HUD>().SpawnPopUp("", "Casting word:<br>" + word, timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
-        Destroy(castingSound);
+        if(word.Length >= 4 && word.Substring(0, 4) == "None") FindObjectOfType<HUD>().SpawnPopUp("", "Casting word:<br>(silence)", timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
+        else FindObjectOfType<HUD>().SpawnPopUp("", "Casting word:<br>" + word, timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
+
+        Destroy(PlayerParams.Controllers.handInteractions.castingSound);
+        PlayerParams.Controllers.handInteractions.canCastNewSpell = true;
 
         WriteToMemoryMappedFile("magehand_whisper_run", "no");
 

@@ -28,7 +28,6 @@ public class HandInteractions : MonoBehaviour
     bool CooldownDrink = false;
 
     private string word;
-    private bool isRecording = false;
     
     private int recordingTime = 2; // Set the recording time in seconds
    
@@ -36,11 +35,12 @@ public class HandInteractions : MonoBehaviour
     private AudioSource pickUpItemSound;
     private AudioSource putToInventorySound;
     private AudioSource drinkSound;
-    private AudioSource castingSound;
+    public AudioSource castingSound;
     private AudioClip recordedClip;
 
     public float timeToFadeOutPopUp = 1;
     public float timeOfFadingOutPopUp = 0.007f;
+    public bool canCastNewSpell = true;
 
 
     private void Awake() //get necessary components
@@ -55,6 +55,12 @@ public class HandInteractions : MonoBehaviour
 
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.U))
+        {
+            PlayerParams.Variables.uiActive = !PlayerParams.Variables.uiActive;
+            Debug.Log(PlayerParams.Variables.uiActive);
+        }
+        
         DecreaseCooldowns(); //decrease cooldowns for all actions
 
         //listen to player gestures
@@ -190,12 +196,11 @@ public class HandInteractions : MonoBehaviour
     void CastSpell() //cast spell with SpellCasting class
     {
         CooldownCast = true;
-        if (PlayerParams.Controllers.spellbook.spells.Count > 0)
+        if (canCastNewSpell && PlayerParams.Controllers.spellbook.spells.Count > 0)
         {
             if (GameSettings.useSpeech && !PlayerParams.Variables.uiActive) //if using speach then microphone starting to record
             {
-
-                recordedClip = Microphone.Start(null, false, recordingTime, 16000);
+                recordedClip = Microphone.Start(GameSettings.microphoneName, false, recordingTime, 16000);
 
                 // Wait for the specified recording time
                 StartCoroutine(WaitForRecording());
@@ -210,7 +215,7 @@ public class HandInteractions : MonoBehaviour
 
     IEnumerator WaitForRecording()
     {
-        isRecording = true;
+        canCastNewSpell = false;
 
         // PopUp cast spell
         Debug.Log("Whisper listening");
@@ -221,7 +226,7 @@ public class HandInteractions : MonoBehaviour
         // Wait for the specified recording time
         yield return new WaitForSeconds(recordingTime);
 
-        Microphone.End(null);
+        Microphone.End(GameSettings.microphoneName);
 
         byte[] audioData = ConvertAudioClipToByteArray(recordedClip);
 
@@ -234,8 +239,6 @@ public class HandInteractions : MonoBehaviour
         PlayerParams.Controllers.spellCasting.WriteToMemoryMappedFile("magehand_whisper_run", "ok");
 
         StartCoroutine(PlayerParams.Controllers.spellCasting.WaitForSpell());
-
-        isRecording = false;
     }
 
     byte[] ConvertAudioClipToByteArray(AudioClip clip)
