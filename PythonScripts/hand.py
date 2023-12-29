@@ -43,7 +43,7 @@ class HandDetector:
 
             np.copyto(np.frombuffer(self.shared_mem_video.buf,
                                     dtype=np.uint8).reshape(self.frame_shape),
-                                    cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+                      cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 
             if not success:
                 print("Ignoring empty camera frame.")
@@ -55,7 +55,8 @@ class HandDetector:
 
             image.flags.writeable = False
             self._callback(self.landmarker.process(image), timestamp_ms=int(timestamp_ms), image=image)
-            points_hand = ';'.join([f'{x:.5f},{y:.5f},{z:.5f}' for x, y, z in self.data]) + ';' + ('a' * (700 - len(';'.join([f'{x:.5f},{y:.5f},{z:.5f}' for x, y, z in self.data]))-1))
+            points_hand = ';'.join([f'{x:.5f},{y:.5f},{z:.5f}' for x, y, z in self.data]) + ';' + (
+                        'a' * (700 - len(';'.join([f'{x:.5f},{y:.5f},{z:.5f}' for x, y, z in self.data])) - 1))
 
             self.shared_mem_points.buf[:len(points_hand)] = bytearray(points_hand.encode('utf-8'))
             self.shared_mem_gestures.buf[:len(self.gesture)] = bytearray(self.gesture.encode('utf-8'))
@@ -87,19 +88,21 @@ class HandDetector:
                 landmark = result.multi_hand_landmarks[0].landmark[i]
                 x_diff = landmark.x - self.data[i][0]
                 y_diff = landmark.y - self.data[i][1]
+                abs_diff = (x_diff ** 2 + y_diff ** 2) ** 0.5
 
-                self.data[i][0] += (x_diff - self.eps) if x_diff > self.eps else (
-                        x_diff + self.eps) if -x_diff > self.eps else 0
-                self.data[i][1] += (y_diff - self.eps) if y_diff > self.eps else (
-                        y_diff + self.eps) if -y_diff > self.eps else 0
+                if abs_diff > self.eps:
+                    self.data[i][0] += (x_diff - self.eps) if x_diff > self.eps else (
+                            x_diff + self.eps) if -x_diff > self.eps else 0
+                    self.data[i][1] += (y_diff - self.eps) if y_diff > self.eps else (
+                            y_diff + self.eps) if -y_diff > self.eps else 0
 
-                self.data[i][2] = landmark.z
+                    self.data[i][2] = landmark.z
 
             for hand_landmarks, handedness in zip(result.multi_hand_landmarks,
                                                   result.multi_handedness):
-
                 pre_processed = self.pre_process_landmark(hand_landmarks, image)
-                self.gesture = self.hand_labels[self.recognizer(pre_processed)]
+                self.gesture = self.hand_labels[self.recognizer(pre_processed)] + ';' + \
+                               ('a' * (12 - len(self.hand_labels[self.recognizer(pre_processed)]) - 1))
                 print(self.gesture)
 
     def _initialize(self):
@@ -151,9 +154,9 @@ class HandDetector:
 
 class KeyPointClassifier(object):
     def __init__(
-        self,
-        model_path=task_file_path,
-        num_threads=1,
+            self,
+            model_path=task_file_path,
+            num_threads=1,
     ):
         self.interpreter = tf.lite.Interpreter(model_path=model_path, num_threads=num_threads)
         self.interpreter.allocate_tensors()
