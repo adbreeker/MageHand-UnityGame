@@ -9,7 +9,6 @@ public class GesturesMenu : MonoBehaviour
     private GameObject pointer;
     private int pointedOptionMenu;
     private TextMeshProUGUI description;
-    private RawImage picture;
     private List<TextMeshProUGUI> menuOptions = new List<TextMeshProUGUI>();
 
     private AudioSource closeSound;
@@ -17,30 +16,30 @@ public class GesturesMenu : MonoBehaviour
 
     [Header("Click")]
     public string gestureDescription1;
-    public Texture gesturePicture1;
+    public GameObject hand1;
 
     [Header("Grab")]
     public string gestureDescription2;
-    public Texture gesturePicture2;
+    public GameObject hand2;
 
     [Header("Throw")]
     public string gestureDescription3;
-    public Texture gesturePicture3;
+    public GameObject hand3;
 
     [Header("Cast")]
     public string gestureDescription4;
-    public Texture gesturePicture4;
+    public GameObject hand4;
 
     [Header("Equip")]
     public string gestureDescription5;
-    public Texture gesturePicture5;
+    public GameObject hand5;
 
     [Header("Drink")]
     public string gestureDescription6;
-    public Texture gesturePicture6;
+    public GameObject hand6;
 
     private List<string> descriptions = new List<string>();
-    private List<Texture> pictures = new List<Texture>();
+    private List<GameObject> hands = new List<GameObject>();
 
     private float keyTimeDelayFirst = 20f;
     private float keyTimeDelay = 10f;
@@ -123,6 +122,10 @@ public class GesturesMenu : MonoBehaviour
 
     public void OpenMenu(GameObject givenPointer)
     {
+        transform.parent.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
+        transform.parent.GetComponent<Canvas>().worldCamera = PlayerParams.Objects.playerCamera.transform.Find("UiCamera").GetComponent<Camera>();
+        transform.parent.GetComponent<Canvas>().planeDistance = 1.05f;
+
         descriptions.Add(gestureDescription1);
         descriptions.Add(gestureDescription2);
         descriptions.Add(gestureDescription3);
@@ -130,12 +133,12 @@ public class GesturesMenu : MonoBehaviour
         descriptions.Add(gestureDescription5);
         descriptions.Add(gestureDescription6);
 
-        pictures.Add(gesturePicture1);
-        pictures.Add(gesturePicture2);
-        pictures.Add(gesturePicture3);
-        pictures.Add(gesturePicture4);
-        pictures.Add(gesturePicture5);
-        pictures.Add(gesturePicture6);
+        hands.Add(hand1);
+        hands.Add(hand2);
+        hands.Add(hand3);
+        hands.Add(hand4);
+        hands.Add(hand5);
+        hands.Add(hand6);
 
         pointer = givenPointer;
 
@@ -148,7 +151,6 @@ public class GesturesMenu : MonoBehaviour
             menuOptions.Add(transform.Find("Menu").Find("Options").Find(text).GetComponent<TextMeshProUGUI>());
         }
 
-        picture = transform.Find("GestureDisplay").Find("Picture").GetComponent<RawImage>();
         description = transform.Find("GestureDisplay").Find("Description").GetComponent<TextMeshProUGUI>();
 
         pointedOptionMenu = 0;
@@ -157,6 +159,7 @@ public class GesturesMenu : MonoBehaviour
 
     public void CloseMenu()
     {
+        transform.parent.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
         pointer.transform.SetParent(transform.parent.transform.Find("Menu"));
         menuOptions.Clear();
         transform.parent.transform.Find("Menu").gameObject.SetActive(true);
@@ -167,7 +170,11 @@ public class GesturesMenu : MonoBehaviour
 
     void DisplayGesture(int option)
     {
-        picture.texture = pictures[option];
+        for(int i = 0; i < hands.Count; i++)
+        {
+            if(i != option) hands[i].SetActive(false);
+            else hands[i].SetActive(true);
+        }
         description.text = descriptions[option];
     }
     void PointOption(int option, List<TextMeshProUGUI> allOptions)
@@ -182,9 +189,6 @@ public class GesturesMenu : MonoBehaviour
             allOptions[option].color = new Color(1f, 1f, 1f);
 
             pointer.transform.SetParent(allOptions[option].transform);
-            //pointer.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            //    pointer.transform.parent.GetComponent<RectTransform>().sizeDelta.x + 102.5f, pointer.GetComponent<RectTransform>().sizeDelta.y);
-            //pointer.transform.localPosition = new Vector3(0, 0, 0);
         }
     }
 }

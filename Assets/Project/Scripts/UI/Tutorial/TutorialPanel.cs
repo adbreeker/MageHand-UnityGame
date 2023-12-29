@@ -8,6 +8,7 @@ public class TutorialPanel : MonoBehaviour
 
     //public GameObject tutorialPanelHitboxToActivate;
     public GameObject tutorialPanelHitboxToDeactivate;
+    public Camera UiCamera;
     public bool playOpenSound = true;
     public bool wasLatelyOpened = false;
 
@@ -48,6 +49,8 @@ public class TutorialPanel : MonoBehaviour
             Destroy(tutorialPanel);
             currentPanelNumber++;
             tutorialPanel = Instantiate(tutorialPanelPrefabs[currentPanelNumber], new Vector3(0, 0, 0), Quaternion.identity);
+            tutorialPanel.GetComponent<Canvas>().worldCamera = UiCamera;
+            tutorialPanel.GetComponent<Canvas>().planeDistance = 1.05f;
         }
 
         if (wasLatelyOpened && !openedPanel && !PlayerParams.Variables.uiActive && Input.GetKeyDown(KeyCode.T))
@@ -59,6 +62,12 @@ public class TutorialPanel : MonoBehaviour
 
     private void OpenPanel()
     {
+        foreach (TutorialPanel panel in FindObjectsOfType<TutorialPanel>())
+        {
+            panel.wasLatelyOpened = false;
+            panel.ClosePanel();
+        }
+
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.inventory.CloseInventory();
         PlayerParams.Controllers.spellbook.CloseSpellbook();
@@ -76,18 +85,18 @@ public class TutorialPanel : MonoBehaviour
         closeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Close);
         selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
 
-        foreach (TutorialPanel panel in FindObjectsOfType<TutorialPanel>())
-        {
-            panel.wasLatelyOpened = false;
-        }
         wasLatelyOpened = true;
 
         currentPanelNumber = 0;
+
         tutorialPanel = Instantiate(tutorialPanelPrefabs[currentPanelNumber], new Vector3(0, 0, 0), Quaternion.identity);
+        tutorialPanel.GetComponent<Canvas>().worldCamera = UiCamera;
+        tutorialPanel.GetComponent<Canvas>().planeDistance = 1.05f;
+
         openedPanel = true;
     }
 
-    private void ClosePanel()
+    public void ClosePanel()
     {
         openedPanel = false;
 
@@ -99,7 +108,7 @@ public class TutorialPanel : MonoBehaviour
         PlayerParams.Controllers.journal.ableToInteract = true;
 
 
-        Destroy(openSound.gameObject, openSound.clip.length);
+        if(openSound != null) Destroy(openSound.gameObject, openSound.clip.length);
 
         //if (tutorialPanelHitboxToActivate != null) tutorialPanelHitboxToActivate.SetActive(true);
         if (tutorialPanelHitboxToDeactivate != null) tutorialPanelHitboxToDeactivate.GetComponent<TutorialPanel>().activatePanelOnEntry = false;
