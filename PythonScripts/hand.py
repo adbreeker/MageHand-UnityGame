@@ -89,13 +89,15 @@ class HandDetector:
                 """
                 x_diff = result.hand_landmarks[0][i].x - self.data[i][0]
                 y_diff = result.hand_landmarks[0][i].y - self.data[i][1]
+                abs_diff = (x_diff**2 + y_diff**2)**0.5
 
-                self.data[i][0] += (x_diff - self.eps) if x_diff > self.eps else (
-                            x_diff + self.eps) if -x_diff > self.eps else 0
-                self.data[i][1] += (y_diff - self.eps) if y_diff > self.eps else (
-                            y_diff + self.eps) if -y_diff > self.eps else 0
+                if abs_diff > self.eps:
+                    self.data[i][0] += (x_diff - self.eps) if x_diff > self.eps else (
+                                x_diff + self.eps) if -x_diff > self.eps else 0
+                    self.data[i][1] += (y_diff - self.eps) if y_diff > self.eps else (
+                                y_diff + self.eps) if -y_diff > self.eps else 0
 
-                self.data[i][2] = result.hand_landmarks[0][i].z
+                    self.data[i][2] = result.hand_landmarks[0][i].z
 
     def _initialize(self):
         self.cap = cv2.VideoCapture(0)
@@ -114,6 +116,7 @@ class HandDetector:
             self.options)
         
         print('connected to unity')
+
 
 if __name__ == "__main__":    
     detector = HandDetector()
