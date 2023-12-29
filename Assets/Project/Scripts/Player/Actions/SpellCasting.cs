@@ -7,6 +7,8 @@ using System.Linq;
 using UnityEngine.Rendering;
 using System.IO.MemoryMappedFiles;
 using System.IO;
+using System.IO.Pipes;
+using System;
 
 
 public class SpellCasting : MonoBehaviour
@@ -47,7 +49,7 @@ public class SpellCasting : MonoBehaviour
 
     //private bool isTranscribing = false;
 
-    private bool isListening = false;
+    private bool _isAbleToCast = true;
 
     private void Start()
     {
@@ -206,9 +208,97 @@ public class SpellCasting : MonoBehaviour
         }
     }
 
-
     //whisper --------------------------------------------------------------------------------------------- whisper
+    public IEnumerator CastSpell()
+    {
+        if(!_isAbleToCast)
+        {
+            Debug.Log("Whisper is currently working - preventing new cast");
+            yield break;
+        }
 
+        _isAbleToCast = false;
+
+        AudioClip recordedClip = Microphone.Start(GameSettings.microphoneName, false, 2, 16000);
+
+        // PopUp cast spell
+        Debug.Log("Whisper listening");
+        FindObjectOfType<HUD>().SpawnPopUp("", "Cast a Spell.", timeToFadeOutPopUp, timeOfFadingOutPopUp);
+        AudioSource castingSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpell);
+        castingSound.Play();
+
+        // Wait for the specified recording time
+        yield return new WaitForSecondsRealtime(2.0f);
+
+        Microphone.End(GameSettings.microphoneName);
+
+        byte[] audioData = ConvertAudioClipToByteArray(recordedClip);
+
+        MemoryMappedFile mmf_audio = MemoryMappedFile.OpenExisting("magehand_whisper_audio");
+        MemoryMappedViewStream stream_audio = mmf_audio.CreateViewStream();
+        BinaryWriter write_audio = new BinaryWriter(stream_audio);
+
+        write_audio.Write(audioData, 0, audioData.Length);
+
+        PlayerParams.Controllers.spellCasting.WriteToMemoryMappedFile("magehand_whisper_run", "ok");
+
+        WriteToMemoryMappedFile("magehand_whisper_text", "None");
+
+        string okString = "ok";
+
+        while (okString == "ok")
+        {
+            byte[] frameGesture;
+            ReadFromMemoryMappedFile("magehand_whisper_run", 2, out frameGesture);
+            okString = System.Text.Encoding.UTF8.GetString(frameGesture, 0, 2);
+            yield return new WaitForFixedUpdate();
+        }
+
+        byte[] frameWord;
+        ReadFromMemoryMappedFile("magehand_whisper_text", 10, out frameWord);
+
+        string word = System.Text.Encoding.UTF8.GetString(frameWord).Split(";")[0];
+        Debug.Log("Whisper transcribed word: " + word);
+
+        if (word.Length >= 4 && word.Substring(0, 4) == "None") FindObjectOfType<HUD>().SpawnPopUp("", "Casting word:<br>(silence)", timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
+        else FindObjectOfType<HUD>().SpawnPopUp("", "Casting word:<br>" + word, timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
+
+        Destroy(castingSound);
+
+        WriteToMemoryMappedFile("magehand_whisper_run", "no");
+
+        CastSpellFromName(word);
+        _isAbleToCast = true;
+    }
+
+    byte[] ConvertAudioClipToByteArray(AudioClip clip)
+    {
+        var samples = new float[clip.samples];
+
+        clip.GetData(samples, 0);
+
+        Int16[] intData = new Int16[samples.Length];
+        //converting in 2 float[] steps to Int16[], //then Int16[] to Byte[]
+
+        Byte[] bytesData = new Byte[samples.Length * 2];
+        //bytesData array is twice the size of
+        //dataSource array because a float converted in Int16 is 2 bytes.
+
+        float rescaleFactor = 32767; //to convert float to Int16
+
+        for (int i = 0; i < samples.Length; i++)
+        {
+            intData[i] = (short)(samples[i] * rescaleFactor);
+            Byte[] byteArr = new Byte[2];
+            byteArr = BitConverter.GetBytes(intData[i]);
+            byteArr.CopyTo(bytesData, i * 2);
+        }
+
+        return bytesData;
+    }
+
+
+    //old
     /*
     private void Awake() //initiation on awake
     {
@@ -334,48 +424,5 @@ public class SpellCasting : MonoBehaviour
         {
             frame = reader.ReadBytes(bytesNumber);
         }
-    }
-
-    public IEnumerator WaitForSpell()
-    {
-        if (isListening)
-        {
-            Debug.Log("Whisper is currently transcrabing - preventing new cast");
-            yield break;
-        }
-
-        isListening = true;
-
-        WriteToMemoryMappedFile("magehand_whisper_text", "None");
-
-        string okString = "ok";
-
-        while (okString == "ok")
-        {
-            byte[] frameGesture;
-            ReadFromMemoryMappedFile("magehand_whisper_run", 2, out frameGesture);
-            okString = System.Text.Encoding.UTF8.GetString(frameGesture, 0, 2);
-            //Debug.Log(word);
-            yield return new WaitForFixedUpdate();
-        }
-
-        byte[] frameWord;
-        ReadFromMemoryMappedFile("magehand_whisper_text", 10, out frameWord);
-
-        string word = System.Text.Encoding.UTF8.GetString(frameWord).Split(";")[0];
-        Debug.Log("Whisper transcribed word: " + word);
-
-        if(word.Length >= 4 && word.Substring(0, 4) == "None") FindObjectOfType<HUD>().SpawnPopUp("", "Casting word:<br>(silence)", timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
-        else FindObjectOfType<HUD>().SpawnPopUp("", "Casting word:<br>" + word, timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
-
-        Destroy(PlayerParams.Controllers.handInteractions.castingSound);
-        PlayerParams.Controllers.handInteractions.canCastNewSpell = true;
-
-        WriteToMemoryMappedFile("magehand_whisper_run", "no");
-
-        CastSpellFromName(word);
-
-        isListening = false;
-
     }
 }

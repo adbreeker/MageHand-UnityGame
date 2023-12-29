@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO.MemoryMappedFiles;
 using System.IO;
 using UnityEngine;
-using System.IO.Pipes;
-using System;
 
 public class HandInteractions : MonoBehaviour
 {
@@ -27,20 +25,12 @@ public class HandInteractions : MonoBehaviour
     bool CooldownPutDown = false;
     bool CooldownDrink = false;
 
-    private string word;
-    
-    private int recordingTime = 2; // Set the recording time in seconds
-   
-
     private AudioSource pickUpItemSound;
     private AudioSource putToInventorySound;
     private AudioSource drinkSound;
-    public AudioSource castingSound;
-    private AudioClip recordedClip;
 
     public float timeToFadeOutPopUp = 1;
     public float timeOfFadingOutPopUp = 0.007f;
-    public bool canCastNewSpell = true;
 
 
     private void Awake() //get necessary components
@@ -55,12 +45,6 @@ public class HandInteractions : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.U))
-        {
-            PlayerParams.Variables.uiActive = !PlayerParams.Variables.uiActive;
-            Debug.Log(PlayerParams.Variables.uiActive);
-        }
-        
         DecreaseCooldowns(); //decrease cooldowns for all actions
 
         //listen to player gestures
@@ -196,75 +180,18 @@ public class HandInteractions : MonoBehaviour
     void CastSpell() //cast spell with SpellCasting class
     {
         CooldownCast = true;
-        if (canCastNewSpell && PlayerParams.Controllers.spellbook.spells.Count > 0)
+        if (PlayerParams.Controllers.spellbook.spells.Count > 0)
         {
             if (GameSettings.useSpeech && !PlayerParams.Variables.uiActive) //if using speach then microphone starting to record
             {
-                recordedClip = Microphone.Start(GameSettings.microphoneName, false, recordingTime, 16000);
-
                 // Wait for the specified recording time
-                StartCoroutine(WaitForRecording());
-
+                StartCoroutine(PlayerParams.Controllers.spellCasting.CastSpell());
             }
             else if (!PlayerParams.Variables.uiActive) //open spells menu if using speech is off
             {
                 PlayerParams.Controllers.spellsMenu.OpenMenu();
             }
         }
-    }
-
-    IEnumerator WaitForRecording()
-    {
-        canCastNewSpell = false;
-
-        // PopUp cast spell
-        Debug.Log("Whisper listening");
-        FindObjectOfType<HUD>().SpawnPopUp("", "Cast a Spell.", timeToFadeOutPopUp, timeOfFadingOutPopUp);
-        castingSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpell);
-        castingSound.Play();
-
-        // Wait for the specified recording time
-        yield return new WaitForSeconds(recordingTime);
-
-        Microphone.End(GameSettings.microphoneName);
-
-        byte[] audioData = ConvertAudioClipToByteArray(recordedClip);
-
-        MemoryMappedFile mmf_audio = MemoryMappedFile.OpenExisting("magehand_whisper_audio");
-        MemoryMappedViewStream stream_audio= mmf_audio.CreateViewStream();
-        BinaryWriter write_audio= new BinaryWriter(stream_audio);
-  
-        write_audio.Write(audioData, 0, audioData.Length);
-
-        PlayerParams.Controllers.spellCasting.WriteToMemoryMappedFile("magehand_whisper_run", "ok");
-
-        StartCoroutine(PlayerParams.Controllers.spellCasting.WaitForSpell());
-    }
-
-    byte[] ConvertAudioClipToByteArray(AudioClip clip)
-    {
-        var samples = new float[clip.samples];
-
-        clip.GetData(samples, 0);
-
-        Int16[] intData = new Int16[samples.Length];
-        //converting in 2 float[] steps to Int16[], //then Int16[] to Byte[]
-
-        Byte[] bytesData = new Byte[samples.Length * 2];
-        //bytesData array is twice the size of
-        //dataSource array because a float converted in Int16 is 2 bytes.
-
-        float rescaleFactor = 32767; //to convert float to Int16
-
-        for (int i = 0; i < samples.Length; i++)
-        {
-            intData[i] = (short)(samples[i] * rescaleFactor);
-            Byte[] byteArr = new Byte[2];
-            byteArr = BitConverter.GetBytes(intData[i]);
-            byteArr.CopyTo(bytesData, i * 2);
-        }
-
-        return bytesData;
     }
 
     void PutDownObject() //put object down to inventory or if in hand is spell then some special interaction
