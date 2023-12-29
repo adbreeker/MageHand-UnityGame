@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO.MemoryMappedFiles;
 using System.IO;
 using UnityEngine;
+using System.IO.Pipes;
+using System;
 
 public class HandInteractions : MonoBehaviour
 {
@@ -26,10 +28,19 @@ public class HandInteractions : MonoBehaviour
     bool CooldownDrink = false;
 
     private string word;
+    private bool isRecording = false;
+    
+    private int recordingTime = 2; // Set the recording time in seconds
+   
 
     private AudioSource pickUpItemSound;
     private AudioSource putToInventorySound;
     private AudioSource drinkSound;
+    private AudioSource castingSound;
+    private AudioClip recordedClip;
+
+    public float timeToFadeOutPopUp = 1;
+    public float timeOfFadingOutPopUp = 0.007f;
 
 
     private void Awake() //get necessary components
@@ -183,20 +194,74 @@ public class HandInteractions : MonoBehaviour
         {
             if (GameSettings.useSpeech && !PlayerParams.Variables.uiActive) //if using speach then microphone starting to record
             {
-                MemoryMappedFile mmf_word = MemoryMappedFile.OpenExisting("whisper_run");
-                MemoryMappedViewStream stream_word = mmf_word.CreateViewStream();
-                BinaryWriter write_word = new BinaryWriter(stream_word);
-                string noneString = "ok";
-                byte[] noneBytes = System.Text.Encoding.UTF8.GetBytes(noneString);
-                write_word.Write(noneBytes, 0, noneBytes.Length);
 
-                StartCoroutine(PlayerParams.Controllers.spellCasting.WaitForSpell());
+                recordedClip = Microphone.Start(null, false, recordingTime, 16000);
+
+                // Wait for the specified recording time
+                StartCoroutine(WaitForRecording());
+
             }
             else if (!PlayerParams.Variables.uiActive) //open spells menu if using speech is off
             {
                 PlayerParams.Controllers.spellsMenu.OpenMenu();
             }
         }
+    }
+
+    IEnumerator WaitForRecording()
+    {
+        isRecording = true;
+
+        // PopUp cast spell
+        Debug.Log("Whisper listening");
+        FindObjectOfType<HUD>().SpawnPopUp("", "Cast a Spell.", timeToFadeOutPopUp, timeOfFadingOutPopUp);
+        castingSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpell);
+        castingSound.Play();
+
+        // Wait for the specified recording time
+        yield return new WaitForSeconds(recordingTime);
+
+        Microphone.End(null);
+
+        byte[] audioData = ConvertAudioClipToByteArray(recordedClip);
+
+        MemoryMappedFile mmf_audio = MemoryMappedFile.OpenExisting("magehand_whisper_audio");
+        MemoryMappedViewStream stream_audio= mmf_audio.CreateViewStream();
+        BinaryWriter write_audio= new BinaryWriter(stream_audio);
+  
+        write_audio.Write(audioData, 0, audioData.Length);
+
+        PlayerParams.Controllers.spellCasting.WriteToMemoryMappedFile("magehand_whisper_run", "ok");
+
+        StartCoroutine(PlayerParams.Controllers.spellCasting.WaitForSpell());
+
+        isRecording = false;
+    }
+
+    byte[] ConvertAudioClipToByteArray(AudioClip clip)
+    {
+        var samples = new float[clip.samples];
+
+        clip.GetData(samples, 0);
+
+        Int16[] intData = new Int16[samples.Length];
+        //converting in 2 float[] steps to Int16[], //then Int16[] to Byte[]
+
+        Byte[] bytesData = new Byte[samples.Length * 2];
+        //bytesData array is twice the size of
+        //dataSource array because a float converted in Int16 is 2 bytes.
+
+        float rescaleFactor = 32767; //to convert float to Int16
+
+        for (int i = 0; i < samples.Length; i++)
+        {
+            intData[i] = (short)(samples[i] * rescaleFactor);
+            Byte[] byteArr = new Byte[2];
+            byteArr = BitConverter.GetBytes(intData[i]);
+            byteArr.CopyTo(bytesData, i * 2);
+        }
+
+        return bytesData;
     }
 
     void PutDownObject() //put object down to inventory or if in hand is spell then some special interaction

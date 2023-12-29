@@ -313,64 +313,60 @@ public class SpellCasting : MonoBehaviour
         return cleanedString;
     }
 
+    public void WriteToMemoryMappedFile(string mapName, string data)
+    {
+        using (MemoryMappedFile mmf = MemoryMappedFile.OpenExisting(mapName))
+        using (MemoryMappedViewStream stream = mmf.CreateViewStream())
+        using (BinaryWriter writer = new BinaryWriter(stream))
+        {
+            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(data);
+            writer.Write(bytes, 0, bytes.Length);
+        }
+    }
+
+    public void ReadFromMemoryMappedFile(string mapName, int bytesNumber, out byte[] frame)
+    {
+        using (MemoryMappedFile mmf = MemoryMappedFile.OpenExisting(mapName))
+        using (MemoryMappedViewStream stream = mmf.CreateViewStream())
+        using (BinaryReader reader = new BinaryReader(stream))
+        {
+            frame = reader.ReadBytes(bytesNumber);
+        }
+    }
+
     public IEnumerator WaitForSpell()
     {
         if (isListening)
         {
-            Debug.Log("Whisper is currently listening - preventing new cast");
+            Debug.Log("Whisper is currently transcrabing - preventing new cast");
             yield break;
         }
 
-        Debug.Log("Whisper listening");
-        FindObjectOfType<HUD>().SpawnPopUp("", "Cast a Spell.", timeToFadeOutPopUp, timeOfFadingOutPopUp);
-        castingSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpell);
-        castingSound.Play();
-
         isListening = true;
 
-        MemoryMappedFile mmf_delete = MemoryMappedFile.OpenExisting("whisper");
-        MemoryMappedViewStream stream_delete = mmf_delete.CreateViewStream();
-        BinaryWriter write_delete = new BinaryWriter(stream_delete);
+        WriteToMemoryMappedFile("magehand_whisper_text", "None");
 
-        string noneString = "None";
-        byte[] noneBytes = System.Text.Encoding.UTF8.GetBytes(noneString);
-        write_delete.Write(noneBytes, 0, noneBytes.Length);
-
-        string word = "None";
         string okString = "ok";
 
         while (okString == "ok")
         {
-            MemoryMappedFile mmf_gesture = MemoryMappedFile.OpenExisting("whisper_run");
-            MemoryMappedViewStream stream_gesture = mmf_gesture.CreateViewStream();
-            BinaryReader reader_gesture = new BinaryReader(stream_gesture);
-            byte[] frameGesture = reader_gesture.ReadBytes(2);
-
+            byte[] frameGesture;
+            ReadFromMemoryMappedFile("magehand_whisper_run", 2, out frameGesture);
             okString = System.Text.Encoding.UTF8.GetString(frameGesture, 0, 2);
             //Debug.Log(word);
             yield return new WaitForFixedUpdate();
         }
 
-        MemoryMappedFile mmf_word = MemoryMappedFile.OpenExisting("whisper");
-        MemoryMappedViewStream stream_word = mmf_word.CreateViewStream();
-        BinaryReader read_word = new BinaryReader(stream_word);
+        byte[] frameWord;
+        ReadFromMemoryMappedFile("magehand_whisper_text", 10, out frameWord);
 
-        byte[] frame = read_word.ReadBytes(10);
-
-        word = System.Text.Encoding.UTF8.GetString(frame, 0, 10).Split(";")[0];
+        string word = System.Text.Encoding.UTF8.GetString(frameWord).Split(";")[0];
         Debug.Log("Whisper transcribed word: " + word);
+
         FindObjectOfType<HUD>().SpawnPopUp("", "Casting word:<br>" + word, timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
         Destroy(castingSound);
 
-
-        MemoryMappedFile mmf_run = MemoryMappedFile.OpenExisting("whisper_run");
-        MemoryMappedViewStream stream_run = mmf_run.CreateViewStream();
-        BinaryWriter write_run = new BinaryWriter(stream_run);
-
-        string runString = "no";
-        byte[] runBytes = System.Text.Encoding.UTF8.GetBytes(runString);
-        write_run.Write(runBytes, 0, runBytes.Length);
-
+        WriteToMemoryMappedFile("magehand_whisper_run", "no");
 
         CastSpellFromName(word);
 
