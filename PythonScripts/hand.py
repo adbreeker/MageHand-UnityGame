@@ -32,8 +32,8 @@ class HandDetector:
                                               size=700)
 
         self.eps = 0.013
-
-        self.hand_labels = ["Open palm", "Closed palm", "Ok", "Finger", "Claw", "Thumb Up", "Thumb Down"]
+        ##["Open palm", "Closed palm", "Ok", "Finger", "Claw", "Thumb Up", "Thumb Down"]
+        self.hand_labels = ["Open_palm", "Closed_Fist", "ILoveYou", "Pointing_Up", "Victory", "Thumb_Up", "Thumb_Down"]
 
     def run(self):
         if self.landmarker is None:
