@@ -7,10 +7,12 @@ import itertools
 import numpy as np
 import mediapipe as mp
 import cv2
-import tensorflow as tf
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
 
 base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
-task_file_path = os.path.join(base_path, 'hand_classifier.tflite')
+task_file_path = os.path.join(base_path, 'hand_classifier.pth')
 
 
 class HandDetector:
@@ -154,26 +156,51 @@ class HandDetector:
 
 class KeyPointClassifier(object):
     def __init__(
-            self,
-            model_path=task_file_path,
-            num_threads=1,
+        self,
+        model_path=task_file_path,
     ):
-        self.interpreter = tf.lite.Interpreter(model_path=model_path, num_threads=num_threads)
-        self.interpreter.allocate_tensors()
-        self.input_details = self.interpreter.get_input_details()
-        self.output_details = self.interpreter.get_output_details()
+        self.model = torch.load(model_path)
+        self.model.eval()
 
     def __call__(self, landmark_list):
-        input_tensor_index = self.input_details[0]['index']
-        self.interpreter.set_tensor(input_tensor_index, np.array([landmark_list], dtype=np.float32))
-        self.interpreter.invoke()
+        input_tensor = torch.tensor([landmark_list], dtype=torch.float32)
 
-        output_tensor_index = self.output_details[0]['index']
-        output = self.interpreter.tensor(output_tensor_index)()
+        with torch.no_grad():
+            output = self.model(input_tensor)
 
-        result_index = np.argmax(np.squeeze(output))
+        probabilities = F.softmax(output, dim=1)
 
-        return result_index
+        confidence, predicted_class = torch.max(probabilities, 1)
+
+        #print("Predicted class:", predicted_class.item())
+        #print("Confidence:", confidence.item())
+
+        result_index = np.argmax(np.squeeze(output.numpy()))
+
+        if confidence.item() > 0.75:
+            print(confidence.item())
+            return result_index
+        else:
+            print("Low confidence")
+            return 0
+
+
+class HandClassifier(nn.Module):
+    def __init__(self):
+        super(HandClassifier, self).__init__()
+        self.dropout1 = nn.Dropout(0.2)
+        self.fc1 = nn.Linear(21 * 2, 20)
+        self.dropout2 = nn.Dropout(0.4)
+        self.fc2 = nn.Linear(20, 10)
+        self.fc3 = nn.Linear(10, 7)
+
+    def forward(self, x):
+        x = self.dropout1(x)
+        x = torch.relu(self.fc1(x))
+        x = self.dropout2(x)
+        x = torch.relu(self.fc2(x))
+        x = self.fc3(x)
+        return x
 
 
 if __name__ == "__main__":
