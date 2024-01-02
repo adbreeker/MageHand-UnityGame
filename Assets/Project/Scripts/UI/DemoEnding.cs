@@ -35,13 +35,13 @@ public class DemoEnding : MonoBehaviour
 
     IEnumerator Animation()
     {
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(3.5f);
 
         float startPosition = creditsText.localPosition.y;
         while (creditsText.localPosition.y < -startPosition)
         {
             creditsText.localPosition = new Vector3(creditsText.localPosition.x, creditsText.localPosition.y + 1f, creditsText.localPosition.z);
-            yield return new WaitForSeconds(0);
+            yield return new WaitForFixedUpdate();
         }
 
         FindObjectOfType<FadeInFadeOut>().CloseGame();
@@ -56,13 +56,13 @@ public class DemoEnding : MonoBehaviour
         while (fade.color.a < 0.5f)
         {
             fade.color = new Color(0, 0, 0, fade.color.a + 0.05f);
-            yield return new WaitForSeconds(0);
+            yield return new WaitForFixedUpdate();
         }
 
         while (fade.color.a > 0f)
         {
             fade.color = new Color(0, 0, 0, fade.color.a - 0.05f);
-            yield return new WaitForSeconds(0);
+            yield return new WaitForFixedUpdate();
         }
 
         Destroy(fadeObject);
