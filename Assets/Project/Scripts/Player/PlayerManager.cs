@@ -13,6 +13,7 @@ public static class PlayerParams //static player parameters accessible from ever
 
     public static class Controllers //scripts associated with player
     {
+        public static PlayerManager playerManager;
         public static PlayerMovement playerMovement;
         public static Inventory inventory;
         public static Spellbook spellbook;
@@ -61,6 +62,7 @@ public class PlayerManager : MonoBehaviour //assigning static PlayerParams on Aw
         PlayerParams.Objects.hand = hand;
 
         //Controllers
+        PlayerParams.Controllers.playerManager = this;
         PlayerParams.Controllers.playerMovement = playerMovement;
         PlayerParams.Controllers.inventory = inventory;
         PlayerParams.Controllers.spellbook = spellbook;

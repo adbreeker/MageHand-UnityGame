@@ -184,7 +184,7 @@ public class HandInteractions : MonoBehaviour
         {
             if (GameSettings.useSpeech && !PlayerParams.Variables.uiActive) //if using speach then microphone starting to record
             {
-                PlayerParams.Controllers.playerMovement.StartCoroutine(PlayerParams.Controllers.spellCasting.CastSpell());
+                PlayerParams.Controllers.playerManager.StartCoroutine(PlayerParams.Controllers.spellCasting.CastSpell());
             }
             else if (!PlayerParams.Variables.uiActive) //open spells menu if using speech is off
             {
