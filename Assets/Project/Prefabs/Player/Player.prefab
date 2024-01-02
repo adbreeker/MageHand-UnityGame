@@ -161,7 +161,6 @@ Transform:
   - {fileID: 2215893105645526394}
   - {fileID: 648703193506420819}
   - {fileID: 610848296802025419}
-  - {fileID: 919321461571919155}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -345,79 +344,6 @@ MonoBehaviour:
   journalOpened: 0
   atDialoguesNamesList: 0
   atNotesNamesList: 0
---- !u!1 &3290760464906789087
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 919321461571919155}
-  - component: {fileID: 607853020240483639}
-  - component: {fileID: 1024683978554945603}
-  m_Layer: 0
-  m_Name: WhisperManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &919321461571919155
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3290760464906789087}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2215893106494380599}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &607853020240483639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3290760464906789087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9370225a2ca94276b870d5f87b0db55, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  modelPath: Whisper/ggml-tiny.bin
-  initOnAwake: 1
-  language: en
-  translateToEnglish: 0
-  strategy: 0
-  noContext: 1
-  singleSegment: 1
-  enableTokens: 0
-  tokensTimestamps: 0
-  speedUp: 0
-  audioCtx: 0
---- !u!114 &1024683978554945603
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3290760464906789087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bc03a4c19604ea394e364f8fc632928, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxLengthSec: 2
-  frequency: 16000
-  echo: 0
-  microphoneDropdown: {fileID: 0}
-  microphoneDefaultLabel: Default microphone
 --- !u!1 &3551121103965925114
 GameObject:
   m_ObjectHideFlags: 0
