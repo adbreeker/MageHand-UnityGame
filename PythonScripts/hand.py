@@ -42,6 +42,10 @@ class HandDetector:
         while self.cap.isOpened():
             success, image = self.cap.read()
 
+            #NOTE: This is a temporary fix for the resolution issue with GOPRO.
+            if image.shape == (1080, 1920, 3):
+                image = cv2.resize(image, (640, 480))
+
             np.copyto(np.frombuffer(self.shared_mem_video.buf, 
                                     dtype=np.uint8).reshape(self.frame_shape), 
                                     cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
