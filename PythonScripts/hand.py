@@ -3,6 +3,7 @@ from multiprocessing.shared_memory import SharedMemory
 import os
 import sys
 import itertools
+import concurrent.futures
 
 import numpy as np
 import mediapipe as mp
@@ -12,7 +13,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
-task_file_path = os.path.join(base_path, 'hand_classifier.pth')
+task_file_path = os.path.join(base_path, 'gesture_recognizer.task')
+torch_file_path = os.path.join(base_path, 'hand_classifier3.pth')
 
 
 class HandDetector:
@@ -21,6 +23,12 @@ class HandDetector:
         self.cap = None
         self.landmarker = None
         self.recognizer = None
+
+        self.base_options = mp.tasks.BaseOptions
+        self.hand_landmarker = mp.tasks.vision.GestureRecognizer
+        self.hand_landmarker_options = mp.tasks.vision.GestureRecognizerOptions
+        self.hand_landmarker_result = mp.tasks.vision.GestureRecognizerResult
+        self.vision_running_mode = mp.tasks.vision.RunningMode
 
         self.data = np.zeros((21, 3), dtype=np.float32)
         self.gesture = 'None'
@@ -36,6 +44,11 @@ class HandDetector:
         self.eps = 0.013
         ##["Open palm", "Closed palm", "Ok", "Finger", "Claw", "Thumb Up", "Thumb Down"]
         self.hand_labels = ["Open_palm", "Closed_Fist", "ILoveYou", "Pointing_Up", "Victory", "Thumb_Up", "Thumb_Down"]
+        self.thread_pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        self.model_thread = None
+        self.model_args = None
+        self.model_busy = False
+        self.image = None
 
     def run(self):
         if self.landmarker is None:
@@ -56,7 +69,14 @@ class HandDetector:
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
             image.flags.writeable = False
-            self._callback(self.landmarker.process(image), timestamp_ms=int(timestamp_ms), image=image)
+            mp_image = self.mp.Image(
+                image_format=self.mp.ImageFormat.SRGB, data=image)
+
+            self.image = image
+
+            self.landmarker.recognize_async(
+                mp_image, timestamp_ms=int(timestamp_ms))
+
             points_hand = ';'.join([f'{x:.5f},{y:.5f},{z:.5f}' for x, y, z in self.data]) + ';' + (
                         'a' * (700 - len(';'.join([f'{x:.5f},{y:.5f},{z:.5f}' for x, y, z in self.data])) - 1))
 
@@ -78,7 +98,7 @@ class HandDetector:
         self.shared_mem_gestures.unlink()
 
     def _callback(self, result, timestamp_ms: int, image):
-        if result.multi_hand_landmarks:
+        if result.hand_landmarks:
             # self.gesture = result.gestures[0][0].category_name + ';' + ('a' * (12 - len(result.gestures[0][0].category_name)-1))
 
             for i in range(21):
@@ -87,47 +107,53 @@ class HandDetector:
                 points. If the absolute value of the difference is greater than the epsilon, then the position is 
                 adjusted. 
                 """
-                landmark = result.multi_hand_landmarks[0].landmark[i]
-                x_diff = landmark.x - self.data[i][0]
-                y_diff = landmark.y - self.data[i][1]
+                x_diff = result.hand_landmarks[0][i].x - self.data[i][0]
+                y_diff = result.hand_landmarks[0][i].y - self.data[i][1]
 
-                self.data[i][0] += (x_diff - self.eps) if x_diff > self.eps else (
-                        x_diff + self.eps) if -x_diff > self.eps else 0
-                self.data[i][1] += (y_diff - self.eps) if y_diff > self.eps else (
-                        y_diff + self.eps) if -y_diff > self.eps else 0
+                abs_diff = (x_diff**2 + y_diff**2)**0.5
 
-                self.data[i][2] = landmark.z
+                if abs_diff > self.eps:
+                    self.data[i][0] += (x_diff - self.eps) if x_diff > self.eps else (
+                                x_diff + self.eps) if -x_diff > self.eps else 0
+                    self.data[i][1] += (y_diff - self.eps) if y_diff > self.eps else (
+                                y_diff + self.eps) if -y_diff > self.eps else 0
 
-            for hand_landmarks, handedness in zip(result.multi_hand_landmarks,
-                                                  result.multi_handedness):
-                pre_processed = self.pre_process_landmark(hand_landmarks, image)
-                self.gesture = self.hand_labels[self.recognizer(pre_processed)] + ';' + \
-                               ('a' * (12 - len(self.hand_labels[self.recognizer(pre_processed)]) - 1))
-                print(self.gesture)
+            self._torch_call()
+
+    def _torch_call(self):
+        pre_processed = self.pre_process_landmark()
+        self.gesture = self.hand_labels[self.recognizer(pre_processed)] + ';' + \
+                       ('a' * (12 - len(self.hand_labels[self.recognizer(pre_processed)]) - 1))
+        print(self.gesture)
 
     def _initialize(self):
         self.cap = cv2.VideoCapture(0)
         self.recognizer = KeyPointClassifier()
 
-        mp_hands = mp.solutions.hands
+        self.options = self.hand_landmarker_options(
+            base_options=self.base_options(
+                #model_asset_path='Assets\StreamingAssets\Mediapipe\gesture_recognizer.task'),
+                model_asset_path=task_file_path),
+            running_mode=self.vision_running_mode.LIVE_STREAM,
+            min_hand_detection_confidence= 0.5,
+            min_hand_presence_confidence= 0.5,
+            min_tracking_confidence=0.5,
+            result_callback=self._callback)
 
-        self.landmarker = mp_hands.Hands(
-            static_image_mode=True,
-            max_num_hands=1,
-            min_detection_confidence=0.7,
-            min_tracking_confidence=0.5
-        )
+        self.landmarker = self.hand_landmarker.create_from_options(
+            self.options)
 
         print('connected to unity')
 
-    def pre_process_landmark(self, landmarks, image):
-        image_width, image_height = image.shape[1], image.shape[0]
+    def pre_process_landmark(self):
+        image_width, image_height = self.image.shape[1], self.image.shape[0]
 
         temp_landmark_list = []
 
-        for _, landmark in enumerate(landmarks.landmark):
-            landmark_x = min(int(landmark.x * image_width), image_width - 1)
-            landmark_y = min(int(landmark.y * image_height), image_height - 1)
+        for coordinate in self.data:
+            x, y, z = coordinate
+            landmark_x = min(int(x * image_width), image_width - 1)
+            landmark_y = min(int(y * image_height), image_height - 1)
 
             temp_landmark_list.append([landmark_x, landmark_y])
 
@@ -153,15 +179,16 @@ class HandDetector:
 
 
 class KeyPointClassifier(object):
-    def __init__(
-        self,
-        model_path=task_file_path,
-    ):
-        self.model = torch.load(model_path)
+    def __init__(self, model_path=torch_file_path):
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        checkpoint = torch.load(model_path, map_location=self.device)
+        self.model = HandClassifier()
+        self.model.load_state_dict(checkpoint.state_dict())
+        self.model.to(self.device)
         self.model.eval()
 
     def __call__(self, landmark_list):
-        input_tensor = torch.tensor([landmark_list], dtype=torch.float32)
+        input_tensor = torch.tensor([landmark_list], dtype=torch.float32, requires_grad=False).to(self.device)
 
         with torch.no_grad():
             output = self.model(input_tensor)
@@ -170,34 +197,23 @@ class KeyPointClassifier(object):
 
         confidence, predicted_class = torch.max(probabilities, 1)
 
-        #print("Predicted class:", predicted_class.item())
-        #print("Confidence:", confidence.item())
-
-        result_index = np.argmax(np.squeeze(output.numpy()))
+        result_index = predicted_class.item()
 
         if confidence.item() > 0.75:
-            print(confidence.item())
             return result_index
         else:
-            print("Low confidence")
             return 0
 
 
 class HandClassifier(nn.Module):
     def __init__(self):
         super(HandClassifier, self).__init__()
-        self.dropout1 = nn.Dropout(0.2)
-        self.fc1 = nn.Linear(21 * 2, 20)
-        self.dropout2 = nn.Dropout(0.4)
-        self.fc2 = nn.Linear(20, 10)
-        self.fc3 = nn.Linear(10, 7)
+        self.fc1 = nn.Linear(21 * 2, 10)
+        self.fc2 = nn.Linear(10, 7)
 
     def forward(self, x):
-        x = self.dropout1(x)
         x = torch.relu(self.fc1(x))
-        x = self.dropout2(x)
-        x = torch.relu(self.fc2(x))
-        x = self.fc3(x)
+        x = self.fc2(x)
         return x
 
 
