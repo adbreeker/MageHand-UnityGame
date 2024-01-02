@@ -3,16 +3,9 @@ import os
 import sys
 
 import numpy as np
-import pyaudio
 from faster_whisper import WhisperModel
 from multiprocessing.shared_memory import SharedMemory
 
-
-STEP_IN_SEC: int = 5
-LENGHT_IN_SEC: int = 2    
-NB_CHANNELS = 1
-RATE = 16000
-CHUNK = RATE
 
 WHISPER_LANGUAGE = "en"
 WHISPER_THREADS = 2
@@ -24,8 +17,9 @@ task_file_path = os.path.join(base_path, 'models')
   
 whisper = WhisperModel("tiny", device="cpu", compute_type="int8", cpu_threads=WHISPER_THREADS, download_root=task_file_path, local_files_only=True)
 
-shared_mem_whisper = SharedMemory(name='whisper', create=True, size=15)
-shared_mem_run = SharedMemory(name='whisper_run', create=True, size=2)
+shared_mem_whisper = SharedMemory(name='magehand_whisper_text', create=True, size=15)
+shared_mem_run = SharedMemory(name='magehand_whisper_run', create=True, size=2)
+shared_mem_audio  = SharedMemory(name='magehand_whisper_audio', create=True, size=64000)
 
 run = 'no'
 shared_mem_run.buf[:2] = bytearray(run.encode('utf-8'))
@@ -33,23 +27,9 @@ shared_mem_run.buf[:2] = bytearray(run.encode('utf-8'))
 running = 'None' + ';' + ('a' * (9 - len('None')))
 shared_mem_whisper.buf[:len(running)] = bytearray(running.encode('utf-8'))
 
-audio = pyaudio.PyAudio()
-stream = audio.open(
-    format=pyaudio.paInt16,
-    channels=NB_CHANNELS,
-    rate=RATE,
-    input=True,
-    frames_per_buffer=CHUNK,    
-    )
-
 while True:
     if shared_mem_run.buf[:2].tobytes().decode('utf-8') == "ok":
-       
-        audio_data = b""
-        for _ in range(STEP_IN_SEC):
-            chunk = stream.read(RATE)    
-            audio_data += chunk
-
+        audio_data = shared_mem_audio.buf[:64000].tobytes()
         audio_data_array: np.ndarray = np.frombuffer(audio_data, np.int16).astype(np.float32) / 255.0
 
         segments, _ = whisper.transcribe(audio_data_array,

@@ -25,11 +25,12 @@ public class HandInteractions : MonoBehaviour
     bool CooldownPutDown = false;
     bool CooldownDrink = false;
 
-    private string word;
-
     private AudioSource pickUpItemSound;
     private AudioSource putToInventorySound;
     private AudioSource drinkSound;
+
+    public float timeToFadeOutPopUp = 1;
+    public float timeOfFadingOutPopUp = 0.007f;
 
 
     private void Awake() //get necessary components
@@ -183,14 +184,7 @@ public class HandInteractions : MonoBehaviour
         {
             if (GameSettings.useSpeech && !PlayerParams.Variables.uiActive) //if using speach then microphone starting to record
             {
-                MemoryMappedFile mmf_word = MemoryMappedFile.OpenExisting("whisper_run");
-                MemoryMappedViewStream stream_word = mmf_word.CreateViewStream();
-                BinaryWriter write_word = new BinaryWriter(stream_word);
-                string noneString = "ok";
-                byte[] noneBytes = System.Text.Encoding.UTF8.GetBytes(noneString);
-                write_word.Write(noneBytes, 0, noneBytes.Length);
-
-                StartCoroutine(PlayerParams.Controllers.spellCasting.WaitForSpell());
+                PlayerParams.Controllers.playerMovement.StartCoroutine(PlayerParams.Controllers.spellCasting.CastSpell());
             }
             else if (!PlayerParams.Variables.uiActive) //open spells menu if using speech is off
             {
