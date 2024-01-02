@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Whisper;
-using Whisper.Utils;
 using System.Linq;
 using UnityEngine.Rendering;
 using System.IO.MemoryMappedFiles;
@@ -42,10 +40,6 @@ public class SpellCasting : MonoBehaviour
     //private AudioSource castingSound;
     private AudioSource castingFailSound;
     private AudioSource castingFinishedSound;
-
-    //classes necessary for speach to text
-    private MicrophoneRecord microphoneRecord;
-    private WhisperManager whisper;
 
     //private bool isTranscribing = false;
 
