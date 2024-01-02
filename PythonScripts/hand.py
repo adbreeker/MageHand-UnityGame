@@ -90,15 +90,13 @@ class HandDetector:
                 landmark = result.multi_hand_landmarks[0].landmark[i]
                 x_diff = landmark.x - self.data[i][0]
                 y_diff = landmark.y - self.data[i][1]
-                abs_diff = (x_diff ** 2 + y_diff ** 2) ** 0.5
 
-                if abs_diff > self.eps:
-                    self.data[i][0] += (x_diff - self.eps) if x_diff > self.eps else (
-                            x_diff + self.eps) if -x_diff > self.eps else 0
-                    self.data[i][1] += (y_diff - self.eps) if y_diff > self.eps else (
-                            y_diff + self.eps) if -y_diff > self.eps else 0
+                self.data[i][0] += (x_diff - self.eps) if x_diff > self.eps else (
+                        x_diff + self.eps) if -x_diff > self.eps else 0
+                self.data[i][1] += (y_diff - self.eps) if y_diff > self.eps else (
+                        y_diff + self.eps) if -y_diff > self.eps else 0
 
-                    self.data[i][2] = landmark.z
+                self.data[i][2] = landmark.z
 
             for hand_landmarks, handedness in zip(result.multi_hand_landmarks,
                                                   result.multi_handedness):

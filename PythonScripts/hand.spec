@@ -8,14 +8,14 @@ def get_mediapipe_path():
 
 a = Analysis(
     ['hand.py'],
-    pathex=['M:\\inzynierka\\PythonScripts'],
+    pathex=['M:\\inzynierka_2\\PythonScripts'],
     binaries=[],
     datas=[
-    ('M:\\PythonScripts\\Lib\\site-packages\\mediapipe\\python\\solutions\\*.*', 'mediapipe\\python\\solutions'),
-    ('M:\\PythonScripts\\Lib\\site-packages\\mediapipe\\python\\*.*', 'mediapipe\\python'),
-    ('M:\\inzynierka_2\\PythonScripts\\hand_classifier.tflite', '.')
+    ('M:\\PythonScriptsInterpreter\\Lib\\site-packages\\mediapipe\\python\\solutions\\*.*', 'mediapipe\\python\\solutions'),
+    ('M:\\PythonScriptsInterpreter\\Lib\\site-packages\\mediapipe\\python\\*.*', 'mediapipe\\python'),
+    ('M:\\inzynierka_2\\PythonScripts\\hand_classifier.pth', '.')
     ],
-    hiddenimports=[],
+    hiddenimports=['Torch'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
