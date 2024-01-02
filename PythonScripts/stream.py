@@ -39,11 +39,22 @@ while True:
                                         vad_filter=True,
                                         vad_parameters=dict(min_silence_duration_ms=1000),
                                         initial_prompt=[2764,1572,12037,847],
-                                        suppress_tokens=[32825, 19657, 4092, 25900, 4621, 6650])
+                                        suppress_tokens=[32825, 19657, 4092, 25900, 4621, 6650],
+                                        condition_on_previous_text=False,
+                                        without_timestamps=True)
         
         segments = [s.text for s in segments]
         transcription = re.sub(r"[^a-zA-Z0-9\s]", "", "".join(segments)).lower()
         
+        if 'li' in transcription or 'ght' in transcription:
+            transcription = 'light'
+        elif 'co' in transcription:
+            transcription = 'collect'
+        elif 'op' in transcription:
+            transcription = 'open'
+        elif 'fi' in transcription or 'bye' in transcription:
+            transcription = 'fire'
+
         if len(transcription) != 0 and len(transcription) <= 9 and transcription != '':
             transcription = transcription + ';' + ('a' * (9 - len(transcription)))
             shared_mem_whisper.buf[:len(transcription)] = bytearray(transcription.encode('utf-8'))
