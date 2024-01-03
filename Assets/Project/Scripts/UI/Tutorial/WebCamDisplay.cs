@@ -22,7 +22,7 @@ public class WebCamDisplay : MonoBehaviour
 
         try
         {
-            using (MemoryMappedFile mmf = MemoryMappedFile.OpenExisting("video_unity"))
+            using (MemoryMappedFile mmf = MemoryMappedFile.OpenExisting("magehand_video_unity"))
             {
                 using (MemoryMappedViewStream stream = mmf.CreateViewStream())
                 {

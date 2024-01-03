@@ -34,7 +34,7 @@ public class MoveHandPoints : MonoBehaviour //move points of hand generated with
         MemoryMappedFile mmf_points;
         try
         {
-            mmf_points = MemoryMappedFile.OpenExisting("points");
+            mmf_points = MemoryMappedFile.OpenExisting("magehand_points");
         }
         catch
         {
@@ -121,7 +121,7 @@ public class MoveHandPoints : MonoBehaviour //move points of hand generated with
 
         // Labels of gestures:
         // None, Closed_Fist, Open_Palm, Pointing_Up, Thumb_Down, Thumb_Up, Victory, ILoveYou
-        MemoryMappedFile mmf_gesture = MemoryMappedFile.OpenExisting("gestures");
+        MemoryMappedFile mmf_gesture = MemoryMappedFile.OpenExisting("magehand_gestures");
         MemoryMappedViewStream stream_gesture = mmf_gesture.CreateViewStream();
         BinaryReader reader_gesture = new BinaryReader(stream_gesture);
         byte[] frameGesture = reader_gesture.ReadBytes(12);
