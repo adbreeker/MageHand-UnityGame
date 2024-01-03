@@ -34,11 +34,11 @@ class HandDetector:
         self.gesture = 'None'
         self.frame_shape = frame_shape = (480, 640, 3)
 
-        self.shared_mem_video = SharedMemory(name='video_unity', create=True,
+        self.shared_mem_video = SharedMemory(name='magehand_video_unity', create=True,
                                              size=frame_shape[0] * frame_shape[1] * frame_shape[2])
-        self.shared_mem_gestures = SharedMemory(name='gestures', create=True,
+        self.shared_mem_gestures = SharedMemory(name='magehand_gestures', create=True,
                                                 size=12)
-        self.shared_mem_points = SharedMemory(name='points', create=True,
+        self.shared_mem_points = SharedMemory(name='magehand_points', create=True,
                                               size=700)
 
         self.eps = 0.013
@@ -56,6 +56,9 @@ class HandDetector:
         while self.cap.isOpened():
             success, image = self.cap.read()
 
+            if image.shape == (1080, 1920, 3):
+                image = cv2.resize(image, (640, 480))
+            
             np.copyto(np.frombuffer(self.shared_mem_video.buf,
                                     dtype=np.uint8).reshape(self.frame_shape),
                       cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
@@ -132,7 +135,6 @@ class HandDetector:
 
         self.options = self.hand_landmarker_options(
             base_options=self.base_options(
-                #model_asset_path='Assets\StreamingAssets\Mediapipe\gesture_recognizer.task'),
                 model_asset_path=task_file_path),
             running_mode=self.vision_running_mode.LIVE_STREAM,
             min_hand_detection_confidence= 0.5,
