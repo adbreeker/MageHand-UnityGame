@@ -127,7 +127,6 @@ class HandDetector:
         pre_processed = self.pre_process_landmark()
         self.gesture = self.hand_labels[self.recognizer(pre_processed)] + ';' + \
                        ('a' * (12 - len(self.hand_labels[self.recognizer(pre_processed)]) - 1))
-        print(self.gesture)
 
     def _initialize(self):
         self.cap = cv2.VideoCapture(0)
@@ -145,7 +144,6 @@ class HandDetector:
         self.landmarker = self.hand_landmarker.create_from_options(
             self.options)
 
-        print('connected to unity')
 
     def pre_process_landmark(self):
         image_width, image_height = self.image.shape[1], self.image.shape[0]
