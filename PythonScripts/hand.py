@@ -27,11 +27,11 @@ class HandDetector:
         self.gesture = 'None'
         self.frame_shape = frame_shape = (480, 640, 3)  
 
-        self.shared_mem_video = SharedMemory(name='video_unity', create=True, 
+        self.shared_mem_video = SharedMemory(name='magehand_video_unity', create=True, 
                                    size=frame_shape[0] * frame_shape[1] * frame_shape[2])
-        self.shared_mem_gestures = SharedMemory(name='gestures', create=True,
+        self.shared_mem_gestures = SharedMemory(name='magehand_gestures', create=True,
                                       size=12)
-        self.shared_mem_points = SharedMemory(name='points', create=True,
+        self.shared_mem_points = SharedMemory(name='magehand_points', create=True,
                                       size=700)
         
         self.eps = 0.013
