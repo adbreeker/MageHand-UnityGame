@@ -59,14 +59,14 @@ public class LoadingScreen : MonoBehaviour
         while (text.fontSize < fontBig)
         {
             text.fontSize += 0.05f;
-            yield return new WaitForSeconds(0);
+            yield return new WaitForFixedUpdate();
         }
-        yield return new WaitForSeconds(0);
+        yield return new WaitForFixedUpdate();
 
         while (text.fontSize > fontSmall)
         {
             text.fontSize -= 0.05f;
-            yield return new WaitForSeconds(0);
+            yield return new WaitForFixedUpdate();
         }
         StartCoroutine(Pulls());
     }

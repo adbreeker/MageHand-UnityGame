@@ -12,6 +12,7 @@ public class DemoEnding : MonoBehaviour
     public GameObject fadePrefab;
 
     private bool end = false;
+    private bool ending = false;
     void Start()
     {
         StartCoroutine(Animation());
@@ -19,10 +20,11 @@ public class DemoEnding : MonoBehaviour
 
     private void Update()
     {
-        if (end && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Escape)))
+        if (end && !ending && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Escape)))
         {
             FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption).Play();
             FindObjectOfType<FadeInFadeOut>().CloseGame();
+            ending = true;
         }
 
 
