@@ -6,7 +6,7 @@ using UnityEngine;
 public class EnlightObject : MonoBehaviour //component added to object to enlight it
 {
     [Header("Enlightening time")]
-    public int enlightenTime = 10;
+    public int enlightenTime = 5;
 
     [Header("Material type")]
     public MaterialHolder.Materials materialType;

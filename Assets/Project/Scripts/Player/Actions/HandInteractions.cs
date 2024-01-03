@@ -29,6 +29,7 @@ public class HandInteractions : MonoBehaviour
     private AudioSource putToInventorySound;
     private AudioSource drinkSound;
 
+    [Header("Pop up options")]
     public float timeToFadeOutPopUp = 1;
     public float timeOfFadingOutPopUp = 0.007f;
 

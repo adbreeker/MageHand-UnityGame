@@ -16,6 +16,9 @@ public class GetObjectsNearHand : MonoBehaviour
     [Header("Currently pointing object")]
     public GameObject currentlyPointing;
 
+    [Header("Enlightening time")]
+    public int enlighteningTime = 5;
+
 
     private void Update() //check objects near middle point every update
     {
@@ -68,7 +71,7 @@ public class GetObjectsNearHand : MonoBehaviour
             {
                 if (pointingAt.GetComponent<EnlightObject>() != null)
                 {
-                    pointingAt.GetComponent<EnlightObject>().enlightenTime = 10;
+                    pointingAt.GetComponent<EnlightObject>().enlightenTime = enlighteningTime;
                 }
                 else
                 {
@@ -80,7 +83,7 @@ public class GetObjectsNearHand : MonoBehaviour
             {
                 if (pointingAt.GetComponent<EnlightObject>() != null)
                 {
-                    pointingAt.GetComponent<EnlightObject>().enlightenTime = 10;
+                    pointingAt.GetComponent<EnlightObject>().enlightenTime = enlighteningTime;
                 }
                 else
                 {
