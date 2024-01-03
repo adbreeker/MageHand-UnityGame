@@ -13,7 +13,7 @@ public class TutorialPanel : MonoBehaviour
     public bool wasLatelyOpened = false;
 
     private GameObject tutorialPanel;
-    private bool activatePanelOnEntry = true;
+    public bool activatePanelOnEntry = true;
 
     private bool openedPanel;
     private int currentPanelNumber;
@@ -30,7 +30,17 @@ public class TutorialPanel : MonoBehaviour
         Bounds cubeBounds = GetComponent<Renderer>().bounds;
         if (cubeBounds.Contains(PlayerParams.Objects.player.transform.position) && activatePanelOnEntry)
         {
+            foreach (TutorialPanel panel in FindObjectsOfType<TutorialPanel>())
+            {
+                if (panel.wasLatelyOpened)
+                {
+                    panel.wasLatelyOpened = false;
+                    panel.ClosePanel();
+                }
+            }
+
             OpenPanel();
+            wasLatelyOpened = true;
             if (playOpenSound) openSound.Play();
             activatePanelOnEntry = false;
         }
@@ -62,12 +72,6 @@ public class TutorialPanel : MonoBehaviour
 
     private void OpenPanel()
     {
-        foreach (TutorialPanel panel in FindObjectsOfType<TutorialPanel>())
-        {
-            panel.wasLatelyOpened = false;
-            panel.ClosePanel();
-        }
-
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.inventory.CloseInventory();
         PlayerParams.Controllers.spellbook.CloseSpellbook();
@@ -84,8 +88,6 @@ public class TutorialPanel : MonoBehaviour
         openSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Open);
         closeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Close);
         selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
-
-        wasLatelyOpened = true;
 
         currentPanelNumber = 0;
 
