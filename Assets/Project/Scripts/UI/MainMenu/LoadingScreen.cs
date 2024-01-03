@@ -31,7 +31,7 @@ public class LoadingScreen : MonoBehaviour
             //There we need to check if mediapipeProcess is loaded
             try
             {
-                MemoryMappedFile mmf_gesture = MemoryMappedFile.OpenExisting("gestures");
+                MemoryMappedFile mmf_gesture = MemoryMappedFile.OpenExisting("magehand_gestures");
                 MemoryMappedViewStream stream_gesture = mmf_gesture.CreateViewStream();
                 BinaryReader reader_gesture = new BinaryReader(stream_gesture);
                 byte[] frameGesture = reader_gesture.ReadBytes(12);
