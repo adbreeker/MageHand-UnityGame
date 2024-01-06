@@ -14,7 +14,7 @@ import torch.nn.functional as F
 
 base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
 task_file_path = os.path.join(base_path, 'gesture_recognizer.task')
-torch_file_path = os.path.join(base_path, 'hand_classifier5.pth')
+torch_file_path = os.path.join(base_path, 'hand_classifier6.pth')
 
 
 class HandDetector:
@@ -69,7 +69,9 @@ class HandDetector:
 
             timestamp_ms = self.cap.get(cv2.CAP_PROP_POS_MSEC)
 
-            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+            # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+            cv2.imshow('image', cv2.flip(image, 1))
 
             image.flags.writeable = False
             mp_image = self.mp.Image(
@@ -198,7 +200,7 @@ class KeyPointClassifier(object):
 
         result_index = np.argmax(np.squeeze(output.numpy()))
 
-        if confidence > 0.85:
+        if confidence > 0.8:
             return result_index
         else:
             return 0
