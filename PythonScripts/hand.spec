@@ -13,7 +13,7 @@ a = Analysis(
     datas=[
     ('M:\\PythonScriptsInterpreter\\Lib\\site-packages\\mediapipe\\python\\solutions\\*.*', 'mediapipe\\python\\solutions'),
     ('M:\\PythonScriptsInterpreter\\Lib\\site-packages\\mediapipe\\python\\*.*', 'mediapipe\\python'),
-    ('M:\\inzynierka_2\\PythonScripts\\hand_classifier3.pth', '.'),
+    ('M:\\inzynierka_2\\PythonScripts\\hand_classifier5.pth', '.'),
     ('M:\\inzynierka_2\\PythonScripts\\gesture_recognizer.task', '.')
     ],
     hiddenimports=['Torch'],

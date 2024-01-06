@@ -127,7 +127,6 @@ class HandDetector:
         pre_processed = self.pre_process_landmark()
         self.gesture = self.hand_labels[self.recognizer(pre_processed)] + ';' + \
                        ('a' * (12 - len(self.hand_labels[self.recognizer(pre_processed)]) - 1))
-        print(self.gesture)
 
     def _initialize(self):
         self.cap = cv2.VideoCapture(0)
@@ -196,9 +195,6 @@ class KeyPointClassifier(object):
         probabilities = F.softmax(output, dim=1)
 
         confidence, predicted_class = torch.max(probabilities, 1)
-
-        #print("Predicted class:", predicted_class.item())
-        #print("Confidence:", confidence.item())
 
         result_index = np.argmax(np.squeeze(output.numpy()))
 
