@@ -14,7 +14,7 @@ import torch.nn.functional as F
 
 base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
 task_file_path = os.path.join(base_path, 'gesture_recognizer.task')
-torch_file_path = os.path.join(base_path, 'hand_classifier3.pth')
+torch_file_path = os.path.join(base_path, 'hand_classifier5.pth')
 
 
 class HandDetector:
@@ -127,6 +127,7 @@ class HandDetector:
         pre_processed = self.pre_process_landmark()
         self.gesture = self.hand_labels[self.recognizer(pre_processed)] + ';' + \
                        ('a' * (12 - len(self.hand_labels[self.recognizer(pre_processed)]) - 1))
+        print(self.gesture)
 
     def _initialize(self):
         self.cap = cv2.VideoCapture(0)
@@ -143,7 +144,6 @@ class HandDetector:
 
         self.landmarker = self.hand_landmarker.create_from_options(
             self.options)
-
 
     def pre_process_landmark(self):
         image_width, image_height = self.image.shape[1], self.image.shape[0]
@@ -188,7 +188,7 @@ class KeyPointClassifier(object):
         self.model.eval()
 
     def __call__(self, landmark_list):
-        input_tensor = torch.tensor([landmark_list], dtype=torch.float32, requires_grad=False).to(self.device)
+        input_tensor = torch.tensor([landmark_list], dtype=torch.float32)
 
         with torch.no_grad():
             output = self.model(input_tensor)
@@ -197,9 +197,12 @@ class KeyPointClassifier(object):
 
         confidence, predicted_class = torch.max(probabilities, 1)
 
-        result_index = predicted_class.item()
+        #print("Predicted class:", predicted_class.item())
+        #print("Confidence:", confidence.item())
 
-        if confidence.item() > 0.75:
+        result_index = np.argmax(np.squeeze(output.numpy()))
+
+        if confidence > 0.85:
             return result_index
         else:
             return 0
@@ -208,12 +211,18 @@ class KeyPointClassifier(object):
 class HandClassifier(nn.Module):
     def __init__(self):
         super(HandClassifier, self).__init__()
-        self.fc1 = nn.Linear(21 * 2, 10)
-        self.fc2 = nn.Linear(10, 7)
+        self.dropout1 = nn.Dropout(0.2)
+        self.fc1 = nn.Linear(21 * 2, 20)
+        self.dropout2 = nn.Dropout(0.4)
+        self.fc2 = nn.Linear(20, 10)
+        self.fc3 = nn.Linear(10, 7)
 
     def forward(self, x):
+        x = self.dropout1(x)
         x = torch.relu(self.fc1(x))
-        x = self.fc2(x)
+        x = self.dropout2(x)
+        x = torch.relu(self.fc2(x))
+        x = self.fc3(x)
         return x
 
 
