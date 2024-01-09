@@ -69,10 +69,6 @@ class HandDetector:
 
             timestamp_ms = self.cap.get(cv2.CAP_PROP_POS_MSEC)
 
-            # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-
-            cv2.imshow('image', cv2.flip(image, 1))
-
             image.flags.writeable = False
             mp_image = self.mp.Image(
                 image_format=self.mp.ImageFormat.SRGB, data=image)
