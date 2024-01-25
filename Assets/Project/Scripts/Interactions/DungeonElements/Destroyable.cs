@@ -18,7 +18,6 @@ public class Destroyable : SpellImpactInteraction
         gameObject.isStatic = false;
         ModelImporter modelImporter = (ModelImporter)AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(gameObject.GetComponent<MeshFilter>().sharedMesh));
         modelImporter.isReadable = true;
-        AssetDatabase.Refresh();
     }
 
     public void SplitMesh()
@@ -121,6 +120,23 @@ public class Destroyable : SpellImpactInteraction
         return combinedArray;
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(Destroyable))]
+public class PathCreatorEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        Destroyable script = (Destroyable)target;
+        DrawDefaultInspector();
+        if (GUILayout.Button("Reimport destroyable mesh"))
+        {
+            ModelImporter modelImporter = (ModelImporter)AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(script.gameObject.GetComponent<MeshFilter>().sharedMesh));
+            modelImporter.SaveAndReimport();
+        }
+    }
+}
+#endif
 
 public class VanishDestroyed : MonoBehaviour
 {
