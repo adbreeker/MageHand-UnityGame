@@ -13,12 +13,14 @@ public class Destroyable : SpellImpactInteraction
         }
     }
 
+#if UNITY_EDITOR
     public void OnValidate()
     {
         gameObject.isStatic = false;
         ModelImporter modelImporter = (ModelImporter)AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(gameObject.GetComponent<MeshFilter>().sharedMesh));
         modelImporter.isReadable = true;
     }
+#endif
 
     public void SplitMesh()
     {
