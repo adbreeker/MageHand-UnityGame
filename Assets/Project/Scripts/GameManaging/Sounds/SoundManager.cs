@@ -64,8 +64,8 @@ public class SoundManager : MonoBehaviour
         SFX_SpellPickUpActivation, //0.9
         SFX_MagicalTeleportation, //0.8
         SFX_LockPickSpell,
-        SFX_FireSpellRemaining,
-        SFX_FireSpellBurst,
+        SFX_FireSpellRemaining, //0.6
+        SFX_FireSpellBurst, //1
         SFX_MarkSpellActivation,
         SFX_ReturnSpellActivation,
         SFX_LevitateSpellRemaining,

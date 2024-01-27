@@ -129,9 +129,19 @@ public class SpellCasting : MonoBehaviour
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Fire");
         if (scroll != null)
         {
+            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
+            castingFinishedSound.Play();
+            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
+
             currentSpell = "Fire";
             PlayerParams.Controllers.handInteractions.inHand = Instantiate(firePrefab, hand);
             mana -= scroll.manaCost;
+        }
+        else
+        {
+            castingFailSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
+            castingFailSound.Play();
+            Destroy(castingFailSound, castingFailSound.clip.length);
         }
     }
 
