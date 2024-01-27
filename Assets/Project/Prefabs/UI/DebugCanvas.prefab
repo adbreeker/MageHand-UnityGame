@@ -96,59 +96,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fpsText: {fileID: 3290214055510504775}
---- !u!1 &1208030236628082759
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1397884117420295015}
-  - component: {fileID: 5514215000329581572}
-  m_Layer: 8
-  m_Name: DevConsoleController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1397884117420295015
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1208030236628082759}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1439116425120239232}
-  m_Father: {fileID: 1817952914756250886}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5514215000329581572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1208030236628082759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa7e4bdffdf3a454f92f0520fa9985d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  console: {fileID: 3461445537081831459}
-  fpsCounter: {fileID: 0}
-  webCamera: {fileID: 5300883134426892312}
 --- !u!1 &2831694130177847878
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,8 +128,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5777443262345361031}
-  m_Father: {fileID: 1397884117420295015}
-  m_RootOrder: 0
+  m_Father: {fileID: 1817952914756250886}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -388,7 +335,7 @@ GameObject:
   - component: {fileID: 6910642234651492539}
   - component: {fileID: 4882726458566173360}
   - component: {fileID: 4718421079518871924}
-  - component: {fileID: 3245019109395845596}
+  - component: {fileID: 7427453367398897704}
   m_Layer: 5
   m_Name: WebCamera
   m_TagString: Untagged
@@ -403,7 +350,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5300883134426892312}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -413,8 +360,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -150, y: -150}
-  m_SizeDelta: {x: 300, y: 300}
+  m_AnchoredPosition: {x: -213, y: -160}
+  m_SizeDelta: {x: 426, y: 320}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4882726458566173360
 CanvasRenderer:
@@ -451,7 +398,7 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
---- !u!114 &3245019109395845596
+--- !u!114 &7427453367398897704
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -678,6 +625,7 @@ GameObject:
   - component: {fileID: 5622143789808845476}
   - component: {fileID: 548057799451380930}
   - component: {fileID: 6099093938156552461}
+  - component: {fileID: 6947608224553909821}
   m_Layer: 8
   m_Name: DebugCanvas
   m_TagString: Untagged
@@ -700,7 +648,7 @@ RectTransform:
   - {fileID: 3359611726900290045}
   - {fileID: 4179573465095764616}
   - {fileID: 6910642234651492539}
-  - {fileID: 1397884117420295015}
+  - {fileID: 1439116425120239232}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -770,3 +718,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &6947608224553909821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9187048217312120806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa7e4bdffdf3a454f92f0520fa9985d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  console: {fileID: 3461445537081831459}
+  fpsCounter: {fileID: 897951981404843841}
+  webCamera: {fileID: 5300883134426892312}

@@ -5,8 +5,13 @@ using UnityEngine.UI;
 
 public class ShowFPS : MonoBehaviour //displaying frames per second (fps) counter on debug canvas
 {
-    public Text fpsText;
+    Text fpsText;
     float deltaTime = 0.0f;
+
+    private void Awake()
+    {
+        fpsText = GetComponent<Text>();
+    }
 
     void Update()
     {
