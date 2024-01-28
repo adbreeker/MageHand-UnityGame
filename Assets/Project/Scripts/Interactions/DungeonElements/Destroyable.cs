@@ -5,11 +5,16 @@ using UnityEngine;
 
 public class Destroyable : SpellImpactInteraction
 {
+    public GameObject destroyAlso;
     public override void OnSpellImpact(GameObject spell)
     {
         if (spell.GetComponent<FireSpellBehavior>() != null) 
         {
             SplitMesh();
+            if(destroyAlso != null) 
+            {
+                destroyAlso.GetComponent<Destroyable>().SplitMesh();
+            }
         }
     }
 
