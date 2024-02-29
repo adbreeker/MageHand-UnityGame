@@ -24,7 +24,9 @@ public class Spellbook : MonoBehaviour
     private AudioSource changeSound;
     private AudioSource lightVoice;
     private AudioSource pickUpVoice;
-    
+    private AudioSource fireVoice;
+    //private AudioSource fireVoice; etc.
+
     private int page;
     private int pointed;
 
@@ -82,7 +84,7 @@ public class Spellbook : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && spellbookOpened && GameSettings.useSpeech)
         {
 
-            if (lightVoice.isPlaying || pickUpVoice.isPlaying) voiceIsPlaying = true;
+            if (lightVoice.isPlaying || pickUpVoice.isPlaying || fireVoice.isPlaying) voiceIsPlaying = true;
             //if (lightVoice.isPlaying || fireVoice.isPlaying etc.) voiceIsPlaying = true; ^in place of that
             else voiceIsPlaying = false;
 
@@ -90,6 +92,7 @@ public class Spellbook : MonoBehaviour
             {
                 if (spellbookPages[page][pointed - 1].spellName == "Light") lightVoice.Play();
                 if (spellbookPages[page][pointed - 1].spellName == "Collect") pickUpVoice.Play();
+                if (spellbookPages[page][pointed - 1].spellName == "Fire") fireVoice.Play();
                 //if (spellbookPages[page][pointed - 1].spellName == "Fire") fireVoice.Play(); etc.
             }
         
@@ -160,6 +163,11 @@ public class Spellbook : MonoBehaviour
         lightVoice.volume *= 2f;
         pickUpVoice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.READING_PickUp);
         pickUpVoice.volume *= 2f;
+        fireVoice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.READING_Fire);
+        fireVoice.volume *= 2f;
+        //fireVoice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.READING_Fire); etc.
+        //fireVoice.volume *= 2f; etc.
+
 
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.inventory.CloseInventory();
@@ -222,7 +230,8 @@ public class Spellbook : MonoBehaviour
             Destroy(changeSound.gameObject, changeSound.clip.length);
             Destroy(lightVoice.gameObject, lightVoice.clip.length);
             Destroy(pickUpVoice.gameObject, pickUpVoice.clip.length);
-            //Destroy(fireVoice.gameObject); etc.
+            Destroy(fireVoice.gameObject, fireVoice.clip.length);
+            //Destroy(fireVoice.gameObject, fireVoice.clip.length); etc.
         }
         Destroy(instantiatedSpellbook);
         spellbookOpened = false;
@@ -265,7 +274,8 @@ public class Spellbook : MonoBehaviour
         {
             titleLeft.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][0].spellName;
             titleLeft.SetActive(true);
-            descriptionLeft.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][0].spellDescription;
+            descriptionLeft.GetComponent<TextMeshProUGUI>().text = 
+                "Mana cost: " + spellbookPages[pageToDisplay][0].manaCost + "<br><br>Description: " + spellbookPages[pageToDisplay][0].spellDescription;
             descriptionLeft.SetActive(true);
             pictureLeft.transform.Find("Picture").GetComponent<RawImage>().texture = spellbookPages[pageToDisplay][0].spellPicture;
             pictureLeft.SetActive(true);
@@ -277,7 +287,8 @@ public class Spellbook : MonoBehaviour
         {
             titleRight.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][1].spellName;
             titleRight.SetActive(true);
-            descriptionRight.GetComponent<TextMeshProUGUI>().text = spellbookPages[pageToDisplay][1].spellDescription;
+            descriptionRight.GetComponent<TextMeshProUGUI>().text = 
+                "Mana cost: " + spellbookPages[pageToDisplay][1].manaCost + "<br><br>Description: " + spellbookPages[pageToDisplay][1].spellDescription;
             descriptionRight.SetActive(true);
             pictureRight.transform.Find("Picture").GetComponent<RawImage>().texture = spellbookPages[pageToDisplay][1].spellPicture;
             pictureRight.SetActive(true);

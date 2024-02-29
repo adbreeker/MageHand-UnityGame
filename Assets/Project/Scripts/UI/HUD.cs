@@ -9,6 +9,7 @@ public class HUD : MonoBehaviour
     public TextMeshProUGUI gestureText;
     public GameObject manaBox;
     public Image manaBar;
+    public TextMeshProUGUI manaText;
     public GameObject popUpContainer;
     public GameObject popUpPrefab;
 
@@ -47,6 +48,7 @@ public class HUD : MonoBehaviour
         {
             manaBox.SetActive(true);
             manaBar.fillAmount = PlayerParams.Controllers.spellCasting.mana / 100;
+            manaText.text = (int)PlayerParams.Controllers.spellCasting.mana + "/100";
         }
         else
         {

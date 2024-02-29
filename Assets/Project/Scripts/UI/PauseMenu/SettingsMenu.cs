@@ -20,7 +20,9 @@ public class SettingsMenu : MonoBehaviour
     [Header("vSync slider")]
     public Slider vSyncSlider;
     public TextMeshProUGUI vSyncValueText;
-
+    [Header("Settings info")]
+    public TextMeshProUGUI infoText;
+    public List<string> infoTexts = new List<string>();
     private GameObject pointer;
     private int pointedOptionMenu;
     private List<GameObject> menuOptions = new List<GameObject>();
@@ -393,7 +395,6 @@ public class SettingsMenu : MonoBehaviour
         {
             if (i != option)
             {
-                allOptions[i].transform.Find("Info").gameObject.SetActive(false);
                 if (i == 0 || i == 2)
                 {
                     allOptions[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
@@ -428,7 +429,7 @@ public class SettingsMenu : MonoBehaviour
 
         if (option < allOptions.Count)
         {
-            allOptions[option].transform.Find("Info").gameObject.SetActive(true);
+            infoText.text = infoTexts[option];
             if (option == 0 || option == 2)
             {
                 allOptions[option].transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
