@@ -7,6 +7,7 @@ public static class PlayerParams //static player parameters accessible from ever
     public static class Objects //mostly GameObjects associated with player
     {
         public static Camera playerCamera;
+        public static Camera uiCamera;
         public static GameObject player;
         public static GameObject hand;
     }
@@ -39,6 +40,7 @@ public class PlayerManager : MonoBehaviour //assigning static PlayerParams on Aw
 {
     [Header("Objects")]
     public Camera playerCamera;
+    public Camera uiCamera;
     public GameObject hand;
 
     [Header("Controllers")]
@@ -59,6 +61,7 @@ public class PlayerManager : MonoBehaviour //assigning static PlayerParams on Aw
         //Objects
         PlayerParams.Objects.playerCamera = playerCamera;
         PlayerParams.Objects.player = gameObject;
+        PlayerParams.Objects.uiCamera = uiCamera;
         PlayerParams.Objects.hand = hand;
 
         //Controllers

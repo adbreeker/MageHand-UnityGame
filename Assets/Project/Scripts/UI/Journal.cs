@@ -443,6 +443,8 @@ public class Journal : MonoBehaviour
             instantiatedDialoguesNames.Add(instantiatedDialogueName.GetComponent<TextMeshProUGUI>());
         }
 
+        dialoguesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition = 1f;
+
         //display notes names
         instantiatedNotesNames = new List<TextMeshProUGUI>();
 
@@ -459,6 +461,8 @@ public class Journal : MonoBehaviour
             instantiatedNoteName.GetComponent<TextMeshProUGUI>().text = key;
             instantiatedNotesNames.Add(instantiatedNoteName.GetComponent<TextMeshProUGUI>());
         }
+
+        notesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition = 1f;
 
         //pointing and showing info about empy
         pointedDialogueName = 0;

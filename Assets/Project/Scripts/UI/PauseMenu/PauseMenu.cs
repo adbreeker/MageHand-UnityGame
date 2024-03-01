@@ -11,6 +11,7 @@ public class PauseMenu : MonoBehaviour
     public GameObject settingsMenuPrefab;
     public GameObject controlsMenuPrefab;
     public GameObject gesturesMenuPrefab;
+    public GameObject tutorialsMenuPrefab;
     public GameObject quitToMenuMenuPrefab;
     public GameObject quitGameMenuPrefab;
 
@@ -25,6 +26,7 @@ public class PauseMenu : MonoBehaviour
     private GameObject instantiatedSettingsMenu;
     private GameObject instantiatedControlsMenu;
     private GameObject instantiatedGesturesMenu;
+    private GameObject instantiatedTutorialsMenu;
     private GameObject instantiatedQuitToMenuMenu;
     private GameObject instantiatedQuitGameMenu;
     private GameObject pointer;
@@ -179,6 +181,16 @@ public class PauseMenu : MonoBehaviour
             }
             else if (pointedOptionMenu == 4)
             {
+                //Spawn TutorialsMenu
+                instantiatedMenu.transform.Find("Menu").gameObject.SetActive(false);
+
+                instantiatedTutorialsMenu = Instantiate(tutorialsMenuPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity, instantiatedMenu.transform);
+                instantiatedTutorialsMenu.transform.localPosition = new Vector3(0, 0, 0);
+
+                instantiatedTutorialsMenu.GetComponent<TutorialsMenu>().OpenMenu(pointer);
+            }
+            else if (pointedOptionMenu == 5)
+            {
                 //Spawn QuitToMenuMenu
                 instantiatedMenu.transform.Find("Menu").gameObject.SetActive(false);
 
@@ -187,7 +199,7 @@ public class PauseMenu : MonoBehaviour
 
                 instantiatedQuitToMenuMenu.GetComponent<QuitToMenuMenu>().OpenMenu(pointer);
             }
-            else if (pointedOptionMenu == 5)
+            else if (pointedOptionMenu == 6)
             {
                 //Spawn QuitGameMenu
                 instantiatedMenu.transform.Find("Menu").gameObject.SetActive(false);
@@ -220,7 +232,7 @@ public class PauseMenu : MonoBehaviour
         changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
         selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
 
-        for (int i = 1; i < 7; i++)
+        for (int i = 1; i < 8; i++)
         {
             string text = i.ToString();
             menuOptions.Add(instantiatedMenu.transform.Find("Menu").Find("Options").Find(text).GetComponent<TextMeshProUGUI>());
