@@ -44,12 +44,12 @@ public class TutorialsMenu : MonoBehaviour
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
-                scrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 1f / (menuOptions.Count - 1);
+                scrollView.verticalNormalizedPosition += 1f / (menuOptions.Count - 1);
             }
             else
             {
                 pointedOptionMenu = menuOptions.Count - 1;
-                scrollView.GetComponent<ScrollRect>().verticalNormalizedPosition = 0f;
+                scrollView.verticalNormalizedPosition = 0f;
             }
             keyTimeDelayer = keyTimeDelayFirst;
             PointOption(pointedOptionMenu);
@@ -61,12 +61,12 @@ public class TutorialsMenu : MonoBehaviour
             if (pointedOptionMenu < menuOptions.Count - 1)
             {
                 pointedOptionMenu++;
-                scrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -1f / (menuOptions.Count - 1);
+                scrollView.verticalNormalizedPosition += -1f / (menuOptions.Count - 1);
             }
             else
             {
                 pointedOptionMenu = 0;
-                scrollView.GetComponent<ScrollRect>().verticalNormalizedPosition = 1f;
+                scrollView.verticalNormalizedPosition = 1f;
             }
             keyTimeDelayer = keyTimeDelayFirst;
             PointOption(pointedOptionMenu);
@@ -78,12 +78,12 @@ public class TutorialsMenu : MonoBehaviour
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
-                scrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 1f / (menuOptions.Count - 1);
+                scrollView.verticalNormalizedPosition += 1f / (menuOptions.Count - 1);
             }
             else
             {
                 pointedOptionMenu = menuOptions.Count - 1;
-                scrollView.GetComponent<ScrollRect>().verticalNormalizedPosition = 0f;
+                scrollView.verticalNormalizedPosition = 0f;
             }
             keyTimeDelayer = keyTimeDelay;
             PointOption(pointedOptionMenu);
@@ -95,12 +95,12 @@ public class TutorialsMenu : MonoBehaviour
             if (pointedOptionMenu < menuOptions.Count - 1)
             {
                 pointedOptionMenu++;
-                scrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -1f / (menuOptions.Count - 1);
+                scrollView.verticalNormalizedPosition += -1f / (menuOptions.Count - 1);
             }
             else
             {
                 pointedOptionMenu = 0;
-                scrollView.GetComponent<ScrollRect>().verticalNormalizedPosition = 1f;
+                scrollView.verticalNormalizedPosition = 1f;
             }
             keyTimeDelayer = keyTimeDelay;
             PointOption(pointedOptionMenu);
@@ -125,10 +125,18 @@ public class TutorialsMenu : MonoBehaviour
         }
 
         scrollView = transform.Find("Menu").Find("ScrollRect").GetComponent<ScrollRect>();
+        scrollView.verticalNormalizedPosition = 1f;
         uiCamera = PlayerParams.Objects.uiCamera;
 
         pointedOptionMenu = 0;
+        PointOption(pointedOptionMenu);
         StartCoroutine(WaitOneFrameToPoint());
+    }
+
+    IEnumerator WaitOneFrameToPoint()
+    {
+        yield return 0;
+        PointOption(pointedOptionMenu);
     }
 
     public void CloseMenu()
@@ -141,12 +149,6 @@ public class TutorialsMenu : MonoBehaviour
         Destroy(changeSound.gameObject, changeSound.clip.length);
         Destroy(instantiatedTutorialPrefab);
         Destroy(gameObject);
-    }
-
-    IEnumerator WaitOneFrameToPoint()
-    {
-        yield return 0;
-        PointOption(pointedOptionMenu);
     }
 
     void PointOption(int option)

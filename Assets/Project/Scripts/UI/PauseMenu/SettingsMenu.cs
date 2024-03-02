@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static GameSettings;
+using System.Collections;
 
 public class SettingsMenu : MonoBehaviour
 {
@@ -31,6 +32,8 @@ public class SettingsMenu : MonoBehaviour
     private AudioSource changeSound;
     private AudioSource selectSound;
 
+    private ScrollRect scrollView;
+
     private bool speechChangeable = true;
 
     private float keyTimeDelayFirst = 20f;
@@ -44,10 +47,10 @@ public class SettingsMenu : MonoBehaviour
     void Update()
     {
         DisplayMicrophone();
-        DisplayWebCam();
+        //DisplayWebCam();
 
         KeysListener();
-        PointOption(pointedOptionMenu, menuOptions);
+        //PointOption(pointedOptionMenu);
 
         if (keyTimeDelayer > 0) keyTimeDelayer -= 75 * Time.unscaledDeltaTime;
         
@@ -66,60 +69,73 @@ public class SettingsMenu : MonoBehaviour
             CloseMenu();
         }
 
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            changeSound.Play();
-            if (pointedOptionMenu < menuOptions.Count - 2) //-2 to disable going to option 9 that now doesn't work
-            {
-                pointedOptionMenu++;
-            }
-            else
-            {
-                pointedOptionMenu = 0;
-            }
-            keyTimeDelayer = keyTimeDelayFirst;
-        }
-
+        //W
         if (Input.GetKeyDown(KeyCode.W))
         {
             changeSound.Play();
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
+                scrollView.verticalNormalizedPosition += 1f / (menuOptions.Count - 1);
             }
             else
             {
-                pointedOptionMenu = menuOptions.Count - 2; //-2 to disable going to option 9 that now doesn't work
+                pointedOptionMenu = menuOptions.Count - 1;
+                scrollView.verticalNormalizedPosition = 0f;
             }
             keyTimeDelayer = keyTimeDelayFirst;
+            PointOption(pointedOptionMenu);
         }
-
-        if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.S))
+        //S
+        if (Input.GetKeyDown(KeyCode.S))
         {
             changeSound.Play();
-            if (pointedOptionMenu < menuOptions.Count - 2) //-2 to disable going to option 9 that now doesn't work
+            if (pointedOptionMenu < menuOptions.Count - 1)
             {
                 pointedOptionMenu++;
+                scrollView.verticalNormalizedPosition += -1f / (menuOptions.Count - 1);
             }
             else
             {
                 pointedOptionMenu = 0;
+                scrollView.verticalNormalizedPosition = 1f;
             }
-            keyTimeDelayer = keyTimeDelay;
+            keyTimeDelayer = keyTimeDelayFirst;
+            PointOption(pointedOptionMenu);
         }
-
+        //W hold
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.W))
         {
             changeSound.Play();
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
+                scrollView.verticalNormalizedPosition += 1f / (menuOptions.Count - 1);
             }
             else
             {
-                pointedOptionMenu = menuOptions.Count - 2; //-2 to disable going to option 9 that now doesn't work
+                pointedOptionMenu = menuOptions.Count - 1;
+                scrollView.verticalNormalizedPosition = 0f;
             }
             keyTimeDelayer = keyTimeDelay;
+            PointOption(pointedOptionMenu);
+        }
+        //S hold
+        if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.S))
+        {
+            changeSound.Play();
+            if (pointedOptionMenu < menuOptions.Count - 1)
+            {
+                pointedOptionMenu++;
+                scrollView.verticalNormalizedPosition += -1f / (menuOptions.Count - 1); 
+            }
+            else
+            {
+                pointedOptionMenu = 0;
+                scrollView.verticalNormalizedPosition = 1f;
+            }
+            keyTimeDelayer = keyTimeDelay;
+            PointOption(pointedOptionMenu);
         }
 
         //Volume
@@ -178,6 +194,7 @@ public class SettingsMenu : MonoBehaviour
             }
         }
 
+        /*
         //Webcam
         if (pointedOptionMenu == 8)
         {
@@ -197,6 +214,7 @@ public class SettingsMenu : MonoBehaviour
                 PlayerPrefs.SetString("webCamName", GameSettings.webCamName);
             }
         }
+        */
 
         //FPS cap
         if (pointedOptionMenu == 2 && !GameSettings.vSync)
@@ -355,14 +373,18 @@ public class SettingsMenu : MonoBehaviour
         changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
         selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
 
-        for (int i = 1; i < 10; i++)
+        for (int i = 1; i < 9; i++)
         {
             string text = i.ToString();
-            menuOptions.Add(transform.Find("Menu").Find("Options").Find(text).gameObject);
+            menuOptions.Add(transform.Find("Menu").Find("ScrollRect").Find("Content").Find(text).gameObject);
         }
 
+        scrollView = transform.Find("Menu").Find("ScrollRect").GetComponent<ScrollRect>();
+        scrollView.verticalNormalizedPosition = 1f;
+
+
         DisplayMicrophone();
-        DisplayWebCam();
+        //DisplayWebCam();
 
         DisplayGraphicQuality();
 
@@ -373,8 +395,21 @@ public class SettingsMenu : MonoBehaviour
         menuOptions[5].transform.Find("CheckBackground").Find("Checker").gameObject.SetActive(GameSettings.fullscreen);
         menuOptions[7].transform.Find("CheckBackground").Find("Checker").gameObject.SetActive(GameSettings.useSpeech);
 
+        if (fromMainMenu)
+        {
+            transform.parent.Find("Title").gameObject.SetActive(false);
+            transform.Find("Info").Find("BlackoutBackground").gameObject.SetActive(true);
+        }
+
         pointedOptionMenu = 0;
-        PointOption(pointedOptionMenu, menuOptions);
+        PointOption(pointedOptionMenu);
+        StartCoroutine(WaitOneFrameToPoint());
+    }
+
+    IEnumerator WaitOneFrameToPoint()
+    {
+        yield return 0;
+        PointOption(pointedOptionMenu);
     }
 
     public void CloseMenu()
@@ -383,88 +418,89 @@ public class SettingsMenu : MonoBehaviour
         pointer.SetActive(true);
         menuOptions.Clear();
         transform.parent.transform.Find("Menu").gameObject.SetActive(true);
+        if (fromMainMenu) transform.parent.Find("Title").gameObject.SetActive(true);
         Destroy(closeSound.gameObject, closeSound.clip.length);
         Destroy(changeSound.gameObject, changeSound.clip.length);
         Destroy(selectSound.gameObject, selectSound.clip.length);
         Destroy(gameObject);
     }
 
-    void PointOption(int option, List<GameObject> allOptions)
+    void PointOption(int option)
     {
-        for (int i = 0; i < allOptions.Count; i++)
+        for (int i = 0; i < menuOptions.Count; i++)
         {
             if (i != option)
             {
                 if (i == 0 || i == 2)
                 {
-                    allOptions[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
+                    menuOptions[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
                     if (i == 0)
                     {
-                        allOptions[i].transform.Find("Slider").Find("0").GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
-                        allOptions[i].transform.Find("Slider").Find("100").GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
+                        menuOptions[i].transform.Find("Slider").Find("0").GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
+                        menuOptions[i].transform.Find("Slider").Find("100").GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
                     }
-                    allOptions[i].transform.Find("Slider").Find("Background").GetComponent<Image>().color = new Color(0.2666f, 0.2666f, 0.2666f);
-                    allOptions[i].transform.Find("Slider").Find("Handle Slide Area").Find("Handle").Find("Value").GetComponent<TextMeshProUGUI>().color = new Color(0.4625f, 0.4625f, 0.4625f);
-                    allOptions[i].transform.Find("Slider").Find("Handle Slide Area").Find("Handle").GetComponent<Image>().color = new Color(0.4625f, 0.4625f, 0.4625f);
-                    allOptions[i].transform.Find("Slider").Find("Fill Area").Find("Fill").GetComponent<Image>().color = new Color(0.4625f, 0.4625f, 0.4625f);
+                    menuOptions[i].transform.Find("Slider").Find("Background").GetComponent<Image>().color = new Color(0.2666f, 0.2666f, 0.2666f);
+                    menuOptions[i].transform.Find("Slider").Find("Handle Slide Area").Find("Handle").Find("Value").GetComponent<TextMeshProUGUI>().color = new Color(0.4625f, 0.4625f, 0.4625f);
+                    menuOptions[i].transform.Find("Slider").Find("Handle Slide Area").Find("Handle").GetComponent<Image>().color = new Color(0.4625f, 0.4625f, 0.4625f);
+                    menuOptions[i].transform.Find("Slider").Find("Fill Area").Find("Fill").GetComponent<Image>().color = new Color(0.4625f, 0.4625f, 0.4625f);
                 }
-                else if (i == 4 || i == 6 || i == 8)
+                else if (i == 4 || i == 6) //option == 8 for webcam
                 {
-   
-                    allOptions[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
-                    allOptions[i].transform.Find("Desc").Find("DoublePointer").gameObject.SetActive(false);
 
-                    allOptions[i].transform.Find("Desc").GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
-                    allOptions[i].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").Find("Arrow").GetComponent<RawImage>().color = new Color(0.2666f, 0.2666f, 0.2666f);
-                    allOptions[i].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").Find("Arrow").GetComponent<RawImage>().color = new Color(0.2666f, 0.2666f, 0.2666f);
+                    menuOptions[i].transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
+                    menuOptions[i].transform.Find("Desc").Find("DoublePointer").gameObject.SetActive(false);
+
+                    menuOptions[i].transform.Find("Desc").GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
+                    menuOptions[i].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").Find("Arrow").GetComponent<RawImage>().color = new Color(0.2666f, 0.2666f, 0.2666f);
+                    menuOptions[i].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").Find("Arrow").GetComponent<RawImage>().color = new Color(0.2666f, 0.2666f, 0.2666f);
                 }
                 else if (i == 1 || i == 3 || i == 5 || i == 7)
                 {
-                    allOptions[i].GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
-                    allOptions[i].transform.Find("CheckBackground").GetComponent<RawImage>().color = new Color(0.2666f, 0.2666f, 0.2666f);
-                    allOptions[i].transform.Find("CheckBackground").Find("Checker").GetComponent<RawImage>().color = new Color(0.2666f, 0.2666f, 0.2666f);
+                    menuOptions[i].GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
+                    menuOptions[i].transform.Find("CheckBackground").GetComponent<RawImage>().color = new Color(0.2666f, 0.2666f, 0.2666f);
+                    menuOptions[i].transform.Find("CheckBackground").Find("Checker").GetComponent<RawImage>().color = new Color(0.2666f, 0.2666f, 0.2666f);
                 }
             }
         }
 
-        if (option < allOptions.Count)
+        if (option < menuOptions.Count)
         {
             infoText.text = infoTexts[option];
             if (option == 0 || option == 2)
             {
-                allOptions[option].transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
-                pointer.transform.SetParent(allOptions[option].transform.Find("Slider").Find("Handle Slide Area").Find("Handle").Find("Value"));
+                menuOptions[option].transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
+                pointer.transform.SetParent(menuOptions[option].transform.Find("Slider").Find("Handle Slide Area").Find("Handle").Find("Value"));
                 pointer.SetActive(true);
 
                 if (option == 0)
                 {
-                    allOptions[option].transform.Find("Slider").Find("0").GetComponent<TextMeshProUGUI>().color = new Color(0.4625f, 0.4625f, 0.4625f);
-                    allOptions[option].transform.Find("Slider").Find("100").GetComponent<TextMeshProUGUI>().color = new Color(0.4625f, 0.4625f, 0.4625f);
+                    menuOptions[option].transform.Find("Slider").Find("0").GetComponent<TextMeshProUGUI>().color = new Color(0.4625f, 0.4625f, 0.4625f);
+                    menuOptions[option].transform.Find("Slider").Find("100").GetComponent<TextMeshProUGUI>().color = new Color(0.4625f, 0.4625f, 0.4625f);
                 }
-                allOptions[option].transform.Find("Slider").Find("Background").GetComponent<Image>().color = new Color(0.4625f, 0.4625f, 0.4625f);
-                allOptions[option].transform.Find("Slider").Find("Handle Slide Area").Find("Handle").Find("Value").GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
-                allOptions[option].transform.Find("Slider").Find("Handle Slide Area").Find("Handle").GetComponent<Image>().color = new Color(1f, 1f, 1f);
-                allOptions[option].transform.Find("Slider").Find("Fill Area").Find("Fill").GetComponent<Image>().color = new Color(1f, 1f, 1f);
+                menuOptions[option].transform.Find("Slider").Find("Background").GetComponent<Image>().color = new Color(0.4625f, 0.4625f, 0.4625f);
+                menuOptions[option].transform.Find("Slider").Find("Handle Slide Area").Find("Handle").Find("Value").GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
+                menuOptions[option].transform.Find("Slider").Find("Handle Slide Area").Find("Handle").GetComponent<Image>().color = new Color(1f, 1f, 1f);
+                menuOptions[option].transform.Find("Slider").Find("Fill Area").Find("Fill").GetComponent<Image>().color = new Color(1f, 1f, 1f);
             }
-            else if (option == 4 || option == 6 || option == 8)
+            else if (option == 4 || option == 6) //option == 8 for webcam
             {
-                allOptions[option].transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
+                menuOptions[option].transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
 
                 pointer.SetActive(false);
-                allOptions[option].transform.Find("Desc").Find("DoublePointer").gameObject.SetActive(true);
+                menuOptions[option].transform.Find("Desc").Find("DoublePointer").gameObject.SetActive(true);
 
-                allOptions[option].transform.Find("Desc").GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
-                allOptions[option].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").Find("Arrow").GetComponent<RawImage>().color = new Color(1f, 1f, 1f);
-                allOptions[option].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").Find("Arrow").GetComponent<RawImage>().color = new Color(1f, 1f, 1f);
+                menuOptions[option].transform.Find("Desc").GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
+                menuOptions[option].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").Find("Arrow").GetComponent<RawImage>().color = new Color(1f, 1f, 1f);
+                menuOptions[option].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").Find("Arrow").GetComponent<RawImage>().color = new Color(1f, 1f, 1f);
             }
             else if (option == 1 || option == 3 || option == 5 || option == 7)
             {
-                pointer.transform.SetParent(allOptions[option].transform);
+                pointer.transform.SetParent(menuOptions[option].transform);
                 pointer.SetActive(true);
 
-                allOptions[option].GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
-                allOptions[option].transform.Find("CheckBackground").GetComponent<RawImage>().color = new Color(1f, 1f, 1f);
-                allOptions[option].transform.Find("CheckBackground").Find("Checker").GetComponent<RawImage>().color = new Color(1f, 1f, 1f);
+                menuOptions[option].GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
+                menuOptions[option].transform.Find("CheckBackground").GetComponent<RawImage>().color = new Color(1f, 1f, 1f);
+                menuOptions[option].transform.Find("CheckBackground").Find("Checker").GetComponent<RawImage>().color = new Color(1f, 1f, 1f);
             }
         }
     }
@@ -520,6 +556,7 @@ public class SettingsMenu : MonoBehaviour
         }
         else speechChangeable = true;
     }
+    /*
     void DisplayWebCam()
     {
         WebCamDevice[] cameras = WebCamTexture.devices;
@@ -546,7 +583,9 @@ public class SettingsMenu : MonoBehaviour
             menuOptions[8].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.SetActive(false);
             menuOptions[8].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.SetActive(false);
         }
+
     }
+    */
 
     void ChangeMicrophone()
     {
