@@ -166,6 +166,7 @@ public class TutorialsMenu : MonoBehaviour
         prefabRectTransform.localScale = new Vector3(0.85f, 0.85f, 1);
         instantiatedTutorialPrefab.transform.Find("BlackoutBackground").gameObject.SetActive(false);
         instantiatedTutorialPrefab.transform.Find("Panel").Find("OptionText").gameObject.SetActive(false);
+        instantiatedTutorialPrefab.transform.Find("Panel").Find("Background").GetComponent<RectTransform>().offsetMin = new Vector2(0, 75f);
 
         for (int i = 0; i < menuOptions.Count; i++)
         {
