@@ -8,7 +8,6 @@ public class SpellsMenu : MonoBehaviour
 {
     [Header("Game objects")]
     public GameObject spellsMenuPrefab;
-    public Camera UiCamera;
 
     [Header("Settings")]
     public bool ableToInteract = true;
@@ -37,7 +36,7 @@ public class SpellsMenu : MonoBehaviour
     {
         //Instatiate inventory and assign it to UiCamera
         instantiatedMenu = Instantiate(spellsMenuPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
-        instantiatedMenu.GetComponent<Canvas>().worldCamera = UiCamera;
+        instantiatedMenu.GetComponent<Canvas>().worldCamera = PlayerParams.Objects.uiCamera;
         instantiatedMenu.GetComponent<Canvas>().planeDistance = 1.05f;
 
         //Disable other controls (close first, because it activates movement and enable other ui)

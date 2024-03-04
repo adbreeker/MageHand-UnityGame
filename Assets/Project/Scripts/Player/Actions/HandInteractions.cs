@@ -86,10 +86,7 @@ public class HandInteractions : MonoBehaviour
         {
             inHandLastLayer = inHand.layer;
             inHand.layer = LayerMask.NameToLayer("UI");
-            foreach (Transform child in inHand.transform)
-            {
-                child.gameObject.layer = LayerMask.NameToLayer("UI");
-            }
+            foreach (Transform child in inHand.transform) child.gameObject.layer = LayerMask.NameToLayer("UI");
         }
     }
 
@@ -184,10 +181,7 @@ public class HandInteractions : MonoBehaviour
 
             //set proper layer
             inHand.layer = inHandLastLayer;
-            foreach (Transform child in inHand.transform)
-            {
-                child.gameObject.layer = inHandLastLayer;
-            }
+            foreach (Transform child in inHand.transform) child.gameObject.layer = inHandLastLayer;
 
             inHand = null;
             GetComponent<SpellCasting>().currentSpell = "None";
@@ -198,10 +192,7 @@ public class HandInteractions : MonoBehaviour
 
             //set proper layer
             inHand.layer = inHandLastLayer;
-            foreach (Transform child in inHand.transform)
-            {
-                child.gameObject.layer = inHandLastLayer;
-            }
+            foreach (Transform child in inHand.transform) child.gameObject.layer = inHandLastLayer;
 
             inHand = null;
         }
@@ -226,6 +217,11 @@ public class HandInteractions : MonoBehaviour
     void PutDownObject() //put object down to inventory or if in hand is spell then some special interaction
     {
         CooldownPutDown = true;
+
+        //set proper layer
+        inHand.layer = inHandLastLayer;
+        foreach (Transform child in inHand.transform) child.gameObject.layer = inHandLastLayer;
+
         if (PlayerParams.Controllers.spellCasting.currentSpell == "Light") //if light spell in hand, making it floating light
         {
             MakeFloatingLight();
