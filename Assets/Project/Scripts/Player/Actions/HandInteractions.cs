@@ -29,6 +29,8 @@ public class HandInteractions : MonoBehaviour
     private AudioSource putToInventorySound;
     private AudioSource drinkSound;
 
+    private LayerMask inHandLastLayer;
+
     [Header("Pop up options")]
     public float timeToFadeOutPopUp = 1;
     public float timeOfFadingOutPopUp = 0.007f;
@@ -77,6 +79,17 @@ public class HandInteractions : MonoBehaviour
         if (gestureHandler.gesture == "ILoveYou" && inHand != null && !CooldownDrink)
         {
             DrinkObject();
+        }
+
+        //making inHand UI layer to prevent it from disappearing in the walls
+        if (inHand != null && inHand.layer != LayerMask.NameToLayer("UI"))
+        {
+            inHandLastLayer = inHand.layer;
+            inHand.layer = LayerMask.NameToLayer("UI");
+            foreach (Transform child in inHand.transform)
+            {
+                child.gameObject.layer = LayerMask.NameToLayer("UI");
+            }
         }
     }
 
@@ -168,12 +181,28 @@ public class HandInteractions : MonoBehaviour
         if (cs == "Light" || cs == "Fire") //if spell then throw spell
         {
             inHand.AddComponent<ThrowSpell>().Initialize(player);
+
+            //set proper layer
+            inHand.layer = inHandLastLayer;
+            foreach (Transform child in inHand.transform)
+            {
+                child.gameObject.layer = inHandLastLayer;
+            }
+
             inHand = null;
             GetComponent<SpellCasting>().currentSpell = "None";
         }
         else //else throw item
         {
             inHand.AddComponent<ThrowObject>().Initialize(player);
+
+            //set proper layer
+            inHand.layer = inHandLastLayer;
+            foreach (Transform child in inHand.transform)
+            {
+                child.gameObject.layer = inHandLastLayer;
+            }
+
             inHand = null;
         }
     }

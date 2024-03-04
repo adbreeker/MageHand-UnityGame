@@ -7,7 +7,6 @@ public class OpenDialogue : MonoBehaviour
 {
     [Header("Game objects")]
     public Canvas dialogueCanvas;
-    public GameObject player;
     [Header("Parameters")]
     public float textSpeed = 0.02f;
     //Should not be long
@@ -21,7 +20,7 @@ public class OpenDialogue : MonoBehaviour
     {
         //Activates canvas (dialogue) while player enters bounds of object that this script is connected to
         Bounds cubeBounds = GetComponent<Renderer>().bounds;
-        if (cubeBounds.Contains(player.transform.position) && activateDialogue)
+        if (cubeBounds.Contains(PlayerParams.Objects.player.transform.position) && activateDialogue)
         {
             if (saveDialogue)
             {

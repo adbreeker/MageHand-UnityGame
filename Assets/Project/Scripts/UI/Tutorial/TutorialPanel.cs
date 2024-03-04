@@ -8,7 +8,6 @@ public class TutorialPanel : MonoBehaviour
 
     //public GameObject tutorialPanelHitboxToActivate;
     public GameObject tutorialPanelHitboxToDeactivate;
-    public Camera UiCamera;
     public bool playOpenSound = true;
     public bool wasLatelyOpened = false;
 
@@ -59,7 +58,7 @@ public class TutorialPanel : MonoBehaviour
             Destroy(tutorialPanel);
             currentPanelNumber++;
             tutorialPanel = Instantiate(tutorialPanelPrefabs[currentPanelNumber], new Vector3(0, 0, 0), Quaternion.identity);
-            tutorialPanel.GetComponent<Canvas>().worldCamera = UiCamera;
+            tutorialPanel.GetComponent<Canvas>().worldCamera = PlayerParams.Objects.uiCamera;
             tutorialPanel.GetComponent<Canvas>().planeDistance = 1.05f;
         }
 
@@ -92,7 +91,7 @@ public class TutorialPanel : MonoBehaviour
         currentPanelNumber = 0;
 
         tutorialPanel = Instantiate(tutorialPanelPrefabs[currentPanelNumber], new Vector3(0, 0, 0), Quaternion.identity);
-        tutorialPanel.GetComponent<Canvas>().worldCamera = UiCamera;
+        tutorialPanel.GetComponent<Canvas>().worldCamera = PlayerParams.Objects.uiCamera;
         tutorialPanel.GetComponent<Canvas>().planeDistance = 1.05f;
 
         openedPanel = true;
