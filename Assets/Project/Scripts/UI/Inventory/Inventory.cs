@@ -147,14 +147,14 @@ public class Inventory : MonoBehaviour
         page = 0;
         if (inventoryPages.Count > 0)
         {
-            instantiatedInventory.transform.Find("Empty").gameObject.SetActive(false);
-            instantiatedInventory.transform.Find("Title").gameObject.SetActive(true);
+            instantiatedInventory.transform.Find("Background").Find("InventoryBackground").Find("Empty").gameObject.SetActive(false);
+            instantiatedInventory.transform.Find("Background").Find("InventoryBackground").Find("Title").gameObject.SetActive(true);
             DisplayPage(page);
         }
         else
         {
-            instantiatedInventory.transform.Find("Empty").gameObject.SetActive(true);
-            instantiatedInventory.transform.Find("Title").gameObject.SetActive(false);
+            instantiatedInventory.transform.Find("Background").Find("InventoryBackground").Find("Empty").gameObject.SetActive(true);
+            instantiatedInventory.transform.Find("Background").Find("InventoryBackground").Find("Title").gameObject.SetActive(false);
         }
         inventoryOpened = true;
     }
@@ -187,8 +187,8 @@ public class Inventory : MonoBehaviour
             Destroy(itemIconActiveInstances[i]);
         }
         itemIconActiveInstances.Clear();
-        instantiatedInventory.transform.Find("Background").Find("ArrowRight").gameObject.SetActive(false);
-        instantiatedInventory.transform.Find("Background").Find("ArrowLeft").gameObject.SetActive(false);
+        instantiatedInventory.transform.Find("Background").Find("InventoryBackground").Find("ArrowRight").gameObject.SetActive(false);
+        instantiatedInventory.transform.Find("Background").Find("InventoryBackground").Find("ArrowLeft").gameObject.SetActive(false);
 
         //Activate correct item slots, spawn icons and arrows
         for (int i = 0; i < inventoryPages[pageToDisplay].Count; i++)
@@ -202,8 +202,8 @@ public class Inventory : MonoBehaviour
             //itemIconActiveInstances[i].GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             itemIconActiveInstances[i].layer = LayerMask.NameToLayer("UI");
         }
-        if (pageToDisplay > 0) instantiatedInventory.transform.Find("Background").Find("ArrowLeft").gameObject.SetActive(true);
-        if (inventoryPages.Count > pageToDisplay + 1) instantiatedInventory.transform.Find("Background").Find("ArrowRight").gameObject.SetActive(true);
+        if (pageToDisplay > 0) instantiatedInventory.transform.Find("Background").Find("InventoryBackground").Find("ArrowLeft").gameObject.SetActive(true);
+        if (inventoryPages.Count > pageToDisplay + 1) instantiatedInventory.transform.Find("Background").Find("InventoryBackground").Find("ArrowRight").gameObject.SetActive(true);
     }
 
     public void AddItem(GameObject item)

@@ -21,7 +21,7 @@ public class ShowGestureIcon : MonoBehaviour
         instantiatedGestureIcon.GetComponent<Canvas>().renderMode = RenderMode.WorldSpace;
         instantiatedGestureIcon.GetComponent<Canvas>().worldCamera = PlayerParams.Objects.uiCamera;
         instantiatedGestureIcon.transform.Find("Icon").GetComponent<RawImage>().texture = icon;
-        instantiatedGestureIcon.transform.localPosition = new Vector3(-2.5f, 4.5f, -2);
+        instantiatedGestureIcon.transform.localPosition = new Vector3(-2.5f, 4.5f, -3);
         instantiatedGestureIcon.transform.rotation = new Quaternion(0, 0, 0, 0);
     }
 
