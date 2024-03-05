@@ -78,7 +78,7 @@ public class TutorialEndingPickUp : MonoBehaviour
         fallingSound.Play();
         yield return new WaitForSeconds(fallingSound.clip.length + 0.5f);
 
-        _saveManager.SaveGameState(_nextLevel, PlayerParams.Controllers.plotPointsManager.plotPoints);
+        _saveManager.SaveGameState(_nextLevel, PlayerParams.Controllers.pointsManager.plotPoints);
         _saveManager.SaveProgressToFile();
 
         FindObjectOfType<FadeInFadeOut>().ChangeScene(_nextLevel);

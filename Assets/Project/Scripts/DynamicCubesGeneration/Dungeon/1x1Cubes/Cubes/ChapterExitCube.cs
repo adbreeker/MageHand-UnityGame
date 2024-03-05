@@ -47,7 +47,7 @@ public class ChapterExitCube : MonoBehaviour
     private void SaveProgress() //saving all progress
     {
         //game state
-        saveManager.SaveGameState(chapter, PlayerParams.Controllers.plotPointsManager.plotPoints);
+        saveManager.SaveGameState(chapter, PlayerParams.Controllers.pointsManager.plotPoints);
 
         //spells
         List<string> spells = new List<string>();

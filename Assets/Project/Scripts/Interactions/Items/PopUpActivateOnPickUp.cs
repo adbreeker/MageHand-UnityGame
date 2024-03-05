@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PopUpActivateOnPickUp : MonoBehaviour
 {
-    [Header("Pop up content")]
-    public string title;
     [TextArea(1, 2)]
     public string content;
     public float timeToFadeOut = 2;
@@ -16,7 +14,7 @@ public class PopUpActivateOnPickUp : MonoBehaviour
 
     public void OnPickUp() //instantiate pop up prefab
     {
-        FindObjectOfType<HUD>().SpawnPopUp(title, content, timeToFadeOut, timeOfFadingOut);
+        FindObjectOfType<HUD>().SpawnPopUp(content, timeToFadeOut, timeOfFadingOut);
 
         if (destroy) Destroy(gameObject);
     }

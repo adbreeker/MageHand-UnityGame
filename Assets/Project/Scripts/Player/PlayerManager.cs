@@ -19,7 +19,7 @@ public static class PlayerParams //static player parameters accessible from ever
         public static Inventory inventory;
         public static Spellbook spellbook;
         public static Journal journal;
-        public static PlotPointsManager plotPointsManager;
+        public static PointsManager pointsManager;
         public static PauseMenu pauseMenu;
         public static SpellsMenu spellsMenu;
         public static HandInteractions handInteractions;
@@ -48,7 +48,7 @@ public class PlayerManager : MonoBehaviour //assigning static PlayerParams on Aw
     public Inventory inventory;
     public Spellbook spellbook;
     public Journal journal;
-    public PlotPointsManager plotPointsManager;
+    public PointsManager pointsManager;
     public PauseMenu pauseMenu;
     public SpellsMenu spellsMenu;
     public HandInteractions handInteractions;
@@ -70,7 +70,7 @@ public class PlayerManager : MonoBehaviour //assigning static PlayerParams on Aw
         PlayerParams.Controllers.inventory = inventory;
         PlayerParams.Controllers.spellbook = spellbook;
         PlayerParams.Controllers.journal = journal;
-        PlayerParams.Controllers.plotPointsManager = plotPointsManager;
+        PlayerParams.Controllers.pointsManager = pointsManager;
         PlayerParams.Controllers.pauseMenu = pauseMenu;
         PlayerParams.Controllers.spellsMenu = spellsMenu;
         PlayerParams.Controllers.handInteractions = handInteractions;

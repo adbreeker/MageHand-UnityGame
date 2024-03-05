@@ -14,16 +14,16 @@ public class Dialogue : MonoBehaviour
     [Header("Options text")]
     [TextArea(1, 2)]
     public string option1Text;
-    public float option1Points = 0;
+    public int option1Points = 0;
     [TextArea(1, 2)]
     public string option2Text;
-    public float option2Points = 0;
+    public int option2Points = 0;
     [TextArea(1, 2)]
     public string option3Text;
-    public float option3Points = 0;
+    public int option3Points = 0;
     [TextArea(1, 2)]
     public string option4Text;
-    public float option4Points = 0;
+    public int option4Points = 0;
 
     [Header("Choices canvases")]
     public Canvas option1Choice;
@@ -41,7 +41,7 @@ public class Dialogue : MonoBehaviour
     private Dictionary<int, TextMeshProUGUI> options;
     private Dictionary<int, Canvas> optionsChoices;
     private Dictionary<int, string> optionsTexts;
-    private Dictionary<int, float> optionsPoints;
+    private Dictionary<int, int> optionsPoints;
 
     private bool listen = false;
     private bool skip = false;
@@ -96,7 +96,7 @@ public class Dialogue : MonoBehaviour
         optionsTexts.Add(2, option2Text);
         optionsTexts.Add(3, option3Text);
         optionsTexts.Add(4, option4Text);
-        optionsPoints = new Dictionary<int, float>();
+        optionsPoints = new Dictionary<int, int>();
         optionsPoints.Add(1, option1Points);
         optionsPoints.Add(2, option2Points);
         optionsPoints.Add(3, option3Points);
@@ -260,7 +260,7 @@ public class Dialogue : MonoBehaviour
             }
             else
             {
-                PlayerParams.Controllers.plotPointsManager.plotPoints += optionsPoints[choice];
+                PlayerParams.Controllers.pointsManager.AddPlotPoints(optionsPoints[choice]);
                 gameObject.SetActive(false);
                 optionsChoices[choice].gameObject.SetActive(true);
             }
