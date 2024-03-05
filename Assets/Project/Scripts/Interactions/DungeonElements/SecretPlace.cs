@@ -8,7 +8,6 @@ public class SecretPlace : MonoBehaviour
     private bool notVisited = true;
     private string text;
 
-    [TextArea(1, 2)]
     public float timeToFadeOut = 2;
     public float timeOfFadingOut = 0.007f;
 
