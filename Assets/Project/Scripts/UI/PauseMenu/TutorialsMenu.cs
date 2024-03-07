@@ -159,7 +159,6 @@ public class TutorialsMenu : MonoBehaviour
         RectTransform prefabRectTransform = instantiatedTutorialPrefab.transform.Find("Panel").GetComponent<RectTransform>();
         prefabCanvas.worldCamera = uiCamera;
         prefabCanvas.planeDistance = 1.05f;
-        prefabCanvas.sortingOrder = 10;
         prefabRectTransform.anchorMin = new Vector2(0, 0.5f);
         prefabRectTransform.anchorMax = new Vector2(0, 0.5f);
         prefabRectTransform.anchoredPosition = new Vector3(600, 0, 0);

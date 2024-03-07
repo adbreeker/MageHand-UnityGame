@@ -24,6 +24,7 @@ public class Inventory : MonoBehaviour
     private List<GameObject> itemIconActiveInstances = new List<GameObject>();
     private List<List<GameObject>> inventoryPages;
 
+    private AudioSource equipSound;
     private AudioSource closeSound;
     private AudioSource openSound;
     private AudioSource changeSound;
@@ -49,9 +50,12 @@ public class Inventory : MonoBehaviour
 
             if (!inventoryOpened && PlayerParams.Controllers.handInteractions.inHand != null)
             {
-                if (PlayerParams.Controllers.handInteractions.inHand.layer == LayerMask.NameToLayer("Item"))
+                if (PlayerParams.Controllers.handInteractions.inHand.GetComponent<ItemParameters>() != null)
                 {
                     AddItem(PlayerParams.Controllers.handInteractions.inHand);
+                    equipSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_PutToInventory);
+                    equipSound.Play();
+                    Destroy(equipSound.gameObject, equipSound.clip.length);
                 }
                 OpenInventory();
                 openSound.Play();

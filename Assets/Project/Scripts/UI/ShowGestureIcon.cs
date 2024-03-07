@@ -8,9 +8,10 @@ public class ShowGestureIcon : MonoBehaviour
     [Header("Icon time")]
     public int iconTime = 5;
 
-    [Header("Texture")]
+    [Header("Objects")]
     public Texture icon;
     public GameObject gestureIconPrefab;
+    private Texture iconChecker;
     private GameObject instantiatedGestureIcon;
 
     void Start() //spawn icon
@@ -21,6 +22,7 @@ public class ShowGestureIcon : MonoBehaviour
         instantiatedGestureIcon.GetComponent<Canvas>().renderMode = RenderMode.WorldSpace;
         instantiatedGestureIcon.GetComponent<Canvas>().worldCamera = PlayerParams.Objects.uiCamera;
         instantiatedGestureIcon.transform.Find("Icon").GetComponent<RawImage>().texture = icon;
+        iconChecker = icon;
         instantiatedGestureIcon.transform.localPosition = new Vector3(-2.5f, 4.5f, -1);
         instantiatedGestureIcon.transform.rotation = new Quaternion(0, 0, 0, 0);
     }
@@ -32,6 +34,12 @@ public class ShowGestureIcon : MonoBehaviour
         {
             DestroyImmediate(instantiatedGestureIcon);
             DestroyImmediate(this);
+        }
+
+        if(iconChecker.name != icon.name)
+        {
+            instantiatedGestureIcon.transform.Find("Icon").GetComponent<RawImage>().texture = icon;
+            iconChecker = icon;
         }
     }
 }

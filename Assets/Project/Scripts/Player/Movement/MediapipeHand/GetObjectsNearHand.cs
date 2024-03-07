@@ -91,9 +91,9 @@ public class GetObjectsNearHand : MonoBehaviour
                     else
                     {
                         PlayerParams.Objects.hand.AddComponent<ShowGestureIcon>().gestureIconPrefab = gestureIconPrefab;
-                        if (pointingAt.GetComponent<SpellIcon>() != null) PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().icon = iconInteract;
-                        else PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().icon = iconGrab;
                     }
+                    if (pointingAt.GetComponent<SpellIcon>() != null) PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().icon = iconInteract;
+                    else PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().icon = iconGrab;
                 }
             }
 
@@ -119,8 +119,8 @@ public class GetObjectsNearHand : MonoBehaviour
                     else
                     {
                         PlayerParams.Objects.hand.AddComponent<ShowGestureIcon>().gestureIconPrefab = gestureIconPrefab;
-                        PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().icon = iconInteract;
                     }
+                    PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().icon = iconInteract;
                 }
             }
 
@@ -153,8 +153,8 @@ public class GetObjectsNearHand : MonoBehaviour
                     else
                     {
                         PlayerParams.Objects.hand.AddComponent<ShowGestureIcon>().gestureIconPrefab = gestureIconPrefab;
-                        PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().icon = iconInteract;
                     }
+                    PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().icon = iconInteract;
                 }
             }
         }
