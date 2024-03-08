@@ -35,9 +35,9 @@ public class OpenDialogue : MonoBehaviour
     }
 
 
-    public List<DialogueTreeElement> dialogueTree = new List<DialogueTreeElement>();
-    public List<int> treeEndpoints = new List<int>();
-    public class DialogueTreeElement 
+    private List<DialogueTreeElement> dialogueTree = new List<DialogueTreeElement>();
+    private List<int> treeEndpoints = new List<int>();
+    private class DialogueTreeElement 
     {
         public Dialogue selfDialogue;
         public List<Dialogue> chlidren;
