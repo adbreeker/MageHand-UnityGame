@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class LevelInfoDisplay : MonoBehaviour
 {
     public int secretsOnLevel = 0;
+    public int foundSecretsOnLevel = 0;
     public GameObject displayPrefab;
 
     private AudioSource sound;
@@ -47,7 +48,7 @@ public class LevelInfoDisplay : MonoBehaviour
         {
             alphaWhole += 0.01f;
             wholeGroup.alpha = alphaWhole;
-            yield return new WaitForSeconds(0);
+            yield return new WaitForSeconds(0.00005f);
         }
 
         yield return new WaitForSeconds(1);
@@ -58,7 +59,7 @@ public class LevelInfoDisplay : MonoBehaviour
         {
             alphaName += 0.05f;
             levelName.alpha = alphaName;
-            yield return new WaitForSeconds(0);
+            yield return new WaitForSeconds(0.00005f);
         }
 
         yield return new WaitForSeconds(1);
@@ -69,7 +70,7 @@ public class LevelInfoDisplay : MonoBehaviour
         {
             alphaSecret += 0.05f;
             secretsNumber.alpha = alphaSecret;
-            yield return new WaitForSeconds(0);
+            yield return new WaitForSeconds(0.00005f);
         }
 
         yield return new WaitForSeconds(3f);
@@ -82,7 +83,7 @@ public class LevelInfoDisplay : MonoBehaviour
             wholeGroup.alpha = alphaWhole;
             levelName.alpha = alphaName;
             secretsNumber.alpha = alphaName;
-            yield return new WaitForSeconds(0);
+            yield return new WaitForSeconds(0.00005f);
         }
 
         Destroy(sound, sound.clip.length);

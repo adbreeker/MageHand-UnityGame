@@ -23,7 +23,7 @@ public class EnteringEarthquake : MonoBehaviour
         earthquakeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Earthquake);
 
         progressSaving = FindObjectOfType<ProgressSaving>();
-        progressSaving.SaveGameState(SceneManager.GetActiveScene().name, 0);
+        progressSaving.SaveGameState(SceneManager.GetActiveScene().name, 0, 0, 0, 0);
         progressSaving.SaveProgressToFile();
 
         StartCoroutine(EarthquakeSimulation());

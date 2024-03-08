@@ -245,10 +245,10 @@ public class Dialogue : MonoBehaviour
                 }
             }
 
+            PlayerParams.Controllers.pointsManager.AddPlotPoints(optionsPoints[choice]);
+            gameObject.SetActive(false);
             if (optionsChoices[choice] == null)
             {
-                gameObject.SetActive(false);
-
                 //Enable other controls
                 PlayerParams.Variables.uiActive = false;
                 PlayerParams.Objects.hand.SetActive(true);
@@ -260,8 +260,6 @@ public class Dialogue : MonoBehaviour
             }
             else
             {
-                PlayerParams.Controllers.pointsManager.AddPlotPoints(optionsPoints[choice]);
-                gameObject.SetActive(false);
                 optionsChoices[choice].gameObject.SetActive(true);
             }
 

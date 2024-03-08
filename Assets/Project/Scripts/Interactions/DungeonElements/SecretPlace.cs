@@ -28,7 +28,8 @@ public class SecretPlace : MonoBehaviour
             sound.Play();
             notVisited = false;
             PlayerParams.Controllers.pointsManager.foundSecrets += 1;
-            text = "Secret found!<br>" + PlayerParams.Controllers.pointsManager.foundSecrets + "/" + FindObjectOfType<LevelInfoDisplay>().secretsOnLevel;
+            FindObjectOfType<LevelInfoDisplay>().foundSecretsOnLevel += 1;
+            text = "Secret found!<br>" + FindObjectOfType<LevelInfoDisplay>().foundSecretsOnLevel + "/" + FindObjectOfType<LevelInfoDisplay>().secretsOnLevel;
             FindObjectOfType<HUD>().SpawnPopUp(text, timeToFadeOut, timeOfFadingOut, false);
             Destroy(sound, sound.clip.length);
             Destroy(this, sound.clip.length);

@@ -46,7 +46,10 @@ public class LevelExitCube : MonoBehaviour
     private void SaveProgress() //saving all progress
     {
         //game state
-        saveManager.SaveGameState(chapter, PlayerParams.Controllers.pointsManager.plotPoints);
+        saveManager.SaveGameState(chapter, PlayerParams.Controllers.pointsManager.plotPoints, 
+            PlayerParams.Controllers.pointsManager.maxPlotPoints, 
+            PlayerParams.Controllers.pointsManager.foundSecrets, 
+            PlayerParams.Controllers.pointsManager.maxFoundSecrets);
 
         //spells
         List<string> spells = new List<string>();

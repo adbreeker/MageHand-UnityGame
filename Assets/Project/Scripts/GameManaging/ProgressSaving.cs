@@ -45,9 +45,12 @@ public class ProgressSaving : MonoBehaviour
         //loading game state
         PointsManager pointsManager = FindObjectOfType<PointsManager>();
         pointsManager.plotPoints = saveData.gameStateSave.plotPoints;
+        pointsManager.maxPlotPoints = saveData.gameStateSave.maxPlotPoints;
+        pointsManager.foundSecrets = saveData.gameStateSave.foundSecrets;
+        pointsManager.maxFoundSecrets = saveData.gameStateSave.maxFoundSecrets;
 
-        //loading inventory
-        Inventory inventory = FindObjectOfType<Inventory>();
+    //loading inventory
+    Inventory inventory = FindObjectOfType<Inventory>();
         foreach(string itemInData in saveData.itemsSave.items)
         {
             inventory.AddItem(itemHolder.GiveItem(itemInData));
@@ -94,10 +97,13 @@ public class ProgressSaving : MonoBehaviour
         }
     }
 
-    public void SaveGameState(string currentLvl, int plotPoints)
+    public void SaveGameState(string currentLvl, int plotPoints, int maxPlotPoints, int foundSecrets, int maxFoundSecrets)
     {
         saveData.gameStateSave.currentLvl = currentLvl;
         saveData.gameStateSave.plotPoints = plotPoints;
+        saveData.gameStateSave.maxPlotPoints = maxPlotPoints;
+        saveData.gameStateSave.foundSecrets = foundSecrets;
+        saveData.gameStateSave.maxFoundSecrets = maxFoundSecrets;
     }
 
     public void SaveItems(List<GameObject> itemsToSave) //saving all "itemsToSave"
@@ -239,6 +245,10 @@ public class ProgressSaving : MonoBehaviour
         {
             public string currentLvl = "Intro";
             public int plotPoints = 0;
+            public int maxPlotPoints = 0;
+
+            public int foundSecrets = 0;
+            public int maxFoundSecrets = 0;
         }
 
         [System.Serializable]
