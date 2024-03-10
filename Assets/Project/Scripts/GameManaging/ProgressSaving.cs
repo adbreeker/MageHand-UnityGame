@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using System;
 using static ProgressSaving.SaveData.JournalSave.DialoguesDict;
+using static ProgressSaving;
 
 public class ProgressSaving : MonoBehaviour
 {
@@ -45,8 +46,10 @@ public class ProgressSaving : MonoBehaviour
         //loading game state
         PointsManager pointsManager = FindObjectOfType<PointsManager>();
         pointsManager.plotPoints = saveData.gameStateSave.plotPoints;
-        pointsManager.maxPlotPoints = saveData.gameStateSave.maxPlotPoints;
         pointsManager.foundSecrets = saveData.gameStateSave.foundSecrets;
+
+        pointsManager.maxPlotPoints = saveData.gameStateSave.maxPlotPoints;
+        pointsManager.minPlotPoints = saveData.gameStateSave.minPlotPoints;
         pointsManager.maxFoundSecrets = saveData.gameStateSave.maxFoundSecrets;
 
     //loading inventory
@@ -97,12 +100,14 @@ public class ProgressSaving : MonoBehaviour
         }
     }
 
-    public void SaveGameState(string currentLvl, int plotPoints, int maxPlotPoints, int foundSecrets, int maxFoundSecrets)
+    public void SaveGameState(string currentLvl, int plotPoints, int foundSecrets, int maxPlotPoints, int minPlotPoints, int maxFoundSecrets)
     {
         saveData.gameStateSave.currentLvl = currentLvl;
         saveData.gameStateSave.plotPoints = plotPoints;
-        saveData.gameStateSave.maxPlotPoints = maxPlotPoints;
         saveData.gameStateSave.foundSecrets = foundSecrets;
+
+        saveData.gameStateSave.maxPlotPoints = maxPlotPoints;
+        saveData.gameStateSave.minPlotPoints = minPlotPoints;
         saveData.gameStateSave.maxFoundSecrets = maxFoundSecrets;
     }
 
@@ -245,9 +250,10 @@ public class ProgressSaving : MonoBehaviour
         {
             public string currentLvl = "Intro";
             public int plotPoints = 0;
-            public int maxPlotPoints = 0;
-
             public int foundSecrets = 0;
+
+            public int maxPlotPoints = 0;
+            public int minPlotPoints = 0;
             public int maxFoundSecrets = 0;
         }
 

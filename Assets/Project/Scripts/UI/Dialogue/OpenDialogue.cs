@@ -54,11 +54,15 @@ public class OpenDialogue : MonoBehaviour
     {
         CreateDialogueTree(dialogueCanvas.GetComponent<Dialogue>(), 0);
         int max = 0;
+        int min = 1000000000;
         foreach(int endpoint in treeEndpoints)
         {
+            if (endpoint < min) min = endpoint;
             if (endpoint > max) max = endpoint;
         }
-        PlayerParams.Controllers.pointsManager.AddMaxPlotPoints(max);
+
+        PlayerParams.Controllers.pointsManager.maxPlotPoints += max;
+        PlayerParams.Controllers.pointsManager.minPlotPoints += min;
 
 
         if (showTree)

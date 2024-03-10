@@ -245,7 +245,7 @@ public class Dialogue : MonoBehaviour
                 }
             }
 
-            PlayerParams.Controllers.pointsManager.AddPlotPoints(optionsPoints[choice]);
+            PlayerParams.Controllers.pointsManager.plotPoints += optionsPoints[choice];
             gameObject.SetActive(false);
             if (optionsChoices[choice] == null)
             {

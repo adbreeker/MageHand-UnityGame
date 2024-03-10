@@ -79,8 +79,9 @@ public class TutorialEndingPickUp : MonoBehaviour
         yield return new WaitForSeconds(fallingSound.clip.length + 0.5f);
 
         _saveManager.SaveGameState(_nextLevel, PlayerParams.Controllers.pointsManager.plotPoints,
-            PlayerParams.Controllers.pointsManager.maxPlotPoints,
             PlayerParams.Controllers.pointsManager.foundSecrets,
+            PlayerParams.Controllers.pointsManager.maxPlotPoints,
+            PlayerParams.Controllers.pointsManager.minPlotPoints,
             PlayerParams.Controllers.pointsManager.maxFoundSecrets);
         _saveManager.SaveProgressToFile();
 
