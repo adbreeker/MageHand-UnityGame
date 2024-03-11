@@ -235,13 +235,13 @@ public class Inventory : MonoBehaviour
                 //Change background of pointed item to white (255, 255, 255)
                 if (itemIconActiveInstances[i].transform.Find("Icon").GetComponent<EnlightObject>() != null)
                 {
-                    itemIconActiveInstances[i].transform.parent.GetComponent<RawImage>().color = new Color(1f, 1f, 1f);
+                    itemIconActiveInstances[i].transform.parent.GetComponent<Image>().color = new Color(1f, 1f, 1f);
                     //itemIconActiveInstances[i].transform.parent.transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
                 }
                 //Change background of pointed item to darkGrey (68, 68, 68)
-                else if (itemIconActiveInstances[i].transform.parent.GetComponent<RawImage>().color == new Color(1f, 1f, 1f))
+                else if (itemIconActiveInstances[i].transform.parent.GetComponent<Image>().color == new Color(1f, 1f, 1f))
                 {
-                    itemIconActiveInstances[i].transform.parent.GetComponent<RawImage>().color = new Color(0.2666f, 0.2666f, 0.2666f);
+                    itemIconActiveInstances[i].transform.parent.GetComponent<Image>().color = new Color(0.2666f, 0.2666f, 0.2666f);
                     //itemIconActiveInstances[i].transform.parent.transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
                 }
             }
