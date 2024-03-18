@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.IO.MemoryMappedFiles;
+using System.IO;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class DevConsole : MonoBehaviour
 {
@@ -17,6 +21,7 @@ public class DevConsole : MonoBehaviour
     //currently active commands
     bool ghostmode = false;
     bool fps = false;
+    bool webcam = false;
 
 
     void Update()
@@ -129,11 +134,28 @@ public class DevConsole : MonoBehaviour
             Fps();
             return;
         }
+        if (command[0] == "camera" && command.Length == 1)
+        {
+            Camera();
+            return;
+        }
 
         //game saves commands
-        if (command[0] == "deletesave" && command.Length == 1)
+        if (command[0] == "savestate" && command.Length == 1)
         {
-            DeleteSave();
+            SaveState();
+            return;
+        }
+
+        if (command[0] == "resetstate" && command.Length == 1)
+        {
+            ResetState();
+            return;
+        }
+
+        if (command[0] == "loadscene" && command.Length == 2)
+        {
+            LoadScene(command[1]);
             return;
         }
 
@@ -157,40 +179,103 @@ public class DevConsole : MonoBehaviour
     //player and movement commands ----------------------------------------------------------------------------------------- player and movement commands
     void GhostMode() //making player able to move through objects
     {
-        if(ghostmode)
-        {
-            ghostmode = false;
-            PlayerParams.Controllers.playerMovement.ghostmodeActive = false;
-            return;
-        }
-        else
-        {
-            ghostmode = true;
-            PlayerParams.Controllers.playerMovement.ghostmodeActive = true;
-            return;
-        }
+        ghostmode = !ghostmode;
+        PlayerParams.Controllers.playerMovement.ghostmodeActive = ghostmode;
     }
 
 
     //parameters commands ----------------------------------------------------------------------------------------- parameters commands
     void Fps() //turning on/off fps display
     {
-        if(fps)
-        {
-            fpsCounter.SetActive(false);
-        }
-        else
-        {
-            fpsCounter.SetActive(true);
-        }
+        fps = !fps;
+        fpsCounter.SetActive(fps);
+    }
+
+    void Camera()
+    {
+        webcam = !webcam;
+        webCamera.SetActive(webcam);
     }
 
 
     //game saves commands ----------------------------------------------------------------------------------------- game saves commands
-
-    void DeleteSave()
+    void SaveState()
     {
+        ProgressSaving saveManager;
 
+        try
+        {
+            saveManager = FindObjectOfType<ProgressSaving>();
+        }
+        catch
+        {
+            Debug.Log("Save manager not found");
+            return;
+        }
+
+        Spellbook spellbook = PlayerParams.Controllers.spellbook;
+        Inventory inventory = PlayerParams.Controllers.inventory;
+        Journal journal = PlayerParams.Controllers.journal;
+
+        //game state
+        saveManager.SaveGameState(SceneManager.GetActiveScene().name, PlayerParams.Controllers.plotPointsManager.plotPoints);
+
+        //spells
+        List<string> spells = new List<string>();
+        foreach (SpellScrollInfo scroll in spellbook.spells)
+        {
+            spells.Add(scroll.spellName);
+        }
+        saveManager.SaveSpells(spellbook.bookOwned, spells);
+
+        //items
+        saveManager.SaveItems(inventory.inventory);
+
+        //journal
+        saveManager.SaveJournal(journal.notesJournal, journal.dialoguesJournal);
+
+        //everything to file
+        saveManager.SaveProgressToFile();
+    }
+
+    void ResetState()
+    {
+        ProgressSaving saveManager;
+
+        try
+        {
+            saveManager = FindObjectOfType<ProgressSaving>();
+        }
+        catch
+        {
+            Debug.Log("Save manager not found");
+            return;
+        }
+
+        Spellbook spellbook = PlayerParams.Controllers.spellbook;
+        Inventory inventory = PlayerParams.Controllers.inventory;
+        Journal journal = PlayerParams.Controllers.journal;
+
+        //game state
+        saveManager.SaveGameState(SceneManager.GetActiveScene().name, 0);
+
+        //spells
+        saveManager.SaveSpells(false, new List<string>());
+
+        //items
+        saveManager.SaveItems(new List<GameObject>());
+
+        //journal
+        saveManager.SaveJournal(new Dictionary<string, string>(), new Dictionary<string, List<List<string>>>());
+
+        //everything to file
+        saveManager.SaveProgressToFile();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 
 

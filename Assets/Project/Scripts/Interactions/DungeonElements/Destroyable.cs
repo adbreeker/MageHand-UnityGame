@@ -5,20 +5,27 @@ using UnityEngine;
 
 public class Destroyable : SpellImpactInteraction
 {
+    public GameObject destroyAlso;
     public override void OnSpellImpact(GameObject spell)
     {
         if (spell.GetComponent<FireSpellBehavior>() != null) 
         {
             SplitMesh();
+            if(destroyAlso != null) 
+            {
+                destroyAlso.GetComponent<Destroyable>().SplitMesh();
+            }
         }
     }
 
+#if UNITY_EDITOR
     public void OnValidate()
     {
         gameObject.isStatic = false;
         ModelImporter modelImporter = (ModelImporter)AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(gameObject.GetComponent<MeshFilter>().sharedMesh));
         modelImporter.isReadable = true;
     }
+#endif
 
     public void SplitMesh()
     {
