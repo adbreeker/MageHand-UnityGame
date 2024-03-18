@@ -67,7 +67,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1943
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -241,12 +241,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 2215893105645526395}
+  uiCamera: {fileID: 6983322398821147553}
   hand: {fileID: 3116585748844042620}
   playerMovement: {fileID: 2215893106494380604}
   inventory: {fileID: 7445098804810710848}
   spellbook: {fileID: 2167677596242489558}
   journal: {fileID: 1263839841694537611}
-  plotPointsManager: {fileID: 8656529184073069794}
+  pointsManager: {fileID: 8656529184073069794}
   pauseMenu: {fileID: 1680365764711997104}
   spellsMenu: {fileID: 3065444112457917252}
   handInteractions: {fileID: 7554772340525944936}
@@ -288,6 +289,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   plotPoints: 0
+  foundSecrets: 0
+  maxPlotPoints: 0
+  minPlotPoints: 0
+  maxFoundSecrets: 0
 --- !u!114 &7445098804810710848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,7 +413,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 40
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -440,7 +445,7 @@ MonoBehaviour:
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
-    m_Bits: 32
+    m_Bits: 40
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 0
@@ -683,6 +688,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: HUD
       objectReference: {fileID: 0}
+    - target: {fileID: 3113581618107699179, guid: c9377c7cb5993b149becb4fa899983f8, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4657068967649153003, guid: c9377c7cb5993b149becb4fa899983f8, type: 3}
       propertyPath: UiCamera
       value: 
@@ -692,6 +701,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6818687958954912745, guid: 0b88990a20b46774ab53bcb72c8cddac, type: 3}
     - target: {fileID: 5694235295651644215, guid: c9377c7cb5993b149becb4fa899983f8, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6863799742979012810, guid: c9377c7cb5993b149becb4fa899983f8, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6991828722368252173, guid: c9377c7cb5993b149becb4fa899983f8, type: 3}
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}
@@ -756,6 +773,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 698616047133236860, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 998744702799763839, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}

@@ -16,9 +16,11 @@ public class GetObjectsNearHand : MonoBehaviour
     [Header("Currently pointing object")]
     public GameObject currentlyPointing;
 
-    [Header("Enlightening time")]
+    [Header("Enlightening")]
     public int enlighteningTime = 5;
-
+    public Texture iconInteract;
+    public Texture iconGrab;
+    public GameObject gestureIconPrefab;
 
     private void Update() //check objects near middle point every update
     {
@@ -62,13 +64,14 @@ public class GetObjectsNearHand : MonoBehaviour
         }
     }
 
-    void EnlightObject(GameObject pointingAt) //enlightening pointed objects
+    void EnlightObject(GameObject pointingAt) //enlightening pointed objects and showing icons
     {
         if(pointingAt != PlayerParams.Controllers.handInteractions.inHand) //only if no object currently in hand
         {
-            //if pointing on item, switch or UI then enlightening only this item
+            //if pointing on item, switch or UI then enlightening only this item and showing proper icon
             if (pointingAt.layer == LayerMask.NameToLayer("Item") || pointingAt.layer == LayerMask.NameToLayer("UI"))
             {
+                //enlight
                 if (pointingAt.GetComponent<EnlightObject>() != null)
                 {
                     pointingAt.GetComponent<EnlightObject>().enlightenTime = enlighteningTime;
@@ -77,10 +80,26 @@ public class GetObjectsNearHand : MonoBehaviour
                 {
                     pointingAt.AddComponent<EnlightObject>().materialType = MaterialHolder.Materials.enlightenItem;
                 }
+
+                //show icon
+                if (GameSettings.gestureHints)
+                {
+                    if (PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>() != null)
+                    {
+                        PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().iconTime = enlighteningTime;
+                    }
+                    else
+                    {
+                        PlayerParams.Objects.hand.AddComponent<ShowGestureIcon>().gestureIconPrefab = gestureIconPrefab;
+                    }
+                    if (pointingAt.GetComponent<SpellIcon>() != null) PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().icon = iconInteract;
+                    else PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().icon = iconGrab;
+                }
             }
 
             if(pointingAt.layer == LayerMask.NameToLayer("Switch"))
             {
+                //enlight
                 if (pointingAt.GetComponent<EnlightObject>() != null)
                 {
                     pointingAt.GetComponent<EnlightObject>().enlightenTime = enlighteningTime;
@@ -89,11 +108,26 @@ public class GetObjectsNearHand : MonoBehaviour
                 {
                     pointingAt.AddComponent<EnlightObject>().materialType = MaterialHolder.Materials.enlightenInteraction;
                 }
+
+                //show icon
+                if (GameSettings.gestureHints)
+                {
+                    if (PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>() != null)
+                    {
+                        PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().iconTime = enlighteningTime;
+                    }
+                    else
+                    {
+                        PlayerParams.Objects.hand.AddComponent<ShowGestureIcon>().gestureIconPrefab = gestureIconPrefab;
+                    }
+                    PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().icon = iconInteract;
+                }
             }
 
             //if pointing on chest then enlightening all child objects
             if(pointingAt.layer == LayerMask.NameToLayer("Chest"))
             {
+                //enlight
                 foreach(Transform child in pointingAt.transform)
                 {
                     if (child.gameObject.GetComponent<MeshRenderer>() != null)
@@ -107,6 +141,20 @@ public class GetObjectsNearHand : MonoBehaviour
                             child.gameObject.AddComponent<EnlightObject>().materialType = MaterialHolder.Materials.enlightenInteraction;
                         }
                     }
+                }
+
+                //show icon
+                if(GameSettings.gestureHints)
+                {
+                    if (PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>() != null)
+                    {
+                        PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().iconTime = enlighteningTime;
+                    }
+                    else
+                    {
+                        PlayerParams.Objects.hand.AddComponent<ShowGestureIcon>().gestureIconPrefab = gestureIconPrefab;
+                    }
+                    PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().icon = iconInteract;
                 }
             }
         }

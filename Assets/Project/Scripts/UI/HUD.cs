@@ -9,6 +9,7 @@ public class HUD : MonoBehaviour
     public TextMeshProUGUI gestureText;
     public GameObject manaBox;
     public Image manaBar;
+    public TextMeshProUGUI manaText;
     public GameObject popUpContainer;
     public GameObject popUpPrefab;
 
@@ -47,6 +48,7 @@ public class HUD : MonoBehaviour
         {
             manaBox.SetActive(true);
             manaBar.fillAmount = PlayerParams.Controllers.spellCasting.mana / 100;
+            manaText.text = (int)PlayerParams.Controllers.spellCasting.mana + "/100";
         }
         else
         {
@@ -55,18 +57,12 @@ public class HUD : MonoBehaviour
     }
 
 
-    public void SpawnPopUp(string title, string content, float timeToFadeOut, float timeOfFadingOut, bool playSound = true)
+    public void SpawnPopUp(string content, float timeToFadeOut, float timeOfFadingOut, bool playSound = true)
     {
         instantiatedPopUp = Instantiate(popUpPrefab, new Vector3(0, 0, 0), Quaternion.identity, popUpContainer.transform);
 
-        TextMeshProUGUI titleObject = instantiatedPopUp.transform.Find("Title").GetComponent<TextMeshProUGUI>();
         TextMeshProUGUI contentObject = instantiatedPopUp.transform.Find("Content").GetComponent<TextMeshProUGUI>();
 
-        if (!string.IsNullOrWhiteSpace(title))
-        {
-            titleObject.text = title;
-            titleObject.gameObject.SetActive(true);
-        }
         contentObject.text = content;
 
         if (playSound)

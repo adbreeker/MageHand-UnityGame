@@ -40,6 +40,8 @@ public class GameSettings : MonoBehaviour
 
     public static bool useSpeech = true;
 
+    public static bool gestureHints = true;
+
     //always working settings for the game
     void Awake()
     {
@@ -150,6 +152,7 @@ public class GameSettings : MonoBehaviour
         fullscreen = PlayerPrefs.GetInt("fullScreen", 1) != 0;
         muteMusic = PlayerPrefs.GetInt("muteMusic", 0) != 0;
         useSpeech = PlayerPrefs.GetInt("useSpeach", 1) != 0;
+        gestureHints = PlayerPrefs.GetInt("gestureHints", 1) != 0;
     }
 
     void RunMediapipeExe()

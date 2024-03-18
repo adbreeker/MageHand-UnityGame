@@ -27,6 +27,7 @@ public class Intro : MonoBehaviour
         {
             FindObjectOfType<FadeInFadeOut>().ChangeScene(nextLevel);
             FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption).Play();
+            animationEnded = false;
         }
 
         if (Input.GetKeyDown(KeyCode.Space)) skip = true;

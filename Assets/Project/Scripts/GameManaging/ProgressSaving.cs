@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using System;
 using static ProgressSaving.SaveData.JournalSave.DialoguesDict;
+using static ProgressSaving;
 
 public class ProgressSaving : MonoBehaviour
 {
@@ -43,11 +44,16 @@ public class ProgressSaving : MonoBehaviour
     void ManageLoadedData() //managing loaded data
     {
         //loading game state
-        PlotPointsManager plotPointsManager = FindObjectOfType<PlotPointsManager>();
-        plotPointsManager.plotPoints = saveData.gameStateSave.plotPoints;
+        PointsManager pointsManager = FindObjectOfType<PointsManager>();
+        pointsManager.plotPoints = saveData.gameStateSave.plotPoints;
+        pointsManager.foundSecrets = saveData.gameStateSave.foundSecrets;
 
-        //loading inventory
-        Inventory inventory = FindObjectOfType<Inventory>();
+        pointsManager.maxPlotPoints = saveData.gameStateSave.maxPlotPoints;
+        pointsManager.minPlotPoints = saveData.gameStateSave.minPlotPoints;
+        pointsManager.maxFoundSecrets = saveData.gameStateSave.maxFoundSecrets;
+
+    //loading inventory
+    Inventory inventory = FindObjectOfType<Inventory>();
         foreach(string itemInData in saveData.itemsSave.items)
         {
             inventory.AddItem(itemHolder.GiveItem(itemInData));
@@ -94,10 +100,15 @@ public class ProgressSaving : MonoBehaviour
         }
     }
 
-    public void SaveGameState(string currentLvl, float plotPoints)
+    public void SaveGameState(string currentLvl, int plotPoints, int foundSecrets, int maxPlotPoints, int minPlotPoints, int maxFoundSecrets)
     {
         saveData.gameStateSave.currentLvl = currentLvl;
         saveData.gameStateSave.plotPoints = plotPoints;
+        saveData.gameStateSave.foundSecrets = foundSecrets;
+
+        saveData.gameStateSave.maxPlotPoints = maxPlotPoints;
+        saveData.gameStateSave.minPlotPoints = minPlotPoints;
+        saveData.gameStateSave.maxFoundSecrets = maxFoundSecrets;
     }
 
     public void SaveItems(List<GameObject> itemsToSave) //saving all "itemsToSave"
@@ -238,7 +249,12 @@ public class ProgressSaving : MonoBehaviour
         public class GameStateSave //for saving current level
         {
             public string currentLvl = "Intro";
-            public float plotPoints = 0.0f;
+            public int plotPoints = 0;
+            public int foundSecrets = 0;
+
+            public int maxPlotPoints = 0;
+            public int minPlotPoints = 0;
+            public int maxFoundSecrets = 0;
         }
 
         [System.Serializable]

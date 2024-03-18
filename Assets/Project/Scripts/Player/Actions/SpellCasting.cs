@@ -227,7 +227,7 @@ public class SpellCasting : MonoBehaviour
 
         // PopUp cast spell
         Debug.Log("Whisper listening");
-        FindObjectOfType<HUD>().SpawnPopUp("", "Cast a Spell.", timeToFadeOutPopUp, timeOfFadingOutPopUp);
+        FindObjectOfType<HUD>().SpawnPopUp("Cast a Spell.", timeToFadeOutPopUp, timeOfFadingOutPopUp);
         AudioSource castingSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpell);
         castingSound.Play();
 
@@ -264,8 +264,8 @@ public class SpellCasting : MonoBehaviour
         string word = System.Text.Encoding.UTF8.GetString(frameWord).Split(";")[0];
         Debug.Log("Whisper transcribed word: " + word);
 
-        if (word.Length >= 4 && word.Substring(0, 4) == "None") FindObjectOfType<HUD>().SpawnPopUp("", "Casting word:<br>(silence)", timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
-        else FindObjectOfType<HUD>().SpawnPopUp("", "Casting word:<br>" + word, timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
+        if (word.Length >= 4 && word.Substring(0, 4) == "None") FindObjectOfType<HUD>().SpawnPopUp("Casting word:<br>(silence)", timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
+        else FindObjectOfType<HUD>().SpawnPopUp("Casting word:<br>" + word, timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
 
         Destroy(castingSound);
 

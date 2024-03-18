@@ -72,7 +72,9 @@ public class SoundManager : MonoBehaviour
 
         SFX_Earthquake, //1
         SFX_BodyFall, //1
-        SFX_Punch //0.9
+        SFX_Punch, //0.9
+        SFX_SecretFound,
+        SFX_LevelInfoSound
     }
 
     private float volume;

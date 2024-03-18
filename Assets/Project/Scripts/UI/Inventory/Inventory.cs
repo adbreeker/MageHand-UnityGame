@@ -24,6 +24,7 @@ public class Inventory : MonoBehaviour
     private List<GameObject> itemIconActiveInstances = new List<GameObject>();
     private List<List<GameObject>> inventoryPages;
 
+    private AudioSource equipSound;
     private AudioSource closeSound;
     private AudioSource openSound;
     private AudioSource changeSound;
@@ -49,9 +50,12 @@ public class Inventory : MonoBehaviour
 
             if (!inventoryOpened && PlayerParams.Controllers.handInteractions.inHand != null)
             {
-                if (PlayerParams.Controllers.handInteractions.inHand.layer == LayerMask.NameToLayer("Item"))
+                if (PlayerParams.Controllers.handInteractions.inHand.GetComponent<ItemParameters>() != null)
                 {
                     AddItem(PlayerParams.Controllers.handInteractions.inHand);
+                    equipSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_PutToInventory);
+                    equipSound.Play();
+                    Destroy(equipSound.gameObject, equipSound.clip.length);
                 }
                 OpenInventory();
                 openSound.Play();
@@ -147,14 +151,14 @@ public class Inventory : MonoBehaviour
         page = 0;
         if (inventoryPages.Count > 0)
         {
-            instantiatedInventory.transform.Find("Empty").gameObject.SetActive(false);
-            instantiatedInventory.transform.Find("Title").gameObject.SetActive(true);
+            instantiatedInventory.transform.Find("Background").Find("InventoryBackground").Find("Empty").gameObject.SetActive(false);
+            instantiatedInventory.transform.Find("Background").Find("InventoryBackground").Find("Title").gameObject.SetActive(true);
             DisplayPage(page);
         }
         else
         {
-            instantiatedInventory.transform.Find("Empty").gameObject.SetActive(true);
-            instantiatedInventory.transform.Find("Title").gameObject.SetActive(false);
+            instantiatedInventory.transform.Find("Background").Find("InventoryBackground").Find("Empty").gameObject.SetActive(true);
+            instantiatedInventory.transform.Find("Background").Find("InventoryBackground").Find("Title").gameObject.SetActive(false);
         }
         inventoryOpened = true;
     }
@@ -187,8 +191,8 @@ public class Inventory : MonoBehaviour
             Destroy(itemIconActiveInstances[i]);
         }
         itemIconActiveInstances.Clear();
-        instantiatedInventory.transform.Find("Background").Find("ArrowRight").gameObject.SetActive(false);
-        instantiatedInventory.transform.Find("Background").Find("ArrowLeft").gameObject.SetActive(false);
+        instantiatedInventory.transform.Find("Background").Find("InventoryBackground").Find("ArrowRight").gameObject.SetActive(false);
+        instantiatedInventory.transform.Find("Background").Find("InventoryBackground").Find("ArrowLeft").gameObject.SetActive(false);
 
         //Activate correct item slots, spawn icons and arrows
         for (int i = 0; i < inventoryPages[pageToDisplay].Count; i++)
@@ -202,8 +206,8 @@ public class Inventory : MonoBehaviour
             //itemIconActiveInstances[i].GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             itemIconActiveInstances[i].layer = LayerMask.NameToLayer("UI");
         }
-        if (pageToDisplay > 0) instantiatedInventory.transform.Find("Background").Find("ArrowLeft").gameObject.SetActive(true);
-        if (inventoryPages.Count > pageToDisplay + 1) instantiatedInventory.transform.Find("Background").Find("ArrowRight").gameObject.SetActive(true);
+        if (pageToDisplay > 0) instantiatedInventory.transform.Find("Background").Find("InventoryBackground").Find("ArrowLeft").gameObject.SetActive(true);
+        if (inventoryPages.Count > pageToDisplay + 1) instantiatedInventory.transform.Find("Background").Find("InventoryBackground").Find("ArrowRight").gameObject.SetActive(true);
     }
 
     public void AddItem(GameObject item)
@@ -231,13 +235,13 @@ public class Inventory : MonoBehaviour
                 //Change background of pointed item to white (255, 255, 255)
                 if (itemIconActiveInstances[i].transform.Find("Icon").GetComponent<EnlightObject>() != null)
                 {
-                    itemIconActiveInstances[i].transform.parent.GetComponent<RawImage>().color = new Color(1f, 1f, 1f);
+                    itemIconActiveInstances[i].transform.parent.GetComponent<Image>().color = new Color(1f, 1f, 1f);
                     //itemIconActiveInstances[i].transform.parent.transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
                 }
                 //Change background of pointed item to darkGrey (68, 68, 68)
-                else if (itemIconActiveInstances[i].transform.parent.GetComponent<RawImage>().color == new Color(1f, 1f, 1f))
+                else if (itemIconActiveInstances[i].transform.parent.GetComponent<Image>().color == new Color(1f, 1f, 1f))
                 {
-                    itemIconActiveInstances[i].transform.parent.GetComponent<RawImage>().color = new Color(0.2666f, 0.2666f, 0.2666f);
+                    itemIconActiveInstances[i].transform.parent.GetComponent<Image>().color = new Color(0.2666f, 0.2666f, 0.2666f);
                     //itemIconActiveInstances[i].transform.parent.transform.Find("Name").GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
                 }
             }
