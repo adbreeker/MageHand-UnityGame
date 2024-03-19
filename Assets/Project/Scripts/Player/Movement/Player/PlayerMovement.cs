@@ -101,7 +101,7 @@ public class PlayerMovement : MonoBehaviour
         if (isMoving)
         {
             //stepTiming += Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, _destination, movementSpeed * Time.fixedDeltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, _destination, movementSpeed * Time.deltaTime);
             if (transform.position == _destination)
             {
                 //Debug.Log(stepTiming);
