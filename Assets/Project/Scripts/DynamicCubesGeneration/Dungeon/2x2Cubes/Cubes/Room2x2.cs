@@ -35,22 +35,22 @@ public class Room2x2 : MonoBehaviour
             //creating new walls
             if ((int)selectedWall_1 > 0)
             {
-                temp1 = Instantiate(walls.walls[(int)selectedWall_1], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
+                temp1 = (GameObject)PrefabUtility.InstantiatePrefab(walls.walls[(int)selectedWall_1], gameObject.transform);
                 temp1.transform.localRotation = rotWall1;
             }
             if ((int)selectedWall_2 > 0)
             {
-                temp2 = Instantiate(walls.walls[(int)selectedWall_2], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
+                temp2 = (GameObject)PrefabUtility.InstantiatePrefab(walls.walls[(int)selectedWall_2], gameObject.transform);
                 temp2.transform.localRotation = rotWall2;
             }
             if ((int)selectedWall_3 > 0)
             {
-                temp3 = Instantiate(walls.walls[(int)selectedWall_3], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
+                temp3 = (GameObject)PrefabUtility.InstantiatePrefab(walls.walls[(int)selectedWall_3], gameObject.transform);
                 temp3.transform.localRotation = rotWall3;
             }
             if ((int)selectedWall_4 > 0)
             {
-                temp4 = Instantiate(walls.walls[(int)selectedWall_4], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
+                temp4 = (GameObject)PrefabUtility.InstantiatePrefab(walls.walls[(int)selectedWall_4], gameObject.transform);
                 temp4.transform.localRotation = rotWall4;
             }
 

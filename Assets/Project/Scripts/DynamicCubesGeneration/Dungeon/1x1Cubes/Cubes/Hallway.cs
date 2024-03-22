@@ -32,12 +32,12 @@ public class Hallway : MonoBehaviour
             //creating new walls
             if ((int)selectedWall_1 > 0)
             {
-                temp1 = Instantiate(walls.walls[(int)selectedWall_1], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
+                temp1 = (GameObject)PrefabUtility.InstantiatePrefab(walls.walls[(int)selectedWall_1], gameObject.transform);
                 temp1.transform.localRotation = rotWall1;
             }
             if ((int)selectedWall_2 > 0)
             {
-                temp2 = Instantiate(walls.walls[(int)selectedWall_2], gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
+                temp2 = (GameObject)PrefabUtility.InstantiatePrefab(walls.walls[(int)selectedWall_2], gameObject.transform);
                 temp2.transform.localRotation = rotWall2;
             }
 
