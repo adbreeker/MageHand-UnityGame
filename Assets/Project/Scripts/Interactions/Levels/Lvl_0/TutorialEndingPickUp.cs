@@ -14,7 +14,7 @@ public class TutorialEndingPickUp : MonoBehaviour
     bool _isEndingOnGoing = false;
 
     ProgressSaving _saveManager;
-    string _nextLevel = "Level_1_Chapter_1";
+    string _nextLevel = "Chapter_1_Level_1";
     AudioSource hitSound;
     AudioSource fallingSound;
 
