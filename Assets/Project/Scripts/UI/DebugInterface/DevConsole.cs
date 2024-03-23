@@ -218,7 +218,8 @@ public class DevConsole : MonoBehaviour
         Journal journal = PlayerParams.Controllers.journal;
 
         //game state
-        saveManager.SaveGameState(SceneManager.GetActiveScene().name, PlayerParams.Controllers.plotPointsManager.plotPoints);
+        saveManager.SaveGameState(SceneManager.GetActiveScene().name, PlayerParams.Controllers.pointsManager.plotPoints, PlayerParams.Controllers.pointsManager.foundSecrets, 
+            PlayerParams.Controllers.pointsManager.maxPlotPoints, PlayerParams.Controllers.pointsManager.minPlotPoints, PlayerParams.Controllers.pointsManager.maxFoundSecrets);
 
         //spells
         List<string> spells = new List<string>();
@@ -257,7 +258,7 @@ public class DevConsole : MonoBehaviour
         Journal journal = PlayerParams.Controllers.journal;
 
         //game state
-        saveManager.SaveGameState(SceneManager.GetActiveScene().name, 0);
+        saveManager.SaveGameState(SceneManager.GetActiveScene().name, 0, 0, 0, 0, 0);
 
         //spells
         saveManager.SaveSpells(false, new List<string>());

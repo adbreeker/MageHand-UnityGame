@@ -27,7 +27,7 @@ public class OpenBarsPassage : MonoBehaviour
         else //else open passage
         {
             passageOpen = true;
-            StartCoroutine(MoveBars(2.5f));
+            StartCoroutine(MoveBars(1.95f));
         }
 
     }
@@ -39,7 +39,7 @@ public class OpenBarsPassage : MonoBehaviour
         while (bars.transform.position.y != barsDestination)
         {
             yield return new WaitForFixedUpdate();
-            bars.transform.position = Vector3.MoveTowards(bars.transform.position, new Vector3(bars.transform.position.x, barsDestination, bars.transform.position.z), barsSpeed);
+            bars.transform.localPosition = Vector3.MoveTowards(bars.transform.localPosition, new Vector3(0, barsDestination, 0), barsSpeed);
         }
         Destroy(chainSound);
     }
@@ -48,11 +48,11 @@ public class OpenBarsPassage : MonoBehaviour
     {
         if (passageOpen)
         {
-            bars.transform.position = new Vector3(bars.transform.position.x, 2.5f, bars.transform.position.z);
+            bars.transform.localPosition = new Vector3(0, 1.95f, 0);
         }
         else
         {
-            bars.transform.position = new Vector3(bars.transform.position.x, 0.0f, bars.transform.position.z);
+            bars.transform.localPosition = new Vector3(0, 0, 0);
         }
     }
 }
