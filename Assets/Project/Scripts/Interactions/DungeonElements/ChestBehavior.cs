@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class ChestBehavior : MonoBehaviour
 {
-    [Header("Chest lid")]
+    [Header("Chest fragments:")]
     public GameObject chestLid;
+    public GameObject chestCore;
 
     [Header("Point to look inside chest")]
     public Transform inChestCameraTransform;

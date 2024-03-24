@@ -127,24 +127,28 @@ public class GetObjectsNearHand : MonoBehaviour
             //if pointing on chest then enlightening all child objects
             if(pointingAt.layer == LayerMask.NameToLayer("Interaction") && pointingAt.tag == "Chest")
             {
-                //enlight
-                foreach(Transform child in pointingAt.transform)
+                //enlight core
+                if(pointingAt.GetComponent<ChestBehavior>().chestCore.GetComponent<EnlightObject>() != null)
                 {
-                    if (child.gameObject.GetComponent<MeshRenderer>() != null)
-                    {
-                        if (child.gameObject.GetComponent<EnlightObject>() != null)
-                        {
-                            child.gameObject.GetComponent<EnlightObject>().enlightenTime = 10;
-                        }
-                        else
-                        {
-                            child.gameObject.AddComponent<EnlightObject>().materialType = MaterialHolder.Materials.enlightenInteraction;
-                        }
-                    }
+                    pointingAt.GetComponent<ChestBehavior>().chestCore.GetComponent<EnlightObject>().enlightenTime = enlighteningTime;
+                }
+                else
+                {
+                    pointingAt.GetComponent<ChestBehavior>().chestCore.AddComponent<EnlightObject>().materialType = MaterialHolder.Materials.enlightenInteraction;
+                }
+
+                //enlight lid
+                if (pointingAt.GetComponent<ChestBehavior>().chestLid.GetComponent<EnlightObject>() != null)
+                {
+                    pointingAt.GetComponent<ChestBehavior>().chestLid.GetComponent<EnlightObject>().enlightenTime = enlighteningTime;
+                }
+                else
+                {
+                    pointingAt.GetComponent<ChestBehavior>().chestLid.AddComponent<EnlightObject>().materialType = MaterialHolder.Materials.enlightenInteraction;
                 }
 
                 //show icon
-                if(GameSettings.gestureHints)
+                if (GameSettings.gestureHints)
                 {
                     if (PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>() != null)
                     {
