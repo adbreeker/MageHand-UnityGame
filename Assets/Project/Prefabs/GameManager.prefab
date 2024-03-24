@@ -50,6 +50,7 @@ GameObject:
   - component: {fileID: 3717581574826844733}
   - component: {fileID: 3603493736633032789}
   - component: {fileID: 4949703760120786322}
+  - component: {fileID: 8735214370669408620}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -176,6 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   secretsOnLevel: 0
+  foundSecretsOnLevel: 0
   displayPrefab: {fileID: 5474194404320366085, guid: c54cc4fa033da0749b28df763af6167a, type: 3}
 --- !u!114 &3717581574826844733
 MonoBehaviour:
@@ -406,6 +408,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   changeScene: 1
+--- !u!114 &8735214370669408620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4871858993183020671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deb388e6a968ecb48bbfb2c68046840f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  foundedComponents: []
+  typeToFind: 
 --- !u!1 &6666853821655842875
 GameObject:
   m_ObjectHideFlags: 0

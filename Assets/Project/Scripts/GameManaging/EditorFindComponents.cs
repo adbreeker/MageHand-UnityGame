@@ -6,14 +6,19 @@ using UnityEngine;
 public class EditorFindComponents : MonoBehaviour
 {
     public UnityEngine.Object[] foundedComponents;
-    public UnityEngine.Component componentToFind;
 
+    public string typeToFind = "";
     public void FindAllOfType()
     {
-        if(componentToFind != null) 
+        if(typeToFind != "") 
         {
-            Type componentType = componentToFind.GetType();
-            foundedComponents = FindObjectsOfType(componentType);
+            Type componentType = Type.GetType(typeToFind);
+            if(componentType == null) { componentType = Type.GetType("UnityEngine." + typeToFind + ", UnityEngine"); }
+
+            if(componentType != null ) 
+            {
+                foundedComponents = FindObjectsOfType(componentType);
+            }
         }
     }
 }
@@ -33,7 +38,7 @@ public class EditorFindComponentsEditor:Editor
 
         if (GUILayout.Button("Find All")) //deleting script to prevent any more changes in walls
         {
-            DestroyImmediate(script);
+            script.FindAllOfType();
         }
 
         EditorGUILayout.Space();
