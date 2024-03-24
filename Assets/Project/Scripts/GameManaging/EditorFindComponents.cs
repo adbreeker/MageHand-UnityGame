@@ -1,0 +1,44 @@
+using System;
+using UnityEditor;
+using UnityEngine;
+
+#if UNITY_EDITOR
+public class EditorFindComponents : MonoBehaviour
+{
+    public UnityEngine.Object[] foundedComponents;
+    public UnityEngine.Component componentToFind;
+
+    public void FindAllOfType()
+    {
+        if(componentToFind != null) 
+        {
+            Type componentType = componentToFind.GetType();
+            foundedComponents = FindObjectsOfType(componentType);
+        }
+    }
+}
+
+[CustomEditor(typeof(EditorFindComponents))]
+public class EditorFindComponentsEditor:Editor
+{
+    EditorFindComponents script;
+
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        script = (EditorFindComponents)target;
+
+        EditorGUILayout.Space();
+
+        if (GUILayout.Button("Find All")) //deleting script to prevent any more changes in walls
+        {
+            DestroyImmediate(script);
+        }
+
+        EditorGUILayout.Space();
+
+        serializedObject.ApplyModifiedProperties();
+    }
+}
+#endif

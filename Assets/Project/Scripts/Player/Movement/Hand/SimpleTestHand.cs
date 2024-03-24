@@ -52,7 +52,7 @@ public class SimpleTestHand : MonoBehaviour //relic of old times, before gesture
     {
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if(LayerMask.LayerToName(currentlyPointing.layer) == "Switch")
+            if(LayerMask.LayerToName(currentlyPointing.layer) == "Interaction")
             {
                 currentlyPointing.SendMessage("OnClick");
             }

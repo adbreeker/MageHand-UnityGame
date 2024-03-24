@@ -37,12 +37,12 @@ public class ChestBehavior : MonoBehaviour
             pauseMenu.ableToInteract = false;
             if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.S)) && !PlayerParams.Variables.uiActive)
             {
-                InteractChest();
+                OnClick();
             }
         }
     }
 
-    public void InteractChest() //move camera to chest/player and start chest animation
+    public void OnClick() //move camera to chest/player and start chest animation
     {
         if(!playerMovement.isMoving)
         {

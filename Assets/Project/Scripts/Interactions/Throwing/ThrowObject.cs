@@ -22,7 +22,7 @@ public class ThrowObject : MonoBehaviour //script added to object on throw
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.layer == LayerMask.NameToLayer("Switch"))
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Interaction"))
         {
             collision.gameObject.SendMessage("OnClick");
         }

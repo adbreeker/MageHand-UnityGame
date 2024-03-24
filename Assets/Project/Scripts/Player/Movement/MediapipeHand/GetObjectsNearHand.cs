@@ -97,7 +97,7 @@ public class GetObjectsNearHand : MonoBehaviour
                 }
             }
 
-            if(pointingAt.layer == LayerMask.NameToLayer("Switch"))
+            if(pointingAt.layer == LayerMask.NameToLayer("Interaction") && pointingAt.tag!="Chest")
             {
                 //enlight
                 if (pointingAt.GetComponent<EnlightObject>() != null)
@@ -125,7 +125,7 @@ public class GetObjectsNearHand : MonoBehaviour
             }
 
             //if pointing on chest then enlightening all child objects
-            if(pointingAt.layer == LayerMask.NameToLayer("Chest"))
+            if(pointingAt.layer == LayerMask.NameToLayer("Interaction") && pointingAt.tag == "Chest")
             {
                 //enlight
                 foreach(Transform child in pointingAt.transform)
