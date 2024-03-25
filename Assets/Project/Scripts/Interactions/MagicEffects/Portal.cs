@@ -6,6 +6,7 @@ public class Portal : MonoBehaviour
 {
     [Header("Teleportation destination")]
     public Vector3 teleportationDestination;
+    public bool teleportOnNativeHeight = true;
 
     [Header("Teleportation beneficiaries mask")]
     public LayerMask toTeleport;
@@ -33,7 +34,17 @@ public class Portal : MonoBehaviour
         {
             if(toTeleport.gameObject.tag == "Player") //if player add player teleportation effect
             {
-                toTeleport.GetComponent<PlayerMovement>().TeleportTo(teleportationDestination);
+                if (teleportOnNativeHeight)
+                {
+                    Vector3 nativeHeightDestination = teleportationDestination;
+                    nativeHeightDestination.y = toTeleport.transform.position.y;
+                    toTeleport.GetComponent<PlayerMovement>().TeleportTo(nativeHeightDestination);
+                }
+                else
+                {
+                    toTeleport.GetComponent<PlayerMovement>().TeleportTo(teleportationDestination);
+                }
+                
                 Instantiate(teleportationEffect_Player, toTeleport.gameObject.transform)
                     .GetComponent<TeleportationColor>().ChangeColorOfEffect(gameObject.GetComponent<ParticleSystem>().startColor);
             }
@@ -41,7 +52,17 @@ public class Portal : MonoBehaviour
             {
                 if(toTeleport.transform.parent == null) //else add object teleportation effect
                 {
-                    toTeleport.gameObject.transform.position = teleportationDestination;
+                    if(teleportOnNativeHeight)
+                    {
+                        Vector3 nativeHeightDestination = teleportationDestination;
+                        nativeHeightDestination.y = toTeleport.transform.position.y;
+                        toTeleport.gameObject.transform.position = nativeHeightDestination;
+                    }
+                    else
+                    {
+                        toTeleport.gameObject.transform.position = teleportationDestination;
+                    }
+
                     Instantiate(teleportationEffect_Object, teleportationDestination, Quaternion.identity)
                         .GetComponent<TeleportationColor>().ChangeColorOfEffect(gameObject.GetComponent<ParticleSystem>().startColor);
                 }

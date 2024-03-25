@@ -127,14 +127,10 @@ public class HandInteractions : MonoBehaviour
         if (pointer.currentlyPointing != null)
         {
             CooldownClick = true;
-            if (LayerMask.LayerToName(pointer.currentlyPointing.layer) == "Switch" || 
+            if (LayerMask.LayerToName(pointer.currentlyPointing.layer) == "Interaction" || 
                 (LayerMask.LayerToName(pointer.currentlyPointing.layer) == "UI" && PlayerParams.Controllers.spellsMenu.menuOpened))
             {
                 pointer.currentlyPointing.SendMessage("OnClick");
-            }
-            if (LayerMask.LayerToName(pointer.currentlyPointing.layer) == "Chest")
-            {
-                pointer.currentlyPointing.GetComponent<ChestBehavior>().InteractChest();
             }
         }
     }

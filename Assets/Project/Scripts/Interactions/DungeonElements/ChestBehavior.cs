@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class ChestBehavior : MonoBehaviour
 {
-    [Header("Chest lid")]
+    [Header("Chest fragments:")]
     public GameObject chestLid;
+    public GameObject chestCore;
 
     [Header("Point to look inside chest")]
     public Transform inChestCameraTransform;
@@ -37,12 +38,12 @@ public class ChestBehavior : MonoBehaviour
             pauseMenu.ableToInteract = false;
             if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.S)) && !PlayerParams.Variables.uiActive)
             {
-                InteractChest();
+                OnClick();
             }
         }
     }
 
-    public void InteractChest() //move camera to chest/player and start chest animation
+    public void OnClick() //move camera to chest/player and start chest animation
     {
         if(!playerMovement.isMoving)
         {
