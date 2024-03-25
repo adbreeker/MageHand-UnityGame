@@ -36,7 +36,7 @@ public class OpenBarsPassage : MonoBehaviour
     {
         chainSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_MovingMetalGate, bars, 8f, 30f);
         chainSound.Play();
-        while (bars.transform.position.y != barsDestination)
+        while (bars.transform.localPosition.y != barsDestination)
         {
             yield return new WaitForFixedUpdate();
             bars.transform.localPosition = Vector3.MoveTowards(bars.transform.localPosition, new Vector3(0, barsDestination, 0), barsSpeed);
