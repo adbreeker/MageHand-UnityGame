@@ -18,7 +18,6 @@ public class LightImpactOpenWall : SpellImpactInteraction
         overlapPos = transform.position;
         overlapPos.y = 2;
         overlapPos -= 2 * transform.forward * transform.localScale.z;
-        Debug.Log(overlapPos);
     }
 
     /*private void OnDrawGizmos()
