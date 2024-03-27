@@ -50,11 +50,11 @@ public class OpenWallPassage : MonoBehaviour
     {
         if (passageOpen)
         {
-            wall.transform.localPosition = new Vector3(0, -5.5f, 0);
+            wall.transform.localPosition = new Vector3(wall.transform.localPosition.x, -5.5f, wall.transform.localPosition.z);
         }
         else
         {
-            wall.transform.localPosition = new Vector3(0, 0, 0);
+            wall.transform.localPosition = new Vector3(wall.transform.localPosition.x, 0, wall.transform.localPosition.z);
         }
     }
 }
