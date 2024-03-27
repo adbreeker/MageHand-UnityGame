@@ -7,13 +7,13 @@ public class TeleportationColor : MonoBehaviour
     [Header("All particles in teleportation effect")]
     public List<ParticleSystem> particles;
 
-    [System.Obsolete("This class is using deprecated method")]
     public void ChangeColorOfEffect(Color color) //change color of teleportation effect
     {
         foreach(ParticleSystem particle in particles)
         {
-            color.a = particle.startColor.a;
-            particle.startColor = color;
+            ParticleSystem.MainModule mainModule = particle.main;
+            color.a = mainModule.startColor.color.a;
+            mainModule.startColor = color;
         }
     }
 }

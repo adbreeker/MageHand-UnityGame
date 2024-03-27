@@ -13,8 +13,6 @@ public class LightPathPuzzle : MonoBehaviour
     int _tileIndex = 0;
     bool _isOnPath = false;
 
-    private AudioSource tpSound;
-
     void Update()
     {
         Vector3 playerPos = PlayerParams.Controllers.playerMovement.currentTilePos;
@@ -73,13 +71,8 @@ public class LightPathPuzzle : MonoBehaviour
         _isOnPath = false;
         _tileIndex = 0;
 
-        tpSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_MagicalTeleportation);
-        tpSound.Play();
-        Destroy(tpSound, tpSound.clip.length);
-
         PlayerParams.Objects.player.transform.rotation = Quaternion.Euler(0, 180, 0);
-        PlayerParams.Controllers.playerMovement.TeleportTo(TileToPlayerPos(_enterRoomPos.position));
-        Instantiate(_teleportationEffectPrefab, PlayerParams.Objects.player.transform);
+        PlayerParams.Controllers.playerMovement.TeleportTo(TileToPlayerPos(_enterRoomPos.position), null);
     }
 
     Vector3 TileToPlayerPos(Vector3 tilePos)

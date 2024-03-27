@@ -1,4 +1,5 @@
 using UnityEngine;
+using static SoundManager;
 
 
 public class PlayerMovement : MonoBehaviour
@@ -23,6 +24,10 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement-interfering options")]
     public bool stopMovement = false;
     public bool ghostmodeActive = false;
+
+    [Header("Special effects")]
+    [SerializeField] GameObject _teleportationEffect;
+    //private AudioSource _tpSound;
 
     //enqueuing input
     private Vector3 _movementInputQueue = Vector3.zero;
@@ -260,6 +265,8 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    //teleportation methods
+
     public void TeleportTo(Vector3 tpDestination) //teleport to destination and stop movement enqued before teleportation
     {
         _destination = tpDestination;
@@ -270,5 +277,30 @@ public class PlayerMovement : MonoBehaviour
         _rotationInputQueue = 0;
 
         currentTilePos = transform.position;
+    }
+    public void TeleportTo(Vector3 tpDestination, Color? tpEffectColor)
+    {
+        _destination = tpDestination;
+        transform.position = tpDestination;
+        isMoving = false;
+        isRotating = false;
+        _movementInputQueue = Vector3.zero;
+        _rotationInputQueue = 0;
+
+        currentTilePos = transform.position;
+
+        AudioSource tpSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_MagicalTeleportation);
+        tpSound.Play();
+        Destroy(tpSound, tpSound.clip.length);
+
+        if (tpEffectColor != null) 
+        {
+            Instantiate(_teleportationEffect, transform)
+                    .GetComponent<TeleportationColor>().ChangeColorOfEffect(tpEffectColor.Value);
+        }
+        else
+        {
+            Instantiate(_teleportationEffect, transform);
+        }
     }
 }
