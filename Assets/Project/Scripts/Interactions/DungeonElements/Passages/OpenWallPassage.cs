@@ -38,11 +38,23 @@ public class OpenWallPassage : MonoBehaviour
         wallSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_MovingWall, wall, 8f, 30f);
         wallSound.Play();
 
-        while (wall.transform.position.y != wallDestination)
+        while (wall.transform.localPosition.y != wallDestination)
         {
             yield return new WaitForFixedUpdate();
-            wall.transform.position = Vector3.MoveTowards(wall.transform.position, new Vector3(wall.transform.position.x, wallDestination, wall.transform.position.z), wallSpeed);
+            wall.transform.localPosition = Vector3.MoveTowards(wall.transform.localPosition, new Vector3(wall.transform.localPosition.x, wallDestination, wall.transform.localPosition.z), wallSpeed);
         }
         Destroy(wallSound);
+    }
+
+    private void OnValidate()
+    {
+        if (passageOpen)
+        {
+            wall.transform.localPosition = new Vector3(wall.transform.localPosition.x, -5.5f, wall.transform.localPosition.z);
+        }
+        else
+        {
+            wall.transform.localPosition = new Vector3(wall.transform.localPosition.x, 0, wall.transform.localPosition.z);
+        }
     }
 }

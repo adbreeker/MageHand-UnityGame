@@ -6,13 +6,12 @@ public class Portal : MonoBehaviour
 {
     [Header("Teleportation destination")]
     public Vector3 teleportationDestination;
-    public bool teleportOnNativeHeight = true;
+    public bool teleportOnCurrentHeight = true;
 
     [Header("Teleportation beneficiaries mask")]
     public LayerMask toTeleport;
 
     [Header("Teleportation effects for teleporting player and objects")]
-    public GameObject teleportationEffect_Player;
     public GameObject teleportationEffect_Object;
 
     BoxCollider portalCollider;
@@ -23,7 +22,6 @@ public class Portal : MonoBehaviour
         teleportationDestination.y = 1;
     }
 
-    [System.Obsolete("This class is using deprecated method")]
     private void Update()
     {
         //get colliders on specified layers inside portal collider
@@ -34,25 +32,22 @@ public class Portal : MonoBehaviour
         {
             if(toTeleport.gameObject.tag == "Player") //if player add player teleportation effect
             {
-                if (teleportOnNativeHeight)
+                if (teleportOnCurrentHeight)
                 {
                     Vector3 nativeHeightDestination = teleportationDestination;
                     nativeHeightDestination.y = toTeleport.transform.position.y;
-                    toTeleport.GetComponent<PlayerMovement>().TeleportTo(nativeHeightDestination);
+                    toTeleport.GetComponent<PlayerMovement>().TeleportTo(nativeHeightDestination, gameObject.GetComponent<ParticleSystem>().main.startColor.color);
                 }
                 else
                 {
-                    toTeleport.GetComponent<PlayerMovement>().TeleportTo(teleportationDestination);
+                    toTeleport.GetComponent<PlayerMovement>().TeleportTo(teleportationDestination, gameObject.GetComponent<ParticleSystem>().main.startColor.color);
                 }
-                
-                Instantiate(teleportationEffect_Player, toTeleport.gameObject.transform)
-                    .GetComponent<TeleportationColor>().ChangeColorOfEffect(gameObject.GetComponent<ParticleSystem>().startColor);
             }
             else
             {
                 if(toTeleport.transform.parent == null) //else add object teleportation effect
                 {
-                    if(teleportOnNativeHeight)
+                    if(teleportOnCurrentHeight)
                     {
                         Vector3 nativeHeightDestination = teleportationDestination;
                         nativeHeightDestination.y = toTeleport.transform.position.y;
@@ -64,7 +59,7 @@ public class Portal : MonoBehaviour
                     }
 
                     Instantiate(teleportationEffect_Object, teleportationDestination, Quaternion.identity)
-                        .GetComponent<TeleportationColor>().ChangeColorOfEffect(gameObject.GetComponent<ParticleSystem>().startColor);
+                        .GetComponent<TeleportationColor>().ChangeColorOfEffect(gameObject.GetComponent<ParticleSystem>().main.startColor.color);
                 }
             }
         }

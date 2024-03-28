@@ -7,11 +7,6 @@ public class PotionManaRegenBehavior : MonoBehaviour
     [Header("Potion duration time")]
     public float duration = 60;
 
-    //[Header("Speed aura pefab")]
-    //public GameObject speedAuraPrefab; ------------- aura
-
-    //private GameObject auraOnPlayer;
-
     public void OnPickUp()
     {
 
@@ -23,9 +18,7 @@ public class PotionManaRegenBehavior : MonoBehaviour
         GameObject player = PlayerParams.Objects.player;
         PotionManaRegenBehavior psb = player.AddComponent<PotionManaRegenBehavior>();
 
-        //set duration and speed aura prefab in script on player
         psb.duration = duration;
-        //psb.speedAuraPrefab = speedAuraPrefab; -------------- aura
 
         //active potion effect on player
         psb.ActivatePotionEffect();
@@ -34,9 +27,8 @@ public class PotionManaRegenBehavior : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void ActivatePotionEffect() //activate potion speed effect on player
+    public void ActivatePotionEffect()
     {
-        //auraOnPlayer = Instantiate(speedAuraPrefab, gameObject.transform); -------------- aura
         PlayerParams.Controllers.spellCasting.manaRegen = 5 * PlayerParams.Variables.startingManaRegen;
         StartCoroutine(PotionDuration());
     }
@@ -45,7 +37,6 @@ public class PotionManaRegenBehavior : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         PlayerParams.Controllers.spellCasting.manaRegen = PlayerParams.Variables.startingManaRegen;
-        //Destroy(auraOnPlayer); ------------------- aura
         Destroy(this);
     }
 }
