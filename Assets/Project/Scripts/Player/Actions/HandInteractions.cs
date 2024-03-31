@@ -29,7 +29,7 @@ public class HandInteractions : MonoBehaviour
     private AudioSource putToInventorySound;
     private AudioSource drinkSound;
 
-    private LayerMask inHandLastLayer;
+    private LayerMask inHandPreviousLayer;
 
     [Header("Pop up options")]
     public float timeToFadeOutPopUp = 1;
@@ -79,14 +79,6 @@ public class HandInteractions : MonoBehaviour
         if (gestureHandler.gesture == "ILoveYou" && inHand != null && !CooldownDrink)
         {
             DrinkObject();
-        }
-
-        //making inHand UI layer to prevent it from disappearing in the walls
-        if (inHand != null && inHand.layer != LayerMask.NameToLayer("UI"))
-        {
-            inHandLastLayer = inHand.layer;
-            inHand.layer = LayerMask.NameToLayer("UI");
-            foreach (Transform child in inHand.transform) child.gameObject.layer = LayerMask.NameToLayer("UI");
         }
     }
 
@@ -148,17 +140,12 @@ public class HandInteractions : MonoBehaviour
                 && PlayerParams.Controllers.inventory.inventoryOpened) //picking item from inventory
             {
                 if (pointer.currentlyPointing.GetComponent<ReadableBehavior>() == null && pointer.currentlyPointing.GetComponent<PopUpActivateOnPickUp>() == null) pickUpItemSound.Play();
+
                 //getting item from inventory
-                inHand = pointer.currentlyPointing.transform.parent.GetComponent<IconParameters>().originalObject;
-                PlayerParams.Controllers.inventory.inventory.Remove(inHand);
-
-                //activing item and making it a child of hand so it will move when hand is moving
-                inHand.transform.SetParent(holdingPoint);
-                inHand.SetActive(true);
-                inHand.transform.localPosition = new Vector3(0, 0, 10);
-
-                //invoking OnPickUp method of picked item
-                inHand.SendMessage("OnPickUp");
+                GameObject itemFromInventory = pointer.currentlyPointing.transform.parent.GetComponent<IconParameters>().originalObject;
+                PlayerParams.Controllers.inventory.inventory.Remove(itemFromInventory);
+                itemFromInventory.SetActive(true);
+                AddToHand(itemFromInventory, true);
 
                 //closing inventory
                 PlayerParams.Controllers.inventory.CloseInventory();
@@ -176,8 +163,7 @@ public class HandInteractions : MonoBehaviour
             inHand.AddComponent<ThrowSpell>().Initialize(player);
 
             //set proper layer
-            inHand.layer = inHandLastLayer;
-            foreach (Transform child in inHand.transform) child.gameObject.layer = inHandLastLayer;
+            ChangeLayer(inHand, inHandPreviousLayer);
 
             inHand = null;
             GetComponent<SpellCasting>().currentSpell = "None";
@@ -187,8 +173,7 @@ public class HandInteractions : MonoBehaviour
             inHand.AddComponent<ThrowObject>().Initialize(player);
 
             //set proper layer
-            inHand.layer = inHandLastLayer;
-            foreach (Transform child in inHand.transform) child.gameObject.layer = inHandLastLayer;
+            ChangeLayer(inHand, inHandPreviousLayer);
 
             inHand = null;
         }
@@ -215,8 +200,7 @@ public class HandInteractions : MonoBehaviour
         CooldownPutDown = true;
 
         //set proper layer
-        inHand.layer = inHandLastLayer;
-        foreach (Transform child in inHand.transform) child.gameObject.layer = inHandLastLayer;
+        ChangeLayer(inHand, inHandPreviousLayer);
 
         if (PlayerParams.Controllers.spellCasting.currentSpell == "Light") //if light spell in hand, making it floating light
         {
@@ -242,6 +226,9 @@ public class HandInteractions : MonoBehaviour
         }
     }
 
+    //----------------------------------------------------------------------------------------------------------------------------------------
+    //additional interactions methods
+
     public void AddToHand(GameObject toHand, bool withPositionChange)
     {
         if (toHand.GetComponent<ReadableBehavior>() == null && toHand.GetComponent<PopUpActivateOnPickUp>() == null && withPositionChange)
@@ -258,12 +245,30 @@ public class HandInteractions : MonoBehaviour
             inHand.transform.localPosition = new Vector3(0, 0, 10);
         }
 
+        //setting UI layer
+        inHandPreviousLayer = inHand.layer;
+        ChangeLayer(inHand, LayerMask.NameToLayer("UI"));
+
         //invoking OnPickUp method of picked item
         inHand.SendMessage("OnPickUp");
     }
 
+    void ChangeLayer(GameObject obj ,LayerMask layer)
+    {
+        //making inHand UI layer to prevent it from disappearing in the walls
+        if (obj != null)
+        {
+            obj.layer = layer;
+            Debug.Log("Changing layer of:" + obj.name);
+            foreach (Transform child in obj.transform)
+            {
+                ChangeLayer(child.gameObject, layer);
+            }
+        }
+    }
 
-    // custom interactions while "inserting" spells to inventory
+
+    // custom interactions while "inserting" spells to inventory -------------------------------------------------------------------------------------------
 
     void MakeFloatingLight() // while trying to insert light to inventory, makes it float around player for some time
     {

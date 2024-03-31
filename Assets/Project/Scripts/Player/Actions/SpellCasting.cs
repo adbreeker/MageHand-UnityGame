@@ -73,7 +73,7 @@ public class SpellCasting : MonoBehaviour
             Destroy(castingFinishedSound, castingFinishedSound.clip.length);
 
             currentSpell = "Light";
-            PlayerParams.Controllers.handInteractions.inHand = Instantiate(lightPrefab, hand);
+            PlayerParams.Controllers.handInteractions.AddToHand(Instantiate(lightPrefab), false);
             mana -= scroll.manaCost;
         }
         else
@@ -134,7 +134,7 @@ public class SpellCasting : MonoBehaviour
             Destroy(castingFinishedSound, castingFinishedSound.clip.length);
 
             currentSpell = "Fire";
-            PlayerParams.Controllers.handInteractions.inHand = Instantiate(firePrefab, hand);
+            PlayerParams.Controllers.handInteractions.AddToHand(Instantiate(firePrefab), false);
             mana -= scroll.manaCost;
         }
         else
