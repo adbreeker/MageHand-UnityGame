@@ -29,7 +29,7 @@ public class HandInteractions : MonoBehaviour
     private AudioSource putToInventorySound;
     private AudioSource drinkSound;
 
-    private LayerMask inHandPreviousLayer;
+    LayerMask inHandPreviousLayer;
 
     [Header("Pop up options")]
     public float timeToFadeOutPopUp = 1;
@@ -134,7 +134,7 @@ public class HandInteractions : MonoBehaviour
             CooldownPickUp = true;
             if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("Item")) //picking item from scene
             {
-                AddToHand(pointer.currentlyPointing, true);
+                AddToHand(pointer.currentlyPointing, true, false);
             }
             if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("UI") 
                 && PlayerParams.Controllers.inventory.inventoryOpened) //picking item from inventory
@@ -145,7 +145,7 @@ public class HandInteractions : MonoBehaviour
                 GameObject itemFromInventory = pointer.currentlyPointing.transform.parent.GetComponent<IconParameters>().originalObject;
                 PlayerParams.Controllers.inventory.inventory.Remove(itemFromInventory);
                 itemFromInventory.SetActive(true);
-                AddToHand(itemFromInventory, true);
+                AddToHand(itemFromInventory, true, false);
 
                 //closing inventory
                 PlayerParams.Controllers.inventory.CloseInventory();
@@ -160,20 +160,20 @@ public class HandInteractions : MonoBehaviour
 
         if (cs == "Light" || cs == "Fire") //if spell then throw spell
         {
-            inHand.AddComponent<ThrowSpell>().Initialize(player);
-
             //set proper layer
             ChangeLayer(inHand, inHandPreviousLayer);
+
+            inHand.AddComponent<ThrowSpell>().Initialize(player);
 
             inHand = null;
             GetComponent<SpellCasting>().currentSpell = "None";
         }
         else //else throw item
         {
-            inHand.AddComponent<ThrowObject>().Initialize(player);
-
             //set proper layer
             ChangeLayer(inHand, inHandPreviousLayer);
+
+            inHand.AddComponent<ThrowObject>().Initialize(player);
 
             inHand = null;
         }
@@ -195,9 +195,10 @@ public class HandInteractions : MonoBehaviour
         }
     }
 
-    void PutDownObject() //put object down to inventory or if in hand is spell then some special interaction
+    public void PutDownObject() //put object down to inventory or if in hand is spell then some special interaction
     {
         CooldownPutDown = true;
+        CooldownPickUp = true;
 
         //set proper layer
         ChangeLayer(inHand, inHandPreviousLayer);
@@ -229,9 +230,9 @@ public class HandInteractions : MonoBehaviour
     //----------------------------------------------------------------------------------------------------------------------------------------
     //additional interactions methods
 
-    public void AddToHand(GameObject toHand, bool withPositionChange)
+    public void AddToHand(GameObject toHand, bool withPositionChange, bool isSpell)
     {
-        if (toHand.GetComponent<ReadableBehavior>() == null && toHand.GetComponent<PopUpActivateOnPickUp>() == null && withPositionChange)
+        if (toHand.GetComponent<ReadableBehavior>() == null && toHand.GetComponent<PopUpActivateOnPickUp>() == null && withPositionChange && !isSpell)
         {
             pickUpItemSound.Play();
         }
@@ -242,7 +243,8 @@ public class HandInteractions : MonoBehaviour
         inHand.transform.SetParent(holdingPoint);
         if (withPositionChange) 
         {
-            inHand.transform.localPosition = new Vector3(0, 0, 10);
+            if(isSpell) { inHand.transform.localPosition = new Vector3(0, 0, 5); }
+            else { inHand.transform.localPosition = new Vector3(0, 0, 10); }
         }
 
         //setting UI layer
@@ -250,7 +252,7 @@ public class HandInteractions : MonoBehaviour
         ChangeLayer(inHand, LayerMask.NameToLayer("UI"));
 
         //invoking OnPickUp method of picked item
-        inHand.SendMessage("OnPickUp");
+        if (!isSpell) { inHand.SendMessage("OnPickUp"); }
     }
 
     void ChangeLayer(GameObject obj ,LayerMask layer)

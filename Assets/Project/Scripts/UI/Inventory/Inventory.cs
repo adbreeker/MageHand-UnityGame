@@ -47,15 +47,11 @@ public class Inventory : MonoBehaviour
         //Open or close inventory
         if (Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Tab))
         {
-
             if (!inventoryOpened && PlayerParams.Controllers.handInteractions.inHand != null)
             {
                 if (PlayerParams.Controllers.handInteractions.inHand.GetComponent<ItemParameters>() != null)
                 {
-                    AddItem(PlayerParams.Controllers.handInteractions.inHand);
-                    equipSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_PutToInventory);
-                    equipSound.Play();
-                    Destroy(equipSound.gameObject, equipSound.clip.length);
+                    PlayerParams.Controllers.handInteractions.PutDownObject();
                 }
                 OpenInventory();
                 openSound.Play();
