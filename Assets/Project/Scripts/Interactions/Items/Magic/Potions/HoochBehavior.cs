@@ -8,6 +8,8 @@ public class HoochBehavior : MonoBehaviour
     public float duration = 60;
     public int hoochOnPlayer = 1;
 
+    public GameObject drunkRoom;
+
     Coroutine hoochEffect;
 
     public void OnPickUp()
@@ -28,6 +30,7 @@ public class HoochBehavior : MonoBehaviour
         else
         {
             hb = player.AddComponent<HoochBehavior>();
+            hb.drunkRoom = drunkRoom;
         }
         
 
@@ -44,7 +47,9 @@ public class HoochBehavior : MonoBehaviour
     {
         if( hoochOnPlayer >= 3 )
         {
-            Debug.Log("Ty alkoholiku! masz szczescie ze jeszcze tego nie zaimplementowalem");
+            Instantiate(drunkRoom, new Vector3(Random.Range(1.0f, 5.0f) * 1000, 0, Random.Range(1.0f, 5.0f) * 1000), Quaternion.Euler(0, Random.Range(0,4) * 90, 0));
+            if (hoochEffect != null) { StopCoroutine(hoochEffect); }
+            Destroy(this);
         }
         else
         {
