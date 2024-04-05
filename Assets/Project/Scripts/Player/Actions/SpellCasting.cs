@@ -199,7 +199,7 @@ public class SpellCasting : MonoBehaviour
             {
                 if(potentialLock.tag == "Lock")
                 {
-                    potentialLock.GetComponent<OpenLockedDoorsPassage>().OpenDoors();
+                    potentialLock.GetComponent<LockBehavior>().OpenLock();
                 }
             }
             mana -= scroll.manaCost;
