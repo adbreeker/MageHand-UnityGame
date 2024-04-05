@@ -73,7 +73,7 @@ public class SpellCasting : MonoBehaviour
             Destroy(castingFinishedSound, castingFinishedSound.clip.length);
 
             currentSpell = "Light";
-            PlayerParams.Controllers.handInteractions.inHand = Instantiate(lightPrefab, hand);
+            PlayerParams.Controllers.handInteractions.AddToHand(Instantiate(lightPrefab), true, true);
             mana -= scroll.manaCost;
         }
         else
@@ -106,13 +106,14 @@ public class SpellCasting : MonoBehaviour
                         nearestItem = item.gameObject;
                     }
                 }
-                PlayerParams.Controllers.handInteractions.AddToHand(nearestItem, false);
+                PlayerParams.Controllers.handInteractions.AddToHand(nearestItem, false, false);
                 while (nearestItem.transform.position != PlayerParams.Controllers.handInteractions.holdingPoint.position)
                 {
                     nearestItem.transform.position = Vector3.MoveTowards(nearestItem.transform.position, PlayerParams.Controllers.handInteractions.holdingPoint.position, 7.0f * Time.fixedDeltaTime);
                     yield return new WaitForFixedUpdate();
                 }
-                PlayerParams.Controllers.handInteractions.AddToHand(nearestItem.gameObject, true);
+                nearestItem.layer = LayerMask.NameToLayer("Item");
+                PlayerParams.Controllers.handInteractions.AddToHand(nearestItem.gameObject, true, false);
             }
             mana -= scroll.manaCost;
         }
@@ -134,7 +135,7 @@ public class SpellCasting : MonoBehaviour
             Destroy(castingFinishedSound, castingFinishedSound.clip.length);
 
             currentSpell = "Fire";
-            PlayerParams.Controllers.handInteractions.inHand = Instantiate(firePrefab, hand);
+            PlayerParams.Controllers.handInteractions.AddToHand(Instantiate(firePrefab), true, true);
             mana -= scroll.manaCost;
         }
         else
@@ -198,7 +199,7 @@ public class SpellCasting : MonoBehaviour
             {
                 if(potentialLock.tag == "Lock")
                 {
-                    potentialLock.GetComponent<OpenLockedDoorsPassage>().OpenDoors();
+                    potentialLock.GetComponent<LockBehavior>().OpenLock();
                 }
             }
             mana -= scroll.manaCost;

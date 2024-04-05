@@ -11,9 +11,13 @@ GameObject:
   - component: {fileID: 7516147023265246560}
   - component: {fileID: 7516147023266049344}
   - component: {fileID: 7516147023267016576}
-  - component: {fileID: 7516147023265018177}
+  - component: {fileID: 2372670132210009772}
+  - component: {fileID: -504141278071330408}
+  - component: {fileID: 3627220402162439808}
+  - component: {fileID: -5666187935056614760}
+  - component: {fileID: -2483324044021247821}
   m_Layer: 12
-  m_Name: Potion_Shield
+  m_Name: Potion_Perception
   m_TagString: Potion
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,8 +89,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &7516147023265018177
-MeshCollider:
+--- !u!65 &2372670132210009772
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -95,7 +99,59 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 7e1b98bbe17b88644aea6625cb61b2c5, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.1, y: 0.25, z: 0.1}
+  m_Center: {x: 0, y: 0.12, z: 0}
+--- !u!65 &-504141278071330408
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7516147023265018176}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.7, y: 0.5, z: 0.7}
+  m_Center: {x: 0, y: 0.2, z: 0}
+--- !u!114 &3627220402162439808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7516147023265018176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea00f27b381eda64d9c799064f430b57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: Potion of Perception
+  itemIcon: {fileID: 6610860039850489068, guid: c4ca95f5d102d23429f7311276728ce4, type: 3}
+--- !u!114 &-5666187935056614760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7516147023265018176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 767518bfbf354824ca708dc55d66f288, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 90
+  perceptionMarkPrefab: {fileID: 7358468838148070894, guid: 76f9f24b3e0dbc846a4873c7dd39d407, type: 3}
+--- !u!114 &-2483324044021247821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7516147023265018176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b48df7d14834f384ca483976115b53e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

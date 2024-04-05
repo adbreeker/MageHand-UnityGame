@@ -8,7 +8,9 @@ public class HoochBehavior : MonoBehaviour
     public float duration = 60;
     public int hoochOnPlayer = 1;
 
-    Coroutine hoochEffect;
+    public GameObject drunkRoom;
+
+    Coroutine _hoochEffect;
 
     public void OnPickUp()
     {
@@ -17,17 +19,19 @@ public class HoochBehavior : MonoBehaviour
 
     public void Drink() //add potion component to player, activate potion effect and destroy this object
     {
+        PlayerParams.Controllers.spellCasting.mana = 100;
+
         //find player and add this component
-        GameObject player = PlayerParams.Objects.player;
         HoochBehavior hb;
-        if (player.GetComponent<HoochBehavior>() != null )
+        if (PlayerParams.Objects.player.GetComponent<HoochBehavior>() != null )
         {
-            hb = player.GetComponent<HoochBehavior>();
+            hb = PlayerParams.Objects.player.GetComponent<HoochBehavior>();
             hb.hoochOnPlayer += 1;
         }
         else
         {
-            hb = player.AddComponent<HoochBehavior>();
+            hb = PlayerParams.Objects.player.AddComponent<HoochBehavior>();
+            hb.drunkRoom = drunkRoom;
         }
         
 
@@ -44,12 +48,14 @@ public class HoochBehavior : MonoBehaviour
     {
         if( hoochOnPlayer >= 3 )
         {
-            Debug.Log("Ty alkoholiku! masz szczescie ze jeszcze tego nie zaimplementowalem");
+            Instantiate(drunkRoom, new Vector3(Random.Range(1.0f, 5.0f) * 1000, 0, Random.Range(1.0f, 5.0f) * 1000), Quaternion.Euler(0, Random.Range(0,4) * 90, 0));
+            if (_hoochEffect != null) { StopCoroutine(_hoochEffect); }
+            Destroy(this);
         }
         else
         {
-            if (hoochEffect != null) { StopCoroutine(hoochEffect); }
-            hoochEffect = StartCoroutine(PotionDuration());
+            if (_hoochEffect != null) { StopCoroutine(_hoochEffect); }
+            _hoochEffect = StartCoroutine(PotionDuration());
         }
     }
 

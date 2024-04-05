@@ -12,6 +12,8 @@ public class PotionSpeedBehavior : MonoBehaviour
 
     private GameObject auraOnPlayer;
 
+    Coroutine _potionEffect;
+
     public void OnPickUp()
     {
 
@@ -20,12 +22,18 @@ public class PotionSpeedBehavior : MonoBehaviour
     public void Drink() //add potion component to player, activate potion effect and destroy this object
     {
         //find player and add this component
-        GameObject player = PlayerParams.Objects.player;
-        PotionSpeedBehavior psb = player.AddComponent<PotionSpeedBehavior>();
+        PotionSpeedBehavior psb;
+        if (PlayerParams.Objects.player.GetComponent<PotionSpeedBehavior>() != null)
+        {
+            psb = PlayerParams.Objects.player.GetComponent<PotionSpeedBehavior>();
+        }
+        else
+        {
+            psb = PlayerParams.Objects.player.AddComponent<PotionSpeedBehavior>();
+            psb.speedAuraPrefab = speedAuraPrefab;
+        }
 
-        //set duration and speed aura prefab in script on player
         psb.duration = duration;
-        psb.speedAuraPrefab = speedAuraPrefab;
 
         //active potion effect on player
         psb.ActivatePotionEffect();
@@ -36,15 +44,24 @@ public class PotionSpeedBehavior : MonoBehaviour
 
     public void ActivatePotionEffect() //activate potion speed effect on player
     {
-        auraOnPlayer = Instantiate(speedAuraPrefab, gameObject.transform);
-        PlayerParams.Controllers.playerMovement.movementSpeed = 2*PlayerParams.Variables.playerStartingMovementSpeed;
-        PlayerParams.Controllers.playerMovement.rotationSpeed = 2* PlayerParams.Variables.playerStartingRotationSpeed;
-        StartCoroutine(PotionDuration());
+        if (_potionEffect != null) 
+        { 
+            StopCoroutine(_potionEffect);
+            PlayerParams.Controllers.playerMovement.movementSpeed = PlayerParams.Variables.playerStartingMovementSpeed;
+            PlayerParams.Controllers.playerMovement.rotationSpeed = PlayerParams.Variables.playerStartingRotationSpeed;
+            Destroy(auraOnPlayer);
+        }
+        _potionEffect = StartCoroutine(PotionDuration());
     }
 
     IEnumerator PotionDuration() //count potion effect duration
     {
+        auraOnPlayer = Instantiate(speedAuraPrefab, gameObject.transform);
+        PlayerParams.Controllers.playerMovement.movementSpeed = 2 * PlayerParams.Variables.playerStartingMovementSpeed;
+        PlayerParams.Controllers.playerMovement.rotationSpeed = 2 * PlayerParams.Variables.playerStartingRotationSpeed;
+
         yield return new WaitForSeconds(duration);
+
         PlayerParams.Controllers.playerMovement.movementSpeed = PlayerParams.Variables.playerStartingMovementSpeed;
         PlayerParams.Controllers.playerMovement.rotationSpeed = PlayerParams.Variables.playerStartingRotationSpeed;
         Destroy(auraOnPlayer);

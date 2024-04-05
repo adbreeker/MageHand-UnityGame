@@ -7,6 +7,8 @@ public class PotionManaRegenBehavior : MonoBehaviour
     [Header("Potion duration time")]
     public float duration = 60;
 
+    Coroutine _potionEffect;
+
     public void OnPickUp()
     {
 
@@ -15,13 +17,20 @@ public class PotionManaRegenBehavior : MonoBehaviour
     public void Drink() //add potion component to player, activate potion effect and destroy this object
     {
         //find player and add this component
-        GameObject player = PlayerParams.Objects.player;
-        PotionManaRegenBehavior psb = player.AddComponent<PotionManaRegenBehavior>();
+        PotionManaRegenBehavior pmb;
+        if (PlayerParams.Objects.player.GetComponent<PotionManaRegenBehavior>() != null)
+        {
+            pmb = PlayerParams.Objects.player.GetComponent<PotionManaRegenBehavior>();
+        }
+        else
+        {
+            pmb = PlayerParams.Objects.player.AddComponent<PotionManaRegenBehavior>();
+        }
 
-        psb.duration = duration;
+        pmb.duration = duration;
 
         //active potion effect on player
-        psb.ActivatePotionEffect();
+        pmb.ActivatePotionEffect();
 
         //destroy this object
         Destroy(gameObject);
@@ -29,13 +38,20 @@ public class PotionManaRegenBehavior : MonoBehaviour
 
     public void ActivatePotionEffect()
     {
-        PlayerParams.Controllers.spellCasting.manaRegen = 5 * PlayerParams.Variables.startingManaRegen;
-        StartCoroutine(PotionDuration());
+        if (_potionEffect != null) 
+        { 
+            StopCoroutine(_potionEffect);
+            PlayerParams.Controllers.spellCasting.manaRegen = PlayerParams.Variables.startingManaRegen;
+        }
+        _potionEffect = StartCoroutine(PotionDuration());
     }
 
     IEnumerator PotionDuration() //count potion effect duration
     {
+        PlayerParams.Controllers.spellCasting.manaRegen = 5 * PlayerParams.Variables.startingManaRegen;
+
         yield return new WaitForSeconds(duration);
+
         PlayerParams.Controllers.spellCasting.manaRegen = PlayerParams.Variables.startingManaRegen;
         Destroy(this);
     }
