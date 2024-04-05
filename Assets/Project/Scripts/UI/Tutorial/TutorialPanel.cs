@@ -26,7 +26,7 @@ public class TutorialPanel : MonoBehaviour
         KeysListener();
 
         //Activates panel while player enters bounds of object that this script is connected to
-        Bounds cubeBounds = GetComponent<Renderer>().bounds;
+        Bounds cubeBounds = GetComponent<BoxCollider>().bounds;
         if (cubeBounds.Contains(PlayerParams.Objects.player.transform.position) && activatePanelOnEntry)
         {
             foreach (TutorialPanel panel in FindObjectsOfType<TutorialPanel>())

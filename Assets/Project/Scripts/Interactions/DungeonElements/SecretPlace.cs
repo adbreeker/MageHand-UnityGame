@@ -22,7 +22,7 @@ public class SecretPlace : MonoBehaviour
     }
     private void Update()
     {
-        Bounds cubeBounds = GetComponent<Renderer>().bounds;
+        Bounds cubeBounds = GetComponent<BoxCollider>().bounds;
         if (cubeBounds.Contains(PlayerParams.Objects.player.transform.position) && notVisited)
         {
             sound.Play();
