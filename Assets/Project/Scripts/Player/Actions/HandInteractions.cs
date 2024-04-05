@@ -261,7 +261,7 @@ public class HandInteractions : MonoBehaviour
         if (obj != null)
         {
             obj.layer = layer;
-            Debug.Log("Changing layer of:" + obj.name);
+            //Debug.Log("Changing layer of:" + obj.name);
             foreach (Transform child in obj.transform)
             {
                 ChangeLayer(child.gameObject, layer);

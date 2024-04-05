@@ -26,6 +26,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9025719109897818210}
   m_Father: {fileID: 0}
@@ -43,6 +44,7 @@ GameObject:
   - component: {fileID: 8413854498292324338}
   - component: {fileID: 8413854498293290290}
   - component: {fileID: 8413854498295548915}
+  - component: {fileID: 8739044734333235779}
   m_Layer: 0
   m_Name: Door_Tunnel_Right
   m_TagString: Wall
@@ -60,6 +62,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.625, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3098576359632351510}
   m_Father: {fileID: 9025719109897818210}
@@ -84,6 +87,7 @@ MeshRenderer:
   m_CastShadows: 2
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
@@ -129,6 +133,21 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 196020566272700627, guid: 681220b62dd908f45ada123d56e66448, type: 3}
+--- !u!114 &8739044734333235779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8413854498295548914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc912669399193545ad37b43f4524782, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doors: {fileID: 8413854498295548914}
+  rotateOutside: 1
+  doorsOpen: 0
 --- !u!1 &9025719109898046530
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,6 +177,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -2}
   m_LocalScale: {x: 1, y: 1.3, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8413854498295715794}
   m_Father: {fileID: 4173946367042293096}
@@ -182,6 +202,7 @@ MeshRenderer:
   m_CastShadows: 2
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
@@ -235,14 +256,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8413854498295715794}
     m_Modifications:
-    - target: {fileID: 4907738482505899501, guid: 35b0eb32614ecea4e9fa8d1075fa63fe, type: 3}
-      propertyPath: m_CastShadows
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4907738482505899501, guid: 35b0eb32614ecea4e9fa8d1075fa63fe, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 57c5c45402f367749a31d5f99048f829, type: 2}
     - target: {fileID: 6075609856194684546, guid: 35b0eb32614ecea4e9fa8d1075fa63fe, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -291,30 +304,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lock
       objectReference: {fileID: 0}
-    - target: {fileID: 6853131000749816888, guid: 35b0eb32614ecea4e9fa8d1075fa63fe, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6853131000749816888, guid: 35b0eb32614ecea4e9fa8d1075fa63fe, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 7042118113585421766, guid: 35b0eb32614ecea4e9fa8d1075fa63fe, type: 3}
+      propertyPath: interactedObject
+      value: 
+      objectReference: {fileID: 8413854498295548914}
     - target: {fileID: 7393779585412678566, guid: 35b0eb32614ecea4e9fa8d1075fa63fe, type: 3}
       propertyPath: doors
       value: 
       objectReference: {fileID: 8413854498295548914}
-    - target: {fileID: 8582741203214418651, guid: 35b0eb32614ecea4e9fa8d1075fa63fe, type: 3}
-      propertyPath: m_Size.y
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8582741203214418651, guid: 35b0eb32614ecea4e9fa8d1075fa63fe, type: 3}
-      propertyPath: m_Center.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8582741203214418651, guid: 35b0eb32614ecea4e9fa8d1075fa63fe, type: 3}
-      propertyPath: m_Center.y
-      value: 0.1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35b0eb32614ecea4e9fa8d1075fa63fe, type: 3}
 --- !u!4 &3098576359632351510 stripped
