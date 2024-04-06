@@ -18,7 +18,6 @@ public class PlayerMovement : MonoBehaviour
     public float rotationSpeed = 300f;
     public float rotationThreshold = 0.01f;
     [HideInInspector] public bool isRotating = false;
-
     Quaternion _targetRotation;
 
     [Header("Movement-interfering options")]
@@ -272,7 +271,11 @@ public class PlayerMovement : MonoBehaviour
         _destination = tpDestination;
         transform.position = tpDestination;
         isMoving = false;
-        isRotating = false;
+        if(isRotating)
+        {
+            transform.rotation = _targetRotation;
+            isRotating = false;
+        }
         _movementInputQueue = Vector3.zero;
         _rotationInputQueue = 0;
 
@@ -283,7 +286,11 @@ public class PlayerMovement : MonoBehaviour
         _destination = tpDestination;
         transform.position = tpDestination;
         isMoving = false;
-        isRotating = false;
+        if (isRotating)
+        {
+            transform.rotation = _targetRotation;
+            isRotating = false;
+        }
         _movementInputQueue = Vector3.zero;
         _rotationInputQueue = 0;
 

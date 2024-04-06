@@ -13,6 +13,10 @@ public class LeverBehavior : MonoBehaviour
     [Header("Is lever single use")]
     public bool singleUse = false;
 
+    [Header("Lever materials:")]
+    [SerializeField] Material _multiUseMat;
+    [SerializeField] Material _singleUseMat;
+
     bool leverChanging = false;
     private AudioSource changingSound;
 
@@ -77,6 +81,15 @@ public class LeverBehavior : MonoBehaviour
         else
         {
             lever.transform.localRotation = Quaternion.Euler(-25, 0, 0);
+        }
+
+        if(singleUse)
+        {
+            lever.GetComponent<Renderer>().material = _singleUseMat;
+        }
+        else
+        {
+            lever.GetComponent<Renderer>().material = _multiUseMat;
         }
     }
 }
