@@ -65,6 +65,7 @@ public class LightImpactOpenWall : SpellImpactInteraction
         }
     }
 
+#if UNITY_EDITOR
     private void OnValidate()
     {
         if (_openWallPassage == null)
@@ -78,4 +79,6 @@ public class LightImpactOpenWall : SpellImpactInteraction
             _particles.SetActive(false);
         }
     }
+
+#endif
 }
