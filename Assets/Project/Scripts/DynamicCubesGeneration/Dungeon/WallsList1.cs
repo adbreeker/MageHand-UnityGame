@@ -20,6 +20,7 @@ public class WallsList1 : MonoBehaviour
         Wall_Window,
         Wall_TwoSided,
         Wall_LockedDoorsPassage,
-        Wall_LightSensitive
+        Wall_LightSensitive,
+        Wall_Fake
     }
 }

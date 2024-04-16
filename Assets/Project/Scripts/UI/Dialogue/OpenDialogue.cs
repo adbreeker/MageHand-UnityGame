@@ -19,7 +19,7 @@ public class OpenDialogue : MonoBehaviour
     private void Update()
     {
         //Activates canvas (dialogue) while player enters bounds of object that this script is connected to
-        Bounds cubeBounds = GetComponent<Renderer>().bounds;
+        Bounds cubeBounds = GetComponent<BoxCollider>().bounds;
         if (cubeBounds.Contains(PlayerParams.Objects.player.transform.position) && activateDialogue)
         {
             if (saveDialogue)
