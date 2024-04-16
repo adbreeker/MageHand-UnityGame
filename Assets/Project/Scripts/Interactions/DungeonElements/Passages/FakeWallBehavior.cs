@@ -31,8 +31,8 @@ public class FakeWallBehavior : MonoBehaviour
 
     IEnumerator FadeAlpha()
     {
-        AudioSource sound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_IllusionBroken);
-        sound.Play();
+        //AudioSource sound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_IllusionBroken);
+        //sound.Play();
 
         while (_wall1Material.color.a > 0.1f)
         {

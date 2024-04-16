@@ -47,10 +47,12 @@ public class ProgressSaving : MonoBehaviour
         PointsManager pointsManager = FindObjectOfType<PointsManager>();
         pointsManager.plotPoints = saveData.gameStateSave.plotPoints;
         pointsManager.foundSecrets = saveData.gameStateSave.foundSecrets;
+        pointsManager.currency = saveData.gameStateSave.currency;
 
         pointsManager.maxPlotPoints = saveData.gameStateSave.maxPlotPoints;
         pointsManager.minPlotPoints = saveData.gameStateSave.minPlotPoints;
         pointsManager.maxFoundSecrets = saveData.gameStateSave.maxFoundSecrets;
+        pointsManager.maxCurrency = saveData.gameStateSave.maxCurrency;
 
     //loading inventory
     Inventory inventory = FindObjectOfType<Inventory>();
@@ -100,15 +102,17 @@ public class ProgressSaving : MonoBehaviour
         }
     }
 
-    public void SaveGameState(string currentLvl, int plotPoints, int foundSecrets, int maxPlotPoints, int minPlotPoints, int maxFoundSecrets)
+    public void SaveGameState(string currentLvl, int plotPoints, int foundSecrets, int currency, int maxPlotPoints, int minPlotPoints, int maxFoundSecrets, int maxCurrency)
     {
         saveData.gameStateSave.currentLvl = currentLvl;
         saveData.gameStateSave.plotPoints = plotPoints;
         saveData.gameStateSave.foundSecrets = foundSecrets;
+        saveData.gameStateSave.currency = currency;
 
         saveData.gameStateSave.maxPlotPoints = maxPlotPoints;
         saveData.gameStateSave.minPlotPoints = minPlotPoints;
         saveData.gameStateSave.maxFoundSecrets = maxFoundSecrets;
+        saveData.gameStateSave.maxCurrency = maxCurrency;
     }
 
     public void SaveItems(List<GameObject> itemsToSave) //saving all "itemsToSave"
@@ -251,10 +255,12 @@ public class ProgressSaving : MonoBehaviour
             public string currentLvl = "Intro";
             public int plotPoints = 0;
             public int foundSecrets = 0;
+            public int currency = 0;
 
             public int maxPlotPoints = 0;
             public int minPlotPoints = 0;
             public int maxFoundSecrets = 0;
+            public int maxCurrency = 0;
         }
 
         [System.Serializable]

@@ -81,7 +81,7 @@ public class HUD : MonoBehaviour
         while (popUp.GetComponent<CanvasGroup>().alpha > 0)
         {
             popUp.GetComponent<CanvasGroup>().alpha -= timeOfFadingOut;
-            yield return new WaitForSeconds(0);
+            yield return new WaitForFixedUpdate();
         }
         Destroy(popUp);
     }

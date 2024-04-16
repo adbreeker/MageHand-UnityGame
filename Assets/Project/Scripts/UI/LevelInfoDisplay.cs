@@ -48,7 +48,7 @@ public class LevelInfoDisplay : MonoBehaviour
         {
             alphaWhole += 0.01f;
             wholeGroup.alpha = alphaWhole;
-            yield return new WaitForSeconds(0.00005f);
+            yield return new WaitForFixedUpdate();
         }
 
         yield return new WaitForSeconds(1);
@@ -59,7 +59,7 @@ public class LevelInfoDisplay : MonoBehaviour
         {
             alphaName += 0.05f;
             levelName.alpha = alphaName;
-            yield return new WaitForSeconds(0.00005f);
+            yield return new WaitForFixedUpdate();
         }
 
         yield return new WaitForSeconds(1);
@@ -70,7 +70,7 @@ public class LevelInfoDisplay : MonoBehaviour
         {
             alphaSecret += 0.05f;
             secretsNumber.alpha = alphaSecret;
-            yield return new WaitForSeconds(0.00005f);
+            yield return new WaitForFixedUpdate();
         }
 
         yield return new WaitForSeconds(3f);
@@ -83,7 +83,7 @@ public class LevelInfoDisplay : MonoBehaviour
             wholeGroup.alpha = alphaWhole;
             levelName.alpha = alphaName;
             secretsNumber.alpha = alphaName;
-            yield return new WaitForSeconds(0.00005f);
+            yield return new WaitForFixedUpdate();
         }
 
         Destroy(sound, sound.clip.length);
