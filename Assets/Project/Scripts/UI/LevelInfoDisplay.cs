@@ -73,13 +73,13 @@ public class LevelInfoDisplay : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
 
         alphaWhole = 1;
         while (alphaWhole > 0)
         {
             alphaWhole -= 0.01f;
-            alphaName -= 0.05f;
+            alphaName -= 0.025f;
             wholeGroup.alpha = alphaWhole;
             levelName.alpha = alphaName;
             secretsNumber.alpha = alphaName;

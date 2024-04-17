@@ -143,7 +143,7 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        //Display money counter
+        //Display currency counter
         instantiatedInventory.transform.Find("Background").Find("InventoryBackground").Find("MoneyCounter")
             .gameObject.GetComponent<TextMeshProUGUI>().text = ": " + PlayerParams.Controllers.pointsManager.currency.ToString();
 
