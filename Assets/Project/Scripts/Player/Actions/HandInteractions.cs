@@ -222,7 +222,7 @@ public class HandInteractions : MonoBehaviour
         if(inHand.tag == "Potion")
         {
             drinkSound.Play();
-            inHand.SendMessage("Drink");
+            inHand.GetComponent<PotionEffect>().Drink();
             inHand = null;
         }
     }
@@ -252,7 +252,7 @@ public class HandInteractions : MonoBehaviour
         ChangeLayer(inHand, LayerMask.NameToLayer("UI"));
 
         //invoking OnPickUp method of picked item
-        if (!isSpell) { inHand.SendMessage("OnPickUp"); }
+        if (!isSpell) { inHand.GetComponent<ItemBehavior>().OnPickUp(); }
     }
 
     void ChangeLayer(GameObject obj ,LayerMask layer)
