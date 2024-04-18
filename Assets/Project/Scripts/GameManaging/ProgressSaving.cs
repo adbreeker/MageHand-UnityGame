@@ -116,7 +116,7 @@ public class ProgressSaving : MonoBehaviour
         saveData.itemsSave.items = new List<string>();
         foreach(GameObject item in itemsToSave)
         {
-            saveData.itemsSave.items.Add(item.GetComponent<ItemParameters>().itemName);
+            saveData.itemsSave.items.Add(item.GetComponent<ItemBehavior>().itemName);
         }
     }
 

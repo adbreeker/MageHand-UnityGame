@@ -49,7 +49,7 @@ public class Inventory : MonoBehaviour
         {
             if (!inventoryOpened && PlayerParams.Controllers.handInteractions.inHand != null)
             {
-                if (PlayerParams.Controllers.handInteractions.inHand.GetComponent<ItemParameters>() != null)
+                if (PlayerParams.Controllers.handInteractions.inHand.GetComponent<ItemBehavior>() != null)
                 {
                     PlayerParams.Controllers.handInteractions.PutDownObject();
                 }
@@ -194,8 +194,8 @@ public class Inventory : MonoBehaviour
         for (int i = 0; i < inventoryPages[pageToDisplay].Count; i++)
         {
             itemSlots[i].SetActive(true);
-            itemSlots[i].transform.Find("Name").gameObject.GetComponent<TextMeshProUGUI>().text = inventoryPages[pageToDisplay][i].GetComponent<ItemParameters>().itemName;
-            GameObject itemIcon = Instantiate(inventoryPages[pageToDisplay][i].GetComponent<ItemParameters>().itemIcon, itemSlots[i].transform);
+            itemSlots[i].transform.Find("Name").gameObject.GetComponent<TextMeshProUGUI>().text = inventoryPages[pageToDisplay][i].GetComponent<ItemBehavior>().itemName;
+            GameObject itemIcon = Instantiate(inventoryPages[pageToDisplay][i].GetComponent<ItemBehavior>().itemIcon, itemSlots[i].transform);
             itemIcon.GetComponent<IconParameters>().originalObject = inventoryPages[pageToDisplay][i];
             itemIconActiveInstances.Add(itemIcon);
             itemIconActiveInstances[i].transform.localScale = new Vector3(200f, 200f, 200f);
@@ -209,7 +209,7 @@ public class Inventory : MonoBehaviour
     public void AddItem(GameObject item)
     {
         inventory.Add(item);
-        inventory = inventory.OrderBy(go => go.GetComponent<ItemParameters>().itemName).ToList();
+        inventory = inventory.OrderBy(go => go.GetComponent<ItemBehavior>().itemName).ToList();
         item.SetActive(false);
         try
         {

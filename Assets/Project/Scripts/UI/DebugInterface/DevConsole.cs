@@ -290,7 +290,7 @@ public class DevConsole : MonoBehaviour
             Inventory inventory = PlayerParams.Controllers.inventory;
             foreach(GameObject item in itemHolder.items)
             {
-                inventory.AddItem(itemHolder.GiveItem(item.GetComponent<ItemParameters>().itemName));
+                inventory.AddItem(itemHolder.GiveItem(item.GetComponent<ItemBehavior>().itemName));
             }
         }
     }

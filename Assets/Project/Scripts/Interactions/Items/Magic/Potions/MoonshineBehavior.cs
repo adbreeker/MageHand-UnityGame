@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HoochBehavior : MonoBehaviour
+public class MoonshineBehavior : MonoBehaviour
 {
     [Header("Potion duration time")]
     public float duration = 60;
@@ -22,23 +22,23 @@ public class HoochBehavior : MonoBehaviour
         PlayerParams.Controllers.spellCasting.mana = 100;
 
         //find player and add this component
-        HoochBehavior hb;
-        if (PlayerParams.Objects.player.GetComponent<HoochBehavior>() != null )
+        MoonshineBehavior mb;
+        if (PlayerParams.Objects.player.GetComponent<MoonshineBehavior>() != null )
         {
-            hb = PlayerParams.Objects.player.GetComponent<HoochBehavior>();
-            hb.hoochOnPlayer += 1;
+            mb = PlayerParams.Objects.player.GetComponent<MoonshineBehavior>();
+            mb.hoochOnPlayer += 1;
         }
         else
         {
-            hb = PlayerParams.Objects.player.AddComponent<HoochBehavior>();
-            hb.drunkRoom = drunkRoom;
+            mb = PlayerParams.Objects.player.AddComponent<MoonshineBehavior>();
+            mb.drunkRoom = drunkRoom;
         }
         
 
-        hb.duration = duration;
+        mb.duration = duration;
 
         //active potion effect on player
-        hb.ActivatePotionEffect();
+        mb.ActivatePotionEffect();
 
         //destroy this object
         Destroy(gameObject);

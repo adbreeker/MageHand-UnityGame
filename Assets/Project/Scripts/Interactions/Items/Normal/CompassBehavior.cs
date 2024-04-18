@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CompassBehavior : MonoBehaviour
+public class CompassBehavior : ItemBehavior
 {
+    [Space(10f), Header("Needle object")]
     [SerializeField] GameObject _needle;
     void Update()
     {
@@ -11,8 +12,9 @@ public class CompassBehavior : MonoBehaviour
             0, -PlayerParams.Objects.player.transform.rotation.eulerAngles.y - 90, 0);
     }
 
-    public void OnPickUp()
+    public override void OnPickUp()
     {
+        base.OnPickUp();
         transform.localRotation = Quaternion.Euler(0, -90, 90);
     }
 }

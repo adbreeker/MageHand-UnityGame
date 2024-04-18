@@ -12,7 +12,7 @@ public class ItemHolder : MonoBehaviour
     {
         foreach(GameObject item in items)
         {
-            if(item.GetComponent<ItemParameters>().itemName == itemName)
+            if(item.GetComponent<ItemBehavior>().itemName == itemName)
             {
                 return Instantiate(item, new Vector3(0,10,0), Quaternion.identity);
             }

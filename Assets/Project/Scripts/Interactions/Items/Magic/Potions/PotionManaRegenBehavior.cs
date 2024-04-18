@@ -9,11 +9,6 @@ public class PotionManaRegenBehavior : MonoBehaviour
 
     Coroutine _potionEffect;
 
-    public void OnPickUp()
-    {
-
-    }
-
     public void Drink() //add potion component to player, activate potion effect and destroy this object
     {
         //find player and add this component
