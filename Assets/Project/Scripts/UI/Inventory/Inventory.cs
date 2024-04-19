@@ -212,9 +212,18 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(GameObject item)
     {
-        inventory.Add(item);
-        inventory = inventory.OrderBy(go => go.GetComponent<ItemBehavior>().itemName).ToList();
-        item.SetActive(false);
+        if(item.tag == "Treasure")
+        {
+            PlayerParams.Controllers.pointsManager.currency += item.GetComponent<TreasureBehavior>().value;
+            Destroy(item);
+        }
+        else
+        {
+            inventory.Add(item);
+            inventory = inventory.OrderBy(go => go.GetComponent<ItemBehavior>().itemName).ToList();
+            item.SetActive(false);
+        }
+        
         try
         {
             PlayerParams.Controllers.handInteractions.inHand = null;

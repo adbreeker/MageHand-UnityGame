@@ -40,6 +40,7 @@ public class DrunkRoomBehavior : MonoBehaviour
         PlayerParams.Controllers.playerMovement.TeleportTo(_playerSpawnpoint.position);
         yield return new WaitForSeconds(3.0f);
 
+        PlayerParams.Controllers.pointsManager.minPlotPoints += -3;
         PlayerParams.Controllers.pointsManager.plotPoints += -3;
 
         while (true)
