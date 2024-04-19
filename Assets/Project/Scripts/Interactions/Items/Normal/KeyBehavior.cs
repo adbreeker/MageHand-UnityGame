@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KeyBehavior : MonoBehaviour
+public class KeyBehavior : ItemBehavior
 {
+    [Header("Lock type unlocking")]
     public LockBehavior.LockType openingLock;
 
     private void Update() //if key is near locked doors then open those doors
@@ -22,10 +23,5 @@ public class KeyBehavior : MonoBehaviour
                 }
             }
         }
-    }
-
-    public void OnPickUp()
-    {
-
     }
 }

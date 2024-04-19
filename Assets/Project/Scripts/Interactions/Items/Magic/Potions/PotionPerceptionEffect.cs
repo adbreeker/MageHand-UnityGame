@@ -2,45 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PotionPerceptionBehavior : MonoBehaviour
+public class PotionPerceptionEffect : PotionEffect
 {
-    [Header("Potion duration time")]
-    public float duration = 90.0f;
-
-    [Header("Perception mark pefab")]
+    [Space(20f),Header("Perception mark pefab")]
     public GameObject perceptionMarkPrefab;
 
-    Coroutine _potionEffect;
-
-    public void OnPickUp()
-    {
-
-    }
-
-    public void Drink() //add potion component to player, activate potion effect and destroy this object
+    public override void Drink() //add potion component to player, activate potion effect and destroy this object
     {
         //find player and add this component
-        PotionPerceptionBehavior ppb;
-        if (PlayerParams.Objects.player.GetComponent<PotionPerceptionBehavior>() != null)
+        PotionPerceptionEffect ppe;
+        if (PlayerParams.Objects.player.GetComponent<PotionPerceptionEffect>() != null)
         {
-            ppb = PlayerParams.Objects.player.GetComponent<PotionPerceptionBehavior>();
+            ppe = PlayerParams.Objects.player.GetComponent<PotionPerceptionEffect>();
         }
         else
         {
-            ppb = PlayerParams.Objects.player.AddComponent<PotionPerceptionBehavior>();
-            ppb.perceptionMarkPrefab = perceptionMarkPrefab;
+            ppe = PlayerParams.Objects.player.AddComponent<PotionPerceptionEffect>();
+            ppe.perceptionMarkPrefab = perceptionMarkPrefab;
         }
 
-        ppb.duration = duration;
+        ppe.duration = duration;
 
         //active potion effect on player
-        ppb.ActivatePotionEffect();
+        ppe.ActivatePotionEffect();
 
         //destroy this object
         Destroy(gameObject);
     }
 
-    public void ActivatePotionEffect()
+    public override void ActivatePotionEffect()
     {
         if (_potionEffect != null) 
         {

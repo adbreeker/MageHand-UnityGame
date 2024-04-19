@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7516147023265018176
+--- !u!1 &3912441772469963354
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,57 +8,56 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7516147023265246560}
-  - component: {fileID: 7516147023266049344}
-  - component: {fileID: 7516147023267016576}
-  - component: {fileID: 2372670132210009772}
-  - component: {fileID: -504141278071330408}
-  - component: {fileID: 5031432750722014327}
-  - component: {fileID: -5666187935056614760}
+  - component: {fileID: 3912441772470392442}
+  - component: {fileID: 3912441772466968154}
+  - component: {fileID: 3912441772467967130}
+  - component: {fileID: 9101305635235570680}
+  - component: {fileID: 167925312714110549}
+  - component: {fileID: 237703178551783988}
   m_Layer: 12
-  m_Name: Potion_Perception
-  m_TagString: Potion
+  m_Name: CrystalSkullRuby
+  m_TagString: Treasure
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7516147023265246560
+--- !u!4 &3912441772470392442
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7516147023265018176}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 3912441772469963354}
+  m_LocalRotation: {x: 0.000000021855694, y: 0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!33 &7516147023266049344
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &3912441772466968154
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7516147023265018176}
-  m_Mesh: {fileID: 4300000, guid: 7e1b98bbe17b88644aea6625cb61b2c5, type: 3}
---- !u!23 &7516147023267016576
+  m_GameObject: {fileID: 3912441772469963354}
+  m_Mesh: {fileID: 4300002, guid: 34636936646bab64fb61023e7f3410ba, type: 3}
+--- !u!23 &3912441772467967130
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7516147023265018176}
+  m_GameObject: {fileID: 3912441772469963354}
   m_Enabled: 1
-  m_CastShadows: 0
+  m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 0
+  m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
@@ -66,7 +65,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 22e63e65463758a45bbfa96033452215, type: 2}
-  - {fileID: 2100000, guid: fa9e8323c39675f459e110ce7b78f7cf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -78,7 +76,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
+  m_StitchLightmapSeams: 1
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -88,57 +86,44 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2372670132210009772
+--- !u!65 &9101305635235570680
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7516147023265018176}
+  m_GameObject: {fileID: 3912441772469963354}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.25, z: 0.1}
-  m_Center: {x: 0, y: 0.12, z: 0}
---- !u!65 &-504141278071330408
+  m_Size: {x: 0.15, y: 0.15, z: 0.2}
+  m_Center: {x: 0, y: 0.08, z: -0.01}
+--- !u!65 &167925312714110549
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7516147023265018176}
+  m_GameObject: {fileID: 3912441772469963354}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.7, y: 0.5, z: 0.7}
-  m_Center: {x: 0, y: 0.2, z: 0}
---- !u!114 &5031432750722014327
+  m_Size: {x: 0.3, y: 0.3, z: 0.4}
+  m_Center: {x: 0, y: 0.08, z: -0.01}
+--- !u!114 &237703178551783988
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7516147023265018176}
+  m_GameObject: {fileID: 3912441772469963354}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c06c8c94ea2b1dd49ba5954874054f6e, type: 3}
+  m_Script: {fileID: 11500000, guid: bf68814bb2c792e4aa1f4f3261e3432e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Potion of Perception
-  itemIcon: {fileID: 6610860039850489068, guid: c4ca95f5d102d23429f7311276728ce4, type: 3}
---- !u!114 &-5666187935056614760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7516147023265018176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 767518bfbf354824ca708dc55d66f288, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duration: 90
-  perceptionMarkPrefab: {fileID: 7358468838148070894, guid: 76f9f24b3e0dbc846a4873c7dd39d407, type: 3}
+  itemName: Crystal Skull Emerald
+  itemIcon: {fileID: 6610860039850489068, guid: fc9cead1e640fe6448c16a216372305e, type: 3}
+  value: 25

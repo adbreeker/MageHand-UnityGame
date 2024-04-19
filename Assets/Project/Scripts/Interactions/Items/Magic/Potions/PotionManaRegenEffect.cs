@@ -2,41 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PotionManaRegenBehavior : MonoBehaviour
+public class PotionManaRegenEffect : PotionEffect
 {
-    [Header("Potion duration time")]
-    public float duration = 60;
-
-    Coroutine _potionEffect;
-
-    public void OnPickUp()
-    {
-
-    }
-
-    public void Drink() //add potion component to player, activate potion effect and destroy this object
+    public override void Drink() //add potion component to player, activate potion effect and destroy this object
     {
         //find player and add this component
-        PotionManaRegenBehavior pmb;
-        if (PlayerParams.Objects.player.GetComponent<PotionManaRegenBehavior>() != null)
+        PotionManaRegenEffect pmre;
+        if (PlayerParams.Objects.player.GetComponent<PotionManaRegenEffect>() != null)
         {
-            pmb = PlayerParams.Objects.player.GetComponent<PotionManaRegenBehavior>();
+            pmre = PlayerParams.Objects.player.GetComponent<PotionManaRegenEffect>();
         }
         else
         {
-            pmb = PlayerParams.Objects.player.AddComponent<PotionManaRegenBehavior>();
+            pmre = PlayerParams.Objects.player.AddComponent<PotionManaRegenEffect>();
         }
 
-        pmb.duration = duration;
+        pmre.duration = duration;
 
         //active potion effect on player
-        pmb.ActivatePotionEffect();
+        pmre.ActivatePotionEffect();
 
         //destroy this object
         Destroy(gameObject);
     }
 
-    public void ActivatePotionEffect()
+    public override void ActivatePotionEffect()
     {
         if (_potionEffect != null) 
         { 

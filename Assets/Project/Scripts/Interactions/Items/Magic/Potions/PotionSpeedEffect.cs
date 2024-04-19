@@ -2,47 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PotionSpeedBehavior : MonoBehaviour
+public class PotionSpeedEffect : PotionEffect
 {
-    [Header("Potion duration time")]
-    public float duration = 30;
-
-    [Header("Speed aura pefab")]
+    [Space(20f),Header("Speed aura pefab")]
     public GameObject speedAuraPrefab;
 
     private GameObject auraOnPlayer;
 
-    Coroutine _potionEffect;
 
-    public void OnPickUp()
-    {
-
-    }
-
-    public void Drink() //add potion component to player, activate potion effect and destroy this object
+    public override void Drink() //add potion component to player, activate potion effect and destroy this object
     {
         //find player and add this component
-        PotionSpeedBehavior psb;
-        if (PlayerParams.Objects.player.GetComponent<PotionSpeedBehavior>() != null)
+        PotionSpeedEffect pse;
+        if (PlayerParams.Objects.player.GetComponent<PotionSpeedEffect>() != null)
         {
-            psb = PlayerParams.Objects.player.GetComponent<PotionSpeedBehavior>();
+            pse = PlayerParams.Objects.player.GetComponent<PotionSpeedEffect>();
         }
         else
         {
-            psb = PlayerParams.Objects.player.AddComponent<PotionSpeedBehavior>();
-            psb.speedAuraPrefab = speedAuraPrefab;
+            pse = PlayerParams.Objects.player.AddComponent<PotionSpeedEffect>();
+            pse.speedAuraPrefab = speedAuraPrefab;
         }
 
-        psb.duration = duration;
+        pse.duration = duration;
 
         //active potion effect on player
-        psb.ActivatePotionEffect();
+        pse.ActivatePotionEffect();
 
         //destroy this object
         Destroy(gameObject);
     }
 
-    public void ActivatePotionEffect() //activate potion speed effect on player
+    public override void ActivatePotionEffect() //activate potion speed effect on player
     {
         if (_potionEffect != null) 
         { 
