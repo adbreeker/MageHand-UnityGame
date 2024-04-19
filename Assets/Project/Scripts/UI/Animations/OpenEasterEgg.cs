@@ -13,10 +13,27 @@ public class OpenEasterEgg : MonoBehaviour
     [Header("Canvas Groups of Texts")]
     public CanvasGroup text1;
     public CanvasGroup text2;
+    public CanvasGroup continueText;
+
+    float fadeOutSpeed = 0.025f;
+    private bool animationEnded = false;
+    private bool skip = false;
     private void Start()
     {
         StartCoroutine(EasterEgg());
     }
+
+    private void Update()
+    {
+        if (animationEnded && Input.GetKeyDown(KeyCode.Space))
+        {
+            StartCoroutine(RestartScene());
+            FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption).Play();
+            animationEnded = false;
+        }
+        if (Input.GetKeyDown(KeyCode.Space)) skip = true;
+    }
+
     IEnumerator EasterEgg()
     {
         //deactivate other dialogues
@@ -38,7 +55,7 @@ public class OpenEasterEgg : MonoBehaviour
         PlayerParams.Controllers.pauseMenu.ableToInteract = true;
         PlayerParams.Controllers.spellsMenu.ableToInteract = true;
         PlayerParams.Controllers.journal.ableToInteract = true;
- 
+        
         //activate dialogue
         yield return new WaitForSeconds(2.5f);
         GameObject spawnedDialogue = SpawnDialogueOnPlayer.SpawnDialogue(randomDialoguesToSpawn[UnityEngine.Random.Range(0, randomDialoguesToSpawn.Count)]);
@@ -50,8 +67,6 @@ public class OpenEasterEgg : MonoBehaviour
 
         //blackout picture
         yield return new WaitForSeconds(0.4f);
-
-        float fadeOutSpeed = 0.025f;
         BackgroundMusic backgroundMusic = FindObjectOfType<BackgroundMusic>();
         backgroundMusic.modifyBackgroundMusicVolume = true;
         float startVolumeDecrease = backgroundMusic.startMusicAS.volume * fadeOutSpeed;
@@ -94,38 +109,56 @@ public class OpenEasterEgg : MonoBehaviour
         yield return new WaitForSeconds(2.5f);
         if (SceneManager.GetActiveScene().name != "Chapter_1_Level_1")
         {
+            skip = false;
             //show text1
             alpha = 0;
             while (alpha < 1)
             {
-                alpha += 0.0025f;
+                alpha += 0.005f;
                 text1.alpha = alpha;
 
-                yield return new WaitForSeconds(0);
+                if (!skip) yield return new WaitForSeconds(0);
             }
-
+            if (!skip) yield return new WaitForSeconds(0.5f);
+            skip = false;
             //show text2
             alpha = 0;
             while (alpha < 1)
             {
-                alpha += 0.0025f;
+                alpha += 0.005f;
                 text2.alpha = alpha;
 
-                yield return new WaitForSeconds(0);
+                if (!skip) yield return new WaitForSeconds(0);
             }
-            yield return new WaitForSeconds(1f);
-
-
+            if (!skip) yield return new WaitForSeconds(0.5f);
+            skip = false;
+            //show continue text
             alpha = 0;
             while (alpha < 1)
             {
-                alpha += fadeOutSpeed;
-                topBlackoutImage.color = new Color(0, 0, 0, alpha);
-                yield return new WaitForSeconds(0);
-            }
-        }
+                alpha += 0.01f;
+                continueText.alpha = alpha;
 
-        //restart scene
+                if (!skip) yield return new WaitForSeconds(0);
+            }
+            animationEnded = true;
+        }
+        //if on c1l1 restart scene
+        else
+        {
+            StartCoroutine(RestartScene());
+        }
+    }
+
+    IEnumerator RestartScene()
+    {
+        float alpha = 0;
+        while (alpha < 1)
+        {
+            alpha += fadeOutSpeed;
+            topBlackoutImage.color = new Color(0, 0, 0, alpha);
+            yield return new WaitForSeconds(0);
+        }
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
