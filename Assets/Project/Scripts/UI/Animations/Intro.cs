@@ -11,7 +11,7 @@ public class Intro : MonoBehaviour
     public CanvasGroup frame;
     public CanvasGroup continueButton;
     public List<RawImage> pics;
-    public string nextLevel = "Level_0_Tutorial";
+    public string nextLevel = "Chapter_0_Tutorial";
 
     private bool animationEnded = false;
     private bool skip = false;
@@ -45,7 +45,7 @@ public class Intro : MonoBehaviour
             alphaFrame += 0.01f;
             frame.alpha = alphaFrame;
 
-            if (!skip) yield return new WaitForSeconds(0);
+            if (!skip) yield return new WaitForFixedUpdate();
         }
 
         if (!skip) yield return new WaitForSeconds(1);
@@ -60,7 +60,7 @@ public class Intro : MonoBehaviour
                 pics[i].color = new Color(1, 1, 1, alpha);
                 texts[i].alpha = alpha;
 
-                if (!skip) yield return new WaitForSeconds(0);
+                if (!skip) yield return new WaitForFixedUpdate();
             }
 
             if (!skip) yield return new WaitForSeconds(5);
@@ -74,7 +74,7 @@ public class Intro : MonoBehaviour
             alphaContinue += 0.01f;
             continueButton.alpha = alphaContinue;
 
-            if (!skip) yield return new WaitForSeconds(0);
+            if (!skip) yield return new WaitForFixedUpdate();
         }
 
         animationEnded = true;

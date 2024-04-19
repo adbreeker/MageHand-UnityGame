@@ -242,42 +242,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2419854078006832760, guid: 77c611f08d2dd0544b58d61e7ef73c24, type: 3}
   m_PrefabInstance: {fileID: 3564264}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &4714042
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 250, g: 20, b: 20, a: 0}
-  m_BuildTextureStacks: []
 --- !u!1001 &5844344
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3762,7 +3726,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 775596447280505718, guid: 4b91d0533b55c2649b2542fe4983f555, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 775596447280505718, guid: 4b91d0533b55c2649b2542fe4983f555, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5863,6 +5827,10 @@ PrefabInstance:
       propertyPath: singleUse
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8422561767601123736, guid: 32af56053136d324383e3b8e117bf343, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 17426f02c65670744b0eab585e7bdc1e, type: 2}
     - target: {fileID: 8947224739740111231, guid: 32af56053136d324383e3b8e117bf343, type: 3}
       propertyPath: m_Name
       value: Lever
@@ -7902,6 +7870,10 @@ PrefabInstance:
       propertyPath: singleUse
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8422561767601123736, guid: 32af56053136d324383e3b8e117bf343, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 17426f02c65670744b0eab585e7bdc1e, type: 2}
     - target: {fileID: 8947224739740111231, guid: 32af56053136d324383e3b8e117bf343, type: 3}
       propertyPath: m_Name
       value: Lever
@@ -8360,6 +8332,65 @@ PrefabInstance:
     - target: {fileID: 3823750313428271633, guid: 9f471d098f311684a86f2d61b4f857f5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515043531239127390, guid: 9f471d098f311684a86f2d61b4f857f5, type: 3}
+      propertyPath: title
+      value: Lorem Ipsum
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515043531239127390, guid: 9f471d098f311684a86f2d61b4f857f5, type: 3}
+      propertyPath: content
+      value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent elementum,
+        nisl eget ullamcorper dictum, libero metus pretium metus, quis hendrerit
+        ante nisi eget arcu. Phasellus feugiat ex vitae ex luctus, ut hendrerit mi
+        bibendum. Sed fermentum rutrum metus sit amet fringilla. Cras commodo enim
+        ut tellus volutpat, ac varius elit tincidunt. Fusce in neque ante. Nam elementum
+        tincidunt purus ac facilisis. Mauris id consequat velit. Sed vel metus tincidunt
+        urna fringilla dapibus. Duis maximus leo ac posuere ornare. Integer sodales
+        semper imperdiet.
+
+
+
+        Interdum et malesuada fames ac ante ipsum primis
+        in faucibus. Aliquam pellentesque semper mi eget scelerisque. Praesent ante
+        nisi, bibendum id erat nec, sollicitudin imperdiet nulla. Nunc lacus neque,
+        commodo eu condimentum non, malesuada vel augue. Curabitur viverra, libero
+        quis laoreet porttitor, nulla dolor tincidunt odio, vitae dictum ligula leo
+        in lacus. Praesent facilisis sit amet libero in lacinia. Cras gravida euismod
+        odio quis mollis. Cras cursus dictum nibh, sit amet bibendum arcu accumsan
+        in. Fusce auctor nibh nec vulputate imperdiet.
+
+
+
+        In imperdiet et
+        eros vel congue. Nam viverra sollicitudin mattis. Mauris maximus, massa sit
+        amet feugiat elementum, arcu nunc fermentum odio, eget tincidunt risus sem
+        ut diam. Donec dictum elit non justo vehicula luctus. Nunc in tristique est.
+        Aliquam erat volutpat. Etiam sit amet velit venenatis, viverra tellus eget,
+        iaculis elit. In semper, augue a tincidunt mollis, diam orci fermentum lacus,
+        quis tristique felis odio volutpat nibh.
+
+
+
+        Aliquam pretium maximus
+        lorem, lacinia gravida purus gravida ac. Vestibulum sem quam, dictum facilisis
+        lectus a, ullamcorper tristique nulla. Duis ante eros, tristique ac mauris
+        vitae, cursus pretium dolor. Suspendisse in arcu sit amet arcu lacinia vulputate
+        vitae lobortis nisi. Mauris porta, ligula eu cursus elementum, mauris lacus
+        lobortis nisl, a fringilla nibh quam consectetur erat. Duis placerat tincidunt
+        odio vitae sodales. Praesent ac tortor vitae augue tempor sagittis non ac
+        nisl. Pellentesque condimentum pellentesque urna at ultrices.
+
+
+
+        Sed
+        eleifend mauris finibus, vulputate enim in, congue enim. Fusce purus ipsum,
+        rhoncus eget mi sit amet, tincidunt egestas dui. Duis ac nisl purus. Nulla
+        vitae nibh vitae odio lacinia ultrices. Aenean laoreet tellus eget volutpat
+        condimentum. Quisque congue, augue sit amet vestibulum hendrerit, ligula
+        libero fermentum velit, sit amet fermentum est tellus sit amet dui. Duis
+        vitae neque massa. Cras pretium lorem at risus mattis, vitae viverra erat
+        consequat. Donec nec ipsum massa. Ut a quam venenatis massa feugiat elementum
+        eget a est. Phasellus ultrices sem quis pharetra pretium.'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f471d098f311684a86f2d61b4f857f5, type: 3}
@@ -9192,7 +9223,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1477119232930766846, guid: cc8142cf69934b54290e4a6604eff2f4, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1477119232930766846, guid: cc8142cf69934b54290e4a6604eff2f4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -14734,9 +14765,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2108888897}
   - {fileID: 337185256}
   - {fileID: 1073577385}
-  - {fileID: 2108888897}
   m_Father: {fileID: 591690970}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15618,6 +15649,42 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3056135478572879024, guid: b1e358bda5eed9843a16500c3fa7d023, type: 3}
   m_PrefabInstance: {fileID: 574207055}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &574450868
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 260, g: 30, b: 30, a: 0}
+  m_BuildTextureStacks: []
 --- !u!1001 &577555248
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16562,6 +16629,10 @@ PrefabInstance:
       propertyPath: singleUse
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8422561767601123736, guid: 32af56053136d324383e3b8e117bf343, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 17426f02c65670744b0eab585e7bdc1e, type: 2}
     - target: {fileID: 8947224739740111231, guid: 32af56053136d324383e3b8e117bf343, type: 3}
       propertyPath: m_Name
       value: Lever
@@ -16660,6 +16731,21 @@ MonoBehaviour:
   _failTpDestination: {x: 16, y: 1, z: 20}
   _triggerTile1: {fileID: 1996060477}
   _triggerTile2: {fileID: 430890066}
+--- !u!114 &606151863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606151858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64376de2110c8e547a0f7fa676bacfed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxPlotPointsToAdd: 0
+  minPlotPointsToAdd: -3
+  whyAdded: If it appears, the drunk room can add -3 points.
 --- !u!1001 &608338767
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16784,42 +16870,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3684976289259133819, guid: 4eb44a7312f56cc43b6a724040512519, type: 3}
   m_PrefabInstance: {fileID: 609253212}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &610133884
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 250, g: 20, b: 20, a: 0}
-  m_BuildTextureStacks: []
 --- !u!1001 &611220240
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19451,42 +19501,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3684976289259133819, guid: 0f96d5bad34183c42b0fc39ff90326ec, type: 3}
   m_PrefabInstance: {fileID: 685988758}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &690874559
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 250, g: 20, b: 20, a: 0}
-  m_BuildTextureStacks: []
 --- !u!1001 &691132046
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21135,6 +21149,10 @@ PrefabInstance:
     - target: {fileID: 906403121377487520, guid: 16712fc0a4760f943b8387f26fa5b14e, type: 3}
       propertyPath: m_Name
       value: Hooch
+      objectReference: {fileID: 0}
+    - target: {fileID: 1748206761265433668, guid: 16712fc0a4760f943b8387f26fa5b14e, type: 3}
+      propertyPath: itemName
+      value: Rysiu's Moonshine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16712fc0a4760f943b8387f26fa5b14e, type: 3}
@@ -23602,6 +23620,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hooch (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1748206761265433668, guid: 16712fc0a4760f943b8387f26fa5b14e, type: 3}
+      propertyPath: itemName
+      value: Rysiu's Moonshine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16712fc0a4760f943b8387f26fa5b14e, type: 3}
 --- !u!1001 &811424094
@@ -24016,11 +24038,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7547175450821320253, guid: 2106bc57bb0f2494489d3956a7e3b8c1, type: 3}
       propertyPath: title
-      value: Wuja bibmrownik ostrzega
+      value: Rysiu's Moonshine
       objectReference: {fileID: 0}
     - target: {fileID: 7547175450821320253, guid: 2106bc57bb0f2494489d3956a7e3b8c1, type: 3}
       propertyPath: content
-      value: "Mocne g\xF3wno guys"
+      value: Be careful with this. Really strong stuff.
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2106bc57bb0f2494489d3956a7e3b8c1, type: 3}
@@ -25125,7 +25147,7 @@ PrefabInstance:
     - target: {fileID: 6627674779028655066, guid: 4a111335ccb0c0b41a535c004d2f7520, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 2938990aa8d343644bd50e3c0e8e3512, type: 2}
+      objectReference: {fileID: 2100000, guid: 04f1798e4ab51b8498e915e69366b0fc, type: 2}
     - target: {fileID: 8350940678756765464, guid: 4a111335ccb0c0b41a535c004d2f7520, type: 3}
       propertyPath: m_Name
       value: Painting
@@ -26305,6 +26327,10 @@ PrefabInstance:
     - target: {fileID: 906403121377487520, guid: 16712fc0a4760f943b8387f26fa5b14e, type: 3}
       propertyPath: m_Name
       value: Hooch (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1748206761265433668, guid: 16712fc0a4760f943b8387f26fa5b14e, type: 3}
+      propertyPath: itemName
+      value: Rysiu's Moonshine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16712fc0a4760f943b8387f26fa5b14e, type: 3}
@@ -27774,6 +27800,10 @@ PrefabInstance:
       propertyPath: singleUse
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8422561767601123736, guid: 32af56053136d324383e3b8e117bf343, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 17426f02c65670744b0eab585e7bdc1e, type: 2}
     - target: {fileID: 8947224739740111231, guid: 32af56053136d324383e3b8e117bf343, type: 3}
       propertyPath: m_Name
       value: Lever
@@ -28541,6 +28571,42 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5970469832888671089, guid: 3ae38ac1f1e2d9c4bb96089653843c2e, type: 3}
   m_PrefabInstance: {fileID: 1017693272}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &1013858520
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 250, g: 20, b: 20, a: 0}
+  m_BuildTextureStacks: []
 --- !u!1001 &1014781956
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29129,22 +29195,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4515043531239127390, guid: 9f471d098f311684a86f2d61b4f857f5, type: 3}
       propertyPath: title
-      value: Helpful Labyrinth Note
+      value: Maze note
       objectReference: {fileID: 0}
     - target: {fileID: 4515043531239127390, guid: 9f471d098f311684a86f2d61b4f857f5, type: 3}
       propertyPath: content
-      value: 'Out of the entire year, I was the only one who managed to pass the
-        labyrinth trial. I wrote down the route I took and left my compass, hopefully
-        it will be helpful.
-
-
-        N, W, lever, W right exit, N, lever, S, E,
-        lever, W left exit, S, S fake wall, W, S, W middle tunnel, lever, E, N, lever,
-        N, W, N, E, N, W, N, W, N, E, N, W, lever.
-
-
-        I also heard that there
-        is a secret library hidden inside, but I couldn''t find it.'
+      value: "Out of the entire year, I was the only one who managed to find both
+        silver levers in the maze. I wrote down the route I took and left my compass
+        here. Maybe someone will need it.\r\n\r\nN, W, lever, W right exit, N, silver
+        lever, S, E, lever, W left exit, S, S fake wall, S, W, S, W middle tunnel,
+        lever, E, N, lever, N, W, N, E, N, W, N, W, N, E to the end, N, W, silver
+        lever.\r\n\r\nAlong the way, through one of the windows, I saw a strange
+        green glow in a room that was probably some kind of secret library, but I
+        couldn't find the entrance.\r"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f471d098f311684a86f2d61b4f857f5, type: 3}
@@ -29563,6 +29625,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6412617696393458263, guid: a894a8c977dbe674ead86bca5374a3e1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8735214370669408620, guid: a894a8c977dbe674ead86bca5374a3e1, type: 3}
+      propertyPath: typeToFind
+      value: ReadableBehavior
+      objectReference: {fileID: 0}
+    - target: {fileID: 8735214370669408620, guid: a894a8c977dbe674ead86bca5374a3e1, type: 3}
+      propertyPath: foundedComponents.Array.size
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -30194,7 +30264,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1477119232930766846, guid: cc8142cf69934b54290e4a6604eff2f4, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1477119232930766846, guid: cc8142cf69934b54290e4a6604eff2f4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -32537,8 +32607,24 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 171348032}
+    m_TransformParent: {fileID: 1996060477}
     m_Modifications:
+    - target: {fileID: 5941178938316102367, guid: 887b32929a30e1d47af40c784bef7b81, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5941178938316102367, guid: 887b32929a30e1d47af40c784bef7b81, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5941178938316102367, guid: 887b32929a30e1d47af40c784bef7b81, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5941178938316102367, guid: 887b32929a30e1d47af40c784bef7b81, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.00000004371139
+      objectReference: {fileID: 0}
     - target: {fileID: 6495234843378389799, guid: 887b32929a30e1d47af40c784bef7b81, type: 3}
       propertyPath: m_Name
       value: SecretTrigger
@@ -33707,6 +33793,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 312485719}
     m_Modifications:
+    - target: {fileID: 5941178938316102367, guid: 887b32929a30e1d47af40c784bef7b81, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5941178938316102367, guid: 887b32929a30e1d47af40c784bef7b81, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5941178938316102367, guid: 887b32929a30e1d47af40c784bef7b81, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5941178938316102367, guid: 887b32929a30e1d47af40c784bef7b81, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6495234843378389799, guid: 887b32929a30e1d47af40c784bef7b81, type: 3}
       propertyPath: m_Name
       value: SecretTrigger
@@ -34477,42 +34579,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7547175450821320253, guid: 2106bc57bb0f2494489d3956a7e3b8c1, type: 3}
       propertyPath: title
-      value: Poem of Lightbringer
+      value: Guiding Lights
       objectReference: {fileID: 0}
     - target: {fileID: 7547175450821320253, guid: 2106bc57bb0f2494489d3956a7e3b8c1, type: 3}
       propertyPath: content
-      value: 'Grab the light in your hand,
-
-        In the dark, it''s your command.
-
-        Through
-        the maze, let it guide,
-
-        With each step, no need to hide.
-
-
-
-        As
-        you move, the cone shall show,
-
-        The path where you should go.
-
-        Trust
-        the glow, its gentle beam,
-
-        Leading through this puzzling dream.
-
-
-
-        Keep
-        it close, don''t let it fade,
-
-        For in its radiance, secrets are laid.
-
-        With
-        every turn, with every plight,
-
-        Let the light guide your might.'
+      value: "\nGrab the light from your heart,\r\nLet it lead through the dark.\r\nIn
+        the dark, it\u2019s your guide,\r\nYou don\u2019t have to go back.\r\n\n\r\nYou
+        can step left or right,\r\nEven backwards, it\u2019s all right.\r\nBut to
+        reach your inner goal,\r\nYou must follow its bright cone.\r\n\r\n\nKeep
+        it close, don\u2019t let it go,\r\nFor in its shine, secrets are shown.\r\nLook
+        around with every plight,\r\nFor a hint from your light.\r"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2106bc57bb0f2494489d3956a7e3b8c1, type: 3}
@@ -35958,6 +36034,42 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1038658219407922388, guid: 029f1e4ba324c3d44bbc8f3cf393834a, type: 3}
   m_PrefabInstance: {fileID: 1256707311}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &1257399049
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 250, g: 20, b: 20, a: 0}
+  m_BuildTextureStacks: []
 --- !u!1001 &1258989313
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36913,6 +37025,29 @@ PrefabInstance:
     - target: {fileID: 3823750313428271633, guid: 9f471d098f311684a86f2d61b4f857f5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515043531239127390, guid: 9f471d098f311684a86f2d61b4f857f5, type: 3}
+      propertyPath: title
+      value: Theory of Magic
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515043531239127390, guid: 9f471d098f311684a86f2d61b4f857f5, type: 3}
+      propertyPath: content
+      value: "Not much has been discovered over the years of studying magic. Using
+        magic, sorcery and spellcasting are all descriptions of the materialization
+        of energy called mana. This process occurs when the spellcaster performs
+        the appropriate incantation. Incantation, on the other hand, is a process
+        in which spellcaster must first show the incantation gesture and then say
+        the name of a specific spell.\r\n\r\nTheoretically, all people are capable
+        of using magic, but some of them are more sensitive to it than others. Without
+        it, learning magic can be very, very difficult, but not impossible. Of course,
+        this gives rise to many conflicts, social disputes, etc., but this is not
+        the topic of this text.\r\n\r\nThe irritating fact of studying magic is that
+        we do not know its origins at all. It is not known where civilizations learned
+        what the incantation gesture looks like, what the process of creating spells
+        looks like, that it is needed to pronounce the name of a spell etc. There
+        are no historical records on this subject. As if everyone had always known
+        it. There are, of course, various legends, myths and theories about this,
+        but these are just legends, myths and theories.\r"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f471d098f311684a86f2d61b4f857f5, type: 3}
@@ -40574,7 +40709,7 @@ PrefabInstance:
     - target: {fileID: 6627674779028655066, guid: 4a111335ccb0c0b41a535c004d2f7520, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 2938990aa8d343644bd50e3c0e8e3512, type: 2}
+      objectReference: {fileID: 2100000, guid: 6be70e7737a0ee540aa1ac9b1ff88bba, type: 2}
     - target: {fileID: 8350940678756765464, guid: 4a111335ccb0c0b41a535c004d2f7520, type: 3}
       propertyPath: m_Name
       value: Painting
@@ -43420,7 +43555,7 @@ PrefabInstance:
     - target: {fileID: 710588697011875297, guid: 4fc787d1eb080ed458cfb813f50f44c4, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 2050244979}
+      objectReference: {fileID: 1876551212}
     - target: {fileID: 1024683978554945603, guid: 4fc787d1eb080ed458cfb813f50f44c4, type: 3}
       propertyPath: echo
       value: 0
@@ -43552,7 +43687,7 @@ PrefabInstance:
     - target: {fileID: 4895090046338607879, guid: 4fc787d1eb080ed458cfb813f50f44c4, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 610133884}
+      objectReference: {fileID: 1013858520}
     - target: {fileID: 4918594048529901667, guid: 4fc787d1eb080ed458cfb813f50f44c4, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -43708,7 +43843,7 @@ PrefabInstance:
     - target: {fileID: 9054540770486016704, guid: 4fc787d1eb080ed458cfb813f50f44c4, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 690874559}
+      objectReference: {fileID: 2106391642}
     - target: {fileID: 9145823283809480044, guid: 4fc787d1eb080ed458cfb813f50f44c4, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -44060,42 +44195,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3684976289259133819, guid: 4eb44a7312f56cc43b6a724040512519, type: 3}
   m_PrefabInstance: {fileID: 1540950898}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &1542009943
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 260, g: 30, b: 30, a: 0}
-  m_BuildTextureStacks: []
 --- !u!1001 &1560138994
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44336,6 +44435,26 @@ PrefabInstance:
     - target: {fileID: 3823750313428271633, guid: 9f471d098f311684a86f2d61b4f857f5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -98.86
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515043531239127390, guid: 9f471d098f311684a86f2d61b4f857f5, type: 3}
+      propertyPath: title
+      value: Mana in Numbers
+      objectReference: {fileID: 0}
+    - target: {fileID: 4515043531239127390, guid: 9f471d098f311684a86f2d61b4f857f5, type: 3}
+      propertyPath: content
+      value: "Mana is a simple measure of the spellcaster\u2019s energy. Each spell
+        has a certain complexity, which is translated into mana points needed to
+        cast it. If the spellcaster does not have enough mana, they will not be able
+        to cast the spell.\r\n\r\nIf it's because the spellcaster just used another
+        spell, they simply need to wait a moment. It is a known fact that mana regenerates
+        itself quite quickly.\r\n\r\nA bigger problem occurs when the spellcaster
+        does not have enough mana due to their limit. Every spellcaster has one.
+        It can be trained and enlarged, but this requires a lot of time.\r\n\r\nBy
+        the spellcaster\u2019s mana limit, you can quite easily determine their approximate
+        skill level:\r\n1 - 25 beginner mage,\r\n26 - 50 average mage,\r\n51 - 75
+        well-trained mage,\r\n76 - 100 very advanced mage,\r\n101 - 125 archmage,\r\n126
+        - 150 powerful archmage.\r\n\r\nOnly a few of the most powerful archmages
+        have a mana limit greater than 150.\r"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f471d098f311684a86f2d61b4f857f5, type: 3}
@@ -44926,6 +45045,42 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 733306150160857940, guid: a3db738146316eb4dbd8114de39fd0d6, type: 3}
   m_PrefabInstance: {fileID: 1590901752}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &1592942675
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 250, g: 20, b: 20, a: 0}
+  m_BuildTextureStacks: []
 --- !u!1001 &1596765811
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -50893,6 +51048,123 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3684976289259133819, guid: 4eb44a7312f56cc43b6a724040512519, type: 3}
   m_PrefabInstance: {fileID: 1793005097}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1799218234
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2108888897}
+    m_Modifications:
+    - target: {fileID: -4973024085551694395, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4973024085551694395, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4973024085551694395, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -2014502753398087113, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: maxHearingDistance
+      value: 7.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -2014502753398087113, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: minHearingDistance
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6933273636467699375, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6933273636467699375, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6933273636467699375, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6938118595782370273, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6938118595782370273, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6938118595782370273, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6938617586292102769, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6938617586292102769, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6938617586292102769, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7101858864134647831, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7101868786794713321, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: m_Name
+      value: MagicLight
+      objectReference: {fileID: 0}
+    - target: {fileID: 7104621139028944291, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7104621139028944291, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7104621139028944291, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7104621139028944291, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7104621139028944291, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7104621139028944291, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7104621139028944291, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7104621139028944291, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7104621139028944291, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7104621139028944291, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7104621139028944291, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
 --- !u!1001 &1799726985
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -53030,7 +53302,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4eb44a7312f56cc43b6a724040512519, type: 3}
---- !u!21 &1875835242
+--- !u!21 &1876551212
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -53064,7 +53336,7 @@ Material:
     - _StencilWriteMask: 255
     - _UseUIAlphaClip: 0
     m_Colors:
-    - _WidthHeightRadius: {r: 250, g: 20, b: 20, a: 0}
+    - _WidthHeightRadius: {r: 260, g: 30, b: 30, a: 0}
   m_BuildTextureStacks: []
 --- !u!1001 &1880461193
 PrefabInstance:
@@ -57250,9 +57522,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2108888897}
     m_Modifications:
+    - target: {fileID: 5941178938316102367, guid: 887b32929a30e1d47af40c784bef7b81, type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 6495234843378389799, guid: 887b32929a30e1d47af40c784bef7b81, type: 3}
       propertyPath: m_Name
       value: SecretTrigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 6495234843378389802, guid: 887b32929a30e1d47af40c784bef7b81, type: 3}
+      propertyPath: m_Size.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6495234843378389802, guid: 887b32929a30e1d47af40c784bef7b81, type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6495234843378389802, guid: 887b32929a30e1d47af40c784bef7b81, type: 3}
+      propertyPath: m_Size.z
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6495234843378389805, guid: 887b32929a30e1d47af40c784bef7b81, type: 3}
       propertyPath: m_Pivot.x
@@ -58311,42 +58599,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2419854078006832760, guid: 77c611f08d2dd0544b58d61e7ef73c24, type: 3}
   m_PrefabInstance: {fileID: 2046429275}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &2050244979
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 260, g: 30, b: 30, a: 0}
-  m_BuildTextureStacks: []
 --- !u!1001 &2057333296
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -60112,6 +60364,42 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5970469832888671089, guid: 3ae38ac1f1e2d9c4bb96089653843c2e, type: 3}
   m_PrefabInstance: {fileID: 2106206150}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &2106391642
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 250, g: 20, b: 20, a: 0}
+  m_BuildTextureStacks: []
 --- !u!1001 &2106921530
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -60249,7 +60537,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1477119232930766846, guid: cc8142cf69934b54290e4a6604eff2f4, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1477119232930766846, guid: cc8142cf69934b54290e4a6604eff2f4, type: 3}
       propertyPath: m_LocalPosition.x

@@ -36,6 +36,8 @@ public class SpellCasting : MonoBehaviour
     public GameObject firePrefab;
     public GameObject markPrefab;
 
+    [Header("Easter Egg")]
+    public GameObject openEasterEggPrefab;
 
     //private AudioSource castingSound;
     private AudioSource castingFailSound;
@@ -206,10 +208,11 @@ public class SpellCasting : MonoBehaviour
         }
         else
         {
-            //Later there will be an easter egg
             castingFailSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
             castingFailSound.Play();
             Destroy(castingFailSound, castingFailSound.clip.length);
+
+            Instantiate(openEasterEggPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         }
     }
 

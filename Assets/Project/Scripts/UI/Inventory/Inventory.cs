@@ -143,6 +143,10 @@ public class Inventory : MonoBehaviour
             }
         }
 
+        //Display currency counter
+        instantiatedInventory.transform.Find("Background").Find("InventoryBackground").Find("MoneyCounter")
+            .gameObject.GetComponent<TextMeshProUGUI>().text = ": " + PlayerParams.Controllers.pointsManager.currency.ToString();
+
         //Display first page if there are items in inventory
         page = 0;
         if (inventoryPages.Count > 0)
