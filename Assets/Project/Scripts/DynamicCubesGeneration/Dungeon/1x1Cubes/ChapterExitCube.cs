@@ -1,86 +1,48 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ChapterExitCube : MonoBehaviour
+public class ChapterExitCube : LevelExitCube
 {
-    [Header("Next scene:")]
-    public string chapter;
-    [Header("Searching only on player layer")]
-    public LayerMask playerMask;
 
-    public bool changeMusic = false;
-
-    public static event Action OnLevelChange;
-
-    BoxCollider box;
-
-    private bool _isAnimationGoing = false;
-    //objects needed for saving progress:
-    private ProgressSaving saveManager;
-    private Spellbook spellbook;
-    private Inventory inventory;
-    private Journal journal;
-
-    private void Start() //finding all necessary objects
+    protected override void ChangeLevel()
     {
-        box = GetComponent<BoxCollider>();
-
-        saveManager = GameParams.Managers.saveManager;
-        spellbook = PlayerParams.Controllers.spellbook;
-        inventory = PlayerParams.Controllers.inventory;
-        journal = PlayerParams.Controllers.journal;
+        StartCoroutine(ChangeChapterAnimation());
     }
 
-    private void Update() //checking if player is inside cube
+    IEnumerator ChangeChapterAnimation()
     {
-        Collider[] colliders;
-        colliders = Physics.OverlapBox(box.bounds.center, box.bounds.extents, Quaternion.identity, playerMask);
-        if (colliders.Length > 0 && !_isAnimationGoing)
+        PlayerParams.Controllers.playerMovement.movementSpeed = 0;
+        float stairsHigh = PlayerParams.Objects.player.transform.position.y + 2.0f;
+        int stairCounter = 0;
+        while (true)
         {
-            ChangeLevel();
-        }
-    }
+            for (int i = 0; i < 10; i++)
+            {
+                yield return new WaitForFixedUpdate();
+                Vector3 destination = transform.position;
+                destination.y = PlayerParams.Objects.player.transform.position.y;
+                PlayerParams.Objects.player.transform.position = Vector3.MoveTowards(PlayerParams.Objects.player.transform.position, destination, 0.05f);
+            }
 
-    public void ChangeLevel()
-    {
-        _isAnimationGoing = true;
-        if (OnLevelChange != null) { OnLevelChange(); }
+            for (int i = 0; i < 10; i++)
+            {
+                yield return new WaitForFixedUpdate();
+                Vector3 destination = PlayerParams.Objects.player.transform.position;
+                destination.y = stairsHigh;
+                PlayerParams.Objects.player.transform.position = Vector3.MoveTowards(PlayerParams.Objects.player.transform.position, destination, 0.05f);
+            }
+
+            stairCounter++;
+
+            if (stairCounter >= 5)
+            {
+                break;
+            }
+        }
 
         SaveProgress();
-
         GameParams.Managers.fadeInOutManager.ChangeScene(chapter, fadeOutAndChangeMusic: changeMusic);
-    }
-
-    private void SaveProgress() //saving all progress
-    {
-        //game state
-        saveManager.SaveGameState(chapter, 
-            PlayerParams.Controllers.pointsManager.plotPoints,
-            PlayerParams.Controllers.pointsManager.foundSecrets,
-            PlayerParams.Controllers.pointsManager.currency,
-            PlayerParams.Controllers.pointsManager.maxPlotPoints,
-            PlayerParams.Controllers.pointsManager.minPlotPoints,
-            PlayerParams.Controllers.pointsManager.maxFoundSecrets,
-            PlayerParams.Controllers.pointsManager.maxCurrency);
-
-        //spells
-        List<string> spells = new List<string>();
-        foreach (SpellScrollInfo scroll in spellbook.spells)
-        {
-            spells.Add(scroll.spellName);
-        }
-        saveManager.SaveSpells(spellbook.bookOwned, spells);
-
-        //items
-        saveManager.SaveItems(inventory.inventory);
-
-        //journal
-        saveManager.SaveJournal(journal.notesJournal, journal.dialoguesJournal);
-
-        //everything to file
-        saveManager.SaveProgressToFile();
     }
 }

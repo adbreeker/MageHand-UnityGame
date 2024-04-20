@@ -24,7 +24,7 @@ public class PotionInChestRequest : MonoBehaviour
         PlayerParams.Controllers.pointsManager.minPlotPoints += -2;
         PlayerParams.Controllers.pointsManager.maxPlotPoints += 1;
 
-        ChapterExitCube.OnLevelChange += OnLevelChange;
+        LevelExitCube.OnLevelChange += OnLevelChange;
 
         treasure = Instantiate(treasurePrefab, new Vector3(0,-10, 0), Quaternion.identity);
     }
@@ -55,7 +55,7 @@ public class PotionInChestRequest : MonoBehaviour
                     isPotionInChest = false;
                 }
             }
-            if(treasure != null)
+            if(treasure != null && treasureTeleported)
             {
                 if (chestBounds.bounds.Contains(treasure.transform.position) && treasure.transform.parent == null)
                 {
@@ -71,6 +71,7 @@ public class PotionInChestRequest : MonoBehaviour
 
     public void OnLevelChange()
     {
+        Debug.Log("OnLevelChange Event handler from " + this.name);
         int points = 0;
 
         if(potionPicked)
@@ -81,6 +82,7 @@ public class PotionInChestRequest : MonoBehaviour
         }
 
         PlayerParams.Controllers.pointsManager.plotPoints += points;
-        Debug.Log("Zaktualizowalem punkty");
+
+        LevelExitCube.OnLevelChange -= OnLevelChange;
     }
 }
