@@ -24,6 +24,32 @@ public class ItemBehavior : MonoBehaviour
             Destroy(to);
         }
     }
+
+    public void TeleportTo(Vector3 tpDestination) //teleport to destination and stop movement enqued before teleportation
+    {
+        transform.position = tpDestination;
+    }
+    public void TeleportTo(Vector3 tpDestination, Color? tpEffectColor)
+    {
+        transform.position = tpDestination;
+
+        AudioSource tpSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_MagicalTeleportation);
+        tpSound.Play();
+        Destroy(tpSound, tpSound.clip.length);
+
+        GameObject tpEffect = FindObjectOfType<MaterialsAndEffectsHolder>().GetEffect(MaterialsAndEffectsHolder.Effects.teleportationObject);
+
+        if (tpEffectColor != null)
+        {
+            Instantiate(tpEffect, transform)
+                    .GetComponent<TeleportationColor>().ChangeColorOfEffect(tpEffectColor.Value);
+        }
+        else
+        {
+            Instantiate(tpEffect, transform);
+        }
+    }
+
     protected virtual void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "Obstacle" || collision.gameObject.tag == "DungeonCube")

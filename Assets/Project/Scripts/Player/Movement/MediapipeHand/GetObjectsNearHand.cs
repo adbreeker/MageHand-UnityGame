@@ -78,7 +78,7 @@ public class GetObjectsNearHand : MonoBehaviour
                 }
                 else
                 {
-                    pointingAt.AddComponent<EnlightObject>().materialType = MaterialHolder.Materials.enlightenItem;
+                    pointingAt.AddComponent<EnlightObject>().materialType = MaterialsAndEffectsHolder.Materials.enlightenItem;
                 }
 
                 //show icon
@@ -106,7 +106,7 @@ public class GetObjectsNearHand : MonoBehaviour
                 }
                 else
                 {
-                    pointingAt.AddComponent<EnlightObject>().materialType = MaterialHolder.Materials.enlightenInteraction;
+                    pointingAt.AddComponent<EnlightObject>().materialType = MaterialsAndEffectsHolder.Materials.enlightenInteraction;
                 }
 
                 //show icon
@@ -134,7 +134,7 @@ public class GetObjectsNearHand : MonoBehaviour
                 }
                 else
                 {
-                    pointingAt.GetComponent<ChestBehavior>().chestCore.AddComponent<EnlightObject>().materialType = MaterialHolder.Materials.enlightenInteraction;
+                    pointingAt.GetComponent<ChestBehavior>().chestCore.AddComponent<EnlightObject>().materialType = MaterialsAndEffectsHolder.Materials.enlightenInteraction;
                 }
 
                 //enlight lid
@@ -144,7 +144,7 @@ public class GetObjectsNearHand : MonoBehaviour
                 }
                 else
                 {
-                    pointingAt.GetComponent<ChestBehavior>().chestLid.AddComponent<EnlightObject>().materialType = MaterialHolder.Materials.enlightenInteraction;
+                    pointingAt.GetComponent<ChestBehavior>().chestLid.AddComponent<EnlightObject>().materialType = MaterialsAndEffectsHolder.Materials.enlightenInteraction;
                 }
 
                 //show icon

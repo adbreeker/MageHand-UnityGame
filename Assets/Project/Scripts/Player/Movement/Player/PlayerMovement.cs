@@ -26,7 +26,6 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Special effects")]
     [SerializeField] GameObject _teleportationEffect;
-    //private AudioSource _tpSound;
 
     //enqueuing input
     private Vector3 _movementInputQueue = Vector3.zero;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MaterialHolder : MonoBehaviour
+public class MaterialsAndEffectsHolder : MonoBehaviour
 {
     public enum Materials
     {
@@ -10,8 +10,17 @@ public class MaterialHolder : MonoBehaviour
         enlightenInteraction
     }
 
+    public enum Effects
+    {
+        teleportationObject
+    }
+
+    [Header ("Materials:")]
     public Material enlightenItem; //material for pointed items (enlightening them)
     public Material enlightenInteraction; //material for pointed interactions (enlightening them)
+
+    [Header("Effects:")]
+    public GameObject teleportationObjectEffect;
 
     public Material GetMaterial(Materials material)
     {
@@ -22,6 +31,16 @@ public class MaterialHolder : MonoBehaviour
         if(material == Materials.enlightenInteraction)
         {
             return enlightenInteraction;
+        }
+
+        return null;
+    }
+
+    public GameObject GetEffect(Effects effect) 
+    {
+        if(effect == Effects.teleportationObject)
+        {
+            return teleportationObjectEffect;
         }
 
         return null;

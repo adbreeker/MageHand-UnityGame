@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,10 +11,9 @@ public class ChapterExitCube : MonoBehaviour
     [Header("Searching only on player layer")]
     public LayerMask playerMask;
 
-    [Header("On level change interactions:")]
-    public List<GameObject> levelChangeInteractionsHolders = new List<GameObject>();
-
     public bool changeMusic = false;
+
+    public static event Action OnLevelChange;
 
     BoxCollider box;
 
@@ -40,16 +40,18 @@ public class ChapterExitCube : MonoBehaviour
         colliders = Physics.OverlapBox(box.bounds.center, box.bounds.extents, Quaternion.identity, playerMask);
         if (colliders.Length > 0 && !_isAnimationGoing)
         {
-            foreach(GameObject lcih in levelChangeInteractionsHolders)
-            {
-                lcih.SendMessage("OnLevelChange");
-            }
-            Debug.Log("Zmieniam poziom;");
-            SaveProgress();
-            
-            FindObjectOfType<FadeInFadeOut>().ChangeScene(chapter, fadeOutAndChangeMusic: changeMusic);
-            _isAnimationGoing = true;
+            ChangeLevel();
         }
+    }
+
+    public void ChangeLevel()
+    {
+        _isAnimationGoing = true;
+        OnLevelChange();
+
+        SaveProgress();
+
+        FindObjectOfType<FadeInFadeOut>().ChangeScene(chapter, fadeOutAndChangeMusic: changeMusic);
     }
 
     private void SaveProgress() //saving all progress

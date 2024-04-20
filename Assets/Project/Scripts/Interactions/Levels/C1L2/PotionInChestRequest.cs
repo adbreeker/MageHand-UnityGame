@@ -27,6 +27,8 @@ public class PotionInChestRequest : MonoBehaviour
         PlayerParams.Controllers.pointsManager.minPlotPoints += -2;
         PlayerParams.Controllers.pointsManager.maxPlotPoints += 1;
 
+        ChapterExitCube.OnLevelChange += OnLevelChange;
+
         treasure = Instantiate(treasurePrefab, new Vector3(0,-10, 0), Quaternion.identity);
     }
 
@@ -40,7 +42,7 @@ public class PotionInChestRequest : MonoBehaviour
         if(isPotionInChest && !treasureTeleported)
         {
             treasureTeleported = true;
-            treasure.transform.position = treasureTeleportPos;
+            treasure.GetComponent<TreasureBehavior>().TeleportTo(treasureTeleportPos, null);
         }
 
         if(potionPicked)
