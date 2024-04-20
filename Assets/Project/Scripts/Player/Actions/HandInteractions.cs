@@ -252,7 +252,7 @@ public class HandInteractions : MonoBehaviour
         ChangeLayer(inHand, LayerMask.NameToLayer("UI"));
 
         //invoking OnPickUp method of picked item
-        if (!isSpell) { inHand.GetComponent<ItemBehavior>().OnPickUp(); }
+        if (!isSpell) { inHand.SendMessage("OnPickUp"); }
     }
 
     void ChangeLayer(GameObject obj ,LayerMask layer)
