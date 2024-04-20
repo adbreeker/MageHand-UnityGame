@@ -345,14 +345,14 @@ public class Dialogue : MonoBehaviour
         {
             float startVolume = voice.volume;
 
-            while (voice.volume > 0)
+            while (voice != null && voice.volume > 0)
             {
                 voice.volume -= startVolume * Time.deltaTime / speed;
 
                 if (!skip) yield return new WaitForSeconds(textSpeed);
             }
 
-            voice.Stop();
+            if (voice != null) { voice.Stop(); }
         }
     }
 }
