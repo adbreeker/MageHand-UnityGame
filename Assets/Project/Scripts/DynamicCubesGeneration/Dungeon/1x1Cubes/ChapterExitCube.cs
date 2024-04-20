@@ -10,6 +10,9 @@ public class ChapterExitCube : MonoBehaviour
     [Header("Searching only on player layer")]
     public LayerMask playerMask;
 
+    [Header("On level change interactions:")]
+    public List<GameObject> levelChangeInteractionsHolders = new List<GameObject>();
+
     public bool changeMusic = false;
 
     BoxCollider box;
@@ -37,6 +40,11 @@ public class ChapterExitCube : MonoBehaviour
         colliders = Physics.OverlapBox(box.bounds.center, box.bounds.extents, Quaternion.identity, playerMask);
         if (colliders.Length > 0 && !_isAnimationGoing)
         {
+            foreach(GameObject lcih in levelChangeInteractionsHolders)
+            {
+                lcih.SendMessage("OnLevelChange");
+            }
+            Debug.Log("Zmieniam poziom;");
             SaveProgress();
             
             FindObjectOfType<FadeInFadeOut>().ChangeScene(chapter, fadeOutAndChangeMusic: changeMusic);
