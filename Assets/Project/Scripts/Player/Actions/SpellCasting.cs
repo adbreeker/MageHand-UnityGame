@@ -231,7 +231,7 @@ public class SpellCasting : MonoBehaviour
 
         // PopUp cast spell
         Debug.Log("Whisper listening");
-        FindObjectOfType<HUD>().SpawnPopUp("Cast a Spell.", timeToFadeOutPopUp, timeOfFadingOutPopUp);
+        PlayerParams.Controllers.HUD.SpawnPopUp("Cast a Spell.", timeToFadeOutPopUp, timeOfFadingOutPopUp);
         AudioSource castingSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpell);
         castingSound.Play();
 
@@ -268,8 +268,8 @@ public class SpellCasting : MonoBehaviour
         string word = System.Text.Encoding.UTF8.GetString(frameWord).Split(";")[0];
         Debug.Log("Whisper transcribed word: " + word);
 
-        if (word.Length >= 4 && word.Substring(0, 4) == "None") FindObjectOfType<HUD>().SpawnPopUp("Casting word:<br>(silence)", timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
-        else FindObjectOfType<HUD>().SpawnPopUp("Casting word:<br>" + word, timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
+        if (word.Length >= 4 && word.Substring(0, 4) == "None") PlayerParams.Controllers.HUD.SpawnPopUp("Casting word:<br>(silence)", timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
+        else PlayerParams.Controllers.HUD.SpawnPopUp("Casting word:<br>" + word, timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
 
         Destroy(castingSound);
 

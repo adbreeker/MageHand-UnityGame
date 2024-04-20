@@ -52,14 +52,14 @@ public class SpellsMenu : MonoBehaviour
         PlayerParams.Variables.uiActive = true;
 
 
-        openSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Open);
+        openSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Open);
         openSound.Play();
         Destroy(openSound.gameObject, openSound.clip.length);
-        spellCastingSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpell);
+        spellCastingSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpell);
         spellCastingSound.loop = true;
         spellCastingSound.Play();
 
-        closeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Close);
+        closeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Close);
         spellIcons = new List<GameObject>();
 
         GameObject iconsParent = instantiatedMenu.transform.Find("Spell " + (PlayerParams.Controllers.spellbook.spells.Count).ToString()).gameObject;

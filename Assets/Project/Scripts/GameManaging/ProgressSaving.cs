@@ -44,7 +44,7 @@ public class ProgressSaving : MonoBehaviour
     void ManageLoadedData() //managing loaded data
     {
         //loading game state
-        PointsManager pointsManager = FindObjectOfType<PointsManager>();
+        PointsManager pointsManager = PlayerParams.Controllers.pointsManager;
         pointsManager.plotPoints = saveData.gameStateSave.plotPoints;
         pointsManager.foundSecrets = saveData.gameStateSave.foundSecrets;
         pointsManager.currency = saveData.gameStateSave.currency;
@@ -55,14 +55,14 @@ public class ProgressSaving : MonoBehaviour
         pointsManager.maxCurrency = saveData.gameStateSave.maxCurrency;
 
     //loading inventory
-    Inventory inventory = FindObjectOfType<Inventory>();
+        Inventory inventory = PlayerParams.Controllers.inventory;
         foreach(string itemInData in saveData.itemsSave.items)
         {
             inventory.AddItem(itemHolder.GiveItem(itemInData));
         }
 
         //loading spellbook and spells
-        Spellbook spellbook = FindObjectOfType<Spellbook>();
+        Spellbook spellbook = PlayerParams.Controllers.spellbook;
         if(saveData.spellsSave.spellBook)
         {
             spellbook.bookOwned = true;
@@ -86,7 +86,7 @@ public class ProgressSaving : MonoBehaviour
         }
 
         //loading journal contents
-        Journal journal = FindObjectOfType<Journal>();
+        Journal journal = PlayerParams.Controllers.journal;
         journal.notesJournal = saveData.journalSave.notes.DeserializeNotes();
         journal.dialoguesJournal = saveData.journalSave.dialogues.DeserializeDialogues();
     }

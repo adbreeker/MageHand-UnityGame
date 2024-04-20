@@ -156,16 +156,16 @@ public class Spellbook : MonoBehaviour
         }
 
         //Assign proper voices
-        openSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Open);
-        closeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Close);
-        changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
-        lightVoice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.READING_Light);
+        openSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Open);
+        closeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Close);
+        changeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
+        lightVoice = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.READING_Light);
         lightVoice.volume *= 2f;
-        pickUpVoice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.READING_PickUp);
+        pickUpVoice = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.READING_PickUp);
         pickUpVoice.volume *= 2f;
-        fireVoice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.READING_Fire);
+        fireVoice = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.READING_Fire);
         fireVoice.volume *= 2f;
-        //fireVoice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.READING_Fire); etc.
+        //fireVoice = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.READING_Fire); etc.
         //fireVoice.volume *= 2f; etc.
 
 

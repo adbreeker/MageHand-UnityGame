@@ -14,7 +14,7 @@ public class PopUpActivateOnPickUp : MonoBehaviour
 
     public void OnPickUp() //instantiate pop up prefab
     {
-        FindObjectOfType<HUD>().SpawnPopUp(content, timeToFadeOut, timeOfFadingOut);
+        PlayerParams.Controllers.HUD.SpawnPopUp(content, timeToFadeOut, timeOfFadingOut);
 
         if (destroy) Destroy(gameObject);
     }

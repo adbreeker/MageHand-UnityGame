@@ -47,7 +47,7 @@ public class ChapterExitCube : MonoBehaviour
     public void ChangeLevel()
     {
         _isAnimationGoing = true;
-        OnLevelChange();
+        if (OnLevelChange != null) { OnLevelChange(); }
 
         SaveProgress();
 

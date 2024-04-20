@@ -18,6 +18,7 @@ public static class GameParams
         public static ProgressSaving saveManager;
         public static SoundManager soundManager;
         public static FadeInFadeOut fadeInOutManager;
+        public static LevelInfoDisplay levelInfoManager;
     }
 }
 
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour
     public ProgressSaving saveManager;
     public SoundManager soundManager;
     public FadeInFadeOut fadeInOutManager;
+    public LevelInfoDisplay levelInfoManager;
 
     private void Awake()
     {
@@ -45,5 +47,6 @@ public class GameManager : MonoBehaviour
         GameParams.Managers.saveManager = saveManager;
         GameParams.Managers.soundManager = soundManager;
         GameParams.Managers.fadeInOutManager = fadeInOutManager;
+        GameParams.Managers.levelInfoManager = levelInfoManager;
     }
 }
