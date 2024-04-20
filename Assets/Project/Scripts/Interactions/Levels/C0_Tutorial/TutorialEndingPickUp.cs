@@ -20,7 +20,7 @@ public class TutorialEndingPickUp : MonoBehaviour
 
     private void Start()
     {
-        _saveManager = FindObjectOfType<ProgressSaving>();
+        _saveManager = GameParams.Managers.saveManager;
     }
 
     void Update()
@@ -41,8 +41,8 @@ public class TutorialEndingPickUp : MonoBehaviour
                 PlayerParams.Variables.uiActive = true;
                 PlayerParams.Objects.hand.SetActive(false);
 
-                hitSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Punch);
-                fallingSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_BodyFall);
+                hitSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_Punch);
+                fallingSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_BodyFall);
 
                 _isEndingOnGoing =true;
                 StartCoroutine(TutorialEnding());
@@ -81,6 +81,6 @@ public class TutorialEndingPickUp : MonoBehaviour
         _saveManager.SaveGameState(_nextLevel, 0, 0, 0, 0, 0, 0, 0);
         _saveManager.SaveProgressToFile();
 
-        FindObjectOfType<FadeInFadeOut>().ChangeScene(_nextLevel);
+        GameParams.Managers.fadeInOutManager.ChangeScene(_nextLevel);
     }
 }

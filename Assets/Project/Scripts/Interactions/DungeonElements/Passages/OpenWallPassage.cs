@@ -35,7 +35,7 @@ public class OpenWallPassage : MonoBehaviour
 
     IEnumerator MoveWall(float wallDestination) //animating passage opening
     {
-        wallSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_MovingWall, wall, 8f, 30f);
+        wallSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MovingWall, wall, 8f, 30f);
         wallSound.Play();
 
         while (wall.transform.localPosition.y != wallDestination)

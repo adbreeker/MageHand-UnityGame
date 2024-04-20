@@ -67,7 +67,7 @@ public class HUD : MonoBehaviour
 
         if (playSound)
         {
-            if(popUpSound == null) popUpSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_PopUp);
+            if(popUpSound == null) popUpSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_PopUp);
             popUpSound.Play();
         }
 

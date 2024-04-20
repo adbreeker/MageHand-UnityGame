@@ -34,7 +34,7 @@ public class OpenBarsPassage : MonoBehaviour
 
     IEnumerator MoveBars(float barsDestination) //animating passage opening
     {
-        chainSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_MovingMetalGate, bars, 8f, 30f);
+        chainSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MovingMetalGate, bars, 8f, 30f);
         chainSound.Play();
         while (bars.transform.localPosition.y != barsDestination)
         {

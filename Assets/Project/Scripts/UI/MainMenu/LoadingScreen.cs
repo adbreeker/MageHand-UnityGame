@@ -51,7 +51,7 @@ public class LoadingScreen : MonoBehaviour
         //Watch out!!! - it execudes code few more times before scene is changed (mind it if something wrong with loading game)
 
         Debug.Log("Loaded mediapipe");
-        FindObjectOfType<FadeInFadeOut>().ChangeScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
+        GameParams.Managers.fadeInOutManager.ChangeScene(ProgressSaving.GetSaveByName(ProgressSaving.saveName).gameStateSave.currentLvl);
     }
 
     IEnumerator Pulls()

@@ -18,7 +18,7 @@ public class FireSpellBehavior : MonoBehaviour
 
     private void Start()
     {
-        spellRemaining = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_FireSpellRemaining, gameObject, minHearingDistance, maxHearingDistance);
+        spellRemaining = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_FireSpellRemaining, gameObject, minHearingDistance, maxHearingDistance);
         spellRemaining.loop = true;
         spellRemaining.Play();
     }
@@ -31,7 +31,7 @@ public class FireSpellBehavior : MonoBehaviour
     public void OnImpact() //spawn explosion on impact
     {
         instantiatedEffect = Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
-        spellBurst = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_FireSpellBurst, instantiatedEffect, 8f, 30f);
+        spellBurst = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_FireSpellBurst, instantiatedEffect, 8f, 30f);
         spellBurst.Play();
     }
 }

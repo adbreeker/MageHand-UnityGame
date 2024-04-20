@@ -25,8 +25,8 @@ public class Intro : MonoBehaviour
     {
         if (animationEnded && Input.GetKeyDown(KeyCode.Space))
         {
-            FindObjectOfType<FadeInFadeOut>().ChangeScene(nextLevel);
-            FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption).Play();
+            GameParams.Managers.fadeInOutManager.ChangeScene(nextLevel);
+            GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption).Play();
             animationEnded = false;
         }
 

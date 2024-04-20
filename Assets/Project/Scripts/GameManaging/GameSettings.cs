@@ -56,7 +56,7 @@ public class GameSettings : MonoBehaviour
     //applying player setting from saves (now it's hardcoded)
     private void Start()
     {
-        soundManager = FindObjectOfType<SoundManager>();
+        soundManager = GameParams.Managers.soundManager;
 
         //set volume
         soundManager.ChangeVolume(soundVolume);

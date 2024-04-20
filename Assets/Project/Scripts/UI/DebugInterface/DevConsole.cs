@@ -205,7 +205,7 @@ public class DevConsole : MonoBehaviour
 
         try
         {
-            saveManager = FindObjectOfType<ProgressSaving>();
+            saveManager = GameParams.Managers.saveManager;
         }
         catch
         {
@@ -251,7 +251,7 @@ public class DevConsole : MonoBehaviour
 
         try
         {
-            saveManager = FindObjectOfType<ProgressSaving>();
+            saveManager = GameParams.Managers.saveManager;
         }
         catch
         {
@@ -289,7 +289,7 @@ public class DevConsole : MonoBehaviour
     //inventory commands ----------------------------------------------------------------------------------------- inventory commands
     void AllItems() //adding all existings items to inventory
     {
-        ItemHolder itemHolder = FindObjectOfType<ItemHolder>();
+        ItemHolder itemHolder = GameParams.Holders.itemHolder;
 
         if(itemHolder != null)
         {
@@ -305,7 +305,7 @@ public class DevConsole : MonoBehaviour
     //spellbook commands ----------------------------------------------------------------------------------------- spellbook commands
     void AllSpells() //adding all existings spells to spellbook
     {
-        SpellScrollsHolder spellScrollsHolder = FindObjectOfType<SpellScrollsHolder>();
+        SpellScrollsHolder spellScrollsHolder = GameParams.Holders.spellScrollsHolder;
 
         if (spellScrollsHolder != null)
         {

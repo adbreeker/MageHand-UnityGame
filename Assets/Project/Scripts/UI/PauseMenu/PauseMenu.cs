@@ -214,7 +214,7 @@ public class PauseMenu : MonoBehaviour
 
     public void OpenMenu()
     {
-        FindObjectOfType<SoundManager>().PauseAllAudioSourcesAndFadeOutMusic();
+        GameParams.Managers.soundManager.PauseAllAudioSourcesAndFadeOutMusic();
 
         instantiatedMenu = Instantiate(menuPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         //Disable other controls
@@ -227,10 +227,10 @@ public class PauseMenu : MonoBehaviour
         //Assing proper objects
         pointer = instantiatedMenu.transform.Find("Pointer").gameObject;
 
-        openSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Open);
-        closeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Close);
-        changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
-        selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
+        openSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Open);
+        closeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Close);
+        changeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
+        selectSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption);
 
         for (int i = 1; i < 8; i++)
         {
@@ -248,7 +248,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (menuOpened)
         {
-            FindObjectOfType<SoundManager>().UnPauseAllAudioSourcesFadeInMusic();
+            GameParams.Managers.soundManager.UnPauseAllAudioSourcesFadeInMusic();
             Destroy(openSound.gameObject, openSound.clip.length);
             Destroy(closeSound.gameObject, closeSound.clip.length);
             Destroy(changeSound.gameObject, changeSound.clip.length);

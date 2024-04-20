@@ -112,7 +112,7 @@ public class MainMenu : MonoBehaviour
 
                 //There we need to check if mediapipeProcess is loaded
                 closing = true;
-                FindObjectOfType<FadeInFadeOut>().ChangeScene("Loading_Screen");
+                GameParams.Managers.fadeInOutManager.ChangeScene("Loading_Screen");
             }
             else if (pointedOptionMenu == 1)
             {
@@ -217,8 +217,8 @@ public class MainMenu : MonoBehaviour
         //Assing proper objects
         pointer = transform.Find("Pointer").gameObject;
 
-        changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
-        selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
+        changeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
+        selectSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption);
 
         for (int i = 1; i < 6; i++)
         {

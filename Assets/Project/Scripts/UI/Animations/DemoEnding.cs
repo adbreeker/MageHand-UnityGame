@@ -22,8 +22,8 @@ public class DemoEnding : MonoBehaviour
     {
         if (end && !ending && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Escape)))
         {
-            FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption).Play();
-            FindObjectOfType<FadeInFadeOut>().CloseGame();
+            GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption).Play();
+            GameParams.Managers.fadeInOutManager.CloseGame();
             ending = true;
         }
 
@@ -46,7 +46,7 @@ public class DemoEnding : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        FindObjectOfType<FadeInFadeOut>().CloseGame();
+        GameParams.Managers.fadeInOutManager.CloseGame();
     }
 
     IEnumerator Blink()

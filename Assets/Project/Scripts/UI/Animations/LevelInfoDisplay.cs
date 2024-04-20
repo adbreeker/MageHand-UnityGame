@@ -18,8 +18,8 @@ public class LevelInfoDisplay : MonoBehaviour
     private CanvasGroup wholeGroup;
     void Start()
     {
-        sound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_LevelInfoSound);
-        sound1 = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_LevelInfoSound);
+        sound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_LevelInfoSound);
+        sound1 = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_LevelInfoSound);
 
         instantiatedDisplay = Instantiate(displayPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
 

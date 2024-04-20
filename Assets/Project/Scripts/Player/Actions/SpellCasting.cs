@@ -70,7 +70,7 @@ public class SpellCasting : MonoBehaviour
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Light");
         if(scroll != null)
         {
-            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
+            castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
             castingFinishedSound.Play();
             Destroy(castingFinishedSound, castingFinishedSound.clip.length);
 
@@ -80,7 +80,7 @@ public class SpellCasting : MonoBehaviour
         }
         else
         {
-            castingFailSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
+            castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
             castingFailSound.Play();
             Destroy(castingFailSound, castingFailSound.clip.length);
         }
@@ -91,7 +91,7 @@ public class SpellCasting : MonoBehaviour
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Collect");
         if(scroll != null)
         {
-            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_SpellPickUpActivation);
+            castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_SpellPickUpActivation);
             castingFinishedSound.Play();
             Destroy(castingFinishedSound, castingFinishedSound.clip.length);
 
@@ -121,7 +121,7 @@ public class SpellCasting : MonoBehaviour
         }
         else
         {
-            castingFailSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
+            castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
             castingFailSound.Play();
             Destroy(castingFailSound, castingFailSound.clip.length);
         }
@@ -132,7 +132,7 @@ public class SpellCasting : MonoBehaviour
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Fire");
         if (scroll != null)
         {
-            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
+            castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
             castingFinishedSound.Play();
             Destroy(castingFinishedSound, castingFinishedSound.clip.length);
 
@@ -142,7 +142,7 @@ public class SpellCasting : MonoBehaviour
         }
         else
         {
-            castingFailSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
+            castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
             castingFailSound.Play();
             Destroy(castingFailSound, castingFailSound.clip.length);
         }
@@ -191,7 +191,7 @@ public class SpellCasting : MonoBehaviour
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Open");
         if (scroll != null)
         {
-            castingFinishedSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
+            castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
             castingFinishedSound.Play();
             Destroy(castingFinishedSound, castingFinishedSound.clip.length);
 
@@ -208,7 +208,7 @@ public class SpellCasting : MonoBehaviour
         }
         else
         {
-            castingFailSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
+            castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
             castingFailSound.Play();
             Destroy(castingFailSound, castingFailSound.clip.length);
 
@@ -232,7 +232,7 @@ public class SpellCasting : MonoBehaviour
         // PopUp cast spell
         Debug.Log("Whisper listening");
         FindObjectOfType<HUD>().SpawnPopUp("Cast a Spell.", timeToFadeOutPopUp, timeOfFadingOutPopUp);
-        AudioSource castingSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpell);
+        AudioSource castingSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpell);
         castingSound.Play();
 
         // Wait for the specified recording time
@@ -385,7 +385,7 @@ public class SpellCasting : MonoBehaviour
         }
         else
         {
-            castingFailSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
+            castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
             castingFailSound.Play();
             Destroy(castingFailSound, castingFailSound.clip.length);
         }

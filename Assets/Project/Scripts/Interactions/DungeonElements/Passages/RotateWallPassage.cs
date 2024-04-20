@@ -28,7 +28,7 @@ public class RotateWallPassage : MonoBehaviour
 
     IEnumerator RotateDoors() //walls rotation animation
     {
-        wallSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_MovingWall, wall, 8f, 30f);
+        wallSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MovingWall, wall, 8f, 30f);
         wallSound.Play();
 
         for (int i = 0; i < 90; i++)

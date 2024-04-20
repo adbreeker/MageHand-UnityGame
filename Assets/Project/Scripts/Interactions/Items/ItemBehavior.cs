@@ -33,11 +33,11 @@ public class ItemBehavior : MonoBehaviour
     {
         transform.position = tpDestination;
 
-        AudioSource tpSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_MagicalTeleportation);
+        AudioSource tpSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MagicalTeleportation);
         tpSound.Play();
         Destroy(tpSound, tpSound.clip.length);
 
-        GameObject tpEffect = FindObjectOfType<MaterialsAndEffectsHolder>().GetEffect(MaterialsAndEffectsHolder.Effects.teleportationObject);
+        GameObject tpEffect = GameParams.Holders.materialsAndEffectsHolder.GetEffect(MaterialsAndEffectsHolder.Effects.teleportationObject);
 
         if (tpEffectColor != null)
         {
@@ -58,9 +58,9 @@ public class ItemBehavior : MonoBehaviour
 
             AudioSource collisionSound;
 
-            if (random == 1) collisionSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Collision1, gameObject, maxHearingDistance: 15f);
-            else if (random == 2) collisionSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Collision2, gameObject, maxHearingDistance: 15f);
-            else collisionSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Collision3, gameObject, maxHearingDistance: 15f);
+            if (random == 1) collisionSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_Collision1, gameObject, maxHearingDistance: 15f);
+            else if (random == 2) collisionSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_Collision2, gameObject, maxHearingDistance: 15f);
+            else collisionSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_Collision3, gameObject, maxHearingDistance: 15f);
 
             collisionSound.Play();
             Destroy(collisionSound, collisionSound.clip.length);

@@ -8,7 +8,7 @@ public class ControlsMenu : MonoBehaviour
     private AudioSource closeSound;
     private void Start()
     {
-        closeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Close);
+        closeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Close);
     }
     void Update()
     {

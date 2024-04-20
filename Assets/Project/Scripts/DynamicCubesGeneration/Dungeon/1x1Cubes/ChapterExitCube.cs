@@ -28,7 +28,7 @@ public class ChapterExitCube : MonoBehaviour
     {
         box = GetComponent<BoxCollider>();
 
-        saveManager = FindObjectOfType<ProgressSaving>();
+        saveManager = GameParams.Managers.saveManager;
         spellbook = PlayerParams.Controllers.spellbook;
         inventory = PlayerParams.Controllers.inventory;
         journal = PlayerParams.Controllers.journal;
@@ -51,7 +51,7 @@ public class ChapterExitCube : MonoBehaviour
 
         SaveProgress();
 
-        FindObjectOfType<FadeInFadeOut>().ChangeScene(chapter, fadeOutAndChangeMusic: changeMusic);
+        GameParams.Managers.fadeInOutManager.ChangeScene(chapter, fadeOutAndChangeMusic: changeMusic);
     }
 
     private void SaveProgress() //saving all progress

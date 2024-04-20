@@ -25,7 +25,7 @@ public class SoundDebugButton : MonoBehaviour
 
     IEnumerator ButtonAnimation() //button animation
     {
-        clickSound = FindObjectOfType<SoundManager>().CreateAudioSource(sound: sound, soundParent: button, minHearingDistance: minHearingDistance, maxHearingDistance: maxHearingDistance);
+        clickSound = GameParams.Managers.soundManager.CreateAudioSource(sound: sound, soundParent: button, minHearingDistance: minHearingDistance, maxHearingDistance: maxHearingDistance);
         clickSound.Play();
         Destroy(clickSound,clickSound.clip.length);
 

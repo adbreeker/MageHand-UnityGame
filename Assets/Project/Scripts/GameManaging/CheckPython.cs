@@ -21,7 +21,7 @@ public class CheckPython : MonoBehaviour
                     UnityEngine.Debug.Log("Python process has exited - crashed");
                     if(changeScene)
                     {
-                        FindObjectOfType<FadeInFadeOut>().ChangeScene("Python_Crashed");
+                        GameParams.Managers.fadeInOutManager.ChangeScene("Python_Crashed");
                         changeScene = false;
                     }
                 }

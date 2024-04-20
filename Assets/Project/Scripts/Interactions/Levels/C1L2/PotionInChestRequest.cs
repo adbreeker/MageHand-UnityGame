@@ -19,11 +19,8 @@ public class PotionInChestRequest : MonoBehaviour
     bool isPotionInChest = false;
     bool isTreasureInChest = true;
 
-    ProgressSaving saveManager;
-
     private void Start()
     {
-        saveManager = FindObjectOfType<ProgressSaving>();
         PlayerParams.Controllers.pointsManager.minPlotPoints += -2;
         PlayerParams.Controllers.pointsManager.maxPlotPoints += 1;
 

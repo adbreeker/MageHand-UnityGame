@@ -74,10 +74,10 @@ public class Dialogue : MonoBehaviour
         nameTextObject = transform.Find("Text").Find("Name").GetComponent<TextMeshProUGUI>();
         contentTextObject = transform.Find("Text").Find("Content").GetComponent<TextMeshProUGUI>();
 
-        changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
-        selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
-        if (guideVoiceline) voice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.VOICES_Guide);
-        else voice = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.VOICES_Mage);
+        changeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
+        selectSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption);
+        if (guideVoiceline) voice = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.VOICES_Guide);
+        else voice = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.VOICES_Mage);
         voice.loop = true;
 
         //Create dicts of options, choices when options are chosen and text of options (indexed 1-4)

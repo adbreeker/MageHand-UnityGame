@@ -18,7 +18,7 @@ public class SecretPlace : MonoBehaviour
     private void Start()
     {
         PlayerParams.Controllers.pointsManager.maxFoundSecrets += 1;
-        sound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_SecretFound);
+        sound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_SecretFound);
     }
     private void Update()
     {

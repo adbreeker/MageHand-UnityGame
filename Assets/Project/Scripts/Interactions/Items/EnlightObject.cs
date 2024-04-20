@@ -18,7 +18,7 @@ public class EnlightObject : MonoBehaviour //component added to object to enligh
 
     void Start() //enlightening this mesh or first mesh in children
     {
-        enlighten = FindObjectOfType<MaterialsAndEffectsHolder>().GetMaterial(materialType);
+        enlighten = GameParams.Holders.materialsAndEffectsHolder.GetMaterial(materialType);
             
         if(this.GetComponent<MeshRenderer>() != null)
         {

@@ -28,7 +28,7 @@ public class OpenEasterEgg : MonoBehaviour
         if (animationEnded && Input.GetKeyDown(KeyCode.Space))
         {
             StartCoroutine(RestartScene());
-            FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption).Play();
+            GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption).Play();
             animationEnded = false;
         }
         if (Input.GetKeyDown(KeyCode.Space)) skip = true;
