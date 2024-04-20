@@ -21,7 +21,7 @@ public class BackgroundMusic : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
 
-        soundManager = FindObjectOfType<SoundManager>();
+        soundManager = GameParams.Managers.soundManager;
 
         startMusicAS = soundManager.CreateAudioSource(startMusic);
         loopMusicAS = soundManager.CreateAudioSource(loopMusic);

@@ -100,7 +100,7 @@ public class ResetMenu : MonoBehaviour
             if (pointedOptionMenu == 0)
             {
                 closing = true;
-                FindObjectOfType<FadeInFadeOut>().ChangeScene(SceneManager.GetActiveScene().name);
+                GameParams.Managers.fadeInOutManager.ChangeScene(SceneManager.GetActiveScene().name);
             }
             else if (pointedOptionMenu == 1)
             {
@@ -113,9 +113,9 @@ public class ResetMenu : MonoBehaviour
     {
         pointer = givenPointer;
 
-        closeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Close);
-        changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
-        selectSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption);
+        closeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Close);
+        changeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
+        selectSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption);
 
         for (int i = 1; i < 3; i++)
         {

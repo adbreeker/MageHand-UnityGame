@@ -26,7 +26,6 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Special effects")]
     [SerializeField] GameObject _teleportationEffect;
-    //private AudioSource _tpSound;
 
     //enqueuing input
     private Vector3 _movementInputQueue = Vector3.zero;
@@ -45,9 +44,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {       
-        stepStone1 = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_StepStone1);
+        stepStone1 = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_StepStone1);
         stepStone1.panStereo = -0.07f;
-        stepStone2 = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_StepStone2);
+        stepStone2 = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_StepStone2);
         stepStone2.panStereo = 0.07f;
     }
 
@@ -134,7 +133,7 @@ public class PlayerMovement : MonoBehaviour
             if (collider.gameObject.tag == "Wall" || collider.gameObject.tag == "Obstacle")
             {
                 //if obstacle near player then can't move
-                AudioSource collisionSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Collision2);
+                AudioSource collisionSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_Collision2);
                 collisionSound.Play();
                 Destroy(collisionSound.gameObject, collisionSound.clip.length);
 
@@ -296,7 +295,7 @@ public class PlayerMovement : MonoBehaviour
 
         currentTilePos = transform.position;
 
-        AudioSource tpSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_MagicalTeleportation);
+        AudioSource tpSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MagicalTeleportation);
         tpSound.Play();
         Destroy(tpSound, tpSound.clip.length);
 

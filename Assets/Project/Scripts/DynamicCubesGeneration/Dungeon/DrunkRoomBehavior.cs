@@ -40,6 +40,9 @@ public class DrunkRoomBehavior : MonoBehaviour
         PlayerParams.Controllers.playerMovement.TeleportTo(_playerSpawnpoint.position);
         yield return new WaitForSeconds(3.0f);
 
+        PlayerParams.Controllers.pointsManager.minPlotPoints += -3;
+        PlayerParams.Controllers.pointsManager.plotPoints += -3;
+
         while (true)
         {
             alpha = _blackoutScreen.color.a;
@@ -51,7 +54,7 @@ public class DrunkRoomBehavior : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        yield return new WaitForSeconds(10.0f);
+        yield return new WaitForSeconds(5.0f);
         _openDialogue.gameObject.SetActive(true);
 
         while(!_dialogueTp.activeSelf)

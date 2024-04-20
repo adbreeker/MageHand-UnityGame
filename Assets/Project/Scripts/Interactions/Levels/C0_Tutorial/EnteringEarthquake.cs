@@ -20,10 +20,10 @@ public class EnteringEarthquake : MonoBehaviour
         PlayerParams.Controllers.playerMovement.stopMovement = true;
         _firstTilePos = PlayerParams.Objects.player.transform.position;
         PlayerParams.Objects.player.transform.position = _enteringPosition;
-        earthquakeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Earthquake);
+        earthquakeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_Earthquake);
 
-        progressSaving = FindObjectOfType<ProgressSaving>();
-        progressSaving.SaveGameState(SceneManager.GetActiveScene().name, 0, 0, 0, 0, 0);
+        progressSaving = GameParams.Managers.saveManager;
+        progressSaving.SaveGameState(SceneManager.GetActiveScene().name, 0, 0, 0, 0, 0, 0, 0);
         progressSaving.SaveProgressToFile();
 
         StartCoroutine(EarthquakeSimulation());

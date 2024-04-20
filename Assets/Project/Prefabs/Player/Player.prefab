@@ -248,6 +248,7 @@ MonoBehaviour:
   spellbook: {fileID: 2167677596242489558}
   journal: {fileID: 1263839841694537611}
   pointsManager: {fileID: 8656529184073069794}
+  HUD: {fileID: 7107352598053048272}
   pauseMenu: {fileID: 1680365764711997104}
   spellsMenu: {fileID: 3065444112457917252}
   handInteractions: {fileID: 7554772340525944936}
@@ -291,9 +292,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   plotPoints: 0
   foundSecrets: 0
+  currency: 0
   maxPlotPoints: 0
   minPlotPoints: 0
   maxFoundSecrets: 0
+  maxCurrency: 0
 --- !u!114 &7445098804810710848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -742,6 +745,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23e9f933374ed3f4081c9b49c32e7f6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7107352598053048272 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4632883312255626714, guid: c9377c7cb5993b149becb4fa899983f8, type: 3}
+  m_PrefabInstance: {fileID: 2515591737954673162}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11c1301343c3b28489f6dfea66c0370e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3740186669925120661
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -769,6 +783,26 @@ PrefabInstance:
       propertyPath: spellbook
       value: 
       objectReference: {fileID: 2167677596242489558}
+    - target: {fileID: -512354603722602875, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
+      propertyPath: randomDialoguesToSpawn.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -512354603722602875, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
+      propertyPath: dialoguesOptionsToSpawn.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -512354603722602875, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
+      propertyPath: randomDialoguesToSpawn.Array.data[0]
+      value: 
+      objectReference: {fileID: 7839564544014006369, guid: a87f16f4d17e3794386d799f778cea42, type: 3}
+    - target: {fileID: -512354603722602875, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
+      propertyPath: randomDialoguesToSpawn.Array.data[1]
+      value: 
+      objectReference: {fileID: 7839564544014006369, guid: db7c32d1edcbcb442bab548017fd070d, type: 3}
+    - target: {fileID: -512354603722602875, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
+      propertyPath: randomDialoguesToSpawn.Array.data[2]
+      value: 
+      objectReference: {fileID: 7839564544014006369, guid: db7e157b8d600cf44b904280d7bd0b8f, type: 3}
     - target: {fileID: 288208660224532337, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
       propertyPath: m_Layer
       value: 5

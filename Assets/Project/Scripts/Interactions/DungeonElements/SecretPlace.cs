@@ -13,12 +13,12 @@ public class SecretPlace : MonoBehaviour
 
     private void Awake()
     {
-        FindObjectOfType<LevelInfoDisplay>().secretsOnLevel += 1;
+        GameParams.Managers.levelInfoManager.secretsOnLevel += 1;
     }
     private void Start()
     {
         PlayerParams.Controllers.pointsManager.maxFoundSecrets += 1;
-        sound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_SecretFound);
+        sound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_SecretFound);
     }
     private void Update()
     {
@@ -28,9 +28,9 @@ public class SecretPlace : MonoBehaviour
             sound.Play();
             notVisited = false;
             PlayerParams.Controllers.pointsManager.foundSecrets += 1;
-            FindObjectOfType<LevelInfoDisplay>().foundSecretsOnLevel += 1;
-            text = "Secret found!<br>" + FindObjectOfType<LevelInfoDisplay>().foundSecretsOnLevel + "/" + FindObjectOfType<LevelInfoDisplay>().secretsOnLevel;
-            FindObjectOfType<HUD>().SpawnPopUp(text, timeToFadeOut, timeOfFadingOut, false);
+            GameParams.Managers.levelInfoManager.foundSecretsOnLevel += 1;
+            text = "Secret found!<br>" + GameParams.Managers.levelInfoManager.foundSecretsOnLevel + "/" + GameParams.Managers.levelInfoManager.secretsOnLevel;
+            PlayerParams.Controllers.HUD.SpawnPopUp(text, timeToFadeOut, timeOfFadingOut, false);
             Destroy(sound, sound.clip.length);
             Destroy(this, sound.clip.length);
         }

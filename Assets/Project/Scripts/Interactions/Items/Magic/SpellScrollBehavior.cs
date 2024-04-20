@@ -13,7 +13,7 @@ public class SpellScrollInfo //class for holding spell scroll data
     public Texture spellPicture;
 }
 
-public class SpellScrollBehavior : MonoBehaviour
+public class SpellScrollBehavior : ItemBehavior
 {
     public SpellScrollInfo spellScrollInfo;
 
@@ -29,7 +29,7 @@ public class SpellScrollBehavior : MonoBehaviour
         }
     }
 
-    public void OnPickUp() //on pick up add scroll info to spellbook and then destroy this scroll object
+    public override void OnPickUp() //on pick up add scroll info to spellbook and then destroy this scroll object
     {
         if(GetSpellScrollInfo() != null)
         {

@@ -205,7 +205,7 @@ public class DevConsole : MonoBehaviour
 
         try
         {
-            saveManager = FindObjectOfType<ProgressSaving>();
+            saveManager = GameParams.Managers.saveManager;
         }
         catch
         {
@@ -218,8 +218,14 @@ public class DevConsole : MonoBehaviour
         Journal journal = PlayerParams.Controllers.journal;
 
         //game state
-        saveManager.SaveGameState(SceneManager.GetActiveScene().name, PlayerParams.Controllers.pointsManager.plotPoints, PlayerParams.Controllers.pointsManager.foundSecrets, 
-            PlayerParams.Controllers.pointsManager.maxPlotPoints, PlayerParams.Controllers.pointsManager.minPlotPoints, PlayerParams.Controllers.pointsManager.maxFoundSecrets);
+        saveManager.SaveGameState(SceneManager.GetActiveScene().name,
+            PlayerParams.Controllers.pointsManager.plotPoints,
+            PlayerParams.Controllers.pointsManager.foundSecrets,
+            PlayerParams.Controllers.pointsManager.currency,
+            PlayerParams.Controllers.pointsManager.maxPlotPoints,
+            PlayerParams.Controllers.pointsManager.minPlotPoints,
+            PlayerParams.Controllers.pointsManager.maxFoundSecrets,
+            PlayerParams.Controllers.pointsManager.maxCurrency);
 
         //spells
         List<string> spells = new List<string>();
@@ -245,7 +251,7 @@ public class DevConsole : MonoBehaviour
 
         try
         {
-            saveManager = FindObjectOfType<ProgressSaving>();
+            saveManager = GameParams.Managers.saveManager;
         }
         catch
         {
@@ -258,7 +264,7 @@ public class DevConsole : MonoBehaviour
         Journal journal = PlayerParams.Controllers.journal;
 
         //game state
-        saveManager.SaveGameState(SceneManager.GetActiveScene().name, 0, 0, 0, 0, 0);
+        saveManager.SaveGameState(SceneManager.GetActiveScene().name, 0, 0, 0, 0, 0, 0, 0);
 
         //spells
         saveManager.SaveSpells(false, new List<string>());
@@ -283,14 +289,14 @@ public class DevConsole : MonoBehaviour
     //inventory commands ----------------------------------------------------------------------------------------- inventory commands
     void AllItems() //adding all existings items to inventory
     {
-        ItemHolder itemHolder = FindObjectOfType<ItemHolder>();
+        ItemHolder itemHolder = GameParams.Holders.itemHolder;
 
         if(itemHolder != null)
         {
             Inventory inventory = PlayerParams.Controllers.inventory;
             foreach(GameObject item in itemHolder.items)
             {
-                inventory.AddItem(itemHolder.GiveItem(item.GetComponent<ItemParameters>().itemName));
+                inventory.AddItem(itemHolder.GiveItem(item.GetComponent<ItemBehavior>().itemName));
             }
         }
     }
@@ -299,7 +305,7 @@ public class DevConsole : MonoBehaviour
     //spellbook commands ----------------------------------------------------------------------------------------- spellbook commands
     void AllSpells() //adding all existings spells to spellbook
     {
-        SpellScrollsHolder spellScrollsHolder = FindObjectOfType<SpellScrollsHolder>();
+        SpellScrollsHolder spellScrollsHolder = GameParams.Holders.spellScrollsHolder;
 
         if (spellScrollsHolder != null)
         {

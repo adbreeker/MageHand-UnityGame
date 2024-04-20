@@ -41,9 +41,9 @@ public class HandInteractions : MonoBehaviour
         gestureHandler = GetComponent<MoveHandPoints>();
         pointer = GetComponent<GetObjectsNearHand>();
 
-        pickUpItemSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_PickUpItem);
-        putToInventorySound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_PutToInventory);
-        drinkSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_Drink);
+        pickUpItemSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_PickUpItem);
+        putToInventorySound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_PutToInventory);
+        drinkSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_Drink);
     }
 
     void Update()
@@ -222,7 +222,7 @@ public class HandInteractions : MonoBehaviour
         if(inHand.tag == "Potion")
         {
             drinkSound.Play();
-            inHand.SendMessage("Drink");
+            inHand.GetComponent<PotionEffect>().Drink();
             inHand = null;
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,50 +8,59 @@ public class LevelExitCube : MonoBehaviour
 {
     [Header("Next scene:")]
     public string chapter;
-    [Header("Searching only on player layer")]
-    public LayerMask playerMask;
 
+    [Header("Change music?")]
     public bool changeMusic = false;
 
-    BoxCollider box;
+    public static event Action OnLevelChange;
 
-    bool _isAnimationGoing = false;
+    protected BoxCollider _exitBounds;
+
+    protected bool _isAnimationGoing = false;
     //objects needed for saving progress:
-    private ProgressSaving saveManager;
-    private Spellbook spellbook;
-    private Inventory inventory;
-    private Journal journal;
+    protected ProgressSaving saveManager;
+    protected Spellbook spellbook;
+    protected Inventory inventory;
+    protected Journal journal;
 
-
-    private void Start() //finding all necessary objects
+    protected void Start() //finding all necessary objects
     {
-        box = GetComponent<BoxCollider>();
+        _exitBounds = GetComponent<BoxCollider>();
 
-        saveManager = FindObjectOfType<ProgressSaving>();
+        saveManager = GameParams.Managers.saveManager;
         spellbook = PlayerParams.Controllers.spellbook;
         inventory = PlayerParams.Controllers.inventory;
         journal = PlayerParams.Controllers.journal;
     }
 
-    private void Update() //checking if player is inside cube
+    protected void Update() //checking if player is inside cube
     {
-        Collider[] colliders;
-        colliders = Physics.OverlapBox(box.bounds.center, box.bounds.extents, Quaternion.identity, playerMask);
-        if (colliders.Length > 0 && !_isAnimationGoing)
+        if (_exitBounds.bounds.Contains(PlayerParams.Objects.player.transform.position) && !_isAnimationGoing)
         {
             _isAnimationGoing = true;
-            StartCoroutine(ChangeLevel());
+            if (OnLevelChange != null) { OnLevelChange(); }
+            ChangeLevel();
         }
     }
 
-    private void SaveProgress() //saving all progress
+    protected virtual void ChangeLevel()
+    {
+        SaveProgress();
+
+        GameParams.Managers.fadeInOutManager.ChangeScene(chapter, fadeOutAndChangeMusic: changeMusic);
+    }
+
+    protected void SaveProgress() //saving all progress
     {
         //game state
-        saveManager.SaveGameState(chapter, PlayerParams.Controllers.pointsManager.plotPoints,
+        saveManager.SaveGameState(chapter, 
+            PlayerParams.Controllers.pointsManager.plotPoints,
             PlayerParams.Controllers.pointsManager.foundSecrets,
+            PlayerParams.Controllers.pointsManager.currency,
             PlayerParams.Controllers.pointsManager.maxPlotPoints,
             PlayerParams.Controllers.pointsManager.minPlotPoints,
-            PlayerParams.Controllers.pointsManager.maxFoundSecrets);
+            PlayerParams.Controllers.pointsManager.maxFoundSecrets,
+            PlayerParams.Controllers.pointsManager.maxCurrency);
 
         //spells
         List<string> spells = new List<string>();
@@ -68,39 +78,5 @@ public class LevelExitCube : MonoBehaviour
 
         //everything to file
         saveManager.SaveProgressToFile();
-    }
-
-    IEnumerator ChangeLevel()
-    {
-        PlayerParams.Controllers.playerMovement.movementSpeed = 0;
-        float stairsHigh = PlayerParams.Objects.player.transform.position.y + 2.0f;
-        int stairCounter = 0;
-        while (true)
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                yield return new WaitForFixedUpdate();
-                Vector3 destination = transform.position;
-                destination.y = PlayerParams.Objects.player.transform.position.y;
-                PlayerParams.Objects.player.transform.position = Vector3.MoveTowards(PlayerParams.Objects.player.transform.position, destination, 0.05f);
-            }
-
-            for (int i = 0; i < 10; i++)
-            {
-                yield return new WaitForFixedUpdate();
-                Vector3 destination = PlayerParams.Objects.player.transform.position;
-                destination.y = stairsHigh;
-                PlayerParams.Objects.player.transform.position = Vector3.MoveTowards(PlayerParams.Objects.player.transform.position, destination, 0.05f);
-            }
-
-            stairCounter++;
-
-            if (stairCounter >= 5)
-            {
-                break;
-            }
-        }
-        SaveProgress();
-        FindObjectOfType<FadeInFadeOut>().ChangeScene(chapter, fadeOutAndChangeMusic: changeMusic);
     }
 }

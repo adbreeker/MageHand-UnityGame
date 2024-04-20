@@ -20,6 +20,7 @@ public static class PlayerParams //static player parameters accessible from ever
         public static Spellbook spellbook;
         public static Journal journal;
         public static PointsManager pointsManager;
+        public static HUD HUD;
         public static PauseMenu pauseMenu;
         public static SpellsMenu spellsMenu;
         public static HandInteractions handInteractions;
@@ -49,6 +50,7 @@ public class PlayerManager : MonoBehaviour //assigning static PlayerParams on Aw
     public Spellbook spellbook;
     public Journal journal;
     public PointsManager pointsManager;
+    public HUD HUD;
     public PauseMenu pauseMenu;
     public SpellsMenu spellsMenu;
     public HandInteractions handInteractions;
@@ -71,6 +73,7 @@ public class PlayerManager : MonoBehaviour //assigning static PlayerParams on Aw
         PlayerParams.Controllers.spellbook = spellbook;
         PlayerParams.Controllers.journal = journal;
         PlayerParams.Controllers.pointsManager = pointsManager;
+        PlayerParams.Controllers.HUD = HUD;
         PlayerParams.Controllers.pauseMenu = pauseMenu;
         PlayerParams.Controllers.spellsMenu = spellsMenu;
         PlayerParams.Controllers.handInteractions = handInteractions;

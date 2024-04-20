@@ -41,7 +41,7 @@ public class OpenLockedDoorsPassage : MonoBehaviour
 
     IEnumerator RotateDoors(float destinationDegree) //animating doors opening, then change doors to not obstacle, and make lock object unactive
     {
-        openDoorsSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_UnlockOpenDoor, doors);
+        openDoorsSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_UnlockOpenDoor, doors);
         openDoorsSound.Play();
         while(transform.localRotation.eulerAngles.y  != destinationDegree)
         {

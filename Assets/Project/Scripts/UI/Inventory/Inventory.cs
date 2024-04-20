@@ -49,7 +49,7 @@ public class Inventory : MonoBehaviour
         {
             if (!inventoryOpened && PlayerParams.Controllers.handInteractions.inHand != null)
             {
-                if (PlayerParams.Controllers.handInteractions.inHand.GetComponent<ItemParameters>() != null)
+                if (PlayerParams.Controllers.handInteractions.inHand.GetComponent<ItemBehavior>() != null)
                 {
                     PlayerParams.Controllers.handInteractions.PutDownObject();
                 }
@@ -111,9 +111,9 @@ public class Inventory : MonoBehaviour
         PlayerParams.Controllers.pauseMenu.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
 
-        openSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Open);
-        closeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_Close);
-        changeSound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
+        openSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Open);
+        closeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Close);
+        changeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
 
         //Create list of slots for items to display on one page
         itemSlots = new List<GameObject>();
@@ -142,6 +142,10 @@ public class Inventory : MonoBehaviour
                 inventoryPages[pageToAdd].Add(inventory[i]);
             }
         }
+
+        //Display currency counter
+        instantiatedInventory.transform.Find("Background").Find("InventoryBackground").Find("MoneyCounter")
+            .gameObject.GetComponent<TextMeshProUGUI>().text = ": " + PlayerParams.Controllers.pointsManager.currency.ToString();
 
         //Display first page if there are items in inventory
         page = 0;
@@ -194,8 +198,8 @@ public class Inventory : MonoBehaviour
         for (int i = 0; i < inventoryPages[pageToDisplay].Count; i++)
         {
             itemSlots[i].SetActive(true);
-            itemSlots[i].transform.Find("Name").gameObject.GetComponent<TextMeshProUGUI>().text = inventoryPages[pageToDisplay][i].GetComponent<ItemParameters>().itemName;
-            GameObject itemIcon = Instantiate(inventoryPages[pageToDisplay][i].GetComponent<ItemParameters>().itemIcon, itemSlots[i].transform);
+            itemSlots[i].transform.Find("Name").gameObject.GetComponent<TextMeshProUGUI>().text = inventoryPages[pageToDisplay][i].GetComponent<ItemBehavior>().itemName;
+            GameObject itemIcon = Instantiate(inventoryPages[pageToDisplay][i].GetComponent<ItemBehavior>().itemIcon, itemSlots[i].transform);
             itemIcon.GetComponent<IconParameters>().originalObject = inventoryPages[pageToDisplay][i];
             itemIconActiveInstances.Add(itemIcon);
             itemIconActiveInstances[i].transform.localScale = new Vector3(200f, 200f, 200f);
@@ -208,9 +212,18 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(GameObject item)
     {
-        inventory.Add(item);
-        inventory = inventory.OrderBy(go => go.GetComponent<ItemParameters>().itemName).ToList();
-        item.SetActive(false);
+        if(item.tag == "Treasure")
+        {
+            PlayerParams.Controllers.pointsManager.currency += item.GetComponent<TreasureBehavior>().value;
+            Destroy(item);
+        }
+        else
+        {
+            inventory.Add(item);
+            inventory = inventory.OrderBy(go => go.GetComponent<ItemBehavior>().itemName).ToList();
+            item.SetActive(false);
+        }
+        
         try
         {
             PlayerParams.Controllers.handInteractions.inHand = null;

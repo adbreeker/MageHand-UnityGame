@@ -182,9 +182,7 @@ GameObject:
   - component: {fileID: 2414009616391255662}
   - component: {fileID: -278183867825882476}
   - component: {fileID: -5862515443255147124}
-  - component: {fileID: 2095386419408966483}
   - component: {fileID: 3354199713359747635}
-  - component: {fileID: -9158582300052540975}
   m_Layer: 12
   m_Name: Compass
   m_TagString: Untagged
@@ -224,7 +222,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4215567734337902523}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -284,20 +282,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.7, y: 0.5, z: 0.7}
   m_Center: {x: 0, y: 0.07, z: 0}
---- !u!114 &2095386419408966483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4215567734337902523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea00f27b381eda64d9c799064f430b57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemName: Compass
-  itemIcon: {fileID: 6610860039850489068, guid: 915221b1f4d135f48a0d56f2dd0b1042, type: 3}
 --- !u!114 &3354199713359747635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,19 +294,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e09508602e0edf48985c6656b9e7d72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemName: Compass
+  itemIcon: {fileID: 6610860039850489068, guid: 915221b1f4d135f48a0d56f2dd0b1042, type: 3}
   _needle: {fileID: 2032145432290594627}
---- !u!114 &-9158582300052540975
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4215567734337902523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b48df7d14834f384ca483976115b53e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4401022901339060390
 GameObject:
   m_ObjectHideFlags: 0

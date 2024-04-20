@@ -9,7 +9,7 @@ public class EnlightObject : MonoBehaviour //component added to object to enligh
     public int enlightenTime = 5;
 
     [Header("Material type")]
-    public MaterialHolder.Materials materialType;
+    public MaterialsAndEffectsHolder.Materials materialType;
 
     Material enlighten; //enlighten material
     Material[] previousMaterials; //before enlight materials
@@ -18,7 +18,7 @@ public class EnlightObject : MonoBehaviour //component added to object to enligh
 
     void Start() //enlightening this mesh or first mesh in children
     {
-        enlighten = FindObjectOfType<MaterialHolder>().GetMaterial(materialType);
+        enlighten = GameParams.Holders.materialsAndEffectsHolder.GetMaterial(materialType);
             
         if(this.GetComponent<MeshRenderer>() != null)
         {

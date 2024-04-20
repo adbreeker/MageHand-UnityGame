@@ -11,7 +11,7 @@ public class Portal : MonoBehaviour
     [Header("Teleportation beneficiaries mask")]
     public LayerMask toTeleport;
 
-    [Header("Teleportation effects for teleporting player and objects")]
+    [Header("Teleportation effects for objects")]
     public GameObject teleportationEffect_Object;
 
     BoxCollider portalCollider;

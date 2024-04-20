@@ -18,7 +18,7 @@ public class LightSpellBehavior : MonoBehaviour
 
     private void Start()
     {
-        spellRemaining = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_SpellLightRemaining, gameObject, minHearingDistance, maxHearingDistance);
+        spellRemaining = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_SpellLightRemaining, gameObject, minHearingDistance, maxHearingDistance);
         spellRemaining.loop = true;
         spellRemaining.Play();
     }
@@ -32,7 +32,7 @@ public class LightSpellBehavior : MonoBehaviour
     {
         spellRemaining.Stop();
         instantiatedEffect = Instantiate(flashEffectPrefab, transform.position, Quaternion.identity);
-        spellBurst = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_SpellLightBurst, instantiatedEffect, 8f, 30f);
+        spellBurst = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_SpellLightBurst, instantiatedEffect, 8f, 30f);
         spellBurst.Play();
     }
 }

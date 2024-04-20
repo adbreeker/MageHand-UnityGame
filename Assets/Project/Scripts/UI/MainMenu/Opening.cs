@@ -23,8 +23,8 @@ public class Opening : MonoBehaviour
     {
         if (error && Input.GetKeyDown(KeyCode.Space))
         {
-            FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.UI_SelectOption).Play();
-            FindObjectOfType<FadeInFadeOut>().CloseGame();
+            GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption).Play();
+            GameParams.Managers.fadeInOutManager.CloseGame();
         }
     }
     IEnumerator Animation()
@@ -48,7 +48,7 @@ public class Opening : MonoBehaviour
             yield return new WaitForSeconds(0);
         }
 
-        if (WebCamTexture.devices.Length > 0) FindObjectOfType<FadeInFadeOut>().ChangeScene("Menu");
+        if (WebCamTexture.devices.Length > 0) GameParams.Managers.fadeInOutManager.ChangeScene("Menu");
         else
         {
             info.SetActive(false);

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpellBookBehavior : MonoBehaviour
+public class SpellBookBehavior : ItemBehavior
 {
     private Spellbook spellbook;
     private HandInteractions handInteractions;
@@ -13,7 +13,7 @@ public class SpellBookBehavior : MonoBehaviour
         handInteractions = PlayerParams.Controllers.handInteractions;
     }
 
-    public void OnPickUp() //on pick up toggle spellbook on spellbook ui script and make all spell scrolls pickable again
+    public override void OnPickUp() //on pick up toggle spellbook on spellbook ui script and make all spell scrolls pickable again
     {
         spellbook.bookOwned = true;
 

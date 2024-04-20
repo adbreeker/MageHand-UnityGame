@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ReadableBehavior : MonoBehaviour
+public class ReadableBehavior : ItemBehavior
 {
     [Header("Note content")]
     public string title;
@@ -15,8 +15,9 @@ public class ReadableBehavior : MonoBehaviour
     [Header("Prefabs")]
     public GameObject notePrefab; 
 
-    public void OnPickUp() //instantiate note prefab and open note on it
+    public override void OnPickUp() //instantiate note prefab and open note on it
     {
+        base.OnPickUp();
         GameObject note = Instantiate(notePrefab, new Vector3(0, 0, 0), Quaternion.identity);
         note.GetComponent<Note>().titleText = title;
         note.GetComponent<Note>().contentText = content;
