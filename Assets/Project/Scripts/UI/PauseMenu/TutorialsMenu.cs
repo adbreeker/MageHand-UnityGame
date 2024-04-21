@@ -118,7 +118,7 @@ public class TutorialsMenu : MonoBehaviour
         closeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Close);
         changeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
 
-        for (int i = 1; i < 14; i++)
+        for (int i = 1; i < 15; i++)
         {
             string text = i.ToString();
             menuOptions.Add(transform.Find("Menu").Find("ScrollRect").Find("Content").Find(text).GetComponent<TextMeshProUGUI>());

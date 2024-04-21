@@ -21,8 +21,8 @@ public class PotionInChestRequest : MonoBehaviour
 
     private void Start()
     {
-        PlayerParams.Controllers.pointsManager.minPlotPoints += -2;
-        PlayerParams.Controllers.pointsManager.maxPlotPoints += 1;
+        PlayerParams.Controllers.pointsManager.maxPlotPoints += 2;
+        PlayerParams.Controllers.pointsManager.minPlotPoints += -3;
 
         LevelExitCube.OnLevelChange += OnLevelChange;
 
@@ -76,9 +76,9 @@ public class PotionInChestRequest : MonoBehaviour
 
         if(potionPicked)
         {
-            if(isTreasureInChest && isPotionInChest) { points = 1; Debug.Log("1 punkt"); }
-            else if (isTreasureInChest || isPotionInChest) { points = -1; Debug.Log("-1 punkt"); }
-            else { points = -2; Debug.Log("-2 punkt"); }
+            if(isTreasureInChest && isPotionInChest) { points = 2; Debug.Log("+2 points"); }
+            else if (isTreasureInChest || isPotionInChest) { points = -1; Debug.Log("-1 point"); }
+            else { points = -3; Debug.Log("-3 points"); }
         }
 
         PlayerParams.Controllers.pointsManager.plotPoints += points;
