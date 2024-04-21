@@ -38,6 +38,7 @@ public class SpellCasting : MonoBehaviour
 
     [Header("Easter Egg")]
     public GameObject openEasterEggPrefab;
+    private GameObject instantiatedOpenEasterEggPrefab;
 
     //private AudioSource castingSound;
     private AudioSource castingFailSound;
@@ -212,7 +213,10 @@ public class SpellCasting : MonoBehaviour
             castingFailSound.Play();
             Destroy(castingFailSound, castingFailSound.clip.length);
 
-            Instantiate(openEasterEggPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
+            if (instantiatedOpenEasterEggPrefab == null)
+            {
+                instantiatedOpenEasterEggPrefab = Instantiate(openEasterEggPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
+            }
         }
     }
 

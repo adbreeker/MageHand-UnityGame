@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -283.0609, y: -288.58}
-  m_SizeDelta: {x: 566.1218, y: 213.9185}
+  m_SizeDelta: {x: 566.1218, y: 391.6568}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5074808285342132283
 CanvasRenderer:
@@ -66,12 +66,21 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Treasures are valuable items. When you put them into your inventory, they
-    will be converted into currency.
+  m_text: 'Magic skulls are valuable treasures. When you put them into your inventory,
+    they will be converted into currency.
 
 
-    You''ll probably need this currency once
-    you finally get out of here.'
+
+    You''ll probably need this currency
+    once you finally get out of here.
+
+
+
+    The value of the treasure depends on
+    the material from which it is made. <color=blue>Saphire</color> is quite common,
+    <color=green>emerald</color> is rare, and <color=red>ruby</color> is super rare.
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb218ab571150b84c88ce3da9f3be483, type: 2}
   m_sharedMaterial: {fileID: 611106172734456367, guid: bb218ab571150b84c88ce3da9f3be483, type: 2}
@@ -176,8 +185,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -59.5834, y: -57.35}
-  m_SizeDelta: {x: 2, y: 116.7}
+  m_AnchoredPosition: {x: -40.967995, y: -153.79002}
+  m_SizeDelta: {x: 2, y: 309.58}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3453526429121894351
 CanvasRenderer:
@@ -227,7 +236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   r: {x: 1, y: 0, z: 1, w: 1}
-  rect2props: {x: 0.25, y: 0.24999237, z: 41.25968, w: 41.613235}
+  rect2props: {x: 0.25, y: 0.24996948, z: 109.453064, w: 109.80662}
   image: {fileID: 8107607557759446282}
 --- !u!1 &2717853695997683522
 GameObject:
@@ -559,8 +568,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -29.304749, y: 0}
-  m_SizeDelta: {x: 62.61, y: 2}
+  m_AnchoredPosition: {x: -19.984, y: -0}
+  m_SizeDelta: {x: 43.968, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4983453649522751497
 CanvasRenderer:
@@ -610,7 +619,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   r: {x: 1, y: 0, z: 0, w: 1}
-  rect2props: {x: 0.5000057, y: 0.0000019073486, z: 22.489532, w: 22.489532}
+  rect2props: {x: 0.5000019, y: 0, z: 15.898589, w: 15.898589}
   image: {fileID: 6872662282092369049}
 --- !u!1 &4535421283353266441
 GameObject:
@@ -648,8 +657,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -54.447025, y: -114.70035}
-  m_SizeDelta: {x: 12.2725, y: 2}
+  m_AnchoredPosition: {x: -30, y: -307.58}
+  m_SizeDelta: {x: 23.936, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4233150131206267138
 CanvasRenderer:
@@ -699,7 +708,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   r: {x: 1, y: 1, z: 1, w: 1}
-  rect2props: {x: 0.00000047683716, y: -0.00000047683716, z: 4.3389845, w: 4.3389845}
+  rect2props: {x: 0.0000019073486, y: 0, z: 8.462655, w: 8.462655}
   image: {fileID: 9136536926539645869}
 --- !u!1 &5214573475288244163
 GameObject:
@@ -1069,7 +1078,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 47a48c9cf6895484983862ae79cb7102, type: 3}
+  m_Texture: {fileID: 2800000, guid: 11224b7b457eaaf4880c027e97768054, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -1130,7 +1139,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -658.1, y: 82.4}
+  m_AnchoredPosition: {x: -627.37, y: 127.61}
   m_SizeDelta: {x: 0, y: -565.3051}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &7248400316540991208
