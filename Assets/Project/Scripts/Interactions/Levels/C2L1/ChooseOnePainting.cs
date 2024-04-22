@@ -19,12 +19,12 @@ public class ChooseOnePainting : MonoBehaviour
     {
         if(painting == painting1)
         {
-            PlayerParams.Controllers.pointsManager.plotPoints += 1;
+            PlayerParams.Controllers.pointsManager.plotPoints += -2;
             PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination, null);
         }
         if(painting == painting2)
         {
-            PlayerParams.Controllers.pointsManager.plotPoints += -2;
+            PlayerParams.Controllers.pointsManager.plotPoints += 1;
             PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination, null);
         }
         if(painting == painting3)
