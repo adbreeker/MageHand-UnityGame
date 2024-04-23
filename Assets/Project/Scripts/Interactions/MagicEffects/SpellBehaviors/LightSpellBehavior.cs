@@ -2,15 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LightSpellBehavior : MonoBehaviour
+public class LightSpellBehavior : SpellBehavior
 {
-    [Header("Flash effect prefab")]
-    public GameObject flashEffectPrefab;
-
-    [Header("Sound distance")]
-    public float minHearingDistance = 10.0f;
-    public float maxHearingDistance = 30.0f;
-
     private GameObject instantiatedEffect;
 
     private AudioSource spellRemaining;
@@ -23,16 +16,24 @@ public class LightSpellBehavior : MonoBehaviour
         spellRemaining.Play();
     }
 
-    public void OnThrow()
+    public override void OnThrow()
     {
 
     }
 
-    public void OnImpact() //on impact spawn flash effect
+    public override void OnImpact(GameObject impactTarget) //on impact spawn flash effect
     {
         spellRemaining.Stop();
-        instantiatedEffect = Instantiate(flashEffectPrefab, transform.position, Quaternion.identity);
+        instantiatedEffect = Instantiate(specialEffectPrefab, transform.position, Quaternion.identity);
         spellBurst = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_SpellLightBurst, instantiatedEffect, 8f, 30f);
         spellBurst.Play();
+
+        LightImpactOpenWall lightImpactOpenWall = impactTarget.GetComponent<LightImpactOpenWall>();
+        if(lightImpactOpenWall != null) 
+        {
+            lightImpactOpenWall.LightSpellInteract();
+        }
+
+        Destroy(gameObject);
     }
 }

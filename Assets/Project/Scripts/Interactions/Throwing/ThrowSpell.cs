@@ -7,10 +7,12 @@ public class ThrowSpell : MonoBehaviour //script added to spell on throw
     Rigidbody rb;
     LayerMask notColliders;
 
+    SpellBehavior sb;
+
     public void Initialize(GameObject player) //initializing throw
     {
-        //invoking OnThrow method on spell object
-        gameObject.SendMessage("OnThrow");
+        sb = GetComponent<SpellBehavior>();
+        sb.OnThrow();
 
         //create mask for objects not to collide with
         notColliders = LayerMask.GetMask("Player", "UI", "TransparentFX");
@@ -32,13 +34,7 @@ public class ThrowSpell : MonoBehaviour //script added to spell on throw
         //checking if collision layer is not in notColliders layer mask with use of bitwise operation
         if ((1 << collision.gameObject.layer & notColliders.value) == 0) 
         {
-            if(collision.gameObject.GetComponent<SpellImpactInteraction>() != null)
-            {
-                collision.gameObject.GetComponent<SpellImpactInteraction>().OnSpellImpact(gameObject);
-            }
-            //do something on impact, then destroy
-            gameObject.SendMessage("OnImpact");
-            Destroy(gameObject);
+            sb.OnImpact(collision.gameObject);
         }
     }
 }

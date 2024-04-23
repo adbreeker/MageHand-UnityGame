@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class LightImpactOpenWall : SpellImpactInteraction
+public class LightImpactOpenWall : MonoBehaviour
 {
     [SerializeField] OpenWallPassage _openWallPassage;
 
@@ -56,13 +56,10 @@ public class LightImpactOpenWall : SpellImpactInteraction
         }
     }
 
-    public override void OnSpellImpact(GameObject spell)
+    public void LightSpellInteract()
     {
-        if(spell.GetComponent<LightSpellBehavior>() != null) 
-        {
-            _openWallPassage.Interaction();
-            Destroy(this);
-        }
+        _openWallPassage.Interaction();
+        Destroy(this);
     }
 
 #if UNITY_EDITOR

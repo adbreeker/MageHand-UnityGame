@@ -2,15 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireSpellBehavior : MonoBehaviour
+public class FireSpellBehavior : SpellBehavior
 {
-    [Header("Explosion effect prefab")]
-    public GameObject explosionEffectPrefab;
-
-    [Header("Sound distance")]
-    public float minHearingDistance = 10.0f;
-    public float maxHearingDistance = 30.0f;
-
     private GameObject instantiatedEffect;
 
     private AudioSource spellRemaining;
@@ -23,15 +16,27 @@ public class FireSpellBehavior : MonoBehaviour
         spellRemaining.Play();
     }
 
-    public void OnThrow() //rotate fireball on throw to face good direction
+    public override void OnThrow() //rotate fireball on throw to face good direction
     {
         transform.localRotation = Quaternion.Euler(-90, 0, 0);
     }
 
-    public void OnImpact() //spawn explosion on impact
+    public override void OnImpact(GameObject impactTarget) //spawn explosion on impact
     {
-        instantiatedEffect = Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
+        instantiatedEffect = Instantiate(specialEffectPrefab, transform.position, Quaternion.identity);
         spellBurst = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_FireSpellBurst, instantiatedEffect, 8f, 30f);
         spellBurst.Play();
+
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 0.5f);
+        foreach (Collider collider in colliders) 
+        {
+            Destroyable destroyable = collider.GetComponent<Destroyable>();
+            if(destroyable != null)
+            {
+                destroyable.SplitMesh();
+            }
+        }
+
+        Destroy(gameObject);
     }
 }

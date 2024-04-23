@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MarkAndReturnSpellBehavior : MonoBehaviour
+public class MarkAndReturnSpellBehavior : SpellBehavior
 {
-    public GameObject markedTeleportationEffectPrefab;
-
     public void TeleportationPerformed()
     {
-        Instantiate(markedTeleportationEffectPrefab, PlayerParams.Objects.player.transform);
+        Instantiate(specialEffectPrefab, PlayerParams.Objects.player.transform);
         Destroy(gameObject);
     }
 }
