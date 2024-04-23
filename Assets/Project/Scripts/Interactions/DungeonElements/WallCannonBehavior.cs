@@ -4,17 +4,25 @@ using UnityEngine;
 
 public class WallCannonBehavior : MonoBehaviour
 {
-    public GameObject missileToLaunch;
+    public enum MissileType
+    {
+        teleportingMissile
+    }
+
+    [Header("Launching settings:")]
+    public MissileType missileType;
+    public GameObject[] missilesPrefabs;
     public float launchingDeley;
     public bool isLaunching = true;
 
+    [Header("Additional launch settings:")]
+    public Vector3 tpDestination;
+
     Vector3 _launchingPos;
-    Quaternion _launchingRot;
 
     private void Start()
     {
         _launchingPos = transform.position + transform.up * 0.5f;
-        _launchingRot = transform.rotation * Quaternion.Euler(180.0f, 0, 0);
         StartCoroutine(LaunchingCoroutine());
     }
 
@@ -22,12 +30,26 @@ public class WallCannonBehavior : MonoBehaviour
     {
         while (true) 
         {
-            if(isLaunching)
+            yield return new WaitForSeconds(launchingDeley);
+            if (isLaunching)
             {
-                yield return new WaitForSeconds(launchingDeley);
-                GameObject missile = Instantiate(missileToLaunch, _launchingPos, _launchingRot);
-                missile.AddComponent<ThrowSpell>().Initialize(gameObject, ~LayerMask.GetMask("TransparentFX"));
+                switch (missileType) 
+                {
+                    case MissileType.teleportingMissile:
+                        LaunchTeleportingMissile();
+                        break;
+                }
             }
         }
+    }
+
+    void LaunchTeleportingMissile()
+    {
+        Quaternion _launchingRot = transform.rotation * Quaternion.Euler(180.0f, 0, 0);
+        GameObject missile = Instantiate(missilesPrefabs[(int)missileType], _launchingPos, _launchingRot);
+        missile.GetComponent<TeleportingMissileBehavior>().teleportationDestination = tpDestination;
+
+        Rigidbody rb = missile.GetComponent<Rigidbody>();
+        rb.AddForce(gameObject.transform.up * 10, ForceMode.Impulse);
     }
 }
