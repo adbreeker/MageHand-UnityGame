@@ -52,7 +52,7 @@ public class TutorialEndingPickUp : MonoBehaviour
 
     IEnumerator TutorialEnding()
     {
-        _lightInTreasury.OnImpact();
+        _lightInTreasury.OnImpact(null);
         yield return new WaitForSeconds(0.3f);
         Instantiate(_flashbangEffect, _hud);
         yield return new WaitForSeconds(1f);

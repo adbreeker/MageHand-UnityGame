@@ -20,6 +20,7 @@ public class WallsListTunnels : MonoBehaviour
         Tunnel_Wall_PassageLockedDoors,
         Tunnel_Wall_PassageLockedDoors_Mix,
         Tunnel_Wall_Torch,
-        Tunnel_Wall_Torch_NoLight
+        Tunnel_Wall_Torch_NoLight,
+        Tunnel_Wall_Fake
     }
 }

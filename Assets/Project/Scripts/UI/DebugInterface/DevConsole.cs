@@ -311,8 +311,12 @@ public class DevConsole : MonoBehaviour
         {
             Spellbook spellbook = PlayerParams.Controllers.spellbook;
             spellbook.bookOwned = true;
+            foreach (GameObject spellScroll in GameObject.FindGameObjectsWithTag("SpellScroll"))
+            {
+                spellScroll.layer = LayerMask.NameToLayer("Item");
+            }
 
-            foreach(SpellScrollInfo spellScroll in spellScrollsHolder.GiveAllScrolls())
+            foreach (SpellScrollInfo spellScroll in spellScrollsHolder.GiveAllScrolls())
             {
                 spellbook.AddSpell(spellScroll);
             }

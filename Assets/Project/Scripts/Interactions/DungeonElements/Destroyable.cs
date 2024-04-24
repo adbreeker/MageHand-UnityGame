@@ -3,21 +3,8 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class Destroyable : SpellImpactInteraction
+public class Destroyable : MonoBehaviour
 {
-    public GameObject destroyAlso;
-    public override void OnSpellImpact(GameObject spell)
-    {
-        if (spell.GetComponent<FireSpellBehavior>() != null) 
-        {
-            SplitMesh();
-            if(destroyAlso != null) 
-            {
-                destroyAlso.GetComponent<Destroyable>().SplitMesh();
-            }
-        }
-    }
-
 #if UNITY_EDITOR
     public void OnValidate()
     {
