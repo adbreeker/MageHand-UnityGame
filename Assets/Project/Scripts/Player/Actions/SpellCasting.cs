@@ -26,15 +26,18 @@ public class SpellCasting : MonoBehaviour
     [Header("Spell Cast Position")]
     public Transform hand;
 
-    [Header("Pop up options")]
+    [Header("Pop up options:")]
     public GameObject popUpPrefab;
     public float timeToFadeOutPopUp = 1;
     public float timeOfFadingOutPopUp = 0.007f;
 
-    [Header("Spells Prefabs")]
+    [Header("Spells Prefabs:")]
     public GameObject lightPrefab;
     public GameObject firePrefab;
     public GameObject markPrefab;
+
+    [Header("Casting effect prefab")]
+    public GameObject castingEffectPrefab;
 
     [Header("Easter Egg")]
     public GameObject openEasterEggPrefab;
@@ -231,16 +234,21 @@ public class SpellCasting : MonoBehaviour
 
         _isAbleToCast = false;
 
+
         AudioClip recordedClip = Microphone.Start(GameSettings.microphoneName, false, 2, 16000);
 
         // PopUp cast spell
         Debug.Log("Whisper listening");
         PlayerParams.Controllers.HUD.SpawnPopUp("Cast a Spell.", timeToFadeOutPopUp, timeOfFadingOutPopUp);
+
+        // Effects
+        GameObject castingEffect = Instantiate(castingEffectPrefab, hand);
         AudioSource castingSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpell);
         castingSound.Play();
 
         // Wait for the specified recording time
-        yield return new WaitForSecondsRealtime(2.0f);
+        yield return new WaitForSecondsRealtime(2f);
+        castingEffect.GetComponent<ParticlesColor>().ChangeColorOfEffect(new Color(1f, 0f, 1f));
 
         Microphone.End(GameSettings.microphoneName);
 
@@ -272,10 +280,14 @@ public class SpellCasting : MonoBehaviour
         string word = System.Text.Encoding.UTF8.GetString(frameWord).Split(";")[0];
         Debug.Log("Whisper transcribed word: " + word);
 
-        if (word.Length >= 4 && word.Substring(0, 4) == "None") PlayerParams.Controllers.HUD.SpawnPopUp("Casting word:<br>(silence)", timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
-        else PlayerParams.Controllers.HUD.SpawnPopUp("Casting word:<br>" + word, timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
+        if (word.Length >= 4 && word.Substring(0, 4) == "None")
+        {
+            PlayerParams.Controllers.HUD.SpawnPopUp("Casting word:<br>(silence)", timeToFadeOutPopUp, timeOfFadingOutPopUp, false);
+        }
+        else { PlayerParams.Controllers.HUD.SpawnPopUp("Casting word:<br>" + word, timeToFadeOutPopUp, timeOfFadingOutPopUp, false); }
 
         Destroy(castingSound);
+        Destroy(castingEffect);
 
         WriteToMemoryMappedFile("magehand_whisper_run", "no");
 

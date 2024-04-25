@@ -302,7 +302,7 @@ public class PlayerMovement : MonoBehaviour
         if (tpEffectColor != null) 
         {
             Instantiate(_teleportationEffect, transform)
-                    .GetComponent<TeleportationColor>().ChangeColorOfEffect(tpEffectColor.Value);
+                    .GetComponent<ParticlesColor>().ChangeColorOfEffect(tpEffectColor.Value);
         }
         else
         {

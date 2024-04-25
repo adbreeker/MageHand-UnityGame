@@ -59,7 +59,7 @@ public class Portal : MonoBehaviour
                     }
 
                     Instantiate(teleportationEffect_Object, teleportationDestination, Quaternion.identity)
-                        .GetComponent<TeleportationColor>().ChangeColorOfEffect(gameObject.GetComponent<ParticleSystem>().main.startColor.color);
+                        .GetComponent<ParticlesColor>().ChangeColorOfEffect(gameObject.GetComponent<ParticleSystem>().main.startColor.color);
                 }
             }
         }
