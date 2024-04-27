@@ -35,6 +35,8 @@ public class SpellCasting : MonoBehaviour
     public GameObject lightPrefab;
     public GameObject firePrefab;
     public GameObject markPrefab;
+    public GameObject collectEffectPrefab;
+    public GameObject OpenEffectPrefab;
 
     [Header("Casting effect prefab")]
     public GameObject castingEffectPrefab;
@@ -74,13 +76,14 @@ public class SpellCasting : MonoBehaviour
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Light");
         if(scroll != null)
         {
+            mana -= scroll.manaCost;
+
             castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
             castingFinishedSound.Play();
             Destroy(castingFinishedSound, castingFinishedSound.clip.length);
 
             currentSpell = "Light";
             PlayerParams.Controllers.handInteractions.AddToHand(Instantiate(lightPrefab), true, true);
-            mana -= scroll.manaCost;
         }
         else
         {
@@ -95,6 +98,8 @@ public class SpellCasting : MonoBehaviour
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Collect");
         if(scroll != null)
         {
+            mana -= scroll.manaCost;
+
             castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_SpellPickUpActivation);
             castingFinishedSound.Play();
             Destroy(castingFinishedSound, castingFinishedSound.clip.length);
@@ -113,6 +118,7 @@ public class SpellCasting : MonoBehaviour
                     }
                 }
                 PlayerParams.Controllers.handInteractions.AddToHand(nearestItem, false, false);
+                GameObject collectEffect = Instantiate(collectEffectPrefab, nearestItem.transform);
                 while (nearestItem.transform.position != PlayerParams.Controllers.handInteractions.holdingPoint.position)
                 {
                     nearestItem.transform.position = Vector3.MoveTowards(nearestItem.transform.position, PlayerParams.Controllers.handInteractions.holdingPoint.position, 7.0f * Time.fixedDeltaTime);
@@ -120,8 +126,8 @@ public class SpellCasting : MonoBehaviour
                 }
                 nearestItem.layer = LayerMask.NameToLayer("Item");
                 PlayerParams.Controllers.handInteractions.AddToHand(nearestItem.gameObject, true, false);
+                Destroy(collectEffect);
             }
-            mana -= scroll.manaCost;
         }
         else
         {
@@ -136,13 +142,14 @@ public class SpellCasting : MonoBehaviour
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Fire");
         if (scroll != null)
         {
+            mana -= scroll.manaCost;
+
             castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
             castingFinishedSound.Play();
             Destroy(castingFinishedSound, castingFinishedSound.clip.length);
 
             currentSpell = "Fire";
             PlayerParams.Controllers.handInteractions.AddToHand(Instantiate(firePrefab), true, true);
-            mana -= scroll.manaCost;
         }
         else
         {
@@ -157,6 +164,8 @@ public class SpellCasting : MonoBehaviour
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Mark And Return");
         if (scroll != null)
         {
+            mana -= scroll.manaCost / 4;
+
             if (PlayerParams.Controllers.playerMovement.isMoving)
             {
                 Vector3 place = PlayerParams.Controllers.playerMovement.currentTilePos;
@@ -169,7 +178,6 @@ public class SpellCasting : MonoBehaviour
                 place.y = 0;
                 magicMark = Instantiate(markPrefab, place, Quaternion.identity);
             }
-            mana -= scroll.manaCost / 4;
         }
     }
 
@@ -180,12 +188,13 @@ public class SpellCasting : MonoBehaviour
             SpellScrollInfo scroll = spellbook.GetSpellInfo("Mark And Return");
             if (scroll != null)
             {
+                mana -= scroll.manaCost;
+
                 Vector3 tpDestination = magicMark.transform.position;
                 tpDestination.y = 1;
                 PlayerParams.Controllers.playerMovement.stopMovement = true;
                 PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination);
                 magicMark.GetComponent<MarkAndReturnSpellBehavior>().TeleportationPerformed();
-                mana -= scroll.manaCost;
             }
         }
     }
@@ -195,6 +204,8 @@ public class SpellCasting : MonoBehaviour
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Open");
         if (scroll != null)
         {
+            mana -= scroll.manaCost;
+
             castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
             castingFinishedSound.Play();
             Destroy(castingFinishedSound, castingFinishedSound.clip.length);
@@ -205,10 +216,10 @@ public class SpellCasting : MonoBehaviour
             {
                 if(potentialLock.tag == "Lock")
                 {
+                    Instantiate(OpenEffectPrefab, potentialLock.transform).transform.SetParent(potentialLock.transform.parent);
                     potentialLock.GetComponent<LockBehavior>().OpenLock();
                 }
             }
-            mana -= scroll.manaCost;
         }
         else
         {
