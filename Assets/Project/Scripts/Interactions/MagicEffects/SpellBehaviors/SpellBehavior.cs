@@ -38,7 +38,7 @@ public class SpellBehavior : MonoBehaviour
         if (tpEffectColor != null)
         {
             Instantiate(tpEffect, transform)
-                    .GetComponent<TeleportationColor>().ChangeColorOfEffect(tpEffectColor.Value);
+                    .GetComponent<ParticlesColor>().ChangeColorOfEffect(tpEffectColor.Value);
         }
         else
         {
