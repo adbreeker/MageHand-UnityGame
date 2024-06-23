@@ -21,17 +21,17 @@ public class LaunchAfterPlantDestroy : MonoBehaviour
 
     IEnumerator ChangeCannonsToMainOnly()
     {
-        yield return new WaitForSeconds(2.0f);
-
-        _mainCannon.LaunchTeleportingMissile();
-        _mainCannon.SetLaunching(true);
-
         yield return new WaitForSeconds(0.5f);
 
         foreach (WallCannonBehavior behavior in _secondaryCannons)
         {
             behavior.SetLaunching(false);
         }
+
+        yield return new WaitForSeconds(1.5f);
+
+        _mainCannon.LaunchTeleportingMissile();
+        _mainCannon.SetLaunching(true);
 
         Destroy(this);
     }
