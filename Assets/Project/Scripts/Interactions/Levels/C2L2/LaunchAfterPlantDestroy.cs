@@ -8,23 +8,31 @@ public class LaunchAfterPlantDestroy : MonoBehaviour
     [SerializeField] GameObject _plant;
     [SerializeField] List<WallCannonBehavior> _secondaryCannons;
 
+    bool changed = false;
+
     private void Update()
     {
-        if(_plant == null) 
+        if(_plant == null && !changed) 
         {
-            ChangeCannonsToMainOnly();
-            Destroy(this);
+            changed = true;
+            StartCoroutine(ChangeCannonsToMainOnly());
         }
     }
 
-    void ChangeCannonsToMainOnly()
+    IEnumerator ChangeCannonsToMainOnly()
     {
+        yield return new WaitForSeconds(2.0f);
+
         _mainCannon.LaunchTeleportingMissile();
         _mainCannon.SetLaunching(true);
 
-        foreach(WallCannonBehavior behavior in _secondaryCannons) 
+        yield return new WaitForSeconds(0.5f);
+
+        foreach (WallCannonBehavior behavior in _secondaryCannons)
         {
             behavior.SetLaunching(false);
         }
+
+        Destroy(this);
     }
 }
