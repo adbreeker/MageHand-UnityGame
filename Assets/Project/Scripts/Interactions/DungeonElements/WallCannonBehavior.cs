@@ -13,7 +13,7 @@ public class WallCannonBehavior : MonoBehaviour
     public MissileType missileType;
     public GameObject[] missilesPrefabs;
     public float launchingDeley;
-    public bool isLaunching = true;
+    [SerializeField] bool _isLaunching = true;
 
     [Header("Additional launch settings:")]
     public Vector3 tpDestination;
@@ -23,7 +23,7 @@ public class WallCannonBehavior : MonoBehaviour
     private void Start()
     {
         _launchingPos = transform.position + transform.up * 0.5f;
-        StartCoroutine(LaunchingCoroutine());
+        if (_isLaunching) { StartCoroutine(LaunchingCoroutine()); }
     }
 
     IEnumerator LaunchingCoroutine()
@@ -31,19 +31,31 @@ public class WallCannonBehavior : MonoBehaviour
         while (true) 
         {
             yield return new WaitForSeconds(launchingDeley);
-            if (isLaunching)
+            switch (missileType)
             {
-                switch (missileType) 
-                {
-                    case MissileType.teleportingMissile:
-                        LaunchTeleportingMissile();
-                        break;
-                }
+                case MissileType.teleportingMissile:
+                    LaunchTeleportingMissile();
+                    break;
             }
         }
     }
 
-    void LaunchTeleportingMissile()
+    public void SetLaunching(bool setLaunching)
+    {
+        if (setLaunching)
+        {
+            _isLaunching = true;
+            StopAllCoroutines();
+            StartCoroutine(LaunchingCoroutine());
+        }
+        else
+        {
+            _isLaunching = false;
+            StopAllCoroutines();
+        }
+    }
+
+    public void LaunchTeleportingMissile()
     {
         Quaternion _launchingRot = transform.rotation * Quaternion.Euler(180.0f, 0, 0);
         GameObject missile = Instantiate(missilesPrefabs[(int)missileType], _launchingPos, _launchingRot);
