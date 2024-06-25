@@ -31,12 +31,7 @@ public class WallCannonBehavior : MonoBehaviour
         while (true) 
         {
             yield return new WaitForSeconds(launchingDeley);
-            switch (missileType)
-            {
-                case MissileType.teleportingMissile:
-                    LaunchTeleportingMissile();
-                    break;
-            }
+            LaunchMissile();
         }
     }
 
@@ -52,6 +47,21 @@ public class WallCannonBehavior : MonoBehaviour
         {
             _isLaunching = false;
             StopAllCoroutines();
+        }
+    }
+
+    public bool IsLaunching()
+    {
+        return _isLaunching;
+    }
+
+    public void LaunchMissile()
+    {
+        switch (missileType)
+        {
+            case MissileType.teleportingMissile:
+                LaunchTeleportingMissile();
+                break;
         }
     }
 
