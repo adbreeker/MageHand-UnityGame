@@ -16,7 +16,8 @@ public class ThrowObject : MonoBehaviour //script added to object on throw
         rb.useGravity = true;
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         rb.AddForce(player.transform.forward * 15, ForceMode.Impulse);
-        rb.AddTorque(transform.right * 100);
+
+        gameObject.SendMessage("OnThrow");
     }
 
 

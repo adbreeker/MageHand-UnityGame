@@ -25,6 +25,11 @@ public class ItemBehavior : MonoBehaviour
         }
     }
 
+    public virtual void OnThrow()
+    {
+        GetComponent<Rigidbody>().AddTorque(transform.right * 100);
+    }
+
     public void TeleportTo(Vector3 tpDestination) //teleport to destination and stop movement enqued before teleportation
     {
         transform.position = tpDestination;
