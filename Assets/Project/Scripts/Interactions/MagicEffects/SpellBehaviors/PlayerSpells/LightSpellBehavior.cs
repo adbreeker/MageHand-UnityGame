@@ -28,10 +28,13 @@ public class LightSpellBehavior : SpellBehavior
         spellBurst = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_SpellLightBurst, instantiatedEffect, 8f, 30f);
         spellBurst.Play();
 
-        LightImpactOpenWall lightImpactOpenWall = impactTarget.GetComponent<LightImpactOpenWall>();
-        if(lightImpactOpenWall != null) 
+        if(impactTarget != null) 
         {
-            lightImpactOpenWall.LightSpellInteract();
+            LightImpactOpenWall lightImpactOpenWall = impactTarget.GetComponent<LightImpactOpenWall>();
+            if (lightImpactOpenWall != null)
+            {
+                lightImpactOpenWall.LightSpellInteract();
+            }
         }
 
         Destroy(gameObject);

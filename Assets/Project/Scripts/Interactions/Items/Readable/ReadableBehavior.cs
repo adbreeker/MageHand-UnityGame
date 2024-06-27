@@ -13,7 +13,12 @@ public class ReadableBehavior : ItemBehavior
     public bool destroy = false;
 
     [Header("Prefabs")]
-    public GameObject notePrefab; 
+    public GameObject notePrefab;
+
+    public void Start()
+    {
+        itemName = '"' + title + '"';
+    }
 
     public override void OnPickUp() //instantiate note prefab and open note on it
     {

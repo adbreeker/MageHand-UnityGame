@@ -10,4 +10,9 @@ public class ShieldBehavior : ItemBehavior
         Vector3 front = PlayerParams.Objects.player.transform.forward * 1000;
         transform.LookAt(front);
     }
+
+    public override void OnThrow()
+    {
+        
+    }
 }

@@ -15,7 +15,7 @@ public class ThrowSpell : MonoBehaviour //script added to spell on throw
         sb.OnThrow();
 
         //create mask for objects not to collide with
-        notColliders = LayerMask.GetMask("Player", "UI", "TransparentFX");
+        notColliders = LayerMask.GetMask("Player", "UI", "TransparentFX, Spell");
 
         //clear spell object parent
         gameObject.transform.SetParent(null);

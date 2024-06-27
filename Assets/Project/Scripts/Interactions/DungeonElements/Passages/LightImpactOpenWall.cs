@@ -35,7 +35,7 @@ public class LightImpactOpenWall : MonoBehaviour
 
     private void Update()
     {
-        Collider[] colliders = Physics.OverlapBox(overlapPos, overlapSize, Quaternion.identity, LayerMask.GetMask("TransparentFX", "UI"));
+        Collider[] colliders = Physics.OverlapBox(overlapPos, overlapSize, Quaternion.identity, LayerMask.GetMask("Spell", "UI"));
 
         bool lightInRange = false;
         foreach(Collider potentialLight in colliders)
