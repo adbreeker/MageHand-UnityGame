@@ -80,7 +80,7 @@ public class ProgressSaving : MonoBehaviour
         {
             spellbook.AddSpell(spellScrollsHolder.GiveScroll("Fire"));
         }
-        if (saveData.spellsSave.fire)
+        if (saveData.spellsSave.speak)
         {
             spellbook.AddSpell(spellScrollsHolder.GiveScroll("Speak"));
         }
