@@ -30,28 +30,30 @@ public class SkullPlatformBehavior : MonoBehaviour
 
         Vector3 startingScale = effect.transform.localScale;
 
-        while(effect.transform.localScale.y < startingScale.y*4)
+        while(effect.transform.localScale.y != startingScale.y*6.0f)
         {
             yield return new WaitForFixedUpdate();
-            effect.transform.localScale = Vector3.Lerp(
+            effect.transform.localScale = Vector3.MoveTowards(
                 effect.transform.localScale,
-                new Vector3(effect.transform.localScale.x, startingScale.y*4, effect.transform.localScale.z), 0.1f);
+                new Vector3(effect.transform.localScale.x, startingScale.y*6.0f, effect.transform.localScale.z), 0.05f);
         }
+
+        yield return new WaitForSeconds(1);
 
         _dialogue.SetActive(true);
 
         while(_dialogue.activeSelf) { yield return null; }
+        PlayerParams.Controllers.playerMovement.stopMovement = false;
 
         while (effect.transform.localScale.y > startingScale.y)
         {
             yield return new WaitForFixedUpdate();
-            effect.transform.localScale = Vector3.Lerp(
+            effect.transform.localScale = Vector3.MoveTowards(
                 effect.transform.localScale,
-                new Vector3(effect.transform.localScale.x, startingScale.y, effect.transform.localScale.z), 0.1f);
+                new Vector3(effect.transform.localScale.x, startingScale.y, effect.transform.localScale.z), 0.05f);
         }
 
         Destroy(effect);
-        PlayerParams.Controllers.playerMovement.stopMovement = false;
     }
 
     private void OnValidate()
