@@ -93,7 +93,7 @@ public class SpellCasting : MonoBehaviour
         }
     }
 
-    public IEnumerator PickUpSpell() //casting pick up spell
+    public IEnumerator CollectSpell() //casting pick up spell
     {
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Collect");
         if(scroll != null)
@@ -159,6 +159,47 @@ public class SpellCasting : MonoBehaviour
         }
     }
 
+    public void SpeakSpell()
+    {
+        SpellScrollInfo scroll = spellbook.GetSpellInfo("Speak");
+        if (scroll != null && !PlayerParams.Controllers.playerMovement.isMoving)
+        {
+            SkullPlatformBehavior skullPlatform = null;
+            foreach(RaycastHit potentialPlatform in Physics.RaycastAll(PlayerParams.Objects.player.transform.position, Vector3.down, 5.0f))
+            {
+                if(potentialPlatform.collider.GetComponent<SkullPlatformBehavior>() != null)
+                {
+                    skullPlatform = potentialPlatform.collider.GetComponent<SkullPlatformBehavior>();
+                    break;
+                }
+            }
+
+            if (skullPlatform != null) 
+            {
+                mana -= scroll.manaCost;
+
+                castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
+                castingFinishedSound.Play();
+                Destroy(castingFinishedSound, castingFinishedSound.clip.length);
+
+                currentSpell = "Speak";
+                skullPlatform.UsePlatform();
+            }
+            else
+            {
+                castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
+                castingFailSound.Play();
+                Destroy(castingFailSound, castingFailSound.clip.length);
+            }
+        }
+        else
+        {
+            castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
+            castingFailSound.Play();
+            Destroy(castingFailSound, castingFailSound.clip.length);
+        }
+    }
+
     public void MarkSpell() //marking place under player for future teleportation
     {
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Mark And Return");
@@ -199,7 +240,7 @@ public class SpellCasting : MonoBehaviour
         }
     }
 
-    public void BreakInSpell() //casting break in spell - occurs in tutorial only
+    public void OpenSpell() //casting break in spell - occurs in tutorial only
     {
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Open");
         if (scroll != null)
@@ -392,11 +433,15 @@ public class SpellCasting : MonoBehaviour
         }
         else if (NormalizeTranscribedText(name) == "collect")
         {
-            StartCoroutine(PickUpSpell());
+            StartCoroutine(CollectSpell());
         }
         else if (NormalizeTranscribedText(name) == "fire")
         {
             FireSpell();
+        }
+        else if (NormalizeTranscribedText(name) == "speak")
+        {
+            SpeakSpell();
         }
         else if (NormalizeTranscribedText(name) == "mark")
         {
@@ -408,7 +453,7 @@ public class SpellCasting : MonoBehaviour
         }
         else if (NormalizeTranscribedText(name) == "open")
         {
-            BreakInSpell();
+            OpenSpell();
         }
         else
         {

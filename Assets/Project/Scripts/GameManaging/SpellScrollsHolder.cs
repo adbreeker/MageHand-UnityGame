@@ -11,6 +11,7 @@ public class SpellScrollsHolder : MonoBehaviour
     public GameObject scrollOfMarkAndReturn;
     public GameObject scrollOfCollect;
     public GameObject scrollOfOpen;
+    public GameObject scrollOfSpeak;
 
     public SpellScrollInfo GiveScroll(string spellName) //returning requested scroll
     {
@@ -36,6 +37,11 @@ public class SpellScrollsHolder : MonoBehaviour
             return scrollOfOpen.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
         }
 
+        if ((spellName == "Speak"))
+        {
+            return scrollOfSpeak.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
+        }
+
         return null;
     }
 
@@ -47,6 +53,7 @@ public class SpellScrollsHolder : MonoBehaviour
         allScrolls.Add(scrollOfMarkAndReturn.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
         allScrolls.Add(scrollOfCollect.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
         allScrolls.Add(scrollOfOpen.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
+        allScrolls.Add(scrollOfSpeak.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
 
         return allScrolls;
     }
