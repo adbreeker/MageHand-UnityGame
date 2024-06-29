@@ -240,6 +240,25 @@ public class SpellCasting : MonoBehaviour
         }
     }
 
+    public IEnumerator SlowSpell()
+    {
+        SpellScrollInfo scroll = spellbook.GetSpellInfo("Slow");
+        if (scroll != null)
+        {
+            mana -= scroll.manaCost;
+            float slowValue = 0.1f;
+
+            GameParams.Variables.currentTimeScale = slowValue;
+            Time.timeScale = slowValue;
+
+            yield return new WaitForSeconds(10f * slowValue);
+            Debug.Log("Slow tuz przed koncem " + Time.timeScale);
+            GameParams.Variables.currentTimeScale = 1.0f;
+            yield return new WaitForFixedUpdate();
+            Debug.Log("Slow po zakonczeniu " + Time.timeScale);
+        }
+    }
+
     public void OpenSpell() //casting break in spell - occurs in tutorial only
     {
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Open");
@@ -450,6 +469,10 @@ public class SpellCasting : MonoBehaviour
         else if (NormalizeTranscribedText(name) == "return")
         {
             ReturnSpell();
+        }
+        else if (NormalizeTranscribedText(name) == "slow")
+        {
+            StartCoroutine(SlowSpell());
         }
         else if (NormalizeTranscribedText(name) == "open")
         {

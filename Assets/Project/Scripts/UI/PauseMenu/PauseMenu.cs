@@ -68,7 +68,7 @@ public class PauseMenu : MonoBehaviour
 
         //freeze game while menu is opened
         if (freezeTime) Time.timeScale = 0f;
-        else Time.timeScale = 1f;
+        else Time.timeScale = GameParams.Variables.currentTimeScale;
     }
     void KeysListener()
     {
