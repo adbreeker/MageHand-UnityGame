@@ -246,16 +246,24 @@ public class SpellCasting : MonoBehaviour
         if (scroll != null)
         {
             mana -= scroll.manaCost;
+
+            castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
+            castingFinishedSound.Play();
+            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
+
             float slowValue = 0.1f;
 
             GameParams.Variables.currentTimeScale = slowValue;
             Time.timeScale = slowValue;
 
             yield return new WaitForSeconds(10f * slowValue);
-            Debug.Log("Slow tuz przed koncem " + Time.timeScale);
             GameParams.Variables.currentTimeScale = 1.0f;
-            yield return new WaitForFixedUpdate();
-            Debug.Log("Slow po zakonczeniu " + Time.timeScale);
+        }
+        else
+        {
+            castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
+            castingFailSound.Play();
+            Destroy(castingFailSound, castingFailSound.clip.length);
         }
     }
 

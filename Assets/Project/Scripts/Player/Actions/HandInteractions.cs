@@ -156,9 +156,8 @@ public class HandInteractions : MonoBehaviour
     void ThrowObject() //throw item or spell
     {
         CooldownThrow = true;
-        string cs = GetComponent<SpellCasting>().currentSpell;
 
-        if (cs == "Light" || cs == "Fire") //if spell then throw spell
+        if (PlayerParams.Controllers.spellCasting.currentSpell == "Light" || PlayerParams.Controllers.spellCasting.currentSpell == "Fire") //if spell then throw spell
         {
             //set proper layer
             ChangeLayer(inHand, inHandPreviousLayer);
@@ -166,7 +165,7 @@ public class HandInteractions : MonoBehaviour
             inHand.AddComponent<ThrowSpell>().Initialize(player);
 
             inHand = null;
-            GetComponent<SpellCasting>().currentSpell = "None";
+            PlayerParams.Controllers.spellCasting.currentSpell = "None";
         }
         else //else throw item
         {
