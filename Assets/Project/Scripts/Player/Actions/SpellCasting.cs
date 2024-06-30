@@ -36,7 +36,8 @@ public class SpellCasting : MonoBehaviour
     public GameObject firePrefab;
     public GameObject markPrefab;
     public GameObject collectEffectPrefab;
-    public GameObject OpenEffectPrefab;
+    public GameObject openEffectPrefab;
+    public GameObject slowEffectPrefab;
 
     [Header("Casting effect prefab")]
     public GameObject castingEffectPrefab;
@@ -251,6 +252,8 @@ public class SpellCasting : MonoBehaviour
             castingFinishedSound.Play();
             Destroy(castingFinishedSound, castingFinishedSound.clip.length);
 
+            GameObject slowEffect = Instantiate(slowEffectPrefab, PlayerParams.Objects.player.transform);
+
             float slowValue = 0.1f;
 
             GameParams.Variables.currentTimeScale = slowValue;
@@ -258,6 +261,8 @@ public class SpellCasting : MonoBehaviour
 
             yield return new WaitForSeconds(10f * slowValue);
             GameParams.Variables.currentTimeScale = 1.0f;
+
+            Destroy(slowEffect);
         }
         else
         {
@@ -284,7 +289,7 @@ public class SpellCasting : MonoBehaviour
             {
                 if(potentialLock.tag == "Lock")
                 {
-                    Instantiate(OpenEffectPrefab, potentialLock.transform).transform.SetParent(potentialLock.transform.parent);
+                    Instantiate(openEffectPrefab, potentialLock.transform).transform.SetParent(potentialLock.transform.parent);
                     potentialLock.GetComponent<LockBehavior>().OpenLock();
                 }
             }
