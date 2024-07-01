@@ -235,7 +235,7 @@ public class SpellCasting : MonoBehaviour
                 Vector3 tpDestination = magicMark.transform.position;
                 tpDestination.y = 1;
                 PlayerParams.Controllers.playerMovement.stopMovement = true;
-                PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination);
+                PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination, null);
                 magicMark.GetComponent<MarkAndReturnSpellBehavior>().TeleportationPerformed();
             }
         }

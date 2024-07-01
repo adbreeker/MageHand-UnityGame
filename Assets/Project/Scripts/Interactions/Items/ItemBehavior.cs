@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class ItemBehavior : MonoBehaviour
+public class ItemBehavior : InteractableBehavior
 {
     [Header("Item parameters:")]
     public string itemName;

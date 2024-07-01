@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChestBehavior : MonoBehaviour
+public class ChestBehavior : InteractableBehavior
 {
     [Header("Chest fragments:")]
     public GameObject chestLid;

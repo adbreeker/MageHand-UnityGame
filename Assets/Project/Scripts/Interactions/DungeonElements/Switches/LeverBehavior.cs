@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LeverBehavior : MonoBehaviour
+public class LeverBehavior : InteractableBehavior
 {
     [Header("Lever object")]
     public GameObject lever;
