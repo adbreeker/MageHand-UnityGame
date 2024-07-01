@@ -208,18 +208,18 @@ public class SpellCasting : MonoBehaviour
         {
             mana -= scroll.manaCost / 4;
 
-            if (PlayerParams.Controllers.playerMovement.isMoving)
-            {
-                Vector3 place = PlayerParams.Controllers.playerMovement.currentTilePos;
-                place.y = 0;
-                magicMark = Instantiate(markPrefab, place, Quaternion.identity);
-            }
-            else
-            {
-                Vector3 place = PlayerParams.Objects.player.transform.position;
-                place.y = 0;
-                magicMark = Instantiate(markPrefab, place, Quaternion.identity);
-            }
+            castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
+            castingFinishedSound.Play();
+            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
+
+            currentSpell = "Mark";
+            PlayerParams.Controllers.handInteractions.AddToHand(Instantiate(markPrefab), true, true);
+        }
+        else
+        {
+            castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
+            castingFailSound.Play();
+            Destroy(castingFailSound, castingFailSound.clip.length);
         }
     }
 
@@ -236,7 +236,7 @@ public class SpellCasting : MonoBehaviour
                 tpDestination.y = 1;
                 PlayerParams.Controllers.playerMovement.stopMovement = true;
                 PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination, null);
-                magicMark.GetComponent<MarkAndReturnSpellBehavior>().TeleportationPerformed();
+                //magicMark.GetComponent<MarkSpellBehavior>().TeleportationPerformed();
             }
         }
     }

@@ -157,7 +157,9 @@ public class HandInteractions : MonoBehaviour
     {
         CooldownThrow = true;
 
-        if (PlayerParams.Controllers.spellCasting.currentSpell == "Light" || PlayerParams.Controllers.spellCasting.currentSpell == "Fire") //if spell then throw spell
+        if (PlayerParams.Controllers.spellCasting.currentSpell == "Light" 
+            || PlayerParams.Controllers.spellCasting.currentSpell == "Fire" 
+            || PlayerParams.Controllers.spellCasting.currentSpell == "Mark") //if spell then throw spell
         {
             //set proper layer
             ChangeLayer(inHand, inHandPreviousLayer);
@@ -202,17 +204,14 @@ public class HandInteractions : MonoBehaviour
         //set proper layer
         ChangeLayer(inHand, inHandPreviousLayer);
 
-        if (PlayerParams.Controllers.spellCasting.currentSpell == "Light") //if light spell in hand, making it floating light
+        if (inHand.layer == LayerMask.NameToLayer("Spell")) //if spell in hand use reactivation
         {
-            MakeFloatingLight();
+            inHand.GetComponent<SpellBehavior>().Reactivation();
         }
-        else
+        if (inHand.layer == LayerMask.NameToLayer("Item")) //if item in hand then just putting it down to inventory
         {
-            if (inHand.layer == LayerMask.NameToLayer("Item")) //if item in hand then just putting it down to inventory
-            {
-                putToInventorySound.Play();
-                PlayerParams.Controllers.inventory.AddItem(inHand);
-            }
+            putToInventorySound.Play();
+            PlayerParams.Controllers.inventory.AddItem(inHand);
         }
     }
 
@@ -246,6 +245,8 @@ public class HandInteractions : MonoBehaviour
             else { inHand.transform.localPosition = new Vector3(0, 0, 10); }
         }
 
+        inHand.transform.localEulerAngles = Vector3.zero;
+
         //setting UI layer
         inHandPreviousLayer = inHand.layer;
         ChangeLayer(inHand, LayerMask.NameToLayer("UI"));
@@ -266,21 +267,5 @@ public class HandInteractions : MonoBehaviour
                 ChangeLayer(child.gameObject, layer);
             }
         }
-    }
-
-
-    // custom interactions while "inserting" spells to inventory -------------------------------------------------------------------------------------------
-
-    void MakeFloatingLight() // while trying to insert light to inventory, makes it float around player for some time
-    {
-        inHand.AddComponent<FloatingLight>();
-
-        if(PlayerParams.Controllers.spellCasting.floatingLight != null) //if floatin light actually exists then replacing it
-        {
-            Destroy(PlayerParams.Controllers.spellCasting.floatingLight);
-        }
-        PlayerParams.Controllers.spellCasting.floatingLight = inHand;
-        inHand = null;
-        PlayerParams.Controllers.spellCasting.currentSpell = "None";
     }
 }

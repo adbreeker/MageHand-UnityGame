@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class LightSpellBehavior : SpellBehavior
 {
@@ -38,5 +39,18 @@ public class LightSpellBehavior : SpellBehavior
         }
 
         Destroy(gameObject);
+    }
+
+    public override void Reactivation() // create floating light
+    {
+        gameObject.AddComponent<FloatingLight>();
+
+        if (PlayerParams.Controllers.spellCasting.floatingLight != null) //if floatin light actually exists then replacing it
+        {
+            Destroy(PlayerParams.Controllers.spellCasting.floatingLight);
+        }
+        PlayerParams.Controllers.spellCasting.floatingLight = gameObject;
+        PlayerParams.Controllers.handInteractions.inHand = null;
+        PlayerParams.Controllers.spellCasting.currentSpell = "None";
     }
 }
