@@ -204,15 +204,16 @@ public class HandInteractions : MonoBehaviour
         //set proper layer
         ChangeLayer(inHand, inHandPreviousLayer);
 
-        if (inHand.layer == LayerMask.NameToLayer("Spell")) //if spell in hand use reactivation
-        {
-            inHand.GetComponent<SpellBehavior>().Reactivation();
-        }
         if (inHand.layer == LayerMask.NameToLayer("Item")) //if item in hand then just putting it down to inventory
         {
             putToInventorySound.Play();
             PlayerParams.Controllers.inventory.AddItem(inHand);
         }
+        else if (inHand.layer == LayerMask.NameToLayer("Spell")) //if spell in hand use reactivation
+        {
+            inHand.GetComponent<SpellBehavior>().Reactivation();
+        }
+        
     }
 
     void DrinkObject() //drink object from hand, most likely potion
