@@ -21,6 +21,11 @@ public class SpellBehavior : MonoBehaviour
 
     }
 
+    public virtual void Reactivation()
+    {
+
+    }
+
     public void TeleportTo(Vector3 tpDestination) //teleport to destination and stop movement enqued before teleportation
     {
         transform.position = tpDestination;

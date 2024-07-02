@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ButtonBehavior : MonoBehaviour
+public class ButtonBehavior : InteractableBehavior
 {
     [Header("Button object")]
     public GameObject button;

@@ -36,7 +36,8 @@ public class SpellCasting : MonoBehaviour
     public GameObject firePrefab;
     public GameObject markPrefab;
     public GameObject collectEffectPrefab;
-    public GameObject OpenEffectPrefab;
+    public GameObject openEffectPrefab;
+    public GameObject slowEffectPrefab;
 
     [Header("Casting effect prefab")]
     public GameObject castingEffectPrefab;
@@ -202,41 +203,54 @@ public class SpellCasting : MonoBehaviour
 
     public void MarkSpell() //marking place under player for future teleportation
     {
-        SpellScrollInfo scroll = spellbook.GetSpellInfo("Mark And Return");
+        SpellScrollInfo scroll = spellbook.GetSpellInfo("Mark");
         if (scroll != null)
         {
-            mana -= scroll.manaCost / 4;
+            mana -= scroll.manaCost;
 
-            if (PlayerParams.Controllers.playerMovement.isMoving)
-            {
-                Vector3 place = PlayerParams.Controllers.playerMovement.currentTilePos;
-                place.y = 0;
-                magicMark = Instantiate(markPrefab, place, Quaternion.identity);
-            }
-            else
-            {
-                Vector3 place = PlayerParams.Objects.player.transform.position;
-                place.y = 0;
-                magicMark = Instantiate(markPrefab, place, Quaternion.identity);
-            }
+            castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
+            castingFinishedSound.Play();
+            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
+
+            currentSpell = "Mark";
+            PlayerParams.Controllers.handInteractions.AddToHand(Instantiate(markPrefab), true, true);
+        }
+        else
+        {
+            castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
+            castingFailSound.Play();
+            Destroy(castingFailSound, castingFailSound.clip.length);
         }
     }
 
-    public void ReturnSpell() //teleporting to marked place, if mark exists
+    public IEnumerator SlowSpell()
     {
-        if (magicMark != null)
+        SpellScrollInfo scroll = spellbook.GetSpellInfo("Slow");
+        if (scroll != null)
         {
-            SpellScrollInfo scroll = spellbook.GetSpellInfo("Mark And Return");
-            if (scroll != null)
-            {
-                mana -= scroll.manaCost;
+            mana -= scroll.manaCost;
 
-                Vector3 tpDestination = magicMark.transform.position;
-                tpDestination.y = 1;
-                PlayerParams.Controllers.playerMovement.stopMovement = true;
-                PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination);
-                magicMark.GetComponent<MarkAndReturnSpellBehavior>().TeleportationPerformed();
-            }
+            castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
+            castingFinishedSound.Play();
+            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
+
+            GameObject slowEffect = Instantiate(slowEffectPrefab, PlayerParams.Objects.player.transform);
+
+            float slowValue = 0.1f;
+
+            GameParams.Variables.currentTimeScale = slowValue;
+            Time.timeScale = slowValue;
+
+            yield return new WaitForSeconds(10f * slowValue);
+            GameParams.Variables.currentTimeScale = 1.0f;
+
+            Destroy(slowEffect);
+        }
+        else
+        {
+            castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
+            castingFailSound.Play();
+            Destroy(castingFailSound, castingFailSound.clip.length);
         }
     }
 
@@ -257,7 +271,7 @@ public class SpellCasting : MonoBehaviour
             {
                 if(potentialLock.tag == "Lock")
                 {
-                    Instantiate(OpenEffectPrefab, potentialLock.transform).transform.SetParent(potentialLock.transform.parent);
+                    Instantiate(openEffectPrefab, potentialLock.transform).transform.SetParent(potentialLock.transform.parent);
                     potentialLock.GetComponent<LockBehavior>().OpenLock();
                 }
             }
@@ -447,9 +461,9 @@ public class SpellCasting : MonoBehaviour
         {
             MarkSpell();
         }
-        else if (NormalizeTranscribedText(name) == "return")
+        else if (NormalizeTranscribedText(name) == "slow")
         {
-            ReturnSpell();
+            StartCoroutine(SlowSpell());
         }
         else if (NormalizeTranscribedText(name) == "open")
         {

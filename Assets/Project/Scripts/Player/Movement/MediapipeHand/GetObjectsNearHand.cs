@@ -36,20 +36,32 @@ public class GetObjectsNearHand : MonoBehaviour
         Vector3 middlePoint = (wristPoint.position + indexFingerKnucklePoint.position + smallFingerKnucklePoint.position) / 3f;
 
         Collider[] colliders;
+        List<Collider> interactableObjects = new List<Collider>();
+
         if (PlayerParams.Variables.uiActive) //if UI active then searching on UI layer with smaller range
         {
             colliders = Physics.OverlapSphere(middlePoint, 0.2f, uiMask);
+
+            interactableObjects.AddRange(colliders);
         }
         else //else searching on objects layers with bigger range
         {
             colliders = Physics.OverlapSphere(middlePoint, 0.7f, objectsMask);
+
+            foreach (Collider collider in colliders)
+            {
+                if (IsObjectInteractable(collider))
+                {
+                    interactableObjects.Add(collider);
+                }
+            }
         }
 
 
-        if(colliders.Length > 0) //first found object becomes currently pointed
+        if(interactableObjects.Count > 0) //first found object becomes currently pointed
         {
-            currentlyPointing = colliders[0].gameObject;
-            foreach(Collider collider in colliders)
+            currentlyPointing = interactableObjects[0].gameObject;
+            foreach(Collider collider in interactableObjects)
             {
                 if(Vector3.Distance(collider.transform.position, middlePoint) < Vector3.Distance(currentlyPointing.transform.position, middlePoint))
                 {
@@ -62,6 +74,15 @@ public class GetObjectsNearHand : MonoBehaviour
         {
             currentlyPointing = null;
         }
+    }
+
+    bool IsObjectInteractable(Collider collider)
+    {
+        if (collider.GetComponent<InteractableBehavior>() != null)
+        {
+            if (collider.GetComponent<InteractableBehavior>().isInteractable) { return true; }
+        }
+        return false;
     }
 
     void EnlightObject(GameObject pointingAt) //enlightening pointed objects and showing icons

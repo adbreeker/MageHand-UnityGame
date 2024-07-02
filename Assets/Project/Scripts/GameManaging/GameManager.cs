@@ -20,6 +20,11 @@ public static class GameParams
         public static FadeInFadeOut fadeInOutManager;
         public static LevelInfoDisplay levelInfoManager;
     }
+
+    public static class Variables
+    {
+        public static float currentTimeScale = 1.0f;
+    }
 }
 
 public class GameManager : MonoBehaviour
@@ -48,5 +53,7 @@ public class GameManager : MonoBehaviour
         GameParams.Managers.soundManager = soundManager;
         GameParams.Managers.fadeInOutManager = fadeInOutManager;
         GameParams.Managers.levelInfoManager = levelInfoManager;
+
+        GameParams.Variables.currentTimeScale = 1.0f;
     }
 }

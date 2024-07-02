@@ -84,9 +84,13 @@ public class ProgressSaving : MonoBehaviour
         {
             spellbook.AddSpell(spellScrollsHolder.GiveScroll("Speak"));
         }
-        if (saveData.spellsSave.markAndReturn)
+        if (saveData.spellsSave.mark)
         {
-            spellbook.AddSpell(spellScrollsHolder.GiveScroll("Mark And Return"));
+            spellbook.AddSpell(spellScrollsHolder.GiveScroll("Mark"));
+        }
+        if (saveData.spellsSave.slow)
+        {
+            spellbook.AddSpell(spellScrollsHolder.GiveScroll("Slow"));
         }
 
         //loading journal contents
@@ -136,7 +140,8 @@ public class ProgressSaving : MonoBehaviour
         saveData.spellsSave.collect = spells.Exists(s => string.Equals(s, "collect", StringComparison.OrdinalIgnoreCase));
         saveData.spellsSave.fire = spells.Exists(s => string.Equals(s, "fire", StringComparison.OrdinalIgnoreCase));
         saveData.spellsSave.speak = spells.Exists(s => string.Equals(s, "speak", StringComparison.OrdinalIgnoreCase));
-        saveData.spellsSave.markAndReturn = spells.Exists(s => string.Equals(s, "mark and return", StringComparison.OrdinalIgnoreCase));
+        saveData.spellsSave.mark = spells.Exists(s => string.Equals(s, "mark", StringComparison.OrdinalIgnoreCase));
+        saveData.spellsSave.slow = spells.Exists(s => string.Equals(s, "slow", StringComparison.OrdinalIgnoreCase));
     }
 
     public void SaveJournal(Dictionary<string, string> notesJournal, Dictionary<string, List<List<string>>> dialoguesJournal) //saving journal contents
@@ -282,7 +287,8 @@ public class ProgressSaving : MonoBehaviour
             public bool collect = false;
             public bool fire = false;
             public bool speak = false;
-            public bool markAndReturn = false;
+            public bool mark = false;
+            public bool slow = false;
         }
 
         [System.Serializable]

@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 2215893106494380594}
   - component: {fileID: 7212878339763585424}
   - component: {fileID: 2215893106494380604}
+  - component: {fileID: 6965323649763131563}
   - component: {fileID: 8656529184073069794}
   - component: {fileID: 7445098804810710848}
   - component: {fileID: 2167677596242489558}
@@ -252,7 +253,7 @@ MonoBehaviour:
   pauseMenu: {fileID: 1680365764711997104}
   spellsMenu: {fileID: 3065444112457917252}
   handInteractions: {fileID: 7554772340525944936}
-  spellCasting: {fileID: 5405462797584546832}
+  spellCasting: {fileID: 6965323649763131563}
 --- !u!114 &2215893106494380604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,6 +279,36 @@ MonoBehaviour:
   stopMovement: 0
   ghostmodeActive: 0
   _teleportationEffect: {fileID: 7053385775836331393, guid: c6f0c2695443e0f48b3cfb2e2472df73, type: 3}
+--- !u!114 &6965323649763131563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2215893106494380605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828588037edb6d045b7cba0edf82bd01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellbook: {fileID: 2167677596242489558}
+  mana: 100
+  manaRegen: 3
+  currentSpell: None
+  floatingLight: {fileID: 0}
+  magicMark: {fileID: 0}
+  hand: {fileID: 5635713986415474186}
+  popUpPrefab: {fileID: 8175451159203894732, guid: d754b09499f8ee142be40f76533abed6, type: 3}
+  timeToFadeOutPopUp: 1
+  timeOfFadingOutPopUp: 0.007
+  lightPrefab: {fileID: 7101868786794713321, guid: 227cb8518092d094e80c5b36d68ceb66, type: 3}
+  firePrefab: {fileID: 1725317912486240, guid: 2045653f8ea031f4581637e7792037bb, type: 3}
+  markPrefab: {fileID: 3377181292992421420, guid: 81524c444da8fea419a22f914aa6a0ea, type: 3}
+  collectEffectPrefab: {fileID: 7358468838148070894, guid: fe75476d64adeab43aa832efed60a963, type: 3}
+  openEffectPrefab: {fileID: 1758473627833946668, guid: ef22352c709b19b4d94e98c2235ad0e0, type: 3}
+  slowEffectPrefab: {fileID: 4932088507883938021, guid: 1936c34b93cac754e85e7cb778c10269, type: 3}
+  castingEffectPrefab: {fileID: 1725317912486240, guid: 56b67921c8146fd48a97b597977b3049, type: 3}
+  openEasterEggPrefab: {fileID: 7349612059981369362, guid: 48d92c77554ae7a4ebffa20dc1c2b6c4, type: 3}
 --- !u!114 &8656529184073069794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -991,7 +1022,8 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -512354603722602875, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
 --- !u!1 &3116585748844042620 stripped
 GameObject:
@@ -1003,17 +1035,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1776557680973669354, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
   m_PrefabInstance: {fileID: 3740186669925120661}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5405462797584546832 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: -512354603722602875, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
+--- !u!4 &5635713986415474186 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9066269380277898399, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}
   m_PrefabInstance: {fileID: 3740186669925120661}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3116585748844042620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 828588037edb6d045b7cba0edf82bd01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7554772340525944936 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: -2652551327674569987, guid: 48a498f7b9294204abd2f13d30c1dac2, type: 3}

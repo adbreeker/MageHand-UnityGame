@@ -44,6 +44,7 @@ public class SkullPlatformBehavior : MonoBehaviour
 
         while(_dialogue.activeSelf) { yield return null; }
         PlayerParams.Controllers.playerMovement.stopMovement = false;
+        PlayerParams.Controllers.spellCasting.currentSpell = "None";
 
         while (effect.transform.localScale.y > startingScale.y)
         {
