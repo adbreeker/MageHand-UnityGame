@@ -16,10 +16,9 @@ public class MarkSpellBehavior : SpellBehavior
 
     public override void OnImpact(GameObject impactTarget)
     {
-        Debug.Log("Walnalem w: " + impactTarget.name);
-
-        if(PlayerParams.Controllers.spellCasting.magicMark != null)
+        if (PlayerParams.Controllers.spellCasting.magicMark != null)
         {
+            Instantiate(specialEffectPrefab, PlayerParams.Controllers.spellCasting.magicMark.transform.position, PlayerParams.Controllers.spellCasting.magicMark.transform.rotation);
             Destroy(PlayerParams.Controllers.spellCasting.magicMark);
         }
         PlayerParams.Controllers.spellCasting.magicMark = gameObject;
@@ -33,7 +32,8 @@ public class MarkSpellBehavior : SpellBehavior
         transform.SetParent(gameObject.transform);
         Destroy(GetComponent<Rigidbody>());
         GetComponent<Collider>().enabled = false;
-        
+
+        Instantiate(specialEffectPrefab, transform.position, Quaternion.identity);
         StartCoroutine(IncreaseSize());
     }
 
@@ -48,7 +48,7 @@ public class MarkSpellBehavior : SpellBehavior
 
         transform.SetParent(null);
 
-        transform.rotation = Quaternion.LookRotation(destination);
+        transform.rotation = Quaternion.LookRotation(destination - gameObject.transform.position);
         StartCoroutine(MoveTowardsGround(destination));
     }
 
@@ -75,6 +75,7 @@ public class MarkSpellBehavior : SpellBehavior
         transform.rotation = Quaternion.Euler(90, 0, 0);
         GetComponent<Collider>().enabled = false;
 
+        Instantiate(specialEffectPrefab, transform.position, Quaternion.Euler(90,0,0));
         StartCoroutine(IncreaseSize());
     }
 
