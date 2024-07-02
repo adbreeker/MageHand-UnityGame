@@ -203,10 +203,10 @@ public class SpellCasting : MonoBehaviour
 
     public void MarkSpell() //marking place under player for future teleportation
     {
-        SpellScrollInfo scroll = spellbook.GetSpellInfo("Mark And Return");
+        SpellScrollInfo scroll = spellbook.GetSpellInfo("Mark");
         if (scroll != null)
         {
-            mana -= scroll.manaCost / 4;
+            mana -= scroll.manaCost;
 
             castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
             castingFinishedSound.Play();
@@ -220,24 +220,6 @@ public class SpellCasting : MonoBehaviour
             castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
             castingFailSound.Play();
             Destroy(castingFailSound, castingFailSound.clip.length);
-        }
-    }
-
-    public void ReturnSpell() //teleporting to marked place, if mark exists
-    {
-        if (magicMark != null)
-        {
-            SpellScrollInfo scroll = spellbook.GetSpellInfo("Mark And Return");
-            if (scroll != null)
-            {
-                mana -= scroll.manaCost;
-
-                Vector3 tpDestination = magicMark.transform.position;
-                tpDestination.y = 1;
-                PlayerParams.Controllers.playerMovement.stopMovement = true;
-                PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination, null);
-                //magicMark.GetComponent<MarkSpellBehavior>().TeleportationPerformed();
-            }
         }
     }
 
@@ -478,10 +460,6 @@ public class SpellCasting : MonoBehaviour
         else if (NormalizeTranscribedText(name) == "mark")
         {
             MarkSpell();
-        }
-        else if (NormalizeTranscribedText(name) == "return")
-        {
-            ReturnSpell();
         }
         else if (NormalizeTranscribedText(name) == "slow")
         {

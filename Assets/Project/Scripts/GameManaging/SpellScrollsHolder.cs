@@ -24,7 +24,7 @@ public class SpellScrollsHolder : MonoBehaviour
         {
             return scrollOfFire.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
         }
-        if (spellName == "Mark And Return")
+        if (spellName == "Mark")
         {
             return scrollOfMarkAndReturn.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
         }
