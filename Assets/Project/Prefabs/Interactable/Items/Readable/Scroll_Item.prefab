@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 849744928081681142}
   - component: {fileID: -992193088475133970}
   m_Layer: 12
-  m_Name: Scroll_Small
+  m_Name: Scroll_Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,7 +43,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1050632825632081212}
-  m_Mesh: {fileID: 4300000, guid: 07c11632f362e9544a7c89ada554f4f7, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 1cc69bcd5c8feea4493059cb89fd3104, type: 3}
 --- !u!23 &1050632825629891580
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -65,6 +65,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: cc65bf70cfb17484e94a6e0870d3c660, type: 2}
+  - {fileID: 2100000, guid: 145c0287570245a4b894de54ec840353, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -94,11 +95,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1050632825632081212}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.1, z: 0.5}
-  m_Center: {x: -0.02, y: 0.04, z: 0}
+  m_Size: {x: 1, y: 0.5, z: 0.5}
+  m_Center: {x: 0, y: 0.1, z: 0}
 --- !u!65 &849744928081681142
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -107,11 +108,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1050632825632081212}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5, z: 0.7}
-  m_Center: {x: -0.02, y: 0.04, z: 0}
+  m_Size: {x: 0.7, y: 0.12, z: 0.15}
+  m_Center: {x: 0, y: 0.07, z: 0}
 --- !u!114 &-992193088475133970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,6 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9786d8fc7a5e3a5429be1dd5058d72a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isInteractable: 1
   itemName: '""'
   itemIcon: {fileID: 6610860039850489068, guid: c571c31213e566e42abda1592dc11910, type: 3}
   title: 

@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScrollKeeperDialogueFinish : MonoBehaviour
+public class WatchmanDialogueFinish : MonoBehaviour
 {
-    [SerializeField] OpenWallPassage _wall;
-    [SerializeField] GameObject _dialogue;
+    [SerializeField] OpenBarsPassage passage;
+    [SerializeField] GameObject dialogue;
 
     bool started = false;
 
@@ -13,7 +13,7 @@ public class ScrollKeeperDialogueFinish : MonoBehaviour
     {
         if(!started)
         {
-            if(_dialogue.activeSelf)
+            if(dialogue.activeSelf)
             {
                 started = true;
                 StartCoroutine(OpenPassageAfterDialogue());
@@ -23,11 +23,11 @@ public class ScrollKeeperDialogueFinish : MonoBehaviour
 
     IEnumerator OpenPassageAfterDialogue()
     {
-        while(_dialogue.activeSelf)
+        while(dialogue.activeSelf)
         {
             yield return null;
         }
 
-        _wall.Interaction();
+        passage.Interaction();
     }
 }
