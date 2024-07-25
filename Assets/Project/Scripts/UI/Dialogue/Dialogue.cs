@@ -239,9 +239,10 @@ public class Dialogue : MonoBehaviour
             if (transform.parent.GetComponent<OpenDialogue>().saveDialogue)
             {
                 PlayerParams.Controllers.journal.dialoguesJournal[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { nameText, contentText });
-                if (optionsTexts[choice] != "(Continue.)")
+                if (optionsTexts[choice] != "(Continue.)" || optionsTexts[choice] != "(End dialogue.)")
                 {
-                    PlayerParams.Controllers.journal.dialoguesJournal[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { "You", optionsTexts[choice] });
+                    string textToSave = optionsTexts[choice].Replace(" (End dialogue.)", "");
+                    PlayerParams.Controllers.journal.dialoguesJournal[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { "You", textToSave });
                 }
             }
 
