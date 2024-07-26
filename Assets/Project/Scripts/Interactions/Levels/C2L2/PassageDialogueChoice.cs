@@ -29,33 +29,29 @@ public class PassageDialogueChoice : MonoBehaviour
     {
         if (check)
         {
-
+            if (inventory.HasItem(keyItemName) && dialogueWithChoice.playerChoice == dialogueWithChoice.option2Text)
+            {
+                //Player has the key and chose that they has it
+                //They found it and doesn't lie
+                PlayerParams.Controllers.pointsManager.plotPoints += 1;
+                check = false;
+                Destroy(this);
+            }
+            else if (!inventory.HasItem(keyItemName) && dialogueWithChoice.playerChoice == dialogueWithChoice.option2Text)
+            {
+                //Player doesn't have the key, but chose that they has it
+                //They are lying
+                PlayerParams.Controllers.pointsManager.plotPoints += -2;
+                StartCoroutine(SpawnDialogue(dialogueLie));
+            }
+            else if (inventory.HasItem(keyItemName) && dialogueWithChoice.playerChoice == dialogueWithChoice.option1Text)
+            {
+                //Player has the key, but chose that they doesn't have it
+                //They forgot about it?
+                PlayerParams.Controllers.pointsManager.plotPoints += -1;
+                StartCoroutine(SpawnDialogue(dialogueForgot));
+            }
         }    
-        if (key == null && inventory.HaveItem(keyItemName) && dialogueWithChoice.playerChoice == dialogueWithChoice.option2Text)
-        {
-            //Player has the key and chose that they has
-            //They found it and doesn't lie
-            Debug.Log("Choice status: found");
-            PlayerParams.Controllers.pointsManager.plotPoints += 1;
-            check = false;
-            Destroy(this);
-        }
-        else if ( (key != null || !inventory.HaveItem(keyItemName)) && dialogueWithChoice.playerChoice == dialogueWithChoice.option2Text)
-        {
-            //Player doesn't have the key, but chose that they has
-            //They are lying
-            Debug.Log("Choice status: lie");
-            PlayerParams.Controllers.pointsManager.plotPoints += -2;
-            StartCoroutine(SpawnDialogue(dialogueLie));
-        }
-        else if (key == null && inventory.HaveItem(keyItemName) && dialogueWithChoice.playerChoice == dialogueWithChoice.option1Text)
-        {
-            //Player has the key, but chose that they doesn't have
-            //They forgot about it?
-            Debug.Log("Choice status: forgot");
-            PlayerParams.Controllers.pointsManager.plotPoints += -1;
-            StartCoroutine(SpawnDialogue(dialogueForgot));
-        }
     }
 
     IEnumerator SpawnDialogue(GameObject dialogue)
