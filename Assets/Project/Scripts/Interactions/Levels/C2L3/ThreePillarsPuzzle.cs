@@ -21,7 +21,7 @@ public class ThreePillarsPuzzle : MonoBehaviour
 
         if (!_isOnPath)
         {
-            if (playerPos == TileToPlayerPos(_pillarsPuzzlePath[_tileIndex].position) || playerPos == TileToPlayerPos(_pillarsPuzzlePath[_pillarsPuzzlePath.Count - 1].position))
+            if (playerPos == TileToPlayerPos(_pillarsPuzzlePath[_tileIndex].position))
             {
                 _isOnPath = true;
             }
