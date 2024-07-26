@@ -2,32 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScrollKeeperDialogueFinish : MonoBehaviour
+public class WatchmanDialogueFinish : MonoBehaviour
 {
-    [SerializeField] OpenWallPassage _wall;
-    [SerializeField] GameObject _dialogue;
+    [SerializeField] OpenBarsPassage _barsPassage;
+    [SerializeField] SkullPlatformBehavior _skullPlatformBehavior;
 
-    bool started = false;
-
-    void Update()
+    private void Start()
     {
-        if(!started)
-        {
-            if(_dialogue.activeSelf)
-            {
-                started = true;
-                StartCoroutine(OpenPassageAfterDialogue());
-            }
-        }
+        _skullPlatformBehavior.DialogueFinished += OpenBars;
     }
 
-    IEnumerator OpenPassageAfterDialogue()
+    void OpenBars()
     {
-        while(_dialogue.activeSelf)
-        {
-            yield return null;
-        }
-
-        _wall.Interaction();
+        _barsPassage.Interaction();
+        _skullPlatformBehavior.DialogueFinished -= OpenBars;
+        Destroy(this);
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,9 @@ public class SkullPlatformBehavior : MonoBehaviour
 
     [Header("Platform effect")]
     [SerializeField] GameObject _platformEffectPrefab;
+
+    //[Header("Platform outcomes:")]
+    public event Action DialogueFinished;
 
     public void UsePlatform()
     {
@@ -45,6 +49,7 @@ public class SkullPlatformBehavior : MonoBehaviour
         while(_dialogue.activeSelf) { yield return null; }
         PlayerParams.Controllers.playerMovement.stopMovement = false;
         PlayerParams.Controllers.spellCasting.currentSpell = "None";
+        DialogueFinished?.Invoke();
 
         while (effect.transform.localScale.y > startingScale.y)
         {

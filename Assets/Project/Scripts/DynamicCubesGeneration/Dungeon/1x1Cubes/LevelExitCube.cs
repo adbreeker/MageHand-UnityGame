@@ -38,7 +38,7 @@ public class LevelExitCube : MonoBehaviour
         if (_exitBounds.bounds.Contains(PlayerParams.Objects.player.transform.position) && !_isAnimationGoing)
         {
             _isAnimationGoing = true;
-            if (OnLevelChange != null) { OnLevelChange(); }
+            OnLevelChange?.Invoke();
             ChangeLevel();
         }
     }
