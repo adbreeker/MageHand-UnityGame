@@ -30,6 +30,9 @@ public class Dialogue : MonoBehaviour
     public Canvas option2Choice;
     public Canvas option3Choice;
     public Canvas option4Choice;
+    [Space]
+    [Header("Player choice")]
+    public string playerChoice = "";
 
     private AudioSource changeSound;
     private AudioSource selectSound;
@@ -50,7 +53,6 @@ public class Dialogue : MonoBehaviour
     private float keyTimeDelayFirst = 20f;
     private float keyTimeDelay = 10f;
     private float keyTimeDelayer = 0;
-
     void Start()
     {
         textSpeed = transform.parent.GetComponent<OpenDialogue>().textSpeed;
@@ -239,12 +241,14 @@ public class Dialogue : MonoBehaviour
             if (transform.parent.GetComponent<OpenDialogue>().saveDialogue)
             {
                 PlayerParams.Controllers.journal.dialoguesJournal[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { nameText, contentText });
-                if (optionsTexts[choice] != "(Continue.)")
+                if (optionsTexts[choice] != "(Continue.)" && optionsTexts[choice] != "(End dialogue.)")
                 {
-                    PlayerParams.Controllers.journal.dialoguesJournal[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { "You", optionsTexts[choice] });
+                    string textToSave = optionsTexts[choice].Replace(" (End dialogue.)", "");
+                    PlayerParams.Controllers.journal.dialoguesJournal[transform.parent.GetComponent<OpenDialogue>().dialogueSaveName].Add(new List<string> { "You", textToSave });
                 }
             }
 
+            playerChoice = optionsTexts[choice];
             PlayerParams.Controllers.pointsManager.plotPoints += optionsPoints[choice];
             gameObject.SetActive(false);
             if (optionsChoices[choice] == null)
