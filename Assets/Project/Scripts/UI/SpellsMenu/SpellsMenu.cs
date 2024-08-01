@@ -7,15 +7,15 @@ using TMPro;
 public class SpellsMenu : MonoBehaviour
 {
     [Header("Game objects")]
-    public GameObject spellsMenuPrefab;
+    [SerializeField] private GameObject spellsMenuPrefab;
+    [SerializeField] private GameObject spellCellPrefab;
 
     [Header("Settings")]
     public bool ableToInteract = true;
     public bool menuOpened = false;
 
     private GameObject instantiatedMenu;
-
-    private List<GameObject> spellIcons;
+    private List<SpellCell> spellCells;
 
     private AudioSource openSound;
     private AudioSource closeSound;
@@ -60,21 +60,65 @@ public class SpellsMenu : MonoBehaviour
         spellCastingSound.Play();
 
         closeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Close);
-        spellIcons = new List<GameObject>();
 
-        GameObject iconsParent = instantiatedMenu.transform.Find("Spell " + (PlayerParams.Controllers.spellbook.spells.Count).ToString()).gameObject;
-        iconsParent.SetActive(true);
-        for (int i = 1; i < PlayerParams.Controllers.spellbook.spells.Count + 1; i++)
+        spellCells = new List<SpellCell>();
+
+        GameObject layoutObject = instantiatedMenu.transform.Find("Layout").gameObject;
+        GridLayoutGroup layoutGroup = layoutObject.GetComponent<GridLayoutGroup>();
+
+        List<SpellScrollInfo> playersSpells = PlayerParams.Controllers.spellbook.spells;
+        int fontSize = 0;
+        int hitboxSize = 0;
+
+        if (playersSpells.Count < 3)
         {
-            string text = i.ToString();
-            spellIcons.Add(iconsParent.transform.Find(text).gameObject);
+            layoutGroup.cellSize = new Vector2(400, 400);
+            hitboxSize = 400;
+            layoutGroup.constraintCount = 2;
+            fontSize = 64;
+        }
+        else if(playersSpells.Count < 5)
+        {
+            layoutGroup.cellSize = new Vector2(300, 300);
+            hitboxSize = 300;
+            layoutGroup.constraintCount = 2;
+            fontSize = 50;
+        }
+        else if (playersSpells.Count < 7)
+        {
+            layoutGroup.cellSize = new Vector2(300, 300);
+            hitboxSize = 300;
+            layoutGroup.constraintCount = 3;
+            fontSize = 50;
+        }
+        else if (playersSpells.Count < 9)
+        {
+            layoutGroup.cellSize = new Vector2(300, 300);
+            hitboxSize = 300;
+            layoutGroup.constraintCount = 4;
+            fontSize = 50;
+        }
+        else if (playersSpells.Count < 13)
+        {
+            layoutGroup.cellSize = new Vector2(250, 250);
+            hitboxSize = 250;
+            layoutGroup.constraintCount = 4;
+            fontSize = 40;
+        }
+        else
+        {
+            Debug.LogError("Too much spells! The SpellsMenu is prepered to handle numbers of spells under 13.");
         }
 
-        //activate propper spells (as much as there are in spellbook)
-        for (int i = 0; i < spellIcons.Count; i++)
+        foreach (SpellScrollInfo spell in playersSpells)
         {
-            spellIcons[i].SetActive(true);
-            spellIcons[i].GetComponent<TextMeshProUGUI>().text = PlayerParams.Controllers.spellbook.spells[i].spellName;
+            string spellName = spell.spellName;
+            GameObject instantiatedSpellCell = Instantiate(spellCellPrefab, layoutObject.transform);
+            SpellCell spellCell = instantiatedSpellCell.transform.Find("CellHitbox").GetComponent<SpellCell>();
+            spellCell.spellNameTMP.text = spellName;
+            spellCell.hitbox.size = new Vector3(hitboxSize, hitboxSize, 50);
+            spellCell.spellNameTMP.fontSize = fontSize;
+            spellCells.Add(spellCell);
         }
 
         menuOpened = true;
@@ -103,20 +147,17 @@ public class SpellsMenu : MonoBehaviour
 
     void PointIcon()
     {
-        for (int i = 0; i < spellIcons.Count; i++)
+        foreach(SpellCell spellCell in spellCells)
         {
-            if (spellIcons[i].activeSelf)
+            if (spellCell.gameObject.GetComponent<EnlightObject>() != null)
             {
-                if (spellIcons[i].GetComponent<EnlightObject>() != null)
-                {
-                    spellIcons[i].GetComponent<SpellIcon>().background.GetComponent<Image>().color = new Color(1f, 0.482f, 0f, 1f);
-                    spellIcons[i].GetComponent<TextMeshProUGUI>().color = new Color(1f, 1f, 1f);
-                }
-                else if (spellIcons[i].GetComponent<SpellIcon>().background.GetComponent<Image>().color == new Color(1f, 0.482f, 0f, 1f))
-                {
-                    spellIcons[i].GetComponent<SpellIcon>().background.GetComponent<Image>().color = new Color(1f, 0.482f, 0f, 0f);
-                    spellIcons[i].GetComponent<TextMeshProUGUI>().color = new Color(0.2666f, 0.2666f, 0.2666f);
-                }
+                spellCell.highlight.SetActive(true);
+                spellCell.spellNameTMP.color = new Color(1f, 1f, 1f);
+            }
+            else if (spellCell.highlight.activeSelf)
+            {
+                spellCell.highlight.SetActive(false);
+                spellCell.spellNameTMP.color = new Color(0.2666f, 0.2666f, 0.2666f);
             }
         }
     }
