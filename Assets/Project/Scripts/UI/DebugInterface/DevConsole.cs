@@ -166,6 +166,12 @@ public class DevConsole : MonoBehaviour
             return;
         }
 
+        if (command[0] == "collectallitems" && command.Length == 1)
+        {
+            CollectAllItems();
+            return;
+        }
+
         //spellbook commands
         if (command[0] == "allspells" && command.Length == 1)
         {
@@ -297,6 +303,22 @@ public class DevConsole : MonoBehaviour
             foreach(GameObject item in itemHolder.items)
             {
                 inventory.AddItem(itemHolder.GiveItem(item.GetComponent<ItemBehavior>().itemName));
+            }
+        }
+    }
+
+    void CollectAllItems() //adding all existings items to inventory
+    {
+        Inventory inventory = PlayerParams.Controllers.inventory;
+
+        foreach (ItemBehavior item in FindObjectsOfType<ItemBehavior>())
+        {
+            item.isInteractable = true;
+            if (item.GetComponent<ReadableBehavior>() is ReadableBehavior readableBehavior && !readableBehavior.destroy
+                    || item.GetComponent<ReadableBehavior>() == null)
+            {
+                // Add item when ReadableBehavior does not exist or destroy is false
+                inventory.AddItem(item.gameObject);
             }
         }
     }

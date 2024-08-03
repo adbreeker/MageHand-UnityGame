@@ -11,9 +11,6 @@ public class Portal : MonoBehaviour
     [Header("Teleportation beneficiaries mask")]
     public LayerMask toTeleport;
 
-    [Header("Teleportation effects for objects")]
-    public GameObject teleportationEffect_Object;
-
     BoxCollider portalCollider;
 
     private void Awake() //get teleport collider and set teleportation destination y variable to 1
@@ -57,8 +54,8 @@ public class Portal : MonoBehaviour
                     {
                         toTeleport.gameObject.transform.position = teleportationDestination;
                     }
-
-                    Instantiate(teleportationEffect_Object, teleportationDestination, Quaternion.identity)
+                    GameObject tpEffect = GameParams.Holders.materialsAndEffectsHolder.GetEffect(MaterialsAndEffectsHolder.Effects.teleportationObject);
+                    Instantiate(tpEffect, teleportationDestination, Quaternion.identity)
                         .GetComponent<ParticlesColor>().ChangeColorOfEffect(gameObject.GetComponent<ParticleSystem>().main.startColor.color);
                 }
             }
