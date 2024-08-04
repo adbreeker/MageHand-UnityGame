@@ -9,21 +9,31 @@ public class Destroyable : MonoBehaviour
     public void OnValidate()
     {
         gameObject.isStatic = false;
-        ModelImporter modelImporter = (ModelImporter)AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(gameObject.GetComponent<MeshFilter>().sharedMesh));
+        ModelImporter modelImporter;
+        if (GetComponent<MeshFilter>() != null ) 
+        { 
+            modelImporter = (ModelImporter)AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(gameObject.GetComponent<MeshFilter>().sharedMesh)); 
+        }
+        else
+        {
+            modelImporter = (ModelImporter)AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(gameObject.GetComponent<SkinnedMeshRenderer>().sharedMesh));
+        }
+        
         modelImporter.isReadable = true;
     }
 #endif
 
     public void SplitMesh()
     {
-        MeshFilter meshFilter = GetComponent<MeshFilter>();
-        if (meshFilter == null)
+        Mesh originalMesh;
+        if (GetComponent<MeshFilter>() != null)
         {
-            Debug.LogError("MeshFilter component not found!");
-            return;
+            originalMesh = GetComponent<MeshFilter>().sharedMesh;
         }
-
-        Mesh originalMesh = meshFilter.mesh;
+        else
+        {
+            originalMesh = GetComponent<SkinnedMeshRenderer>().sharedMesh;
+        }
 
         // Get the vertices, triangles, and other data from the original mesh
         Vector3[] vertices = originalMesh.vertices;
@@ -60,6 +70,10 @@ public class Destroyable : MonoBehaviour
         }
 
         // Optionally, you can instantiate game objects with the split meshes
+        Material[] materials;
+        if(GetComponent<MeshFilter>() != null) { materials = GetComponent<MeshRenderer>().materials; }
+        else { materials = GetComponent<SkinnedMeshRenderer>().materials; }
+
         for (int i = 0; i < splitMeshes.Length; i++)
         {
             GameObject splitObject = new GameObject("SplitObject_" + i);
@@ -67,7 +81,8 @@ public class Destroyable : MonoBehaviour
             MeshRenderer splitMeshRenderer = splitObject.AddComponent<MeshRenderer>();
             splitMeshFilter.mesh = splitMeshes[i];
             // Set appropriate materials, shaders, etc., for the split objects
-            splitMeshRenderer.materials = gameObject.GetComponent<MeshRenderer>().materials;
+
+            splitMeshRenderer.materials = materials;
             // You can position and parent the split objects however you like
             splitObject.transform.position = transform.position;
             splitObject.transform.rotation = transform.rotation;
@@ -125,7 +140,15 @@ public class DestroyableEditor : Editor
         DrawDefaultInspector();
         if (GUILayout.Button("Reimport destroyable mesh"))
         {
-            ModelImporter modelImporter = (ModelImporter)AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(script.gameObject.GetComponent<MeshFilter>().sharedMesh));
+            ModelImporter modelImporter;
+            if(script.gameObject.GetComponent<MeshFilter>() != null)
+            {
+                modelImporter = (ModelImporter)AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(script.gameObject.GetComponent<MeshFilter>().sharedMesh));
+            }
+            else
+            {
+               modelImporter = (ModelImporter)AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(script.gameObject.GetComponent<SkinnedMeshRenderer>().sharedMesh));
+            }
             modelImporter.SaveAndReimport();
         }
     }
