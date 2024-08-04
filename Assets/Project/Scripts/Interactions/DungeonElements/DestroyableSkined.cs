@@ -3,33 +3,36 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class Destroyable : MonoBehaviour
+public class DestroyableSkined : MonoBehaviour
 {
 #if UNITY_EDITOR
     public void OnValidate()
     {
         gameObject.isStatic = false;
-        ModelImporter modelImporter = (ModelImporter)AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(gameObject.GetComponent<MeshFilter>().sharedMesh));
+        ModelImporter modelImporter = (ModelImporter)AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(gameObject.GetComponent<SkinnedMeshRenderer>().sharedMesh));
         modelImporter.isReadable = true;
     }
 #endif
 
     public void SplitMesh()
     {
-        MeshFilter meshFilter = GetComponent<MeshFilter>();
-        if (meshFilter == null)
+        SkinnedMeshRenderer skinnedMeshRenderer = GetComponent<SkinnedMeshRenderer>();
+        if (skinnedMeshRenderer == null)
         {
-            Debug.LogError("MeshFilter component not found!");
+            Debug.LogError("SkinnedMeshRenderer component not found!");
             return;
         }
 
-        Mesh originalMesh = meshFilter.mesh;
+        Mesh originalMesh = skinnedMeshRenderer.sharedMesh;
 
         // Get the vertices, triangles, and other data from the original mesh
         Vector3[] vertices = originalMesh.vertices;
         int[] triangles = originalMesh.triangles;
         Vector3[] normals = originalMesh.normals;
         Vector2[] uv = originalMesh.uv;
+        BoneWeight[] boneWeights = originalMesh.boneWeights;
+        Matrix4x4[] bindPoses = originalMesh.bindposes;
+        Transform[] bones = skinnedMeshRenderer.bones;
 
         // Create an array to hold the split meshes
         Mesh[] splitMeshes = new Mesh[triangles.Length / 3];
@@ -42,7 +45,7 @@ public class Destroyable : MonoBehaviour
 
             int triangleIndex = i * 3;
 
-            // Assign vertices, triangles, normals, and UVs to the split mesh
+            // Assign vertices, triangles, normals, UVs, and bone weights to the split mesh
             splitMeshes[i].vertices = new Vector3[]
             {
                 vertices[triangles[triangleIndex]],
@@ -53,6 +56,8 @@ public class Destroyable : MonoBehaviour
             splitMeshes[i].triangles = new int[] { 0, 1, 2 };
             splitMeshes[i].normals = new Vector3[] { normals[triangles[triangleIndex]], normals[triangles[triangleIndex + 1]], normals[triangles[triangleIndex + 2]] };
             splitMeshes[i].uv = new Vector2[] { uv[triangles[triangleIndex]], uv[triangles[triangleIndex + 1]], uv[triangles[triangleIndex + 2]] };
+            splitMeshes[i].boneWeights = new BoneWeight[] { boneWeights[triangles[triangleIndex]], boneWeights[triangles[triangleIndex + 1]], boneWeights[triangles[triangleIndex + 2]] };
+            splitMeshes[i].bindposes = bindPoses;
 
             // You can perform any additional modifications to the split mesh here (e.g., scaling, rotating, etc.)
 
@@ -63,11 +68,11 @@ public class Destroyable : MonoBehaviour
         for (int i = 0; i < splitMeshes.Length; i++)
         {
             GameObject splitObject = new GameObject("SplitObject_" + i);
-            MeshFilter splitMeshFilter = splitObject.AddComponent<MeshFilter>();
-            MeshRenderer splitMeshRenderer = splitObject.AddComponent<MeshRenderer>();
-            splitMeshFilter.mesh = splitMeshes[i];
-            // Set appropriate materials, shaders, etc., for the split objects
-            splitMeshRenderer.materials = gameObject.GetComponent<MeshRenderer>().materials;
+            SkinnedMeshRenderer splitMeshRenderer = splitObject.AddComponent<SkinnedMeshRenderer>();
+            splitMeshRenderer.sharedMesh = splitMeshes[i];
+            splitMeshRenderer.bones = bones;
+            splitMeshRenderer.materials = skinnedMeshRenderer.materials;
+
             // You can position and parent the split objects however you like
             splitObject.transform.position = transform.position;
             splitObject.transform.rotation = transform.rotation;
@@ -84,11 +89,13 @@ public class Destroyable : MonoBehaviour
 
     public Mesh JoinMeshes(Mesh mesh1, Mesh mesh2)
     {
-        // Combine vertices, triangles, normals, and UVs
+        // Combine vertices, triangles, normals, UVs, and bone weights
         Vector3[] combinedVertices = CombineArrays(mesh1.vertices, mesh2.vertices);
         int[] combinedTriangles = CombineArrays(mesh1.triangles, mesh2.triangles);
         Vector3[] combinedNormals = CombineArrays(mesh1.normals, mesh2.normals);
         Vector2[] combinedUVs = CombineArrays(mesh1.uv, mesh2.uv);
+        BoneWeight[] combinedBoneWeights = CombineArrays(mesh1.boneWeights, mesh2.boneWeights);
+        Matrix4x4[] combinedBindPoses = mesh1.bindposes; // Assuming the bind poses are the same for both meshes
 
         // Create a new mesh and assign the combined data
         Mesh combinedMesh = new Mesh();
@@ -97,9 +104,11 @@ public class Destroyable : MonoBehaviour
         combinedMesh.triangles = combinedTriangles;
         combinedMesh.normals = combinedNormals;
         combinedMesh.uv = combinedUVs;
+        combinedMesh.boneWeights = combinedBoneWeights;
+        combinedMesh.bindposes = combinedBindPoses;
         combinedMesh.RecalculateBounds();
 
-        // Assign the combined mesh to the MeshFilter component
+        // Assign the combined mesh to the SkinnedMeshRenderer component
         mesh1 = combinedMesh;
         Destroy(mesh2);
         // Optionally, you can destroy the second mesh if desired
@@ -116,8 +125,8 @@ public class Destroyable : MonoBehaviour
 }
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(Destroyable))]
-public class DestroyableEditor : Editor
+[CustomEditor(typeof(DestroyableSkined))]
+public class DestroyableSkinedEditor : Editor
 {
     public override void OnInspectorGUI()
     {
@@ -125,22 +134,9 @@ public class DestroyableEditor : Editor
         DrawDefaultInspector();
         if (GUILayout.Button("Reimport destroyable mesh"))
         {
-            ModelImporter modelImporter = (ModelImporter)AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(script.gameObject.GetComponent<MeshFilter>().sharedMesh));
+            ModelImporter modelImporter = (ModelImporter)AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(script.gameObject.GetComponent<SkinnedMeshRenderer>().sharedMesh));
             modelImporter.SaveAndReimport();
         }
     }
 }
 #endif
-
-public class VanishDestroyed : MonoBehaviour
-{
-    public void Initialize()
-    {
-        StartCoroutine(Vanish());
-    }
-    IEnumerator Vanish()
-    {
-        yield return new WaitForSeconds(Random.Range(1.5f, 3f));
-        Destroy(gameObject);
-    }
-}
