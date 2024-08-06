@@ -117,11 +117,11 @@ public class Inventory : MonoBehaviour
 
         //Create list of slots for items to display on one page
         itemSlots = new List<GameObject>();
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 4; i++)
         {
             itemSlots.Add(instantiatedInventory.transform.Find("Items").Find("Top").Find((i + 1).ToString()).gameObject);
         }
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 4; i++)
         {
             itemSlots.Add(instantiatedInventory.transform.Find("Items").Find("Bottom").Find((i + 4).ToString()).gameObject);
         }
@@ -131,7 +131,7 @@ public class Inventory : MonoBehaviour
         int pageToAdd = -1;
         for (int i = 0; i < inventory.Count; i++)
         {
-            if (i % 6 == 0)
+            if (i % 8 == 0)
             {
                 pageToAdd++;
                 inventoryPages.Add(new List<GameObject>());
