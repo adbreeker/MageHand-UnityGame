@@ -1,5 +1,4 @@
 using UnityEngine;
-using static SoundManager;
 
 
 public class PlayerMovement : MonoBehaviour

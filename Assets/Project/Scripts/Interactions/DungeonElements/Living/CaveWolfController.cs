@@ -10,6 +10,13 @@ public class CaveWolfController : MonoBehaviour
     SkinnedMeshRenderer _meshRenderer;
     MeshCollider _meshCollider;
 
+    public float movementSpeed = 10f;
+    public float rotationSpeed = 360f;
+
+    public LayerMask obstacleMask;
+
+    Coroutine _movementCoroutine = null;
+
     private void Start()
     {
         _animation = GetComponentInChildren<Animation>();
@@ -17,12 +24,76 @@ public class CaveWolfController : MonoBehaviour
         _meshCollider = GetComponent<MeshCollider>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         UpdateCollider();
     }
-    
-    public void UpdateCollider()
+
+    public void SetWolfMovement(List<Transform> movementPath)
+    {
+        if(_movementCoroutine == null)
+        {
+            _movementCoroutine = StartCoroutine(MovementCoroutine(movementPath));
+        }
+        else
+        {
+            StopCoroutine(_movementCoroutine);
+            _movementCoroutine = StartCoroutine(MovementCoroutine(movementPath));
+        }
+    }
+
+    IEnumerator MovementCoroutine(List<Transform> movementPath)
+    {
+        _animation.CrossFade("run");
+        foreach (Transform t in movementPath) 
+        {
+            Vector3 pathRelativePos = new Vector3(t.position.x, transform.position.y, t.position.z);
+
+            Quaternion targetRotation = Quaternion.LookRotation(pathRelativePos - transform.position);
+            while(transform.rotation != targetRotation)
+            {
+                yield return new WaitForFixedUpdate();
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            }
+
+            yield return new WaitForFixedUpdate();
+
+            while(transform.position != pathRelativePos)
+            {
+                yield return new WaitForFixedUpdate();
+                transform.position = Vector3.MoveTowards(transform.position, pathRelativePos, movementSpeed * Time.deltaTime);
+            }
+        }
+        _animation.CrossFade("idle");
+        _movementCoroutine = null;
+    }
+
+
+    bool CanMove(bool ghostmodeActive)
+    {
+        if (ghostmodeActive) //if ghostmode is active then allways can move
+        {
+            return true;
+        }
+
+        //get obstacles near player
+        Collider[] colliders = Physics.OverlapSphere(new Vector3(transform.position.x, 1.25f, transform.position.z), 0.8f, obstacleMask);
+        foreach (Collider collider in colliders)
+        {
+            if (collider.gameObject.tag == "Wall" || collider.gameObject.tag == "Obstacle")
+            {
+                //if obstacle near player then can't move
+                AudioSource collisionSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_Collision2);
+                collisionSound.Play();
+                Destroy(collisionSound.gameObject, collisionSound.clip.length);
+
+                return false;
+            }
+        }
+        return true;
+    }
+
+    void UpdateCollider()
     {
         Mesh colliderMesh = new Mesh();
         _meshRenderer.BakeMesh(colliderMesh);
