@@ -318,7 +318,7 @@ public class SpellCasting : MonoBehaviour
 
         // Wait for the specified recording time
         yield return new WaitForSecondsRealtime(2f);
-        castingEffect.GetComponent<ParticlesColor>().ChangeColorOfEffect(new Color(1f, 0f, 1f));
+        castingEffect.GetComponent<ParticlesColor>().ChangeColorOfEffect(new Color(0f, 1f, 0.5f));
 
         Microphone.End(GameSettings.microphoneName);
 

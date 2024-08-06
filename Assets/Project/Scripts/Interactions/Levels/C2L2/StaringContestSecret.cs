@@ -7,6 +7,7 @@ public class StaringContestSecret : MonoBehaviour
 {
     public float staringContestTime = 30.0f;
     [SerializeField] Transform _staringContestCube;
+    [SerializeField] GameObject _dialogue;
 
     [Header("Secret popout")]
     public float timeToFadeOut = 2;
@@ -18,6 +19,7 @@ public class StaringContestSecret : MonoBehaviour
 
     Coroutine staringContestCoroutine;
 
+    bool dialogueStarted = false;
     AudioSource sound;
 
     private void Awake()
@@ -32,7 +34,9 @@ public class StaringContestSecret : MonoBehaviour
 
     void Update()
     {
-        if(IsStaring())
+        if(!dialogueStarted) CheckDialogue();
+
+        if (IsStaring() && dialogueStarted && !PlayerParams.Variables.uiActive)
         {
             if(staringContestCoroutine == null) 
             {
@@ -41,7 +45,7 @@ public class StaringContestSecret : MonoBehaviour
         }
         else
         {
-            if(staringContestCoroutine != null) 
+            if (staringContestCoroutine != null) 
             {
                 StopCoroutine(staringContestCoroutine);
                 staringContestCoroutine = null;
@@ -60,6 +64,11 @@ public class StaringContestSecret : MonoBehaviour
             }
         }
             return false;
+    }
+
+    void CheckDialogue()
+    {
+        if (_dialogue.activeSelf) dialogueStarted = true;
     }
 
     IEnumerator StaringContest()

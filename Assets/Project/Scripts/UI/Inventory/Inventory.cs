@@ -234,6 +234,18 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    public bool HasItem(string itemName) 
+    {
+        foreach(GameObject item in inventory)
+        {
+            if (item.GetComponent<ItemBehavior>().itemName == itemName)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     //Probably could be done better to lag less
     public void PointIcon()
     {
