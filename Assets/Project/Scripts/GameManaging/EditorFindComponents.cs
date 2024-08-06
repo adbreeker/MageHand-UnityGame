@@ -7,18 +7,24 @@ public class EditorFindComponents : MonoBehaviour
 {
     public UnityEngine.Object[] foundedComponents;
 
-    public string typeToFind = "";
+    public string typeComponent = "";
+
+    public string typeGUID = "";
     public void FindAllOfType()
     {
-        if(typeToFind != "") 
+        if(typeComponent != "") 
         {
-            Type componentType = Type.GetType(typeToFind);
-            if(componentType == null) { componentType = Type.GetType("UnityEngine." + typeToFind + ", UnityEngine"); }
+            Type componentType = Type.GetType(typeComponent);
+            if(componentType == null) { componentType = Type.GetType("UnityEngine." + typeComponent + ", UnityEngine"); }
 
             if(componentType != null ) 
             {
                 foundedComponents = FindObjectsOfType(componentType);
             }
+        }
+        if(typeGUID != "")
+        {
+            Debug.Log(AssetDatabase.GUIDToAssetPath(typeGUID));
         }
     }
 }
