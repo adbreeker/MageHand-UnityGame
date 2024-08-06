@@ -6,9 +6,11 @@ public class CaveWolfTests : MonoBehaviour
 {
     public List<Transform> wolfPath;
     public CaveWolfController controller;
+
+    public bool moveWolf = true;
     void Start()
     {
-        StartCoroutine(WolfMovementTest());
+        if(moveWolf) { StartCoroutine(WolfMovementTest()); }
     }
 
     IEnumerator WolfMovementTest()
@@ -19,8 +21,12 @@ public class CaveWolfTests : MonoBehaviour
         while (true) 
         {
             yield return new WaitForSeconds(3.0f);
-            wolfPath.Reverse();
-            controller.SetWolfMovement(wolfPath);
+            if (moveWolf)
+            {
+                wolfPath.Reverse();
+                controller.SetWolfMovement(wolfPath);
+            }
+                
         }
     }
 }

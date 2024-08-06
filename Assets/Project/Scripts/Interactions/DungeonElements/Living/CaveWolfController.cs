@@ -10,10 +10,17 @@ public class CaveWolfController : MonoBehaviour
     SkinnedMeshRenderer _meshRenderer;
     MeshCollider _meshCollider;
 
+
+    [Header("Movement:")]
     public float movementSpeed = 10f;
     public float rotationSpeed = 360f;
 
-    public LayerMask obstacleMask;
+    [Header("Attack:")]
+    public float attackRange;
+    [SerializeField] Transform _attackPoint;
+
+    [Header("Teleportation effect")]
+    [SerializeField] GameObject _teleportationEffect;
 
     Coroutine _movementCoroutine = null;
 
@@ -27,33 +34,54 @@ public class CaveWolfController : MonoBehaviour
     private void FixedUpdate()
     {
         UpdateCollider();
+        AttackPlayerInRange();
+        //Debug.DrawRay(_attackPoint.position, transform.forward * attackRange, Color.yellow);
     }
 
-    public void SetWolfMovement(List<Transform> movementPath)
+    public void SetWolfMovement(List<Transform> movementPath, bool adjustMovementToPlayer = true, bool destroyOnLastTile = false)
     {
         if(_movementCoroutine == null)
         {
-            _movementCoroutine = StartCoroutine(MovementCoroutine(movementPath));
+            _movementCoroutine = StartCoroutine(MovementCoroutine(movementPath, adjustMovementToPlayer, destroyOnLastTile));
         }
         else
         {
             StopCoroutine(_movementCoroutine);
-            _movementCoroutine = StartCoroutine(MovementCoroutine(movementPath));
+            _movementCoroutine = StartCoroutine(MovementCoroutine(movementPath, adjustMovementToPlayer, destroyOnLastTile));
         }
     }
 
-    IEnumerator MovementCoroutine(List<Transform> movementPath)
+    IEnumerator MovementCoroutine(List<Transform> movementPath, bool adjustMovementToPlayer, bool destroyOnLastTile)
     {
-        _animation.CrossFade("run");
+        float ms = movementSpeed;
+        float rs = rotationSpeed;
+
+        if (adjustMovementToPlayer)
+        {
+            if(PlayerParams.Controllers.playerMovement.movementSpeed > movementSpeed) 
+            { 
+                ms = PlayerParams.Controllers.playerMovement.movementSpeed + 0.1f * PlayerParams.Controllers.playerMovement.movementSpeed; 
+            }
+
+            if(PlayerParams.Controllers.playerMovement.rotationSpeed > rotationSpeed)
+            {
+                rs = PlayerParams.Controllers.playerMovement.rotationSpeed + 0.1f * PlayerParams.Controllers.playerMovement.rotationSpeed;
+            }
+        }
+
         foreach (Transform t in movementPath) 
         {
+            _animation.Play("run");
             Vector3 pathRelativePos = new Vector3(t.position.x, transform.position.y, t.position.z);
 
-            Quaternion targetRotation = Quaternion.LookRotation(pathRelativePos - transform.position);
+            Quaternion targetRotation;
+            if (pathRelativePos - transform.position != Vector3.zero) { targetRotation = Quaternion.LookRotation(pathRelativePos - transform.position); }
+            else { targetRotation = transform.rotation; }
+            
             while(transform.rotation != targetRotation)
             {
                 yield return new WaitForFixedUpdate();
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rs * Time.deltaTime);
             }
 
             yield return new WaitForFixedUpdate();
@@ -61,36 +89,23 @@ public class CaveWolfController : MonoBehaviour
             while(transform.position != pathRelativePos)
             {
                 yield return new WaitForFixedUpdate();
-                transform.position = Vector3.MoveTowards(transform.position, pathRelativePos, movementSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, pathRelativePos, ms * Time.deltaTime);
             }
         }
+
+        if(destroyOnLastTile) { Destroy(gameObject); }
+
         _animation.CrossFade("idle");
         _movementCoroutine = null;
     }
 
-
-    bool CanMove(bool ghostmodeActive)
+    void AttackPlayerInRange()
     {
-        if (ghostmodeActive) //if ghostmode is active then allways can move
+        if (Physics.Raycast(_attackPoint.position, transform.forward, attackRange, LayerMask.GetMask("Player")))
         {
-            return true;
+            _animation.CrossFade("attack");
+            _animation.CrossFadeQueued("idle");
         }
-
-        //get obstacles near player
-        Collider[] colliders = Physics.OverlapSphere(new Vector3(transform.position.x, 1.25f, transform.position.z), 0.8f, obstacleMask);
-        foreach (Collider collider in colliders)
-        {
-            if (collider.gameObject.tag == "Wall" || collider.gameObject.tag == "Obstacle")
-            {
-                //if obstacle near player then can't move
-                AudioSource collisionSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_Collision2);
-                collisionSound.Play();
-                Destroy(collisionSound.gameObject, collisionSound.clip.length);
-
-                return false;
-            }
-        }
-        return true;
     }
 
     void UpdateCollider()
@@ -112,5 +127,38 @@ public class CaveWolfController : MonoBehaviour
 
         _meshCollider.sharedMesh = null;
         _meshCollider.sharedMesh = colliderMesh;
+    }
+
+    public void TeleportTo(Vector3 tpDestination)
+    {
+        if (_movementCoroutine != null)
+        {
+            StopCoroutine(_movementCoroutine);
+            _movementCoroutine = null;
+        }
+        transform.position = tpDestination;
+    }
+    public void TeleportTo(Vector3 tpDestination, Color? tpEffectColor)
+    {
+        if(_movementCoroutine != null)
+        {
+            StopCoroutine( _movementCoroutine );
+            _movementCoroutine = null;
+        }
+        transform.position = tpDestination;
+
+        AudioSource tpSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MagicalTeleportation);
+        tpSound.Play();
+        Destroy(tpSound, tpSound.clip.length);
+
+        if (tpEffectColor != null)
+        {
+            Instantiate(_teleportationEffect, transform)
+                    .GetComponent<ParticlesColor>().ChangeColorOfEffect(tpEffectColor.Value);
+        }
+        else
+        {
+            Instantiate(_teleportationEffect, transform);
+        }
     }
 }
