@@ -1,9 +1,13 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 public class OpenDialogue : MonoBehaviour
 {
+    [Header("Activate dialogue")]
+    public bool allowToActivate = true;
+
     [Header("Game objects")]
     public Canvas dialogueCanvas;
     [Header("Parameters")]
@@ -14,14 +18,18 @@ public class OpenDialogue : MonoBehaviour
     [Tooltip("Shouldn't be long")]
     public string dialogueSaveName;
 
-    private bool activateDialogue = true;
+    public event Action DialogueStarted;
 
     private void Update()
     {
         //Activates canvas (dialogue) while player enters bounds of object that this script is connected to
         Bounds cubeBounds = GetComponent<BoxCollider>().bounds;
-        if (cubeBounds.Contains(PlayerParams.Objects.player.transform.position) && activateDialogue)
+        if (cubeBounds.Contains(PlayerParams.Objects.player.transform.position) && allowToActivate)
         {
+            allowToActivate = false;
+
+            DialogueStarted?.Invoke();
+
             if (saveDialogue)
             {
                 if (!PlayerParams.Controllers.journal.dialoguesJournal.ContainsKey(dialogueSaveName))
@@ -29,8 +37,8 @@ public class OpenDialogue : MonoBehaviour
                     PlayerParams.Controllers.journal.dialoguesJournal.Add(dialogueSaveName, new List<List<string>>());
                 }
             }
+            
             dialogueCanvas.gameObject.SetActive(true);
-            activateDialogue = false;
         }
     }
 
