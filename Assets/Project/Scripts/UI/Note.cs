@@ -20,6 +20,7 @@ public class Note : MonoBehaviour
 
     private bool openedNote = false;
     private bool fromJournal = false;
+    public bool saveToJournal = true;
 
     private float keyTimeDelayer = 0;
     private float scrollSpeed;
@@ -114,8 +115,11 @@ public class Note : MonoBehaviour
             PlayerParams.Controllers.journal.ableToInteract = true;
             PlayerParams.Variables.uiActive = false;
             PlayerParams.Objects.hand.SetActive(true);
-            if (!PlayerParams.Controllers.journal.notesJournal.ContainsKey(titleText))
-                PlayerParams.Controllers.journal.notesJournal.Add(titleText, contentText);
+            if(saveToJournal)
+            {
+                if (!PlayerParams.Controllers.journal.notesJournal.ContainsKey(titleText))
+                    PlayerParams.Controllers.journal.notesJournal.Add(titleText, contentText);
+            }
         }
         else PlayerParams.Controllers.journal.DisplayNamesBack();
 

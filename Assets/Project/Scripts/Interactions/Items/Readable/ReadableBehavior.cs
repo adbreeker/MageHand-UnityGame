@@ -12,6 +12,9 @@ public class ReadableBehavior : ItemBehavior
     [Header("Destroy on pick up")]
     public bool destroy = false;
 
+    [Header("Save to journal")]
+    public bool saveToJournal = true;
+
     [Header("Prefabs")]
     public GameObject notePrefab;
 
@@ -23,9 +26,11 @@ public class ReadableBehavior : ItemBehavior
     public override void OnPickUp() //instantiate note prefab and open note on it
     {
         base.OnPickUp();
-        GameObject note = Instantiate(notePrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        note.GetComponent<Note>().titleText = title;
-        note.GetComponent<Note>().contentText = content;
+        Note note = Instantiate(notePrefab, new Vector3(0, 0, 0), Quaternion.identity).GetComponent<Note>();
+        note.titleText = title;
+        note.contentText = content;
+        note.saveToJournal = saveToJournal;
+
         note.GetComponent<Note>().OpenNote();
 
         if(destroy)

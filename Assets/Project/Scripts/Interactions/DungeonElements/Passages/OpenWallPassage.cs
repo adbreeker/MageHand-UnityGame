@@ -48,6 +48,8 @@ public class OpenWallPassage : MonoBehaviour
 
     private void OnValidate()
     {
+        if(wall==null) { wall = gameObject; }
+
         if (passageOpen)
         {
             wall.transform.localPosition = new Vector3(wall.transform.localPosition.x, -5.5f, wall.transform.localPosition.z);

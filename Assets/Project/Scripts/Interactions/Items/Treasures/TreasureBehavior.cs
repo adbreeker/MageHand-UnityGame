@@ -11,4 +11,10 @@ public class TreasureBehavior : ItemBehavior
     {
         PlayerParams.Controllers.pointsManager.maxCurrency += value;
     }
+
+    public override void OnPickUp()
+    {
+        base.OnPickUp();
+        transform.rotation *= Quaternion.Euler(0f, 180f, 0f);
+    }
 }

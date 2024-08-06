@@ -119,15 +119,19 @@ public class SpellCasting : MonoBehaviour
                     }
                 }
                 PlayerParams.Controllers.handInteractions.AddToHand(nearestItem, false, false);
-                GameObject collectEffect = Instantiate(collectEffectPrefab, nearestItem.transform);
-                while (nearestItem.transform.position != PlayerParams.Controllers.handInteractions.holdingPoint.position)
+                yield return new WaitForEndOfFrame();
+                if(nearestItem != null) 
                 {
-                    nearestItem.transform.position = Vector3.MoveTowards(nearestItem.transform.position, PlayerParams.Controllers.handInteractions.holdingPoint.position, 7.0f * Time.fixedDeltaTime);
-                    yield return new WaitForFixedUpdate();
+                    GameObject collectEffect = Instantiate(collectEffectPrefab, nearestItem.transform);
+                    while (nearestItem.transform.position != PlayerParams.Controllers.handInteractions.holdingPoint.position)
+                    {
+                        nearestItem.transform.position = Vector3.MoveTowards(nearestItem.transform.position, PlayerParams.Controllers.handInteractions.holdingPoint.position, 7.0f * Time.fixedDeltaTime);
+                        yield return new WaitForFixedUpdate();
+                    }
+                    nearestItem.layer = LayerMask.NameToLayer("Item");
+                    PlayerParams.Controllers.handInteractions.AddToHand(nearestItem, true, false);
+                    Destroy(collectEffect);
                 }
-                nearestItem.layer = LayerMask.NameToLayer("Item");
-                PlayerParams.Controllers.handInteractions.AddToHand(nearestItem.gameObject, true, false);
-                Destroy(collectEffect);
             }
         }
         else

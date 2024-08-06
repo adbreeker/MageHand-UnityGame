@@ -4,30 +4,18 @@ using UnityEngine;
 
 public class WatchmanDialogueFinish : MonoBehaviour
 {
-    [SerializeField] OpenBarsPassage passage;
-    [SerializeField] GameObject dialogue;
+    [SerializeField] OpenBarsPassage _barsPassage;
+    [SerializeField] SkullPlatformBehavior _skullPlatformBehavior;
 
-    bool started = false;
-
-    void Update()
+    private void Start()
     {
-        if(!started)
-        {
-            if(dialogue.activeSelf)
-            {
-                started = true;
-                StartCoroutine(OpenPassageAfterDialogue());
-            }
-        }
+        _skullPlatformBehavior.DialogueFinished += OpenBars;
     }
 
-    IEnumerator OpenPassageAfterDialogue()
+    void OpenBars()
     {
-        while(dialogue.activeSelf)
-        {
-            yield return null;
-        }
-
-        passage.Interaction();
+        _barsPassage.Interaction();
+        _skullPlatformBehavior.DialogueFinished -= OpenBars;
+        Destroy(this);
     }
 }
