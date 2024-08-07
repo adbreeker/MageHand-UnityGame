@@ -122,9 +122,9 @@ public class GesturesMenu : MonoBehaviour
 
     public void OpenMenu(GameObject givenPointer)
     {
-        transform.parent.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
-        transform.parent.GetComponent<Canvas>().worldCamera = PlayerParams.Objects.playerCamera.transform.Find("UiCamera").GetComponent<Camera>();
-        transform.parent.GetComponent<Canvas>().planeDistance = 1.05f;
+        //transform.parent.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
+        //transform.parent.GetComponent<Canvas>().worldCamera = PlayerParams.Objects.playerCamera.transform.Find("UiCamera").GetComponent<Camera>();
+        //transform.parent.GetComponent<Canvas>().planeDistance = 1.05f;
 
         descriptions.Add(gestureDescription1);
         descriptions.Add(gestureDescription2);

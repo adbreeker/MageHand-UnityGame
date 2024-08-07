@@ -109,9 +109,9 @@ public class TutorialsMenu : MonoBehaviour
 
     public void OpenMenu(GameObject givenPointer)
     {
-        transform.parent.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
-        transform.parent.GetComponent<Canvas>().worldCamera = PlayerParams.Objects.playerCamera.transform.Find("UiCamera").GetComponent<Camera>();
-        transform.parent.GetComponent<Canvas>().planeDistance = 1.05f;
+        //transform.parent.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceCamera;
+        //transform.parent.GetComponent<Canvas>().worldCamera = PlayerParams.Objects.playerCamera.transform.Find("UiCamera").GetComponent<Camera>();
+        //transform.parent.GetComponent<Canvas>().planeDistance = 1.05f;
 
         pointer = givenPointer;
 
@@ -126,7 +126,7 @@ public class TutorialsMenu : MonoBehaviour
 
         scrollView = transform.Find("Menu").Find("ScrollRect").GetComponent<ScrollRect>();
         scrollView.verticalNormalizedPosition = 1f;
-        uiCamera = PlayerParams.Objects.uiCamera;
+        //uiCamera = PlayerParams.Objects.uiCamera;
 
         pointedOptionMenu = 0;
         PointOption(pointedOptionMenu);
@@ -157,8 +157,8 @@ public class TutorialsMenu : MonoBehaviour
         instantiatedTutorialPrefab = Instantiate(tutorialPrefabs[option], new Vector3(0, 0, 0), Quaternion.identity);
         Canvas prefabCanvas = instantiatedTutorialPrefab.GetComponent<Canvas>();
         RectTransform prefabRectTransform = instantiatedTutorialPrefab.transform.Find("Panel").GetComponent<RectTransform>();
-        prefabCanvas.worldCamera = uiCamera;
-        prefabCanvas.planeDistance = 1.05f;
+        //prefabCanvas.worldCamera = uiCamera;
+        //prefabCanvas.planeDistance = 1.05f;
         prefabRectTransform.anchorMin = new Vector2(0, 0.5f);
         prefabRectTransform.anchorMax = new Vector2(0, 0.5f);
         prefabRectTransform.anchoredPosition = new Vector3(600, 0, 0);

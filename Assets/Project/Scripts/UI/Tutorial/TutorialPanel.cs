@@ -58,8 +58,8 @@ public class TutorialPanel : MonoBehaviour
             Destroy(tutorialPanel);
             currentPanelNumber++;
             tutorialPanel = Instantiate(tutorialPanelPrefabs[currentPanelNumber], new Vector3(0, 0, 0), Quaternion.identity);
-            tutorialPanel.GetComponent<Canvas>().worldCamera = PlayerParams.Objects.uiCamera;
-            tutorialPanel.GetComponent<Canvas>().planeDistance = 1.05f;
+            //tutorialPanel.GetComponent<Canvas>().worldCamera = PlayerParams.Objects.uiCamera;
+            //tutorialPanel.GetComponent<Canvas>().planeDistance = 1.05f;
         }
 
         if (wasLatelyOpened && !openedPanel && !PlayerParams.Variables.uiActive && Input.GetKeyDown(KeyCode.T))
@@ -91,8 +91,8 @@ public class TutorialPanel : MonoBehaviour
         currentPanelNumber = 0;
 
         tutorialPanel = Instantiate(tutorialPanelPrefabs[currentPanelNumber], new Vector3(0, 0, 0), Quaternion.identity);
-        tutorialPanel.GetComponent<Canvas>().worldCamera = PlayerParams.Objects.uiCamera;
-        tutorialPanel.GetComponent<Canvas>().planeDistance = 1.05f;
+        //tutorialPanel.GetComponent<Canvas>().worldCamera = PlayerParams.Objects.uiCamera;
+        //tutorialPanel.GetComponent<Canvas>().planeDistance = 1.05f;
 
         openedPanel = true;
     }
