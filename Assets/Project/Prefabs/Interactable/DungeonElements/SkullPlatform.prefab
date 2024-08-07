@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   platformActive: 1
-  _dialogue: {fileID: 4039841641127072936}
+  _dialogue: {fileID: 4039841641127072950}
   _platformActiveMat: {fileID: 2100000, guid: 0ce26350cce7d62449c5dc594d2da4ca, type: 2}
   _platformInactiveMat: {fileID: 2100000, guid: a1953c5266d80b14f80a27c3f6b15244, type: 2}
   _platformEffectPrefab: {fileID: 1070314736190868, guid: 94032a5f6c4cf324da808c929360bb61, type: 3}
@@ -134,7 +134,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8074537543712510567, guid: 31f6196381a80a948ad89cfe9145519c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8074537543712510584, guid: 31f6196381a80a948ad89cfe9145519c, type: 3}
       propertyPath: m_RootOrder
@@ -180,13 +180,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8074537543712510585, guid: 31f6196381a80a948ad89cfe9145519c, type: 3}
+      propertyPath: allowToActivate
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31f6196381a80a948ad89cfe9145519c, type: 3}
---- !u!1 &4039841641127072936 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8074537543712510567, guid: 31f6196381a80a948ad89cfe9145519c, type: 3}
+--- !u!114 &4039841641127072950 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8074537543712510585, guid: 31f6196381a80a948ad89cfe9145519c, type: 3}
   m_PrefabInstance: {fileID: 5196841210781615823}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0cd8b840e4648f41adb2c037e7d750e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &4039841641127072951 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8074537543712510584, guid: 31f6196381a80a948ad89cfe9145519c, type: 3}

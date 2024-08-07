@@ -179,7 +179,7 @@ public class SpellCasting : MonoBehaviour
                 }
             }
 
-            if (skullPlatform != null) 
+            if (skullPlatform != null && skullPlatform.platformActive)
             {
                 mana -= scroll.manaCost;
 

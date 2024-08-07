@@ -45,7 +45,7 @@ public class ChestBehavior : InteractableBehavior
 
     public void OnClick() //move camera to chest/player and start chest animation
     {
-        if(!playerMovement.isMoving)
+        if(!playerMovement.isMoving && !playerMovement.isRotating)
         {
             StartCoroutine(MoveCamera());
             StartCoroutine(ChestAnimation());

@@ -103,7 +103,7 @@ public class CaveWolfController : MonoBehaviour
     {
         if (Physics.Raycast(_attackPoint.position, transform.forward, attackRange, LayerMask.GetMask("Player")))
         {
-            _animation.CrossFade("attack");
+            _animation.CrossFade("damage");
             _animation.CrossFadeQueued("idle");
         }
     }

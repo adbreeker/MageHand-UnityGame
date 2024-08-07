@@ -8,7 +8,7 @@ public class SkullPlatformBehavior : MonoBehaviour
     public bool platformActive = true;
 
     [Header("Linked dialogue")]
-    [SerializeField] GameObject _dialogue;
+    [SerializeField] OpenDialogue _dialogue;
 
     [Header("Materials:")]
     [SerializeField] Material _platformActiveMat;
@@ -44,9 +44,9 @@ public class SkullPlatformBehavior : MonoBehaviour
 
         yield return new WaitForSeconds(1);
 
-        _dialogue.SetActive(true);
+        _dialogue.allowToActivate = true;
 
-        while(_dialogue.activeSelf) { yield return null; }
+        while(_dialogue.gameObject.activeSelf) { yield return null; }
         PlayerParams.Controllers.playerMovement.stopMovement = false;
         PlayerParams.Controllers.spellCasting.currentSpell = "None";
         DialogueFinished?.Invoke();
