@@ -59,7 +59,7 @@ public class Hallway : MonoBehaviour
 
     //custom editor ----------------------------------------------------------------------------------------------------------------- custom editor
     [CustomEditor(typeof(Hallway))]
-    public class DeadEndEditor : Editor
+    public class HallwayEditor : Editor
     {
         public override void OnInspectorGUI()
         {

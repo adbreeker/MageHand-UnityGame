@@ -76,7 +76,7 @@ public class Room2x2 : MonoBehaviour
 
     //custom editor ----------------------------------------------------------------------------------------------------------------- custom editor
     [CustomEditor(typeof(Room2x2))]
-    public class DeadEndEditor : Editor
+    public class Room2x2Editor : Editor
     {
         public override void OnInspectorGUI()
         {
