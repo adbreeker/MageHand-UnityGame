@@ -180,8 +180,8 @@ GameObject:
   - component: {fileID: 3588071652862151937}
   - component: {fileID: 460703881164243620}
   - component: {fileID: 2414009616391255662}
-  - component: {fileID: -278183867825882476}
   - component: {fileID: -5862515443255147124}
+  - component: {fileID: 5319540157004098280}
   - component: {fileID: 3354199713359747635}
   m_Layer: 12
   m_Name: Compass
@@ -256,19 +256,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &-278183867825882476
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4215567734337902523}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.25, y: 0.15, z: 0.25}
-  m_Center: {x: 0, y: 0.07, z: 0}
 --- !u!65 &-5862515443255147124
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -282,6 +269,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.7, y: 0.5, z: 0.7}
   m_Center: {x: 0, y: 0.07, z: 0}
+--- !u!64 &5319540157004098280
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4215567734337902523}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 477525350536967170, guid: 0bfc3f0c3caabd54994a2b291a3b9637, type: 3}
 --- !u!114 &3354199713359747635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,6 +295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e09508602e0edf48985c6656b9e7d72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isInteractable: 1
   itemName: Compass
   itemIcon: {fileID: 6610860039850489068, guid: 915221b1f4d135f48a0d56f2dd0b1042, type: 3}
   _needle: {fileID: 2032145432290594627}

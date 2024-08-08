@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 7200927917085622770}
   - component: {fileID: 7200927917086425554}
   - component: {fileID: 7200927917087392530}
-  - component: {fileID: 3925039636831912157}
   - component: {fileID: 2536316579997516788}
+  - component: {fileID: -3794107274180459538}
   - component: {fileID: 4780875616349222037}
   - component: {fileID: 8423815841158899345}
   m_Layer: 12
@@ -88,19 +88,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3925039636831912157
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7200927917085466066}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.25, z: 0.1}
-  m_Center: {x: 0, y: 0.12, z: 0}
 --- !u!65 &2536316579997516788
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -114,6 +101,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.7, y: 0.5, z: 0.7}
   m_Center: {x: 0, y: 0.2, z: 0}
+--- !u!64 &-3794107274180459538
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7200927917085466066}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: c6179e854b44e2541a9956947c806de0, type: 3}
 --- !u!114 &4780875616349222037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,6 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c06c8c94ea2b1dd49ba5954874054f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isInteractable: 1
   itemName: Potion of Speed
   itemIcon: {fileID: 6610860039850489068, guid: 6736fbe6959dd8e47905fdca4f57bf8c, type: 3}
 --- !u!114 &8423815841158899345

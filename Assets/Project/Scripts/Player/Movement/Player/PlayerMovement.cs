@@ -5,19 +5,24 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Current tile position:")]
     public Vector3 currentTilePos;
-    Vector3 _destination;
 
     [Header("Movement")]
     public float movementSpeed = 7f;
     public float tilesLenght = 4f;
     public LayerMask obstacleMask;
     [HideInInspector] public bool isMoving = false;
+    Vector3 _destination;
 
     [Header("Rotation")]
     public float rotationSpeed = 300f;
     public float rotationThreshold = 0.01f;
     [HideInInspector] public bool isRotating = false;
     Quaternion _targetRotation;
+
+    [Header("Lean over")]
+    public float leanSpeed = 200f;
+    public float leanAngle = 60f;
+    [HideInInspector] public bool isLeaning = false;
 
     [Header("Movement-interfering options")]
     public bool stopMovement = false;
@@ -55,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
         RotationQueue();
         MovementKeysListener(0, 0);
         RotationKeyListener(0);
+        LeanKeyListener();
     }
 
     void MovementKeysListener(float horizontalInputQueue, float verticalInputQueue)
@@ -198,6 +204,25 @@ public class PlayerMovement : MonoBehaviour
             {
                 isRotating = false;
                 transform.rotation = _targetRotation;
+            }
+        }
+    }
+
+    void LeanKeyListener()
+    {
+        if(Input.GetKey(KeyCode.LeftControl) && !MovementInterfering())
+        {
+            isLeaning = true;
+            Transform cam = PlayerParams.Objects.playerCamera.transform;
+            cam.localRotation = Quaternion.RotateTowards(cam.localRotation, Quaternion.Euler(leanAngle, 0, 0), leanSpeed * Time.unscaledDeltaTime);
+        }
+        else if(isLeaning)
+        {
+            Transform cam = PlayerParams.Objects.playerCamera.transform;
+            cam.localRotation = Quaternion.RotateTowards(cam.localRotation, Quaternion.Euler(0, 0, 0), leanSpeed * Time.unscaledDeltaTime);
+            if(cam.localRotation.eulerAngles == Vector3.zero)
+            {
+                isLeaning = false;
             }
         }
     }

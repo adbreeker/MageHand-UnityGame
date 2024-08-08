@@ -1,17 +1,21 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 public class GetObjectsNearHand : MonoBehaviour
 {
-    [Header("Layer masks for objects and UI")]
+    [Header("Layer masks for objects, UI and covers")]
     public LayerMask objectsMask;
     public LayerMask uiMask;
+    public LayerMask visibleMask;
 
     [Header("Points to calculate middle point")]
     public Transform wristPoint;
-    public Transform indexFingerKnucklePoint; 
+    public Transform indexFingerKnucklePoint;
     public Transform smallFingerKnucklePoint;
+    Vector3 _middlePoint;
 
     [Header("Currently pointing object")]
     public GameObject currentlyPointing;
@@ -24,56 +28,139 @@ public class GetObjectsNearHand : MonoBehaviour
 
     private void Update() //check objects near middle point every update
     {
+        
         if(PlayerParams.Controllers.handInteractions.inHand == null)
         {
-            CheckSphere();
+            _middlePoint = (wristPoint.position + indexFingerKnucklePoint.position + smallFingerKnucklePoint.position) / 3f;
+
+            if (PlayerParams.Variables.uiActive)
+            {
+                CheckObjectsUI(0.2f);
+            }
+            else
+            {
+                if(PlayerParams.Controllers.playerMovement.isLeaning) { CheckObjects(3.0f, 0.3f); }
+                else { CheckObjects(2.0f, 0.3f); }
+            }
         }
     }
 
-    void CheckSphere()
+    void CheckObjects(float distance, float radius)
     {
-        //calculate middle point
-        Vector3 middlePoint = (wristPoint.position + indexFingerKnucklePoint.position + smallFingerKnucklePoint.position) / 3f;
+        Ray ray = PlayerParams.Objects.playerCamera.ViewportPointToRay(PlayerParams.Objects.playerCamera.WorldToViewportPoint(_middlePoint));
 
-        Collider[] colliders;
-        List<Collider> interactableObjects = new List<Collider>();
+        Vector3 startPoint = ray.origin;
+        Vector3 endPoint = ray.origin + ray.direction * distance;
 
-        if (PlayerParams.Variables.uiActive) //if UI active then searching on UI layer with smaller range
+        Collider[] hitColliders = Physics.OverlapCapsule(startPoint, endPoint, radius, objectsMask, QueryTriggerInteraction.Collide);
+#if UNITY_EDITOR
+        DrawDebugCylinder(startPoint, endPoint, radius);
+#endif
+        if(GetInteractableSortedByDistance(ref hitColliders))
         {
-            colliders = Physics.OverlapSphere(middlePoint, 0.2f, uiMask);
-
-            interactableObjects.AddRange(colliders);
-        }
-        else //else searching on objects layers with bigger range
-        {
-            colliders = Physics.OverlapSphere(middlePoint, 0.7f, objectsMask);
-
-            foreach (Collider collider in colliders)
+            foreach (Collider collider in hitColliders)
             {
-                if (IsObjectInteractable(collider))
-                {
-                    interactableObjects.Add(collider);
-                }
-            }
-        }
-
-
-        if(interactableObjects.Count > 0) //first found object becomes currently pointed
-        {
-            currentlyPointing = interactableObjects[0].gameObject;
-            foreach(Collider collider in interactableObjects)
-            {
-                if(Vector3.Distance(collider.transform.position, middlePoint) < Vector3.Distance(currentlyPointing.transform.position, middlePoint))
+                if (IsObjectVisible(collider))
                 {
                     currentlyPointing = collider.gameObject;
+                    EnlightObject(currentlyPointing);
+                    return;
                 }
             }
+            currentlyPointing = null;
+        }
+        else
+        {
+            currentlyPointing = null;
+        }
+    }
+
+    public void DrawDebugCylinder(Vector3 startPoint, Vector3 endPoint, float radius, int segments = 20)
+    {
+        // Vector representing the axis of the cylinder
+        Vector3 axis = endPoint - startPoint;
+        Vector3 axisNormalized = axis.normalized;
+
+        // Find any vector that is not parallel to the cylinder's axis
+        Vector3 perpendicularVector = Vector3.Cross(axisNormalized, Vector3.up);
+        if (perpendicularVector == Vector3.zero) // If the vector happened to be parallel to "up", choose a different vector
+        {
+            perpendicularVector = Vector3.Cross(axisNormalized, Vector3.right);
+        }
+        perpendicularVector.Normalize();
+
+        // Draw the center axis of the cylinder
+        Debug.DrawLine(startPoint, endPoint, Color.cyan);
+
+        // Draw the cross-section of the cylinder
+        for (int i = 0; i < segments; i++)
+        {
+            float angle = i * Mathf.PI * 2 / segments;
+            float nextAngle = (i + 1) * Mathf.PI * 2 / segments;
+
+            // Calculate points on the circle around startPoint and endPoint
+            Vector3 point1 = startPoint + Quaternion.AngleAxis(angle * Mathf.Rad2Deg, axisNormalized) * perpendicularVector * radius;
+            Vector3 point2 = startPoint + Quaternion.AngleAxis(nextAngle * Mathf.Rad2Deg, axisNormalized) * perpendicularVector * radius;
+
+            Vector3 point3 = endPoint + Quaternion.AngleAxis(angle * Mathf.Rad2Deg, axisNormalized) * perpendicularVector * radius;
+            Vector3 point4 = endPoint + Quaternion.AngleAxis(nextAngle * Mathf.Rad2Deg, axisNormalized) * perpendicularVector * radius;
+
+            // Draw the cross-sections (base and top of the cylinder)
+            Debug.DrawLine(point1, point2, Color.blue);
+            Debug.DrawLine(point3, point4, Color.blue);
+
+            // Draw lines connecting the two bases
+            Debug.DrawLine(point1, point3, Color.blue);
+        }
+    }
+
+    void CheckObjectsUI(float radius)
+    {
+        Collider[] colliders = Physics.OverlapSphere(_middlePoint, radius, uiMask);
+
+        if (colliders.Length > 0) //first found object becomes currently pointed
+        {
+            System.Array.Sort(colliders, (collider1, collider2) =>
+            Vector3.Distance(collider1.transform.position, _middlePoint).CompareTo(
+            Vector3.Distance(collider2.transform.position, _middlePoint)));
+
+            currentlyPointing = colliders[0].gameObject;
             EnlightObject(currentlyPointing);
         }
         else //if no objects then currently pointed is null
         {
             currentlyPointing = null;
         }
+    }
+
+    bool GetInteractableSortedByDistance(ref Collider[] potentialObjects)
+    {
+        List<Collider> interactable = new List<Collider>();
+        foreach (Collider col in potentialObjects)
+        {
+            if (IsObjectInteractable(col)) { interactable.Add(col); }
+        }
+
+        if (interactable.Count > 0)
+        {
+            Camera cam = PlayerParams.Objects.playerCamera;
+            Vector3 middleScreenPoint = cam.WorldToScreenPoint(_middlePoint);
+
+            // Sort the list of interactable colliders based on their distance from middleScreenPoint
+            potentialObjects = interactable.OrderBy(collider =>
+            {
+                // Calculate the screen position of the collider's center
+                Vector3 colliderScreenPoint = cam.WorldToScreenPoint(collider.bounds.center);
+
+                // Calculate the 2D distance between the middleScreenPoint and the collider's screen point
+                return Vector2.Distance(new Vector2(middleScreenPoint.x, middleScreenPoint.y),
+                                        new Vector2(colliderScreenPoint.x, colliderScreenPoint.y));
+            }).ToArray();
+
+            return true;
+        }
+
+        return false;
     }
 
     bool IsObjectInteractable(Collider collider)
@@ -83,6 +170,75 @@ public class GetObjectsNearHand : MonoBehaviour
             if (collider.GetComponent<InteractableBehavior>().isInteractable) { return true; }
         }
         return false;
+    }
+
+    bool IsObjectVisible(Collider collider)
+    {
+        Camera cam = PlayerParams.Objects.playerCamera;
+        MeshRenderer objectRenderer = collider.GetComponentInChildren<MeshRenderer>();
+
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(PlayerParams.Objects.playerCamera);
+        if (!GeometryUtility.TestPlanesAABB(planes, objectRenderer.bounds))
+        {
+            return false;
+        }
+
+        // Perform detailed visibility check using raycasts
+        Bounds bounds = objectRenderer.bounds;
+        Vector3 centerPoint = bounds.center;
+
+        // Calculate adjusted corner points
+        Vector3[] checkPoints = new Vector3[17];
+        checkPoints[0] = centerPoint;
+
+        Vector3[] corners = new Vector3[8]
+        {
+            bounds.min,
+            new Vector3(bounds.min.x, bounds.min.y, bounds.max.z),
+            new Vector3(bounds.min.x, bounds.max.y, bounds.min.z),
+            new Vector3(bounds.min.x, bounds.max.y, bounds.max.z),
+            new Vector3(bounds.max.x, bounds.min.y, bounds.min.z),
+            new Vector3(bounds.max.x, bounds.min.y, bounds.max.z),
+            new Vector3(bounds.max.x, bounds.max.y, bounds.min.z),
+            bounds.max
+        };
+
+        for (int i = 0; i < corners.Length; i++)
+        {
+            Vector3 direction = (corners[i] - centerPoint).normalized;
+            checkPoints[i + 1] = centerPoint + direction * (bounds.extents.magnitude * 0.5f);
+        }
+        for (int i = 0; i < corners.Length; i++)
+        {
+            Vector3 direction = (corners[i] - centerPoint).normalized;
+            checkPoints[i + 9] = centerPoint + direction * (bounds.extents.magnitude * 0.9f);
+        }
+
+        //foreach (Vector3 point in checkPoints)
+        //{
+        //    Vector3 screenPoint = cam.WorldToViewportPoint(point);
+        //    Ray ray = cam.ViewportPointToRay(screenPoint);
+        //    Debug.DrawRay(ray.origin, ray.direction * 4.0f, Color.red);
+        //}
+
+        foreach (Vector3 point in checkPoints)
+        {
+            Vector3 screenPoint = cam.WorldToViewportPoint(point);
+            Ray ray = cam.ViewportPointToRay(screenPoint);
+
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 4.0f, visibleMask, QueryTriggerInteraction.Ignore))
+            {
+                if (hit.collider.gameObject == collider.gameObject 
+                    || (collider.tag == "Chest" && hit.transform.parent.gameObject == collider.gameObject))
+                {
+                    //Debug.DrawRay(ray.origin, ray.direction * 4.0f, Color.green);
+                    return true; // At least one point is visible
+                }
+            }
+        }
+
+        return false; // None of the points are visible
     }
 
     void EnlightObject(GameObject pointingAt) //enlightening pointed objects and showing icons
@@ -186,45 +342,4 @@ public class GetObjectsNearHand : MonoBehaviour
             }
         }
     }
-
-
-    //relics of old system ------------------------------------------------------------------------------------------------------ relics of old system
-
-
-    private GameObject magicPointer;
-    private float catchingDistance = 2.5f;
-    void MakeRayCast()
-    {
-        Vector3 middlePoint = (wristPoint.position + indexFingerKnucklePoint.position + smallFingerKnucklePoint.position) / 3f;
-        Vector3 dir = -Vector3.Cross(indexFingerKnucklePoint.position - wristPoint.position, smallFingerKnucklePoint.position - wristPoint.position).normalized;
-        Ray ray = new Ray(middlePoint, Quaternion.Euler(0f, 30f, 0f) * dir);
-
-
-        if (Physics.Raycast(ray, out RaycastHit hit, catchingDistance))
-        {
-            currentlyPointing = hit.collider.gameObject;
-            EnlightObject(currentlyPointing);
-
-            // Visualize the raycast by drawing a line from the cursor position to the hit point
-            Debug.DrawLine(ray.origin, hit.point, Color.green);
-            DrawMagicPointer(middlePoint, hit.point);
-        }
-        else
-        {
-            currentlyPointing = null;
-
-            // Visualize the raycast by drawing a line from the cursor position to the maximum distance
-            Debug.DrawLine(ray.origin, ray.origin + ray.direction * catchingDistance, Color.red);
-            DrawMagicPointer(middlePoint, middlePoint + ray.direction * catchingDistance);
-        }
-    }
-
-    
-
-    void DrawMagicPointer(Vector3 startPoint, Vector3 endPoint)
-    {
-        magicPointer.GetComponent<LineRenderer>().SetPosition(0, startPoint);
-        magicPointer.GetComponent<LineRenderer>().SetPosition(1, endPoint);
-    }
-
 }
