@@ -1,5 +1,7 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 public class GetObjectsNearHand : MonoBehaviour
@@ -11,8 +13,9 @@ public class GetObjectsNearHand : MonoBehaviour
 
     [Header("Points to calculate middle point")]
     public Transform wristPoint;
-    public Transform indexFingerKnucklePoint; 
+    public Transform indexFingerKnucklePoint;
     public Transform smallFingerKnucklePoint;
+    Vector3 _middlePoint;
 
     [Header("Currently pointing object")]
     public GameObject currentlyPointing;
@@ -25,45 +28,39 @@ public class GetObjectsNearHand : MonoBehaviour
 
     private void Update() //check objects near middle point every update
     {
+        
         if(PlayerParams.Controllers.handInteractions.inHand == null)
         {
-            if(PlayerParams.Variables.uiActive)
+            _middlePoint = (wristPoint.position + indexFingerKnucklePoint.position + smallFingerKnucklePoint.position) / 3f;
+
+            if (PlayerParams.Variables.uiActive)
             {
-                CheckObjectsUI();
+                CheckObjectsUI(0.2f);
             }
             else
             {
-                CheckObjects();
+                if(PlayerParams.Controllers.playerMovement.isLeaning) { CheckObjects(2.0f, 0.3f); }
+                else { }
             }
         }
     }
 
-    void CheckObjects()
+    void CheckObjects(float distance, float radius)
     {
-        //calculate middle point
-        Vector3 middlePoint = (wristPoint.position + indexFingerKnucklePoint.position + smallFingerKnucklePoint.position) / 3f;
+        Ray ray = PlayerParams.Objects.playerCamera.ViewportPointToRay(PlayerParams.Objects.playerCamera.WorldToViewportPoint(_middlePoint));
 
-        List<Collider> interactableObjects = new List<Collider>();
-        Collider[] colliders = Physics.OverlapSphere(middlePoint, 0.7f, objectsMask);
+        Vector3 startPoint = ray.origin;
+        Vector3 endPoint = ray.origin + ray.direction * distance;
 
-        foreach (Collider collider in colliders)
+        Collider[] hitColliders = Physics.OverlapCapsule(startPoint, endPoint, radius, objectsMask, QueryTriggerInteraction.Collide);
+#if UNITY_EDITOR
+        DrawDebugCylinder(startPoint, endPoint, radius);
+#endif
+        if(GetInteractableSortedByDistance(ref hitColliders))
         {
-            if (IsObjectInteractable(collider))
+            foreach (Collider collider in hitColliders)
             {
-                interactableObjects.Add(collider);
-            }
-        }
-
-
-        if (interactableObjects.Count > 0) //first found object becomes currently pointed
-        {
-            interactableObjects.Sort((collider1, collider2) =>
-            Vector3.Distance(collider1.transform.position, middlePoint).CompareTo(
-            Vector3.Distance(collider2.transform.position, middlePoint)));
-
-            foreach(Collider collider in interactableObjects)
-            {
-                if(IsObjectVisible(collider))
+                if (IsObjectVisible(collider))
                 {
                     currentlyPointing = collider.gameObject;
                     EnlightObject(currentlyPointing);
@@ -72,24 +69,60 @@ public class GetObjectsNearHand : MonoBehaviour
             }
             currentlyPointing = null;
         }
-        else //if no objects then currently pointed is null
+        else
         {
             currentlyPointing = null;
         }
     }
 
-    void CheckObjectsUI()
+    public void DrawDebugCylinder(Vector3 startPoint, Vector3 endPoint, float radius, int segments = 20)
     {
-        //calculate middle point
-        Vector3 middlePoint = (wristPoint.position + indexFingerKnucklePoint.position + smallFingerKnucklePoint.position) / 3f;
+        // Vector representing the axis of the cylinder
+        Vector3 axis = endPoint - startPoint;
+        Vector3 axisNormalized = axis.normalized;
 
-        Collider[] colliders = Physics.OverlapSphere(middlePoint, 0.2f, uiMask);
+        // Find any vector that is not parallel to the cylinder's axis
+        Vector3 perpendicularVector = Vector3.Cross(axisNormalized, Vector3.up);
+        if (perpendicularVector == Vector3.zero) // If the vector happened to be parallel to "up", choose a different vector
+        {
+            perpendicularVector = Vector3.Cross(axisNormalized, Vector3.right);
+        }
+        perpendicularVector.Normalize();
+
+        // Draw the center axis of the cylinder
+        Debug.DrawLine(startPoint, endPoint, Color.cyan);
+
+        // Draw the cross-section of the cylinder
+        for (int i = 0; i < segments; i++)
+        {
+            float angle = i * Mathf.PI * 2 / segments;
+            float nextAngle = (i + 1) * Mathf.PI * 2 / segments;
+
+            // Calculate points on the circle around startPoint and endPoint
+            Vector3 point1 = startPoint + Quaternion.AngleAxis(angle * Mathf.Rad2Deg, axisNormalized) * perpendicularVector * radius;
+            Vector3 point2 = startPoint + Quaternion.AngleAxis(nextAngle * Mathf.Rad2Deg, axisNormalized) * perpendicularVector * radius;
+
+            Vector3 point3 = endPoint + Quaternion.AngleAxis(angle * Mathf.Rad2Deg, axisNormalized) * perpendicularVector * radius;
+            Vector3 point4 = endPoint + Quaternion.AngleAxis(nextAngle * Mathf.Rad2Deg, axisNormalized) * perpendicularVector * radius;
+
+            // Draw the cross-sections (base and top of the cylinder)
+            Debug.DrawLine(point1, point2, Color.blue);
+            Debug.DrawLine(point3, point4, Color.blue);
+
+            // Draw lines connecting the two bases
+            Debug.DrawLine(point1, point3, Color.blue);
+        }
+    }
+
+    void CheckObjectsUI(float radius)
+    {
+        Collider[] colliders = Physics.OverlapSphere(_middlePoint, radius, uiMask);
 
         if (colliders.Length > 0) //first found object becomes currently pointed
         {
             System.Array.Sort(colliders, (collider1, collider2) =>
-            Vector3.Distance(collider1.transform.position, middlePoint).CompareTo(
-            Vector3.Distance(collider2.transform.position, middlePoint)));
+            Vector3.Distance(collider1.transform.position, _middlePoint).CompareTo(
+            Vector3.Distance(collider2.transform.position, _middlePoint)));
 
             currentlyPointing = colliders[0].gameObject;
             EnlightObject(currentlyPointing);
@@ -98,6 +131,36 @@ public class GetObjectsNearHand : MonoBehaviour
         {
             currentlyPointing = null;
         }
+    }
+
+    bool GetInteractableSortedByDistance(ref Collider[] potentialObjects)
+    {
+        List<Collider> interactable = new List<Collider>();
+        foreach (Collider col in potentialObjects)
+        {
+            if (IsObjectInteractable(col)) { interactable.Add(col); }
+        }
+
+        if (interactable.Count > 0)
+        {
+            Camera cam = PlayerParams.Objects.playerCamera;
+            Vector3 middleScreenPoint = cam.WorldToScreenPoint(_middlePoint);
+
+            // Sort the list of interactable colliders based on their distance from middleScreenPoint
+            potentialObjects = interactable.OrderBy(collider =>
+            {
+                // Calculate the screen position of the collider's center
+                Vector3 colliderScreenPoint = cam.WorldToScreenPoint(collider.bounds.center);
+
+                // Calculate the 2D distance between the middleScreenPoint and the collider's screen point
+                return Vector2.Distance(new Vector2(middleScreenPoint.x, middleScreenPoint.y),
+                                        new Vector2(colliderScreenPoint.x, colliderScreenPoint.y));
+            }).ToArray();
+
+            return true;
+        }
+
+        return false;
     }
 
     bool IsObjectInteractable(Collider collider)
