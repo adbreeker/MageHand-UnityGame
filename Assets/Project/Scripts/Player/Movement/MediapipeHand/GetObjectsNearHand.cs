@@ -246,7 +246,8 @@ public class GetObjectsNearHand : MonoBehaviour
         if(pointingAt != PlayerParams.Controllers.handInteractions.inHand) //only if no object currently in hand
         {
             //if pointing on item, switch or UI then enlightening only this item and showing proper icon
-            if (pointingAt.layer == LayerMask.NameToLayer("Item") || pointingAt.layer == LayerMask.NameToLayer("UI"))
+            if (pointingAt.layer == LayerMask.NameToLayer("Item") 
+                || (pointingAt.layer == LayerMask.NameToLayer("UI") && pointingAt.tag != "SpellCell"))
             {
                 //enlight
                 if (pointingAt.GetComponent<EnlightObject>() != null)
@@ -274,7 +275,8 @@ public class GetObjectsNearHand : MonoBehaviour
                 }
             }
 
-            if(pointingAt.layer == LayerMask.NameToLayer("Interaction") && pointingAt.tag!="Chest")
+            if( (pointingAt.layer == LayerMask.NameToLayer("Interaction") && pointingAt.tag!="Chest")
+                || (pointingAt.layer == LayerMask.NameToLayer("UI") && pointingAt.tag == "SpellCell"))
             {
                 //enlight
                 if (pointingAt.GetComponent<EnlightObject>() != null)

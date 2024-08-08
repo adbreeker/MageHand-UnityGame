@@ -37,7 +37,6 @@ public class LibraryVaultPuzzles : MonoBehaviour
 
     private void Start()
     {
-        _specialScript.enabled = true;
         PlayerParams.Controllers.pointsManager.maxFoundSecrets += 1;
         _secretSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_SecretFound);
     }

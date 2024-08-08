@@ -25,6 +25,7 @@ public class TakeRemainingScrollsBackToLibrary : MonoBehaviour
             if (IsAnyReadableInPossession())
             {
                 _specialDialogue.allowToActivate = true;
+                _specialDialogue.gameObject.SetActive(true);
             }
         }
     }

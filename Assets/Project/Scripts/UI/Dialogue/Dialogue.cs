@@ -261,7 +261,7 @@ public class Dialogue : MonoBehaviour
                 PlayerParams.Controllers.pauseMenu.ableToInteract = true;
                 PlayerParams.Controllers.spellsMenu.ableToInteract = true;
                 PlayerParams.Controllers.journal.ableToInteract = true;
-                GetComponentInParent<OpenDialogue>().gameObject.SetActive(false);
+                transform.parent.gameObject.SetActive(false);
             }
             else
             {

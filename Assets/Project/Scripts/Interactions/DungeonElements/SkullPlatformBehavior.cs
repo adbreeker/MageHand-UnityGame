@@ -8,9 +8,10 @@ public class SkullPlatformBehavior : MonoBehaviour
     public bool platformActive = true;
 
     [Header("Linked dialogue")]
-    [SerializeField] GameObject _dialogue;
+    [SerializeField] OpenDialogue _dialogue;
 
     [Header("Materials:")]
+    [SerializeField] Renderer _model;
     [SerializeField] Material _platformActiveMat;
     [SerializeField] Material _platformInactiveMat;
 
@@ -30,7 +31,7 @@ public class SkullPlatformBehavior : MonoBehaviour
     IEnumerator PlatformEffect()
     {
         GameObject effect = Instantiate(_platformEffectPrefab, transform);
-        GetComponent<Renderer>().material = _platformInactiveMat;
+        _model.material = _platformInactiveMat;
 
         Vector3 startingScale = effect.transform.localScale;
 
@@ -44,9 +45,9 @@ public class SkullPlatformBehavior : MonoBehaviour
 
         yield return new WaitForSeconds(1);
 
-        _dialogue.SetActive(true);
+        _dialogue.allowToActivate = true;
 
-        while(_dialogue.activeSelf) { yield return null; }
+        while(_dialogue.gameObject.activeSelf) { yield return null; }
         PlayerParams.Controllers.playerMovement.stopMovement = false;
         PlayerParams.Controllers.spellCasting.currentSpell = "None";
         DialogueFinished?.Invoke();
@@ -64,7 +65,7 @@ public class SkullPlatformBehavior : MonoBehaviour
 
     private void OnValidate()
     {
-        if(platformActive) { GetComponent<Renderer>().material = _platformActiveMat;}
-        else { GetComponent<Renderer>().material = _platformInactiveMat; }
+        if(platformActive) { _model.material = _platformActiveMat;}
+        else { _model.material = _platformInactiveMat; }
     }
 }
