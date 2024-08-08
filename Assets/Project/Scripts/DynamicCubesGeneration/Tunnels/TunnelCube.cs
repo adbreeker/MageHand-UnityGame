@@ -82,6 +82,10 @@ public class TunnelCube : MonoBehaviour
         {
             TunnelCube script = (TunnelCube)target;
 
+            EditorGUI.BeginDisabledGroup(true);
+            EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour(script), typeof(MonoScript), false);
+            EditorGUI.EndDisabledGroup();
+
             EditorGUILayout.Space();
 
             if (script != null)
@@ -92,7 +96,14 @@ public class TunnelCube : MonoBehaviour
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("selectedWall_4"), new GUIContent("Select Wall 4"));
             }
 
-            if (GUILayout.Button("Lock")) //deleting script to prevent any more changes in walls
+            EditorGUILayout.Space(8f);
+            if (GUILayout.Button("Refresh")) //refreshing walls
+            {
+                script.OnValidate();
+            }
+
+            EditorGUILayout.Space(16f);
+            if (GUILayout.Button("Lock", GUILayout.Height(50f))) //deleting script to prevent any more changes in walls
             {
                 DestroyImmediate(script);
             }

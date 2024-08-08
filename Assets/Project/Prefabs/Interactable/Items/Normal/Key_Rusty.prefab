@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 322969909244316537}
   - component: {fileID: 322969909242989401}
   - component: {fileID: 322969909241891225}
-  - component: {fileID: -2181404118918072744}
   - component: {fileID: -793159868821512734}
+  - component: {fileID: 3494714394756408945}
   - component: {fileID: -8766551603559331622}
   m_Layer: 12
   m_Name: Key_Rusty
@@ -86,19 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &-2181404118918072744
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 322969909244090201}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.03, z: 0.25}
-  m_Center: {x: 0, y: 0, z: 0.09}
 --- !u!65 &-793159868821512734
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -112,6 +99,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.3, z: 0.6}
   m_Center: {x: 0, y: 0, z: 0.1}
+--- !u!64 &3494714394756408945
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322969909244090201}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 4009cba106d20f748ab650a274328adc, type: 3}
 --- !u!114 &-8766551603559331622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,6 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2c9605af07840740a37f01f58e88182, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isInteractable: 1
   itemName: Key Rusty
   itemIcon: {fileID: 6610860039850489068, guid: 48eb1e5ad2ce84847b77e8a68cb6b51c, type: 3}
   openingLock: 0

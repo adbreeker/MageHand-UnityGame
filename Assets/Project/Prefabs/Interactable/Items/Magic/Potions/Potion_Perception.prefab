@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 7516147023265246560}
   - component: {fileID: 7516147023266049344}
   - component: {fileID: 7516147023267016576}
-  - component: {fileID: 2372670132210009772}
   - component: {fileID: -504141278071330408}
+  - component: {fileID: 2754448439110901665}
   - component: {fileID: 5031432750722014327}
   - component: {fileID: -5666187935056614760}
   m_Layer: 12
@@ -88,19 +88,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2372670132210009772
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7516147023265018176}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.25, z: 0.1}
-  m_Center: {x: 0, y: 0.12, z: 0}
 --- !u!65 &-504141278071330408
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -114,6 +101,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.7, y: 0.5, z: 0.7}
   m_Center: {x: 0, y: 0.2, z: 0}
+--- !u!64 &2754448439110901665
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7516147023265018176}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 7e1b98bbe17b88644aea6625cb61b2c5, type: 3}
 --- !u!114 &5031432750722014327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,6 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c06c8c94ea2b1dd49ba5954874054f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isInteractable: 1
   itemName: Potion of Perception
   itemIcon: {fileID: 6610860039850489068, guid: c4ca95f5d102d23429f7311276728ce4, type: 3}
 --- !u!114 &-5666187935056614760

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4883379290850261377}
   - component: {fileID: 4883379290851359553}
   - component: {fileID: -741151860917778}
+  - component: {fileID: -1709328312358631429}
   - component: {fileID: 7547175450821320253}
   m_Layer: 12
   m_Name: Scroll_Open
@@ -98,6 +99,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.3, z: 1}
   m_Center: {x: 0, y: 0.1, z: 0}
+--- !u!64 &-1709328312358631429
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4883379290849355137}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: ac8910006b2a62947a9342d2b6ddfa2a, type: 3}
 --- !u!114 &7547175450821320253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,9 +125,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9786d8fc7a5e3a5429be1dd5058d72a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isInteractable: 1
   itemName: 
   itemIcon: {fileID: 0}
   title: 
   content: 
   destroy: 1
+  saveToJournal: 1
   notePrefab: {fileID: 5778595488933685804, guid: 02d24bcf5ef88694aa2276bef8825e5d, type: 3}
