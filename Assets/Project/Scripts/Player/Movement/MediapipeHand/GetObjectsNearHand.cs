@@ -39,8 +39,8 @@ public class GetObjectsNearHand : MonoBehaviour
             }
             else
             {
-                if(PlayerParams.Controllers.playerMovement.isLeaning) { CheckObjects(2.0f, 0.3f); }
-                else { }
+                if(PlayerParams.Controllers.playerMovement.isLeaning) { CheckObjects(3.0f, 0.3f); }
+                else { CheckObjects(2.0f, 0.3f); }
             }
         }
     }

@@ -15,6 +15,6 @@ public class TreasureBehavior : ItemBehavior
     public override void OnPickUp()
     {
         base.OnPickUp();
-        transform.rotation *= Quaternion.Euler(0f, 180f, 0f);
+        transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
     }
 }
