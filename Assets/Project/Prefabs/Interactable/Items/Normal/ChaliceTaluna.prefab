@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 4344135391724846385}
   - component: {fileID: 857552592597234324}
   - component: {fileID: 3171190288209790558}
-  - component: {fileID: -6377468888413716190}
   - component: {fileID: 4804542910359116872}
+  - component: {fileID: -6073783727616712836}
   - component: {fileID: 8913816335898625917}
   m_Layer: 12
   m_Name: ChaliceTaluna
@@ -86,19 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &-6377468888413716190
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3963916112101795723}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.2, z: 0.1}
-  m_Center: {x: 0, y: 0.1, z: 0}
 --- !u!65 &4804542910359116872
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -112,6 +99,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.2, y: 0.3, z: 0.2}
   m_Center: {x: 0, y: 0.1, z: 0}
+--- !u!64 &-6073783727616712836
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3963916112101795723}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -9199936500148611727, guid: 70f89a7157d12f24faa9cc7887dea3af, type: 3}
 --- !u!114 &8913816335898625917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,5 +125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c06c8c94ea2b1dd49ba5954874054f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isInteractable: 1
   itemName: Chalice of Taluna
   itemIcon: {fileID: 6610860039850489068, guid: 2b42ded4e8770bb4cbb70680b73baa22, type: 3}
