@@ -35,7 +35,7 @@ public class CaveWolfController : MonoBehaviour
     {
         UpdateCollider();
         AttackPlayerInRange();
-        //Debug.DrawRay(_attackPoint.position, transform.forward * attackRange, Color.yellow);
+        Debug.DrawRay(_attackPoint.position, transform.forward * attackRange, Color.yellow);
     }
 
     public void SetWolfMovement(List<Transform> movementPath, bool adjustMovementToPlayer = true, bool destroyOnLastTile = false)
@@ -55,6 +55,8 @@ public class CaveWolfController : MonoBehaviour
     {
         float ms = movementSpeed;
         float rs = rotationSpeed;
+
+        _animation.Play("run");
 
         if (adjustMovementToPlayer)
         {
