@@ -24,20 +24,9 @@ public class LibraryVaultPuzzles : MonoBehaviour
     bool _check5thScroll = false;
     bool _checkFakeScrolls = false;
 
-    [Header("Secret popout")]
-    public float timeToFadeOut = 2;
-    public float timeOfFadingOut = 0.007f;
-    AudioSource _secretSound;
-
     private void Awake()
     {
-        GameParams.Managers.levelInfoManager.secretsOnLevel += 1;
-    }
-
-    private void Start()
-    {
-        PlayerParams.Controllers.pointsManager.maxFoundSecrets += 1;
-        _secretSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_SecretFound);
+        GameParams.Managers.levelInfoManager.AddSecretOnLevel();
     }
 
     private void Update()
@@ -105,12 +94,7 @@ public class LibraryVaultPuzzles : MonoBehaviour
                 itemDetecting.itemToDetect.GetComponent<ItemBehavior>().isInteractable = false;
             }
 
-            _secretSound.Play();
-            PlayerParams.Controllers.pointsManager.foundSecrets += 1;
-            GameParams.Managers.levelInfoManager.foundSecretsOnLevel += 1;
-            string text = "Secret found!<br>" + GameParams.Managers.levelInfoManager.foundSecretsOnLevel + "/" + GameParams.Managers.levelInfoManager.secretsOnLevel;
-            PlayerParams.Controllers.HUD.SpawnPopUp(text, timeToFadeOut, timeOfFadingOut, false);
-            Destroy(_secretSound, _secretSound.clip.length);
+            GameParams.Managers.levelInfoManager.SecretFoundPopUp();
         }
     }
 }

@@ -9,10 +9,6 @@ public class StaringContestSecret : MonoBehaviour
     [SerializeField] Transform _staringContestCube;
     [SerializeField] GameObject _dialogue;
 
-    [Header("Secret popout")]
-    public float timeToFadeOut = 2;
-    public float timeOfFadingOut = 0.007f;
-
     [Header("After win:")]
     [SerializeField] OpenWallPassage _wallPassage;
     [SerializeField] InteractableBehavior _interactableBehavior;
@@ -20,16 +16,10 @@ public class StaringContestSecret : MonoBehaviour
     Coroutine staringContestCoroutine;
 
     bool dialogueStarted = false;
-    AudioSource sound;
 
     private void Awake()
     {
-        GameParams.Managers.levelInfoManager.secretsOnLevel += 1;
-    }
-    private void Start()
-    {
-        PlayerParams.Controllers.pointsManager.maxFoundSecrets += 1;
-        sound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_SecretFound);
+        GameParams.Managers.levelInfoManager.AddSecretOnLevel();
     }
 
     void Update()
@@ -75,12 +65,7 @@ public class StaringContestSecret : MonoBehaviour
     {
         yield return new WaitForSeconds(staringContestTime);
 
-        sound.Play();
-        PlayerParams.Controllers.pointsManager.foundSecrets += 1;
-        GameParams.Managers.levelInfoManager.foundSecretsOnLevel += 1;
-        string text = "Secret found!<br>" + GameParams.Managers.levelInfoManager.foundSecretsOnLevel + "/" + GameParams.Managers.levelInfoManager.secretsOnLevel;
-        PlayerParams.Controllers.HUD.SpawnPopUp(text, timeToFadeOut, timeOfFadingOut, false);
-        Destroy(sound, sound.clip.length);
+        GameParams.Managers.levelInfoManager.SecretFoundPopUp();
 
         _wallPassage.Interaction();
         _interactableBehavior.isInteractable = true;
