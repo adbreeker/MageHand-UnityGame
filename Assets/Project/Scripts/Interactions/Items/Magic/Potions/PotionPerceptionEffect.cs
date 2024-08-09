@@ -51,7 +51,16 @@ public class PotionPerceptionEffect : PotionEffect
                 }
                 else
                 {
-                    collider.gameObject.AddComponent<PerceptionMark>().perceptionMarkPrefab = perceptionMarkPrefab;
+                    if(collider.gameObject.layer == LayerMask.NameToLayer("Item"))
+                    {
+                        collider.gameObject.AddComponent<PerceptionMark>().Initialize(perceptionMarkPrefab, Color.yellow);
+                            //GameParams.Holders.materialsAndEffectsHolder.enlightenItem.color);
+                    }
+                    if (collider.gameObject.layer == LayerMask.NameToLayer("Interaction"))
+                    {
+                        collider.gameObject.AddComponent<PerceptionMark>().Initialize(perceptionMarkPrefab, new Color(1f, 0.5f, 0f));
+                            //GameParams.Holders.materialsAndEffectsHolder.enlightenInteraction.color);
+                    }
                 }
             }
 

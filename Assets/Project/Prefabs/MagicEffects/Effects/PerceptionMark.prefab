@@ -4835,6 +4835,7 @@ GameObject:
   - component: {fileID: 7356496431740225506}
   - component: {fileID: 204474866392961370}
   - component: {fileID: 5562026095569479103}
+  - component: {fileID: 1508035794065562181}
   m_Layer: 5
   m_Name: PerceptionMark
   m_TagString: Untagged
@@ -5013,7 +5014,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 90
       minScalar: 0.0001
       maxCurve:
         serializedVersion: 2
@@ -9581,3 +9582,17 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!114 &1508035794065562181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7358468838148070894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 781a354110eda6445ac4e216922fcb65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particles:
+  - {fileID: 5562026095569479103}
