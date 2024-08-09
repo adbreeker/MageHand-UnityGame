@@ -8,33 +8,37 @@ public class TakeRemainingScrollsBackToLibrary : MonoBehaviour
     [SerializeField] OpenDialogue _specialDialogue;
 
     [Header("Possition to restart dialogue")]
-    [SerializeField] Transform _restartDialogueCube;
+    [SerializeField] Transform _takingTriggerCube;
 
     [Header("Possible tp transforms")]
     [SerializeField] List<Transform> _tpTransforms;
 
+    bool _takingTriggered = false;
+
     private void Start()
     {
-        _specialDialogue.DialogueStarted += TeleportRemainingScrolls;
+        _specialDialogue.allowToActivate = true;
     }
 
     private void Update()
     { 
-        if (_specialDialogue.allowToActivate == false && IsPlayerOnRestartTile())
+        if(IsPlayerOnSpecialTile() && !_takingTriggered)
         {
             if (IsAnyReadableInPossession())
             {
-                _specialDialogue.allowToActivate = true;
-                _specialDialogue.gameObject.SetActive(true);
+                _takingTriggered = true;
+                TeleportRemainingScrolls();
             }
         }
+
+        if(!IsPlayerOnSpecialTile() && _takingTriggered) { _takingTriggered= false; } 
     }
 
-    bool IsPlayerOnRestartTile()
+    bool IsPlayerOnSpecialTile()
     {
         Transform player = PlayerParams.Objects.player.transform;
-        if(player.position.x == _restartDialogueCube.position.x 
-           && player.position.z == _restartDialogueCube.position.z)
+        if(player.position.x == _takingTriggerCube.position.x 
+           && player.position.z == _takingTriggerCube.position.z)
         {
             return true;
         }
