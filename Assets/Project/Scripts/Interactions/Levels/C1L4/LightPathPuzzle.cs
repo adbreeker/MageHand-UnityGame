@@ -71,8 +71,7 @@ public class LightPathPuzzle : MonoBehaviour
         _isOnPath = false;
         _tileIndex = 0;
 
-        PlayerParams.Objects.player.transform.rotation = Quaternion.Euler(0, 180, 0);
-        PlayerParams.Controllers.playerMovement.TeleportTo(TileToPlayerPos(_enterRoomPos.position), null);
+        PlayerParams.Controllers.playerMovement.TeleportTo(TileToPlayerPos(_enterRoomPos.position), 180f, null);
     }
 
     Vector3 TileToPlayerPos(Vector3 tilePos)

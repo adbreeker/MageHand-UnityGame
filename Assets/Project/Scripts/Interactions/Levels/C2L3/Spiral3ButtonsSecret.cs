@@ -14,6 +14,7 @@ public class Spiral3ButtonsSecret : MonoBehaviour
 
     [Header("Secret")]
     [SerializeField] Vector3 _tpPos;
+    [SerializeField] float _tpRot;
     [SerializeField] OpenWallPassage _wall;
 
     Coroutine _button1Check;
@@ -66,7 +67,7 @@ public class Spiral3ButtonsSecret : MonoBehaviour
 
         if(_button1.clickCounter > 0 && _button2.clickCounter > 0 && _button3.clickCounter > 0)
         {
-            PlayerParams.Controllers.playerMovement.TeleportTo(_tpPos, null);
+            PlayerParams.Controllers.playerMovement.TeleportTo(_tpPos, _tpRot, null);
             _wall.Interaction();
             Destroy(this);
         }

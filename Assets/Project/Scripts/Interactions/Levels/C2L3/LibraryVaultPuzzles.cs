@@ -15,7 +15,6 @@ public class LibraryVaultPuzzles : MonoBehaviour
     [Header("Fake scrolls for secret:")]
     [SerializeField] ItemDetecting[] _fakeScrolls = new ItemDetecting[3];
     [SerializeField] OpenWallPassage _wallAfterFakeScrolls;
-    [SerializeField] ChestBehavior _chestToUnlock;
 
     [Header("Special script for taking scrolls back via script")]
     [SerializeField] TakeRemainingScrollsBackToLibrary _specialScript;
@@ -25,20 +24,9 @@ public class LibraryVaultPuzzles : MonoBehaviour
     bool _check5thScroll = false;
     bool _checkFakeScrolls = false;
 
-    [Header("Secret popout")]
-    public float timeToFadeOut = 2;
-    public float timeOfFadingOut = 0.007f;
-    AudioSource _secretSound;
-
     private void Awake()
     {
-        GameParams.Managers.levelInfoManager.secretsOnLevel += 1;
-    }
-
-    private void Start()
-    {
-        PlayerParams.Controllers.pointsManager.maxFoundSecrets += 1;
-        _secretSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_SecretFound);
+        GameParams.Managers.levelInfoManager.AddSecretOnLevel();
     }
 
     private void Update()
@@ -100,19 +88,13 @@ public class LibraryVaultPuzzles : MonoBehaviour
         if (allScrolls)
         {
             _wallAfterFakeScrolls.Interaction();
-            _chestToUnlock.isInteractable = true;
             _checkFakeScrolls = false;
             foreach (ItemDetecting itemDetecting in _fakeScrolls)
             {
                 itemDetecting.itemToDetect.GetComponent<ItemBehavior>().isInteractable = false;
             }
 
-            _secretSound.Play();
-            PlayerParams.Controllers.pointsManager.foundSecrets += 1;
-            GameParams.Managers.levelInfoManager.foundSecretsOnLevel += 1;
-            string text = "Secret found!<br>" + GameParams.Managers.levelInfoManager.foundSecretsOnLevel + "/" + GameParams.Managers.levelInfoManager.secretsOnLevel;
-            PlayerParams.Controllers.HUD.SpawnPopUp(text, timeToFadeOut, timeOfFadingOut, false);
-            Destroy(_secretSound, _secretSound.clip.length);
+            GameParams.Managers.levelInfoManager.SecretFoundPopUp();
         }
     }
 }

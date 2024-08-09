@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 3912441772470392442}
   - component: {fileID: 3912441772466968154}
   - component: {fileID: 3912441772467967130}
-  - component: {fileID: 9101305635235570680}
-  - component: {fileID: 167925312714110549}
+  - component: {fileID: -6695672213059904197}
   - component: {fileID: 237703178551783988}
   m_Layer: 12
   m_Name: CrystalSkullSaphire
@@ -86,8 +85,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &9101305635235570680
-BoxCollider:
+--- !u!64 &-6695672213059904197
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -96,22 +95,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.15, y: 0.15, z: 0.2}
-  m_Center: {x: 0, y: 0.08, z: -0.01}
---- !u!65 &167925312714110549
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3912441772469963354}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.3, z: 0.6}
-  m_Center: {x: 0, y: 0.08, z: -0.01}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300002, guid: 34636936646bab64fb61023e7f3410ba, type: 3}
 --- !u!114 &237703178551783988
 MonoBehaviour:
   m_ObjectHideFlags: 0

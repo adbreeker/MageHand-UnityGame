@@ -5,7 +5,10 @@ using UnityEngine;
 public class TeleportingMissileBehavior : SpellBehavior
 {
     public Vector3 teleportationDestination;
-    public bool teleportOnNativeHeight = true;
+    public bool teleportOnCurrentHeight = true;
+
+    public float teleportationRotation;
+    public bool teleportOnCurrentRotation = true;
 
     private GameObject instantiatedEffect;
 
@@ -25,31 +28,33 @@ public class TeleportingMissileBehavior : SpellBehavior
         spellBurst = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MagicalTeleportation, instantiatedEffect, 8f, 30f);
         spellBurst.Play();
 
+        Vector3 tpDest = teleportationDestination;
+        float tpRot = teleportationRotation;
+        if(teleportOnCurrentHeight) { tpDest.y = impactTarget.transform.position.y; }
+        if(teleportOnCurrentRotation) { tpRot = impactTarget.transform.rotation.eulerAngles.y; }
 
         //managing all teleportations
         if (impactTarget.layer == LayerMask.NameToLayer("Player")) //player
         {
-            if (teleportOnNativeHeight) { teleportationDestination.y = PlayerParams.Objects.player.transform.position.y; }
-            PlayerParams.Controllers.playerMovement.TeleportTo(teleportationDestination, null);
+            PlayerParams.Controllers.playerMovement.TeleportTo(tpDest, tpRot, null);
         }
         else if(impactTarget.GetComponent<ItemBehavior>() != null)  //item
         {
-            ManageTeleportingItem(impactTarget);
+            ManageTeleportingItem(impactTarget, tpDest, tpRot);
         }
         else if(impactTarget.GetComponent<SpellBehavior>() != null) //spell
         {
-            ManageTeleportingSpell(impactTarget);
+            ManageTeleportingSpell(impactTarget, tpDest, tpRot);
         }
 
         Destroy(gameObject);
     }
 
-    void ManageTeleportingItem(GameObject item)
+    void ManageTeleportingItem(GameObject item, Vector3 tpDestination, float tpRotation)
     {
         if (item.transform.parent == null)
         {
-            if (teleportOnNativeHeight) { teleportationDestination.y = item.transform.position.y; }
-            item.GetComponent<ItemBehavior>().TeleportTo(teleportationDestination, null);
+            item.GetComponent<ItemBehavior>().TeleportTo(tpDestination, tpRotation, null);
         }
         else if (PlayerParams.Controllers.handInteractions.inHand == item)
         {
@@ -59,36 +64,31 @@ public class TeleportingMissileBehavior : SpellBehavior
             }
             else
             {
-                if (teleportOnNativeHeight) { teleportationDestination.y = PlayerParams.Objects.player.transform.position.y; }
-                PlayerParams.Controllers.playerMovement.TeleportTo(teleportationDestination, null);
+                PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination, tpRotation, null);
             }
         }
         else
         {
-            if (teleportOnNativeHeight) { teleportationDestination.y = item.transform.position.y; }
             item.transform.parent = null;
-            item.GetComponent<ItemBehavior>().TeleportTo(teleportationDestination, null);
+            item.GetComponent<ItemBehavior>().TeleportTo(tpDestination, tpRotation, null);
         }
     }
 
-    void ManageTeleportingSpell(GameObject spell)
+    void ManageTeleportingSpell(GameObject spell, Vector3 tpDestination, float tpRotation)
     {
         if (spell.transform.parent == null)
         {
-            if (teleportOnNativeHeight) { teleportationDestination.y = spell.transform.position.y; }
-            spell.GetComponent<SpellBehavior>().TeleportTo(teleportationDestination, null);
+            spell.GetComponent<SpellBehavior>().TeleportTo(tpDestination, tpRotation, null);
         }
         else if (PlayerParams.Controllers.handInteractions.inHand == spell)
         {
-            if (teleportOnNativeHeight) { teleportationDestination.y = PlayerParams.Objects.player.transform.position.y; }
-            PlayerParams.Controllers.playerMovement.TeleportTo(teleportationDestination, null);
+            PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination, tpRotation, null);
         }
         else
         {
-            if (teleportOnNativeHeight) { teleportationDestination.y = spell.transform.position.y; }
             Debug.Log("Teleporting very strange spell object");
             spell.transform.parent = null;
-            spell.GetComponent<SpellBehavior>().TeleportTo(teleportationDestination, null);
+            spell.GetComponent<SpellBehavior>().TeleportTo(tpDestination, tpRotation, null);
         }
     }
 

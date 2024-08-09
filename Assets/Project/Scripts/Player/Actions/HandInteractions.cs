@@ -246,7 +246,7 @@ public class HandInteractions : MonoBehaviour
             else { inHand.transform.localPosition = new Vector3(0, 0, 10); }
         }
 
-        inHand.transform.localEulerAngles = Vector3.zero;
+        inHand.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 
         //setting UI layer
         inHandPreviousLayer = inHand.layer;

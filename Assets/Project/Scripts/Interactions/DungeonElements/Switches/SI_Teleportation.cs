@@ -16,26 +16,16 @@ public class SI_Teleportation : SwitchInteraction
     {
         if(interactedObject.tag == "Player")
         {
-            if (teleportOnCurrentHeight)
-            {
-                PlayerParams.Controllers.playerMovement.TeleportTo(
-                    new Vector3(tpDestination.x, PlayerParams.Objects.player.transform.position.y, tpDestination.z), null);
-            }
-            else
-            {
-                PlayerParams.Controllers.playerMovement.TeleportTo(
-                new Vector3(tpDestination.x, tpDestination.y, tpDestination.z), null);
-            }
+            Vector3 tpDest = tpDestination;
+            float tpRot = tpRotation;
+            if(teleportOnCurrentHeight) { tpDest.y = PlayerParams.Objects.player.transform.position.y; }
+            if(teleportWithCurrentRotation) { tpRot = PlayerParams.Objects.player.transform.rotation.eulerAngles.y; }
 
-            if (!teleportWithCurrentRotation)
-            {
-                PlayerParams.Objects.player.transform.rotation = Quaternion.Euler(0, tpRotation, 0);
-            }
+            PlayerParams.Controllers.playerMovement.TeleportTo(tpDest, tpRot, null);
         }
         else
         {
 
         }
-
     }
 }

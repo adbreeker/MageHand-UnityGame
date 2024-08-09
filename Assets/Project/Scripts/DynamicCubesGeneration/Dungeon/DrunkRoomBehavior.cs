@@ -37,7 +37,7 @@ public class DrunkRoomBehavior : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        PlayerParams.Controllers.playerMovement.TeleportTo(_playerSpawnpoint.position);
+        PlayerParams.Controllers.playerMovement.TeleportTo(_playerSpawnpoint.position, 90f * Random.Range(0,4));
         yield return new WaitForSeconds(3.0f);
 
         PlayerParams.Controllers.pointsManager.minPlotPoints += -3;
@@ -69,7 +69,7 @@ public class DrunkRoomBehavior : MonoBehaviour
 
         yield return new WaitForSeconds(2.0f);
 
-        PlayerParams.Controllers.playerMovement.TeleportTo(playerPreviousPos, null);
+        PlayerParams.Controllers.playerMovement.TeleportTo(playerPreviousPos, 90f * Random.Range(0, 4));
         Destroy(gameObject);
     }
 }

@@ -10,16 +10,22 @@ public class LevelInfoDisplay : MonoBehaviour
     public int foundSecretsOnLevel = 0;
     public GameObject displayPrefab;
 
+    public float timeToFadeOut = 2;
+    public float timeOfFadingOut = 0.007f;
+
     private AudioSource sound;
     private AudioSource sound1;
+    private AudioSource soundSecret;
     private GameObject instantiatedDisplay;
     private TextMeshProUGUI levelName;
     private TextMeshProUGUI secretsNumber;
     private CanvasGroup wholeGroup;
+
     void Start()
     {
         sound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_LevelInfoSound);
         sound1 = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_LevelInfoSound);
+        soundSecret = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_SecretFound);
 
         instantiatedDisplay = Instantiate(displayPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
 
@@ -89,5 +95,20 @@ public class LevelInfoDisplay : MonoBehaviour
         Destroy(sound, sound.clip.length);
         Destroy(sound1, sound1.clip.length);
         Destroy(instantiatedDisplay);
+    }
+
+    public void AddSecretOnLevel()
+    {
+        secretsOnLevel += 1;
+        PlayerParams.Controllers.pointsManager.maxFoundSecrets += 1;
+    }
+
+    public void SecretFoundPopUp()
+    {
+        soundSecret.Play();
+        PlayerParams.Controllers.pointsManager.foundSecrets += 1;
+        foundSecretsOnLevel += 1;
+        string text = "Secret found!<br>" + foundSecretsOnLevel + "/" + secretsOnLevel;
+        PlayerParams.Controllers.HUD.SpawnPopUp(text, timeToFadeOut, timeOfFadingOut, false);
     }
 }

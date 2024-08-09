@@ -16,7 +16,10 @@ public class WallCannonBehavior : MonoBehaviour
     [SerializeField] bool _isLaunching = true;
 
     [Header("Additional launch settings:")]
+    [Header("Teleporting missile")]
     public Vector3 tpDestination;
+    public float tpRotation;
+    public bool tpOnCurrentRotation = true;
 
     Vector3 _launchingPos;
 
@@ -69,7 +72,14 @@ public class WallCannonBehavior : MonoBehaviour
     {
         Quaternion _launchingRot = transform.rotation * Quaternion.Euler(180.0f, 0, 0);
         GameObject missile = Instantiate(missilesPrefabs[(int)missileType], _launchingPos, _launchingRot);
-        missile.GetComponent<TeleportingMissileBehavior>().teleportationDestination = tpDestination;
+
+        TeleportingMissileBehavior missileBehavior = missile.GetComponent<TeleportingMissileBehavior>();
+        missileBehavior.teleportationDestination = tpDestination;
+        if(!tpOnCurrentRotation)
+        {
+            missileBehavior.teleportOnCurrentRotation = false;
+            missileBehavior.teleportationRotation = tpRotation;
+        }
 
         Rigidbody rb = missile.GetComponent<Rigidbody>();
         rb.AddForce(gameObject.transform.up * 10, ForceMode.Impulse);
