@@ -14,11 +14,7 @@ public class TakeRemainingScrollsBackToLibrary : MonoBehaviour
     [SerializeField] List<Transform> _tpTransforms;
 
     bool _takingTriggered = false;
-
-    private void Start()
-    {
-        _specialDialogue.allowToActivate = true;
-    }
+    bool _dialogueWasntActivated = true;
 
     private void Update()
     { 
@@ -26,6 +22,11 @@ public class TakeRemainingScrollsBackToLibrary : MonoBehaviour
         {
             if (IsAnyReadableInPossession())
             {
+                if(_dialogueWasntActivated)
+                {
+                    _specialDialogue.allowToActivate = true;
+                    _dialogueWasntActivated = false;
+                }
                 _takingTriggered = true;
                 TeleportRemainingScrolls();
             }
