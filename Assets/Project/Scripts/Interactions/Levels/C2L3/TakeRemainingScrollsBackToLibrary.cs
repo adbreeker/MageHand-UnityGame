@@ -83,7 +83,7 @@ public class TakeRemainingScrollsBackToLibrary : MonoBehaviour
 
             item.layer = LayerMask.NameToLayer("Item");
 
-            item.GetComponent<ItemBehavior>().TeleportTo(_tpTransforms[tpIndex].transform.position, null);
+            item.GetComponent<ItemBehavior>().TeleportTo(_tpTransforms[tpIndex].transform.position, 0f, null);
             item.transform.rotation = _tpTransforms[tpIndex].transform.rotation;
 
             tpIndex = (tpIndex + 1) % _tpTransforms.Count;
@@ -108,7 +108,7 @@ public class TakeRemainingScrollsBackToLibrary : MonoBehaviour
 
                 item.layer = LayerMask.NameToLayer("Item");
 
-                item.GetComponent<ItemBehavior>().TeleportTo(_tpTransforms[tpIndex].transform.position, null);
+                item.GetComponent<ItemBehavior>().TeleportTo(_tpTransforms[tpIndex].transform.position, 0f, null);
                 item.transform.rotation = _tpTransforms[tpIndex].transform.rotation;
 
                 tpIndex = (tpIndex + 1) % _tpTransforms.Count;

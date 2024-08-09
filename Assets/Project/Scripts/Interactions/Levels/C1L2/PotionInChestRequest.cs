@@ -39,7 +39,7 @@ public class PotionInChestRequest : MonoBehaviour
         if(isPotionInChest && !treasureTeleported)
         {
             treasureTeleported = true;
-            treasure.GetComponent<TreasureBehavior>().TeleportTo(treasureTeleportPos, null);
+            treasure.GetComponent<TreasureBehavior>().TeleportTo(treasureTeleportPos, treasure.transform.rotation.eulerAngles.y, null);
         }
 
         if(potionPicked)

@@ -26,13 +26,15 @@ public class SpellBehavior : MonoBehaviour
 
     }
 
-    public void TeleportTo(Vector3 tpDestination) //teleport to destination and stop movement enqued before teleportation
+    public void TeleportTo(Vector3 tpDestination, float tpRotation) //teleport to destination and stop movement enqued before teleportation
     {
         transform.position = tpDestination;
+        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, tpRotation, transform.rotation.eulerAngles.z);
     }
-    public void TeleportTo(Vector3 tpDestination, Color? tpEffectColor)
+    public void TeleportTo(Vector3 tpDestination, float tpRotation, Color? tpEffectColor)
     {
         transform.position = tpDestination;
+        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, tpRotation, transform.rotation.eulerAngles.z);
 
         AudioSource tpSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MagicalTeleportation);
         tpSound.Play();

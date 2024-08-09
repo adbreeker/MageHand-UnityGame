@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class Portal : MonoBehaviour
 {
-    [Header("Teleportation destination")]
+    [Header("Teleportation destination:")]
     public Vector3 teleportationDestination;
     public bool teleportOnCurrentHeight = true;
+
+    [Header("Teleportation rotation:")]
+    public float teleportationRotation;
+    public bool teleportOnCurrentRotation = false;
 
     [Header("Teleportation beneficiaries mask")]
     public LayerMask toTeleport;
@@ -27,33 +31,23 @@ public class Portal : MonoBehaviour
         //teleport all found objects
         foreach(Collider toTeleport in colliders)
         {
-            if(toTeleport.gameObject.tag == "Player") //if player add player teleportation effect
+            Vector3 tpDest = teleportationDestination;
+            float tpRot = teleportationRotation;
+            if(teleportOnCurrentHeight) { tpDest.y = toTeleport.transform.position.y; }
+            if(teleportOnCurrentRotation) { tpRot = toTeleport.transform.rotation.eulerAngles.y; }
+
+            if (toTeleport.gameObject.tag == "Player") //if player add player teleportation effect
             {
-                if (teleportOnCurrentHeight)
-                {
-                    Vector3 nativeHeightDestination = teleportationDestination;
-                    nativeHeightDestination.y = toTeleport.transform.position.y;
-                    toTeleport.GetComponent<PlayerMovement>().TeleportTo(nativeHeightDestination, gameObject.GetComponent<ParticleSystem>().main.startColor.color);
-                }
-                else
-                {
-                    toTeleport.GetComponent<PlayerMovement>().TeleportTo(teleportationDestination, gameObject.GetComponent<ParticleSystem>().main.startColor.color);
-                }
+
+                toTeleport.GetComponent<PlayerMovement>().TeleportTo(tpDest, tpRot, gameObject.GetComponent<ParticleSystem>().main.startColor.color);
             }
             else
             {
                 if(toTeleport.transform.parent == null) //else add object teleportation effect
                 {
-                    if(teleportOnCurrentHeight)
-                    {
-                        Vector3 nativeHeightDestination = teleportationDestination;
-                        nativeHeightDestination.y = toTeleport.transform.position.y;
-                        toTeleport.gameObject.transform.position = nativeHeightDestination;
-                    }
-                    else
-                    {
-                        toTeleport.gameObject.transform.position = teleportationDestination;
-                    }
+                    toTeleport.gameObject.transform.position = tpDest;
+                    toTeleport.gameObject.transform.rotation = Quaternion.Euler(toTeleport.gameObject.transform.rotation.eulerAngles.x, tpRot, toTeleport.gameObject.transform.rotation.eulerAngles.z);
+                    
                     GameObject tpEffect = GameParams.Holders.materialsAndEffectsHolder.GetEffect(MaterialsAndEffectsHolder.Effects.teleportationObject);
                     Instantiate(tpEffect, teleportationDestination, Quaternion.identity)
                         .GetComponent<ParticlesColor>().ChangeColorOfEffect(gameObject.GetComponent<ParticleSystem>().main.startColor.color);

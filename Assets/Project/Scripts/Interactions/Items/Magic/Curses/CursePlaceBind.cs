@@ -87,7 +87,7 @@ public class CursePlaceBind : MonoBehaviour
 
         ChangeLayer(gameObject, LayerMask.NameToLayer("Item"));
 
-        GetComponent<ItemBehavior>().TeleportTo(_startingPos, null);
+        GetComponent<ItemBehavior>().TeleportTo(_startingPos, 0f, null);
         transform.rotation = _startingRot;
     }
 }

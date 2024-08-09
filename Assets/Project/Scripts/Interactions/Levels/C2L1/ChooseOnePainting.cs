@@ -9,6 +9,7 @@ public class ChooseOnePainting : MonoBehaviour
     public GameObject paintingGood;
 
     public Vector3 tpDestination;
+    public float tpRotation;
 
     public OpenBarsPassage passage;
     public LeverBehavior lever;
@@ -42,17 +43,17 @@ public class ChooseOnePainting : MonoBehaviour
         if(painting == paintingBad)
         {
             PlayerParams.Controllers.pointsManager.plotPoints += -2;
-            PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination, null);
+            PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination, tpRotation, null);
         }
         if(painting == paintingMid)
         {
             PlayerParams.Controllers.pointsManager.plotPoints += 1;
-            PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination, null);
+            PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination, tpRotation, null);
         }
         if(painting == paintingGood)
         {
             PlayerParams.Controllers.pointsManager.plotPoints += 2;
-            PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination, null);
+            PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination, tpRotation, null);
         }
 
         passage.Interaction();

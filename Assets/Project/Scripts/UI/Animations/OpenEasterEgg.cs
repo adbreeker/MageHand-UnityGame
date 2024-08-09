@@ -62,7 +62,7 @@ public class OpenEasterEgg : MonoBehaviour
 
         //teleport
         yield return new WaitForSeconds(5f);
-        PlayerParams.Controllers.playerMovement.TeleportTo(new Vector3(6000, 0, 6000), Color.blue);
+        PlayerParams.Controllers.playerMovement.TeleportTo(new Vector3(6000, 0, 6000), PlayerParams.Objects.player.transform.rotation.eulerAngles.y ,Color.blue);
 
 
         //blackout picture

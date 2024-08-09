@@ -94,8 +94,7 @@ public class TripleLightCones : MonoBehaviour
                 }
                 else
                 {
-                    PlayerParams.Controllers.playerMovement.TeleportTo(_failTpDestination, null);
-                    PlayerParams.Objects.player.transform.rotation = Quaternion.Euler(0, 90, 0);
+                    PlayerParams.Controllers.playerMovement.TeleportTo(_failTpDestination, 90f, null);
                     _currentRow = 0;
                     _lightCone.SetActive(false);
                 }

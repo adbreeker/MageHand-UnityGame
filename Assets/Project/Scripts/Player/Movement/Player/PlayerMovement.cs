@@ -289,31 +289,32 @@ public class PlayerMovement : MonoBehaviour
 
     //teleportation methods
 
-    public void TeleportTo(Vector3 tpDestination) //teleport to destination and stop movement enqued before teleportation
+    public void TeleportTo(Vector3 tpDestination, float tpRotation) //teleport to destination and stop movement enqued before teleportation
     {
         _destination = tpDestination;
         transform.position = tpDestination;
         isMoving = false;
-        if(isRotating)
-        {
-            transform.rotation = _targetRotation;
-            isRotating = false;
-        }
+
+        _targetRotation = Quaternion.Euler(0f, tpRotation, 0f);
+        transform.rotation = Quaternion.Euler(0f, tpRotation, 0f);
+        isRotating = false;
+
+
         _movementInputQueue = Vector3.zero;
         _rotationInputQueue = 0;
 
         currentTilePos = transform.position;
     }
-    public void TeleportTo(Vector3 tpDestination, Color? tpEffectColor)
+    public void TeleportTo(Vector3 tpDestination, float tpRotation, Color? tpEffectColor)
     {
         _destination = tpDestination;
         transform.position = tpDestination;
         isMoving = false;
-        if (isRotating)
-        {
-            transform.rotation = _targetRotation;
-            isRotating = false;
-        }
+
+        _targetRotation = Quaternion.Euler(0f, tpRotation, 0f);
+        transform.rotation = Quaternion.Euler(0f, tpRotation, 0f);
+        isRotating = false;
+
         _movementInputQueue = Vector3.zero;
         _rotationInputQueue = 0;
 
