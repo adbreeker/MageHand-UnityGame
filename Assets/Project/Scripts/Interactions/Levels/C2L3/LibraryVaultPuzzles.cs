@@ -15,7 +15,6 @@ public class LibraryVaultPuzzles : MonoBehaviour
     [Header("Fake scrolls for secret:")]
     [SerializeField] ItemDetecting[] _fakeScrolls = new ItemDetecting[3];
     [SerializeField] OpenWallPassage _wallAfterFakeScrolls;
-    [SerializeField] ChestBehavior _chestToUnlock;
 
     [Header("Special script for taking scrolls back via script")]
     [SerializeField] TakeRemainingScrollsBackToLibrary _specialScript;
@@ -100,7 +99,6 @@ public class LibraryVaultPuzzles : MonoBehaviour
         if (allScrolls)
         {
             _wallAfterFakeScrolls.Interaction();
-            _chestToUnlock.isInteractable = true;
             _checkFakeScrolls = false;
             foreach (ItemDetecting itemDetecting in _fakeScrolls)
             {
