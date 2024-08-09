@@ -11,7 +11,7 @@ public class SkullPlatformBehavior : MonoBehaviour
     [SerializeField] OpenDialogue _dialogue;
 
     [Header("Materials:")]
-    [SerializeField] Renderer _model;
+    [SerializeField] Renderer _renderer;
     [SerializeField] Material _platformActiveMat;
     [SerializeField] Material _platformInactiveMat;
 
@@ -31,7 +31,7 @@ public class SkullPlatformBehavior : MonoBehaviour
     IEnumerator PlatformEffect()
     {
         GameObject effect = Instantiate(_platformEffectPrefab, transform);
-        _model.material = _platformInactiveMat;
+        _renderer.material = _platformInactiveMat;
 
         Vector3 startingScale = effect.transform.localScale;
 
@@ -65,7 +65,7 @@ public class SkullPlatformBehavior : MonoBehaviour
 
     private void OnValidate()
     {
-        if(platformActive) { _model.material = _platformActiveMat;}
-        else { _model.material = _platformInactiveMat; }
+        if(platformActive) { _renderer.material = _platformActiveMat;}
+        else { _renderer.material = _platformInactiveMat; }
     }
 }
