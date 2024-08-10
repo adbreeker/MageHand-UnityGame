@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 public class CaveWolfController : MonoBehaviour
 {
 
-    Animation _animation;
+    Animator _animator;
     SkinnedMeshRenderer _meshRenderer;
     MeshCollider _meshCollider;
 
@@ -17,7 +17,8 @@ public class CaveWolfController : MonoBehaviour
 
     [Header("Attack:")]
     public float attackRange;
-    [SerializeField] Transform _attackPoint;
+    public float attackCooldown;
+    bool _isAttackOnCooldown = false;
 
     [Header("Teleportation effect")]
     [SerializeField] GameObject _teleportationEffect;
@@ -26,8 +27,8 @@ public class CaveWolfController : MonoBehaviour
 
     private void Start()
     {
-        _animation = GetComponentInChildren<Animation>();
-        _meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        _animator = GetComponentInChildren<Animator>();
+        _meshRenderer = GetComponent<SkinnedMeshRenderer>();
         _meshCollider = GetComponent<MeshCollider>();
     }
 
@@ -35,7 +36,6 @@ public class CaveWolfController : MonoBehaviour
     {
         UpdateCollider();
         AttackPlayerInRange();
-        Debug.DrawRay(_attackPoint.position, transform.forward * attackRange, Color.yellow);
     }
 
     public void SetWolfMovement(List<Transform> movementPath, bool adjustMovementToPlayer = true, bool destroyOnLastTile = false)
@@ -56,7 +56,7 @@ public class CaveWolfController : MonoBehaviour
         float ms = movementSpeed;
         float rs = rotationSpeed;
 
-        _animation.Play("run");
+        _animator.SetBool("run", true);
 
         if (adjustMovementToPlayer)
         {
@@ -73,7 +73,6 @@ public class CaveWolfController : MonoBehaviour
 
         foreach (Transform t in movementPath) 
         {
-            _animation.Play("run");
             Vector3 pathRelativePos = new Vector3(t.position.x, transform.position.y, t.position.z);
 
             Quaternion targetRotation;
@@ -97,16 +96,23 @@ public class CaveWolfController : MonoBehaviour
 
         if(destroyOnLastTile) { Destroy(gameObject); }
 
-        _animation.CrossFade("idle");
+        _animator.SetBool("run", false);
         _movementCoroutine = null;
     }
 
     void AttackPlayerInRange()
     {
-        if (Physics.Raycast(_attackPoint.position, transform.forward, attackRange, LayerMask.GetMask("Player")))
+        if (!_isAttackOnCooldown)
         {
-            _animation.CrossFade("damage");
-            _animation.CrossFadeQueued("idle");
+            Vector3 attackPoint = new Vector3(transform.position.x, transform.position.y + 1.0f, transform.position.z);
+            Debug.DrawRay(attackPoint, transform.forward * attackRange, Color.yellow);
+
+            if (Physics.Raycast(attackPoint, transform.forward, attackRange, LayerMask.GetMask("Player")))
+            {
+                _isAttackOnCooldown = true;
+                _animator.SetTrigger("attack");
+                StartCoroutine(Cooldown(v => _isAttackOnCooldown = v, attackCooldown));
+            }
         }
     }
 
@@ -131,7 +137,7 @@ public class CaveWolfController : MonoBehaviour
         _meshCollider.sharedMesh = colliderMesh;
     }
 
-    public void TeleportTo(Vector3 tpDestination)
+    public void TeleportTo(Vector3 tpDestination, float tpRotation)
     {
         if (_movementCoroutine != null)
         {
@@ -139,8 +145,10 @@ public class CaveWolfController : MonoBehaviour
             _movementCoroutine = null;
         }
         transform.position = tpDestination;
+        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, tpRotation, transform.rotation.eulerAngles.z);
     }
-    public void TeleportTo(Vector3 tpDestination, Color? tpEffectColor)
+
+    public void TeleportTo(Vector3 tpDestination, float tpRotation, Color? tpEffectColor)
     {
         if(_movementCoroutine != null)
         {
@@ -148,6 +156,7 @@ public class CaveWolfController : MonoBehaviour
             _movementCoroutine = null;
         }
         transform.position = tpDestination;
+        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, tpRotation, transform.rotation.eulerAngles.z);
 
         AudioSource tpSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MagicalTeleportation);
         tpSound.Play();
@@ -162,5 +171,11 @@ public class CaveWolfController : MonoBehaviour
         {
             Instantiate(_teleportationEffect, transform);
         }
+    }
+
+    IEnumerator Cooldown(System.Action<bool> isOnCooldown, float cooldownTime)
+    {
+        yield return new WaitForSeconds(cooldownTime);
+        isOnCooldown(false);
     }
 }
