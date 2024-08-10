@@ -132,7 +132,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //get obstacles near player
-        Collider[] colliders = Physics.OverlapSphere(new Vector3(transform.position.x, 1.25f, transform.position.z), 0.8f, obstacleMask);
+        Collider[] colliders = Physics.OverlapSphere(new Vector3(transform.position.x, 1.25f, transform.position.z), 0.8f, obstacleMask, QueryTriggerInteraction.Ignore);
         foreach (Collider collider in colliders)
         {
             if (collider.gameObject.tag == "Wall" || collider.gameObject.tag == "Obstacle")

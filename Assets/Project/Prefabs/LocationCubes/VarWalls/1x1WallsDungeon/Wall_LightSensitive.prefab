@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3056135478576009392}
   - component: {fileID: 3056135478574879344}
   - component: {fileID: 3056135478570787344}
+  - component: {fileID: 855874836551536406}
   - component: {fileID: 7062318735491721302}
   - component: {fileID: 8002055350131837144}
   m_Layer: 0
@@ -102,6 +103,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300002, guid: 4fe4fc7683c898747998c195978256cc, type: 3}
+--- !u!65 &855874836551536406
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3056135478572879024}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.9999995, y: 4, z: 2}
+  m_Center: {x: 0, y: 2, z: -1}
 --- !u!114 &7062318735491721302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,8 +144,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _openWallPassage: {fileID: 7062318735491721302}
-  _particlesPrefab: {fileID: 2100965222403705628, guid: b935463edab01b64e87defcd7283cddc, type: 3}
   _particles: {fileID: 990993899769756539}
+  _lightSpellMask:
+    serializedVersion: 2
+    m_Bits: 16416
 --- !u!1 &6571498437104685849
 GameObject:
   m_ObjectHideFlags: 0
@@ -144,6 +160,7 @@ GameObject:
   - component: {fileID: 3267643792941788702}
   - component: {fileID: 6216215488785832477}
   - component: {fileID: 4460170126144094821}
+  - component: {fileID: 3619215164299943000}
   - component: {fileID: 4081311649089795950}
   m_Layer: 0
   m_Name: Wall_LightSensitive
@@ -232,6 +249,19 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300002, guid: 4fe4fc7683c898747998c195978256cc, type: 3}
+--- !u!65 &3619215164299943000
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6571498437104685849}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.9999995, y: 4, z: -2}
+  m_Center: {x: 0, y: 2, z: -1}
 --- !u!114 &4081311649089795950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,8 +275,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _openWallPassage: {fileID: 7062318735491721302}
-  _particlesPrefab: {fileID: 2100965222403705628, guid: b935463edab01b64e87defcd7283cddc, type: 3}
   _particles: {fileID: 7153063462926744248}
+  _lightSpellMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1001 &1218389787946807399
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -6,47 +6,30 @@ using UnityEngine;
 public class LightImpactOpenWall : MonoBehaviour
 {
     [SerializeField] OpenWallPassage _openWallPassage;
+    [SerializeField] GameObject _particles;
+    [SerializeField] LayerMask _lightSpellMask;
 
-    [SerializeField] GameObject _particlesPrefab;
-    [SerializeField] GameObject _particles = null;
+    BoxCollider _lightBounds;
 
-    Vector3 overlapPos;
-    Vector3 overlapSize = new Vector3(2,2,1);
-
-    private void Awake()
+    private void Start()
     {
-        overlapPos = transform.position;
-        overlapPos.y = 2;
-        overlapPos -= 2 * transform.forward * transform.localScale.z;
+        _lightBounds = GetComponent<BoxCollider>();
     }
-
-    /*private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        Vector3 overlapGizmoPos = transform.position;
-        overlapGizmoPos.y = 2;
-        overlapGizmoPos -= 1 * transform.forward * transform.localScale.z;
-
-        Vector3 overlapGizmoSize = new Vector3(4, 4, 2);
-        overlapGizmoSize = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0) * overlapGizmoSize;
-
-        Gizmos.DrawCube(overlapGizmoPos, overlapGizmoSize);
-    }*/
 
     private void Update()
     {
-        Collider[] colliders = Physics.OverlapBox(overlapPos, overlapSize, Quaternion.identity, LayerMask.GetMask("Spell", "UI"));
-
-        bool lightInRange = false;
-        foreach(Collider potentialLight in colliders)
+        bool isLightInRange = false;
+        Collider[] colliders = Physics.OverlapBox(_lightBounds.bounds.center, _lightBounds.bounds.extents, Quaternion.identity, _lightSpellMask);
+        foreach (Collider collider in colliders) 
         {
-            if(potentialLight.GetComponent<LightSpellBehavior>() != null) 
+            if (collider.GetComponent<LightSpellBehavior>() != null)
             {
-                lightInRange = true;
+                isLightInRange = true;
+                break;
             }
         }
 
-        if(lightInRange)
+        if (isLightInRange)
         {
             _particles.SetActive(true);
         }
@@ -61,21 +44,4 @@ public class LightImpactOpenWall : MonoBehaviour
         _openWallPassage.Interaction();
         Destroy(this);
     }
-
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        if (_openWallPassage == null)
-        {
-            _openWallPassage = gameObject.GetComponent<OpenWallPassage>();
-        }
-
-        if (_particlesPrefab != null && _particles == null)
-        {
-            _particles = (GameObject)PrefabUtility.InstantiatePrefab(_particlesPrefab, gameObject.transform);
-            _particles.SetActive(false);
-        }
-    }
-
-#endif
 }
