@@ -23,16 +23,24 @@ public class Destroyable : MonoBehaviour
     }
 #endif
 
+    bool _isSkinned;
+
+    private void Awake()
+    {
+        if(GetComponent<SkinnedMeshRenderer>() != null) { _isSkinned = true; }
+        else { _isSkinned = false; }
+    }
+
     public void SplitMesh()
     {
         Mesh originalMesh;
-        if (GetComponent<MeshFilter>() != null)
+        if (_isSkinned)
         {
-            originalMesh = GetComponent<MeshFilter>().sharedMesh;
+            originalMesh = GetComponent<SkinnedMeshRenderer>().sharedMesh;
         }
         else
         {
-            originalMesh = GetComponent<SkinnedMeshRenderer>().sharedMesh;
+            originalMesh = GetComponent<MeshFilter>().sharedMesh;
         }
 
         // Get the vertices, triangles, and other data from the original mesh
@@ -70,27 +78,50 @@ public class Destroyable : MonoBehaviour
         }
 
         // Optionally, you can instantiate game objects with the split meshes
-        Material[] materials;
-        if(GetComponent<MeshFilter>() != null) { materials = GetComponent<MeshRenderer>().materials; }
-        else { materials = GetComponent<SkinnedMeshRenderer>().materials; }
-
-        for (int i = 0; i < splitMeshes.Length; i++)
+        if (_isSkinned)
         {
-            GameObject splitObject = new GameObject("SplitObject_" + i);
-            MeshFilter splitMeshFilter = splitObject.AddComponent<MeshFilter>();
-            MeshRenderer splitMeshRenderer = splitObject.AddComponent<MeshRenderer>();
-            splitMeshFilter.mesh = splitMeshes[i];
-            // Set appropriate materials, shaders, etc., for the split objects
+            SkinnedMeshRenderer skinnedMeshRenderer = GetComponent<SkinnedMeshRenderer>();
+            Material[] materials = skinnedMeshRenderer.materials;
+            for (int i = 0; i < splitMeshes.Length; i++)
+            {
+                GameObject splitObject = new GameObject("SplitObject_" + i);
+                MeshFilter splitMeshFilter = splitObject.AddComponent<MeshFilter>();
+                MeshRenderer splitMeshRenderer = splitObject.AddComponent<MeshRenderer>();
+                splitMeshFilter.mesh = splitMeshes[i];
+                // Set appropriate materials, shaders, etc., for the split objects
 
-            splitMeshRenderer.materials = materials;
-            // You can position and parent the split objects however you like
-            splitObject.transform.position = transform.position;
-            splitObject.transform.rotation = transform.rotation;
-            splitObject.transform.localScale = transform.localScale;
+                splitMeshRenderer.materials = materials;
+                // You can position and parent the split objects however you like
+                splitObject.transform.position = skinnedMeshRenderer.rootBone.position;
+                splitObject.transform.rotation = skinnedMeshRenderer.rootBone.rotation;
+                splitObject.transform.localScale = skinnedMeshRenderer.rootBone.lossyScale;
 
-            splitObject.AddComponent<BoxCollider>();
-            splitObject.AddComponent<Rigidbody>();
-            splitObject.AddComponent<VanishDestroyed>().Initialize();
+                splitObject.AddComponent<BoxCollider>();
+                splitObject.AddComponent<Rigidbody>();
+                splitObject.AddComponent<VanishDestroyed>().Initialize();
+            }
+        }
+        else
+        {
+            Material[] materials = GetComponent<MeshRenderer>().materials;
+            for (int i = 0; i < splitMeshes.Length; i++)
+            {
+                GameObject splitObject = new GameObject("SplitObject_" + i);
+                MeshFilter splitMeshFilter = splitObject.AddComponent<MeshFilter>();
+                MeshRenderer splitMeshRenderer = splitObject.AddComponent<MeshRenderer>();
+                splitMeshFilter.mesh = splitMeshes[i];
+                // Set appropriate materials, shaders, etc., for the split objects
+
+                splitMeshRenderer.materials = materials;
+                // You can position and parent the split objects however you like
+                splitObject.transform.position = transform.position;
+                splitObject.transform.rotation = transform.rotation;
+                splitObject.transform.localScale = transform.localScale;
+
+                splitObject.AddComponent<BoxCollider>();
+                splitObject.AddComponent<Rigidbody>();
+                splitObject.AddComponent<VanishDestroyed>().Initialize();
+            }
         }
 
         // Destroy the original mesh if desired

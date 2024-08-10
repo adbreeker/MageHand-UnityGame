@@ -1280,7 +1280,6 @@ GameObject:
   - component: {fileID: 336657355243797533}
   - component: {fileID: 4217719598384731940}
   - component: {fileID: 243616440703554905}
-  - component: {fileID: 8181589851361704693}
   m_Layer: 0
   m_Name: CaveWolf
   m_TagString: Obstacle
@@ -1347,7 +1346,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 3375056414078686600, guid: 2ad9c5cb37fb6524dab4be711baebb6f, type: 3}
   m_Bones:
@@ -1389,10 +1388,10 @@ SkinnedMeshRenderer:
   - {fileID: 5692474171160292936}
   - {fileID: 1999886304873628385}
   m_BlendShapeWeights: []
-  m_RootBone: {fileID: 6761193896301110420}
+  m_RootBone: {fileID: 9013392489110550439}
   m_AABB:
-    m_Center: {x: -4.2, y: 5.3, z: 0}
-    m_Extent: {x: 10.5, y: 7, z: 2.5}
+    m_Center: {x: -3, y: 0, z: -1.5}
+    m_Extent: {x: 7.5, y: 2.5, z: 10}
   m_DirtyAABB: 0
 --- !u!64 &4217719598384731940
 MeshCollider:
@@ -1423,20 +1422,8 @@ MonoBehaviour:
   movementSpeed: 10
   rotationSpeed: 360
   attackRange: 3
-  attackCooldown: 0.5
+  attackCooldown: 1
   _teleportationEffect: {fileID: 7053385775836331393, guid: c6f0c2695443e0f48b3cfb2e2472df73, type: 3}
---- !u!114 &8181589851361704693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8028908474354170969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfc55c1fd67086d4fa1b6741227dfee8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8356635415926273928
 GameObject:
   m_ObjectHideFlags: 0
