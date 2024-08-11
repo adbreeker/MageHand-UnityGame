@@ -145,10 +145,12 @@ public class HandInteractions : MonoBehaviour
                 GameObject itemFromInventory = pointer.currentlyPointing.transform.parent.GetComponent<IconParameters>().originalObject;
                 PlayerParams.Controllers.inventory.inventory.Remove(itemFromInventory);
                 itemFromInventory.SetActive(true);
-                AddToHand(itemFromInventory, true, false);
 
                 //closing inventory
                 PlayerParams.Controllers.inventory.CloseInventory();
+
+                //adding item to hand after closing inventory (when it is readable, it needs to turn off movement after turning it on by closing inventory)
+                AddToHand(itemFromInventory, true, false);
             }
         }
     }

@@ -2121,6 +2121,42 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5970469832888671089, guid: 3ae38ac1f1e2d9c4bb96089653843c2e, type: 3}
   m_PrefabInstance: {fileID: 68182655}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &76387332
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 260, g: 30, b: 30, a: 0}
+  m_BuildTextureStacks: []
 --- !u!1001 &78334855
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9652,7 +9688,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3918751411058678636, guid: 752f8bb1211430f4eb8212aaa9d3bd56, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8349788399866395221, guid: 752f8bb1211430f4eb8212aaa9d3bd56, type: 3}
       propertyPath: m_Shadows.m_Bias
@@ -21363,6 +21399,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1197347242}
     m_Modifications:
+    - target: {fileID: 6627674779028655066, guid: 4a111335ccb0c0b41a535c004d2f7520, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1245cd3576fb7d642bb7189c7aeed019, type: 2}
     - target: {fileID: 8350940678756765464, guid: 4a111335ccb0c0b41a535c004d2f7520, type: 3}
       propertyPath: m_Name
       value: Painting
@@ -21879,42 +21919,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3056135478572879024, guid: b1e358bda5eed9843a16500c3fa7d023, type: 3}
   m_PrefabInstance: {fileID: 907097653}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &913796106
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 250, g: 20, b: 20, a: 0}
-  m_BuildTextureStacks: []
 --- !u!1001 &914333354
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24743,6 +24747,42 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 733306150160857940, guid: a3db738146316eb4dbd8114de39fd0d6, type: 3}
   m_PrefabInstance: {fileID: 1023847140}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &1025098023
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 250, g: 20, b: 20, a: 0}
+  m_BuildTextureStacks: []
 --- !u!1001 &1032395133
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30940,22 +30980,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4515043531239127390, guid: 9f471d098f311684a86f2d61b4f857f5, type: 3}
       propertyPath: content
-      value: "Not much has been discovered over the years of studying magic. Using
+      value: 'Not much has been discovered over the years of studying magic. Using
         magic, sorcery and spellcasting are all descriptions of the materialization
         of energy called mana. This process occurs when the spellcaster performs
         the appropriate incantation. Incantation, on the other hand, is a process
         in which spellcaster must first show the incantation gesture and then say
-        the name of a specific spell.\r\n\r\nTheoretically, all people are capable
+        the name of a specific spell.
+
+
+
+        Theoretically, all people are capable
         of using magic, but some of them are more sensitive to it than others. Without
         it, learning magic can be very, very difficult, but not impossible. Of course,
         this gives rise to many conflicts, social disputes, etc., but this is not
-        the topic of this text.\r\n\r\nThe irritating fact of studying magic is that
-        we do not know its origins at all. It is not known where civilizations learned
-        what the incantation gesture looks like, what the process of creating spells
-        looks like, that it is needed to pronounce the name of a spell etc. There
-        are no historical records on this subject. As if everyone had always known
-        it. There are, of course, various legends, myths and theories about this,
-        but these are just legends, myths and theories.\r"
+        the topic of this text.
+
+
+
+        The irritating fact of studying magic
+        is that we do not know its origins at all. It is not known where civilizations
+        learned what the incantation gesture looks like, what the process of creating
+        spells looks like, that it is needed to pronounce the name of a spell etc.
+        There are no historical records on this subject. As if everyone had always
+        known it. There are, of course, various legends, myths and theories about
+        this, but these are just legends, myths and theories.
+
+
+        ~ written
+        by the High Archmage Galmungor'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f471d098f311684a86f2d61b4f857f5, type: 3}
@@ -37740,16 +37792,17 @@ PrefabInstance:
       value: "Mana is a simple measure of the spellcaster\u2019s energy. Each spell
         has a certain complexity, which is translated into mana points needed to
         cast it. If the spellcaster does not have enough mana, they will not be able
-        to cast the spell.\r\n\r\n\nIf it's because the spellcaster just used another
+        to cast the spell.\r\n\r\nIf it's because the spellcaster just used another
         spell, they simply need to wait a moment. It is a known fact that mana regenerates
-        itself quite quickly.\r\n\n\r\nA bigger problem occurs when the spellcaster
+        itself quite quickly.\r\n\r\nA bigger problem occurs when the spellcaster
         does not have enough mana due to their limit. Every spellcaster has one.
-        It can be trained and enlarged, but this requires a lot of time.\r\n\n\r\nBy
+        It can be trained and enlarged, but this requires a lot of time.\r\n\r\nBy
         the spellcaster\u2019s mana limit, you can quite easily determine their approximate
         skill level:\r\n1 - 25 beginner mage,\r\n26 - 50 average mage,\r\n51 - 75
         well-trained mage,\r\n76 - 100 very advanced mage,\r\n101 - 125 archmage,\r\n126
-        - 150 powerful archmage.\r\n\nOnly a few of the most powerful archmages have
-        a mana limit greater than 150.\r"
+        - 150 powerful archmage.\r\n\r\nOnly a few of the most powerful archmages
+        have a mana limit greater than 150.\r\n\r\n~ written by the High Archmage
+        Lanfred"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f471d098f311684a86f2d61b4f857f5, type: 3}
@@ -40453,6 +40506,42 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7969972704443486089, guid: 13294e5900175f9438b63bdeb8e47153, type: 3}
   m_PrefabInstance: {fileID: 1684773046}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &1684778933
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 250, g: 20, b: 20, a: 0}
+  m_BuildTextureStacks: []
 --- !u!1001 &1686828072
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43937,42 +44026,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49c73be7a6e2d9345a73563a92526ab7, type: 3}
---- !u!21 &1839132373
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 250, g: 20, b: 20, a: 0}
-  m_BuildTextureStacks: []
 --- !u!1001 &1839349831
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48455,42 +48508,6 @@ Canvas:
   m_CorrespondingSourceObject: {fileID: 8391177895316071269, guid: ddfc71f472ef6dc478262a7d9893b374, type: 3}
   m_PrefabInstance: {fileID: 2003855910}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &2005435816
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 260, g: 30, b: 30, a: 0}
-  m_BuildTextureStacks: []
 --- !u!1001 &2007469435
 PrefabInstance:
   m_ObjectHideFlags: 0
