@@ -278,7 +278,7 @@ public class CaveWolfController : MonoBehaviour
     {
         _isDead = true;
         yield return new WaitForSeconds(deley);
-        gameObject.AddComponent<Destroyable>().SplitMesh();
+        gameObject.AddComponent<Destroyable>().Destroy();
     }
 
     private void OnCollisionEnter(Collision collision)
