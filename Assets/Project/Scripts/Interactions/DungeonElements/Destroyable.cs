@@ -9,6 +9,13 @@ public class Destroyable : MonoBehaviour
     Renderer _renderer;
     Mesh _originalMesh;
 
+    [Header("Optimizing:")]
+
+    [Header("Grouping splited meshes")]
+    [Tooltip("Maximum of splited meshes in every merged group")]
+    [Min(1)]
+    public int groupingBy = 1;
+
     private void Awake()
     {
         if ((_renderer = GetComponent<SkinnedMeshRenderer>()) != null) 
@@ -31,7 +38,22 @@ public class Destroyable : MonoBehaviour
     public void Destroy()
     {
         Mesh[] splitMeshes = SplitMesh(_originalMesh);
-        splitMeshes = CombineAdjacentMeshes(splitMeshes, 3);
+        int groupSizes = groupingBy;
+
+        if(GameSettings.graphicsQuality == GameSettings.GraphicsQuality.High)
+        {
+            groupSizes = Mathf.Max(1, groupingBy, Mathf.RoundToInt(splitMeshes.Length / 1000.0f));
+        }
+        else if (GameSettings.graphicsQuality == GameSettings.GraphicsQuality.Medium)
+        {
+            groupSizes = Mathf.Max(2, groupingBy, Mathf.RoundToInt(splitMeshes.Length / 500.0f));
+        }
+        else if (GameSettings.graphicsQuality == GameSettings.GraphicsQuality.Low)
+        {
+            groupSizes = Mathf.Max(4, groupingBy, Mathf.RoundToInt(splitMeshes.Length / 250.0f));
+        }
+        Debug.Log(groupSizes);
+        splitMeshes = CombineAdjacentMeshes(splitMeshes, groupSizes);
         ReplaceOriginalWithFragments(splitMeshes);
     }
 
@@ -235,6 +257,7 @@ public class Destroyable : MonoBehaviour
         }
 
         modelImporter.isReadable = true;
+        modelImporter.SaveAndReimport();
     }
 #endif
 }
@@ -247,7 +270,10 @@ public class DestroyableEditor : Editor
     {
         Destroyable script = (Destroyable)target;
         DrawDefaultInspector();
-        if (GUILayout.Button("Reimport destroyable mesh"))
+
+        GUILayout.Space(20);
+
+        if (GUILayout.Button("Reimport mesh"))
         {
             ModelImporter modelImporter;
             if(script.gameObject.GetComponent<MeshFilter>() != null)
