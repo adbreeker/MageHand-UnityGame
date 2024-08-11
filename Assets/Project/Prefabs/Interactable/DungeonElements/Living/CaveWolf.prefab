@@ -1,5 +1,59 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &136875998398715033
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1232555769032878907}
+  - component: {fileID: 6315551374106646357}
+  m_Layer: 0
+  m_Name: AnimationBody
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1232555769032878907
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136875998398715033}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.3, y: 0.2, z: 0.2}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 9013392489110550439}
+  m_Father: {fileID: 8028908474354460793}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &6315551374106646357
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136875998398715033}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 02c90ebbf1d75fa4c82b51a310b59b89, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &392582512542840507
 GameObject:
   m_ObjectHideFlags: 0
@@ -23,13 +77,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 392582512542840507}
-  m_LocalRotation: {x: -0.18301266, y: 0.18301266, z: 0.6830127, w: 0.6830127}
+  m_LocalRotation: {x: -0.18301265, y: 0.18301265, z: 0.6830128, w: 0.6830128}
   m_LocalPosition: {x: 0, y: 9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6761193896301110420}
-  m_Father: {fileID: 8028908474354460793}
+  m_Father: {fileID: 1232555769032878907}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -30, y: 0, z: 90}
 --- !u!1 &885290506245823632
@@ -1225,9 +1279,7 @@ GameObject:
   - component: {fileID: 8028908474354460793}
   - component: {fileID: 336657355243797533}
   - component: {fileID: 4217719598384731940}
-  - component: {fileID: 7355282174913247755}
   - component: {fileID: 243616440703554905}
-  - component: {fileID: 8181589851361704693}
   m_Layer: 0
   m_Name: CaveWolf
   m_TagString: Obstacle
@@ -1244,10 +1296,10 @@ Transform:
   m_GameObject: {fileID: 8028908474354170969}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 9013392489110550439}
+  - {fileID: 1232555769032878907}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1294,7 +1346,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 3375056414078686600, guid: 2ad9c5cb37fb6524dab4be711baebb6f, type: 3}
   m_Bones:
@@ -1336,10 +1388,10 @@ SkinnedMeshRenderer:
   - {fileID: 5692474171160292936}
   - {fileID: 1999886304873628385}
   m_BlendShapeWeights: []
-  m_RootBone: {fileID: 6761193896301110420}
+  m_RootBone: {fileID: 9013392489110550439}
   m_AABB:
-    m_Center: {x: -4.2, y: 5.3, z: 0}
-    m_Extent: {x: 10.5, y: 7, z: 2.5}
+    m_Center: {x: -3, y: 0, z: -1.5}
+    m_Extent: {x: 7.5, y: 2.5, z: 10}
   m_DirtyAABB: 0
 --- !u!64 &4217719598384731940
 MeshCollider:
@@ -1355,27 +1407,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
---- !u!111 &7355282174913247755
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8028908474354170969}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 86490ec194b043f448eb26a2133561e5, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 86490ec194b043f448eb26a2133561e5, type: 2}
-  - {fileID: 7400000, guid: b46300fd499e9cc48b9c2f9a15ac16f7, type: 2}
-  - {fileID: 7400000, guid: d1672f8f83c28454885d111a5962ec3f, type: 2}
-  - {fileID: 7400000, guid: 4b4b32ba9dcce3d488d9c889c4910bd0, type: 2}
-  - {fileID: 7400000, guid: c1799353ddf8a8c48a4b371cc285208e, type: 2}
-  - {fileID: 7400000, guid: a52be1dd4e63283429a502fa56db3b1b, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 1
 --- !u!114 &243616440703554905
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1390,21 +1421,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 10
   rotationSpeed: 360
-  attackRange: 1.5
-  _attackPoint: {fileID: 4793426355195024287}
+  attackRange: 3
+  attackCooldown: 1
   _teleportationEffect: {fileID: 7053385775836331393, guid: c6f0c2695443e0f48b3cfb2e2472df73, type: 3}
---- !u!114 &8181589851361704693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8028908474354170969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfc55c1fd67086d4fa1b6741227dfee8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8356635415926273928
 GameObject:
   m_ObjectHideFlags: 0

@@ -33,7 +33,7 @@ public class FireSpellBehavior : SpellBehavior
             Destroyable destroyable = collider.GetComponent<Destroyable>();
             if(destroyable != null)
             {
-                destroyable.SplitMesh();
+                destroyable.Destroy();
             }
         }
 
