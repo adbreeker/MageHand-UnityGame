@@ -28,7 +28,7 @@ public class OpenWallPassage : MonoBehaviour
         else // else open passage
         {
             passageOpen = true;
-            StartCoroutine(MoveWall(-5.5f));    
+            StartCoroutine(MoveWall(-5f));    
         }
 
     }
@@ -52,7 +52,7 @@ public class OpenWallPassage : MonoBehaviour
 
         if (passageOpen)
         {
-            wall.transform.localPosition = new Vector3(wall.transform.localPosition.x, -5.5f, wall.transform.localPosition.z);
+            wall.transform.localPosition = new Vector3(wall.transform.localPosition.x, -5f, wall.transform.localPosition.z);
         }
         else
         {
