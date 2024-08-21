@@ -58,7 +58,6 @@ public class WolfEncounter : MonoBehaviour
         if (PlayerParams.Controllers.playerMovement.currentTilePos.x == _afterTeleportTrigger.position.x
             && PlayerParams.Controllers.playerMovement.currentTilePos.z == _afterTeleportTrigger.position.z)
         {
-            Debug.Log("Teleportowalem sie w zagadce z wilkiem");
             if(_wolf == null) { PlayerParams.Controllers.pointsManager.plotPoints -= 4; Debug.Log("-4pkt"); }
             else if(_wolfWalkingPeacefully) { PlayerParams.Controllers.pointsManager.plotPoints += 4; Debug.Log("4pkt"); }
             else if(_wolfIsBlinded) { PlayerParams.Controllers.pointsManager.plotPoints -= 2; Debug.Log("-2pkt"); }

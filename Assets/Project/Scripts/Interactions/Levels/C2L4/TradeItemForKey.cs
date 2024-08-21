@@ -24,7 +24,6 @@ public class TradeItemForKey : MonoBehaviour
             {
                 if(PlayerParams.Controllers.handInteractions.inHand != collider.gameObject)
                 {
-                    Debug.Log("item do tradu");
                     _tradeCoroutine = StartCoroutine(TradeCoroutine());
                     _tradingItem = collider.gameObject;
                     break;
@@ -46,7 +45,6 @@ public class TradeItemForKey : MonoBehaviour
 
             if(!itemStillHere)
             {
-                Debug.Log("item zniknal");
                 StopCoroutine(_tradeCoroutine);
                 _tradeCoroutine = null;
                 _tradingItem = null;

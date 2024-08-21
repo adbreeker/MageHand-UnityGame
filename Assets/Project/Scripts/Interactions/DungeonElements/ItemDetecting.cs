@@ -11,46 +11,23 @@ public class ItemDetecting : MonoBehaviour
     [Header("Boundaries")]
     [SerializeField] BoxCollider _boundaries;
 
-    private void Start()
+    private void Update()
     {
-        Collider[] colliders = Physics.OverlapBox(_boundaries.bounds.center, _boundaries.bounds.extents, _boundaries.transform.rotation);
+        Collider[] colliders = Physics.OverlapBox(
+            _boundaries.bounds.center,
+            _boundaries.bounds.extents,
+            _boundaries.transform.rotation,
+            LayerMask.GetMask("Item"));
 
+        bool itemState = false;
         foreach (Collider collider in colliders)
         {
-            if (collider.gameObject == itemToDetect)
+            if (collider.gameObject == itemToDetect && PlayerParams.Controllers.handInteractions.inHand != collider.gameObject)
             {
-                isItemInBoundaries = true;
+                itemState = true;
                 break;
             }
-            isItemInBoundaries = false;
         }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject == itemToDetect && PlayerParams.Controllers.handInteractions.inHand != itemToDetect) 
-        {
-            isItemInBoundaries=true;
-        }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject == itemToDetect && PlayerParams.Controllers.handInteractions.inHand != itemToDetect)
-        {
-            isItemInBoundaries = true;
-        }
-        if (other.gameObject == itemToDetect && PlayerParams.Controllers.handInteractions.inHand == itemToDetect)
-        {
-            isItemInBoundaries = false;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if(other.gameObject == itemToDetect) 
-        {
-            isItemInBoundaries=false;
-        }
+        isItemInBoundaries = itemState;
     }
 }
