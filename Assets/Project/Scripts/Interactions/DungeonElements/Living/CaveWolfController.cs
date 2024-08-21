@@ -153,7 +153,7 @@ public class CaveWolfController : MonoBehaviour
 
     void AttackPlayerInRange()
     {
-        if (!_isAttackOnCooldown)
+        if (!_isDead &&!_isAttackOnCooldown)
         {
             Vector3 attackPoint = new Vector3(transform.position.x, transform.position.y + 1.0f, transform.position.z);
             Debug.DrawRay(attackPoint, transform.forward * attackRange, Color.yellow);
