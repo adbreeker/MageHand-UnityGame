@@ -8,6 +8,9 @@ public class SI_ChosenPainting : SwitchInteraction
 
     public override void Interact()
     {
-        interactedObject.GetComponent<ChooseOnePainting>().ChosenPaintingInteraction(painting);
+        foreach(GameObject interactedObject in interactedObjects)
+        {
+            interactedObject.GetComponent<ChooseOnePainting>().ChosenPaintingInteraction(painting);
+        }
     }
 }
