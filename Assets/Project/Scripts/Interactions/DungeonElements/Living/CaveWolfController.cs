@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,8 @@ public class CaveWolfController : MonoBehaviour
 
     [Header("Teleportation effect")]
     [SerializeField] GameObject _teleportationEffect;
+
+    public event Action<GameObject> OnWolfHitted; 
 
     Coroutine _movementCoroutine = null;
     //cooldowns
@@ -55,13 +58,13 @@ public class CaveWolfController : MonoBehaviour
         if(_movementCoroutine == null)
         {
             AdjustMovement(adjustMovementToPlayer, _startingMS, _startingRS);
-            _movementCoroutine = StartCoroutine(MovementCoroutine(movementPath, adjustMovementToPlayer, _startingMS, _startingRS, destroyOnLastTile));
+            _movementCoroutine = StartCoroutine(MovementCoroutine(movementPath, adjustMovementToPlayer, destroyOnLastTile));
         }
         else
         {
             StopCoroutine(_movementCoroutine);
             AdjustMovement(adjustMovementToPlayer, _startingMS, _startingRS);
-            _movementCoroutine = StartCoroutine(MovementCoroutine(movementPath, adjustMovementToPlayer, _startingMS, _startingRS, destroyOnLastTile));
+            _movementCoroutine = StartCoroutine(MovementCoroutine(movementPath, adjustMovementToPlayer, destroyOnLastTile));
         }
     }
 
@@ -70,17 +73,17 @@ public class CaveWolfController : MonoBehaviour
         if (_movementCoroutine == null)
         {
             AdjustMovement(false, newMovementSpeed, newRotationSpeed);
-            _movementCoroutine = StartCoroutine(MovementCoroutine(movementPath, false, newMovementSpeed, newRotationSpeed, destroyOnLastTile));
+            _movementCoroutine = StartCoroutine(MovementCoroutine(movementPath, false, destroyOnLastTile));
         }
         else
         {
             StopCoroutine(_movementCoroutine);
             AdjustMovement(false, newMovementSpeed, newRotationSpeed);
-            _movementCoroutine = StartCoroutine(MovementCoroutine(movementPath, false, newMovementSpeed, newRotationSpeed, destroyOnLastTile));
+            _movementCoroutine = StartCoroutine(MovementCoroutine(movementPath, false, destroyOnLastTile));
         }
     }
 
-    IEnumerator MovementCoroutine(List<Transform> movementPath, bool adjustMovementToPlayer, float ms, float rs, bool destroyOnLastTile)
+    IEnumerator MovementCoroutine(List<Transform> movementPath, bool adjustMovementToPlayer, bool destroyOnLastTile)
     {
         foreach (Transform t in movementPath) 
         {
@@ -93,7 +96,7 @@ public class CaveWolfController : MonoBehaviour
             while(transform.rotation != targetRotation)
             {
                 yield return new WaitForFixedUpdate();
-                AdjustMovement(adjustMovementToPlayer, ms, rs);
+                AdjustMovement(adjustMovementToPlayer, movementSpeed, rotationSpeed);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
             }
 
@@ -102,7 +105,7 @@ public class CaveWolfController : MonoBehaviour
             while(transform.position != pathRelativePos)
             {
                 yield return new WaitForFixedUpdate();
-                AdjustMovement(adjustMovementToPlayer, ms, rs);
+                AdjustMovement(adjustMovementToPlayer, movementSpeed, rotationSpeed);
                 transform.position = Vector3.MoveTowards(transform.position, pathRelativePos, movementSpeed * Time.deltaTime);
             }
         }
@@ -130,7 +133,7 @@ public class CaveWolfController : MonoBehaviour
 
         if(toPlayer)
         {
-            if (PlayerParams.Controllers.playerMovement.movementSpeed > movementSpeed)
+            if (PlayerParams.Controllers.playerMovement.movementSpeed >= movementSpeed)
             {
                 //if adjusted wolf is 10% faster than player
                 movementSpeed = PlayerParams.Controllers.playerMovement.movementSpeed + 0.1f * PlayerParams.Controllers.playerMovement.movementSpeed;
@@ -150,7 +153,7 @@ public class CaveWolfController : MonoBehaviour
 
     void AttackPlayerInRange()
     {
-        if (!_isAttackOnCooldown)
+        if (!_isDead &&!_isAttackOnCooldown)
         {
             Vector3 attackPoint = new Vector3(transform.position.x, transform.position.y + 1.0f, transform.position.z);
             Debug.DrawRay(attackPoint, transform.forward * attackRange, Color.yellow);
@@ -164,14 +167,17 @@ public class CaveWolfController : MonoBehaviour
         }
     }
 
-    void GetDamaged(GameObject damageReason)
+    void GetHit(GameObject hittedBy)
     {
         if(!_isDead)
         {
-            if (damageReason.layer == LayerMask.NameToLayer("Item"))
+            OnWolfHitted?.Invoke(hittedBy);
+
+            if (hittedBy.layer == LayerMask.NameToLayer("Item"))
             {
-                if (damageReason.GetComponent<KnifeBehavior>() != null)
+                if (hittedBy.GetComponent<KnifeBehavior>() != null)
                 {
+
                     _animator.SetTrigger("dead");
                     StartCoroutine(DestroyAfterTime(2.0f));
                 }
@@ -185,9 +191,9 @@ public class CaveWolfController : MonoBehaviour
                     }
                 }
             }
-            else if (damageReason.layer == LayerMask.NameToLayer("Spell"))
+            else if (hittedBy.layer == LayerMask.NameToLayer("Spell"))
             {
-                if (damageReason.GetComponent<LightSpellBehavior>() != null)
+                if (hittedBy.GetComponent<LightSpellBehavior>() != null)
                 {
                     if (!_isDamageOnCooldown)
                     {
@@ -197,7 +203,7 @@ public class CaveWolfController : MonoBehaviour
                     }
                     return;
                 }
-                if (damageReason.GetComponent<FireSpellBehavior>() != null)
+                if (hittedBy.GetComponent<FireSpellBehavior>() != null)
                 {
                     _animator.SetTrigger("dead");
                     StartCoroutine(DestroyAfterTime(0.1f));
@@ -277,12 +283,13 @@ public class CaveWolfController : MonoBehaviour
     IEnumerator DestroyAfterTime(float deley)
     {
         _isDead = true;
+        _meshCollider.enabled = false;
         yield return new WaitForSeconds(deley);
         gameObject.AddComponent<Destroyable>().Destroy();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        GetDamaged(collision.gameObject);
+        GetHit(collision.gameObject);
     }
 }

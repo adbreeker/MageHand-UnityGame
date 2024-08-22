@@ -52,7 +52,7 @@ public class Destroyable : MonoBehaviour
         {
             groupSizes = Mathf.Max(4, groupingBy, Mathf.RoundToInt(splitMeshes.Length / 250.0f));
         }
-        Debug.Log(groupSizes);
+        Debug.Log("Destroyable group size: " + groupSizes);
         splitMeshes = CombineAdjacentMeshes(splitMeshes, groupSizes);
         ReplaceOriginalWithFragments(splitMeshes);
     }

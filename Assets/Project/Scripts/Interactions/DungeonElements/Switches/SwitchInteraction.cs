@@ -6,12 +6,16 @@ public class SwitchInteraction : MonoBehaviour
 {
     [Header("Object to interact")]
     public GameObject interactedObject;
+    public List<GameObject> interactedObjects;
     
     public virtual void Interact() //invoking Interaction method on assigned object
     {
-        if(interactedObject != null)
+        foreach(GameObject interactedObject in interactedObjects) 
         {
-            interactedObject.SendMessage("Interaction");
+            if (interactedObject != null)
+            {
+                interactedObject.SendMessage("Interaction");
+            }
         }
     }
 }
