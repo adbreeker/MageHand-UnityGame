@@ -6,6 +6,21 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    public BackgroundMusic backgroundMusic;
+
+    private Coroutine fadeOutPauseMenuCoroutine;
+    private Coroutine fadeInPauseMenuCoroutine;
+
+    private void Awake()
+    {
+        SetBusVolume(FmodBuses.UI, 1f);
+        SetBusVolume(FmodBuses.Music, 1f);
+        SetBusVolume(FmodBuses.SFX, 1f);
+        FmodBuses.UI.setPaused(false);
+        FmodBuses.Music.setPaused(false);
+        FmodBuses.SFX.setPaused(false);
+    }
+
     public StudioEventEmitter CreateAudioEmitter(EventReference eventRef, GameObject soundParent)
     {
         StudioEventEmitter eventEmitter;
@@ -25,46 +40,56 @@ public class AudioManager : MonoBehaviour
         return volume;
     }
 
-    public void PauseSFXsFadeOutMusic()
+    public void SetBusVolume(Bus bus, float volume)
     {
-        FmodBuses.SFX.setPaused(true);
-        FadeOutBus(FmodBuses.Music);
-    }
-    public void UnPauseSFXsFadeInMusic()
-    {
-        FmodBuses.SFX.setPaused(false);
-        FadeInBus(FmodBuses.Music);
+        volume = Mathf.Clamp01(volume);
+        bus.setVolume(volume);
     }
 
-    IEnumerator FadeOutBus(Bus bus)
+    public float GetBusVolume(Bus bus)
+    {
+        bus.getVolume(out float volume);
+        return volume;
+    }
+
+    public void PauseSFXsFadeOutMusic(float fadeSpeed)
+    {
+        FmodBuses.SFX.setPaused(true);
+        if (fadeInPauseMenuCoroutine != null) StopCoroutine(fadeInPauseMenuCoroutine);
+        fadeOutPauseMenuCoroutine = StartCoroutine(FadeOutBus(FmodBuses.Music, fadeSpeed));
+    }
+    public void UnpauseSFXsFadeInMusic(float fadeSpeed)
+    {
+        FmodBuses.SFX.setPaused(false);
+        if (fadeOutPauseMenuCoroutine != null) StopCoroutine(fadeOutPauseMenuCoroutine);
+        fadeInPauseMenuCoroutine = StartCoroutine(FadeInBus(FmodBuses.Music, fadeSpeed));
+    }
+
+    public IEnumerator FadeOutBus(Bus bus, float fadeSpeed)
     {
         bus.getVolume(out float volume);
         while (volume > 0)
         {
-            SetBusVolume(bus, volume - Time.unscaledDeltaTime * 5f);
-            yield return new WaitForSecondsRealtime(0.02f);
+            //Debug.Log("FadeOut: " + volume);
+            SetBusVolume(bus, volume - fadeSpeed);
+            yield return new WaitForSecondsRealtime(0);
             bus.getVolume(out volume);
         }
 
         bus.setPaused(true);
     }
 
-    IEnumerator FadeInBus(Bus bus)
+    public IEnumerator FadeInBus(Bus bus, float fadeSpeed)
     {
         bus.setPaused(false);
 
         bus.getVolume(out float volume);
         while (volume < 1)
         {
-            SetBusVolume(bus, volume + Time.unscaledDeltaTime * 5f);
-            yield return new WaitForSecondsRealtime(0.02f);
+            //Debug.Log("FadeIn: " + volume);
+            SetBusVolume(bus, volume + fadeSpeed);
+            yield return new WaitForSecondsRealtime(0);
             bus.getVolume(out volume);
         }
     }
-
-    public void SetBusVolume(Bus bus, float volume)
-    {
-        volume = Mathf.Clamp01(volume);
-        bus.setVolume(volume);
-    }   
 }

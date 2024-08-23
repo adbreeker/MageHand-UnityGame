@@ -1,19 +1,21 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CreateBackgroundMusic : MonoBehaviour
 {
-    public SoundManager.Sound startMusic;
-    public SoundManager.Sound loopMusic;
+    [SerializeField] private EventReference musicRef;
     void Awake()
     {
-        if(FindObjectOfType<BackgroundMusic>() == null)
+        BackgroundMusic backgroundMusic = FindObjectOfType<BackgroundMusic>();
+        if (backgroundMusic == null)
         {
             GameObject backgroundMusicGameObject = new GameObject("BackgroundMusic");
-            BackgroundMusic backgroundMusic = backgroundMusicGameObject.AddComponent<BackgroundMusic>();
-            backgroundMusic.startMusic = startMusic;
-            backgroundMusic.loopMusic = loopMusic;
+            DontDestroyOnLoad(backgroundMusicGameObject);
+            backgroundMusic = backgroundMusicGameObject.AddComponent<BackgroundMusic>();
+            backgroundMusic.musicRef = musicRef;
         }
+        GameParams.Managers.audioManager.backgroundMusic = backgroundMusic;
     }
 }

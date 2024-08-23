@@ -84,6 +84,9 @@ public class GameSettings : MonoBehaviour
         Cursor.visible = !fullscreen;
         if(fullscreen) Cursor.lockState = CursorLockMode.Confined;
         else Cursor.lockState = CursorLockMode.None;
+
+        //set muteMusic
+        FmodBuses.Music.setMute(muteMusic);
     }
 
     private void Update()
@@ -128,6 +131,9 @@ public class GameSettings : MonoBehaviour
 
         //useSpeech
         if (microphoneName == null) useSpeech = false;
+
+        //set muteMusic
+        FmodBuses.Music.setMute(muteMusic);
 
         //resizing resolution while in window mode to stay in 16/9
         if (!Screen.fullScreen)

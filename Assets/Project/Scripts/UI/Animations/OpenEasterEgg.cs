@@ -18,6 +18,8 @@ public class OpenEasterEgg : MonoBehaviour
     float fadeOutSpeed = 0.025f;
     private bool animationEnded = false;
     private bool skip = false;
+
+    AudioManager AudioManager => GameParams.Managers.audioManager;
     private void Start()
     {
         StartCoroutine(EasterEgg());
@@ -67,25 +69,20 @@ public class OpenEasterEgg : MonoBehaviour
 
         //blackout picture
         yield return new WaitForSeconds(0.4f);
-        BackgroundMusic backgroundMusic = FindObjectOfType<BackgroundMusic>();
-        backgroundMusic.modifyBackgroundMusicVolume = true;
-        float startVolumeDecrease = backgroundMusic.startMusicAS.volume * fadeOutSpeed;
-        float loopVolumeDecrease = backgroundMusic.loopMusicAS.volume * fadeOutSpeed;
 
         float alpha = 0;
 
-        FindAnyObjectByType<SoundManager>().FadeOutSFXs();
+        StartCoroutine(AudioManager.FadeOutBus(FmodBuses.SFX, fadeOutSpeed));
+        StartCoroutine(AudioManager.FadeOutBus(FmodBuses.Music, fadeOutSpeed));
 
         while (alpha < 1)
         {
-            backgroundMusic.startMusicAS.volume -= startVolumeDecrease;
-            backgroundMusic.loopMusicAS.volume -= loopVolumeDecrease;
             alpha += fadeOutSpeed;
             blackoutImage.color = new Color(0, 0, 0, alpha);
             yield return new WaitForSeconds(0);
         }
 
-        Destroy(backgroundMusic.gameObject);
+        Destroy(AudioManager.backgroundMusic.gameObject);
 
         if (PlayerParams.Controllers.pauseMenu != null) PlayerParams.Controllers.pauseMenu.freezeTime = false;
         yield return new WaitForFixedUpdate();

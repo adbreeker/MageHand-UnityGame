@@ -133,7 +133,7 @@ public class SoundManager : MonoBehaviour
             if (!fromPauseMenu) audioSource.volume = GetBaseVolume(GetFirstSoundEnumByAudioClip(audioSource.clip)) * volume;
         }
     }
-
+    /*
     public void PauseAllAudioSourcesAndFadeOutMusic()
     {
         AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
@@ -200,7 +200,7 @@ public class SoundManager : MonoBehaviour
             }
         }
     }
-
+    */
     public float GetVolume()
     {
         return volume;

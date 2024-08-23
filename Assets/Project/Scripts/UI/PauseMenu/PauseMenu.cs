@@ -44,6 +44,8 @@ public class PauseMenu : MonoBehaviour
     private float keyTimeDelay = 10f;
     private float keyTimeDelayer = 0;
 
+    private float fadeMusicSpeed = 0.05f;
+
     void Update()
     {
         //Change status of atMenu depending of that if it is active or not
@@ -214,7 +216,8 @@ public class PauseMenu : MonoBehaviour
 
     public void OpenMenu()
     {
-        GameParams.Managers.soundManager.PauseAllAudioSourcesAndFadeOutMusic();
+        //GameParams.Managers.soundManager.PauseAllAudioSourcesAndFadeOutMusic();
+        GameParams.Managers.audioManager.PauseSFXsFadeOutMusic(fadeMusicSpeed);
 
         instantiatedMenu = Instantiate(menuPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         //Disable other controls
@@ -248,7 +251,8 @@ public class PauseMenu : MonoBehaviour
     {
         if (menuOpened)
         {
-            GameParams.Managers.soundManager.UnPauseAllAudioSourcesFadeInMusic();
+            //GameParams.Managers.soundManager.UnPauseAllAudioSourcesFadeInMusic();
+            GameParams.Managers.audioManager.UnpauseSFXsFadeInMusic(fadeMusicSpeed);
             Destroy(openSound.gameObject, openSound.clip.length);
             Destroy(closeSound.gameObject, closeSound.clip.length);
             Destroy(changeSound.gameObject, changeSound.clip.length);
