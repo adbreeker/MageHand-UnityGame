@@ -18,7 +18,7 @@ public class TakeRemainingScrollsBackToLibrary : MonoBehaviour
 
     private void Update()
     { 
-        if(IsPlayerOnSpecialTile() && !_takingTriggered)
+        if(PlayerParams.Controllers.playerMovement.currentTile == _takingTriggerCube && !_takingTriggered)
         {
             if (IsAnyReadableInPossession())
             {
@@ -32,18 +32,7 @@ public class TakeRemainingScrollsBackToLibrary : MonoBehaviour
             }
         }
 
-        if(!IsPlayerOnSpecialTile() && _takingTriggered) { _takingTriggered= false; } 
-    }
-
-    bool IsPlayerOnSpecialTile()
-    {
-        Transform player = PlayerParams.Objects.player.transform;
-        if(player.position.x == _takingTriggerCube.position.x 
-           && player.position.z == _takingTriggerCube.position.z)
-        {
-            return true;
-        }
-        return false;
+        if(PlayerParams.Controllers.playerMovement.currentTile != _takingTriggerCube && _takingTriggered) { _takingTriggered= false; } 
     }
 
     bool IsAnyReadableInPossession()

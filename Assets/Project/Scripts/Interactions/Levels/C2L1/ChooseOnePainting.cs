@@ -27,10 +27,7 @@ public class ChooseOnePainting : MonoBehaviour
     {
         if(!leverTriggered)
         {
-            Vector3 cubePosWithPlayer = cubeLeverTrigger.transform.position;
-            cubePosWithPlayer.y = 1;
-
-            if(cubePosWithPlayer == PlayerParams.Controllers.playerMovement.currentTilePos && lever.leverON)
+            if(cubeLeverTrigger == PlayerParams.Controllers.playerMovement.currentTile && lever.leverON)
             {
                 leverTriggered = true;
                 lever.OnClick();

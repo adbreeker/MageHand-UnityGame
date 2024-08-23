@@ -17,11 +17,11 @@ public class ThreePillarsPuzzle : MonoBehaviour
 
     void Update()
     {
-        Vector3 playerPos = PlayerParams.Controllers.playerMovement.currentTilePos;
+        Transform playerPos = PlayerParams.Controllers.playerMovement.currentTile;
 
         if (!_isOnPath)
         {
-            if (playerPos == TileToPlayerPos(_pillarsPuzzlePath[_tileIndex].position))
+            if (playerPos == _pillarsPuzzlePath[_tileIndex])
             {
                 _isOnPath = true;
             }
@@ -31,7 +31,7 @@ public class ThreePillarsPuzzle : MonoBehaviour
             //resolving special situations - being on last tile of path
             if (_tileIndex == _pillarsPuzzlePath.Count - 1)
             {
-                if(playerPos == TileToPlayerPos(_pillarsPuzzlePath[_tileIndex].position))
+                if(playerPos == _pillarsPuzzlePath[_tileIndex])
                 {
                     _wallToOpen.Interaction();
                     Destroy(this);
@@ -44,21 +44,21 @@ public class ThreePillarsPuzzle : MonoBehaviour
                 }
             }
             //checking if player following path
-            if (playerPos != TileToPlayerPos(_pillarsPuzzlePath[_tileIndex].position) && playerPos != TileToPlayerPos(_pillarsPuzzlePath[_tileIndex + 1].position))
+            if (playerPos != _pillarsPuzzlePath[_tileIndex] && playerPos != _pillarsPuzzlePath[_tileIndex + 1])
             {
                 PlayerMissedPath();
                 return;
             }
             //increasing path index if path is followed
-            if (playerPos == TileToPlayerPos(_pillarsPuzzlePath[_tileIndex + 1].position))
+            if (playerPos == _pillarsPuzzlePath[_tileIndex + 1])
             {
                 _tileIndex += 1;
             }
 
             //making sound when on specific tiles while following path
-            if (playerPos == TileToPlayerPos(_firstSoundPlace.position)
-                || playerPos == TileToPlayerPos(_secondSoundPlace.position)
-                || playerPos == TileToPlayerPos(_thirdSoundPlace.position))
+            if (playerPos == _firstSoundPlace
+                || playerPos == _secondSoundPlace
+                || playerPos == _thirdSoundPlace)
             {
                 if (!_soundMade)
                 {
@@ -76,12 +76,5 @@ public class ThreePillarsPuzzle : MonoBehaviour
     {
         _isOnPath = false;
         _tileIndex = 0;
-    }
-
-    Vector3 TileToPlayerPos(Vector3 tilePos)
-    {
-        Vector3 playerPos = tilePos;
-        playerPos.y = PlayerParams.Objects.player.transform.position.y;
-        return playerPos;
     }
 }

@@ -15,11 +15,11 @@ public class LightPathPuzzle : MonoBehaviour
 
     void Update()
     {
-        Vector3 playerPos = PlayerParams.Controllers.playerMovement.currentTilePos;
+        Transform playerPos = PlayerParams.Controllers.playerMovement.currentTile;
 
         if (!_isOnPath)
         {
-            if ( playerPos == TileToPlayerPos(_lightPath[_tileIndex].position) || playerPos == TileToPlayerPos(_lightPath[_lightPath.Count-1].position))
+            if ( playerPos == _lightPath[_tileIndex] || playerPos == _lightPath[_lightPath.Count - 1])
             {
                 _isOnPath = true;
             }
@@ -27,7 +27,7 @@ public class LightPathPuzzle : MonoBehaviour
         else
         {
             //resolving special situations - leaving puzzle room
-            if(_tileIndex == 0 && playerPos == TileToPlayerPos(_enterRoomPos.position))
+            if(_tileIndex == 0 && playerPos == _enterRoomPos)
             {
                 _isOnPath = false;
                 _tileIndex = 0;
@@ -36,13 +36,13 @@ public class LightPathPuzzle : MonoBehaviour
             //resolving special situations - being on last tile of path
             if (_tileIndex == _lightPath.Count - 1)
             {
-                if(playerPos == TileToPlayerPos(_exitRoomPos.position))
+                if(playerPos == _exitRoomPos)
                 {
                     _isOnPath = false;
                     _tileIndex = 0;
                     return;
                 }
-                if(playerPos != TileToPlayerPos(_lightPath[_lightPath.Count - 1].position))
+                if(playerPos != _lightPath[_lightPath.Count - 1])
                 {
                     PlayerMissedPath();
                     return;
@@ -51,13 +51,13 @@ public class LightPathPuzzle : MonoBehaviour
             else
             {
                 //checking if player following path
-                if (playerPos != TileToPlayerPos(_lightPath[_tileIndex].position) && playerPos != TileToPlayerPos(_lightPath[_tileIndex + 1].position))
+                if (playerPos != _lightPath[_tileIndex] && playerPos != _lightPath[_tileIndex + 1])
                 {
                     PlayerMissedPath();
                     return;
                 }
                 //increasing path index if path is followed
-                if (playerPos == TileToPlayerPos(_lightPath[_tileIndex + 1].position))
+                if (playerPos == _lightPath[_tileIndex + 1])
                 {
                     _tileIndex += 1;
                     return;
@@ -71,14 +71,8 @@ public class LightPathPuzzle : MonoBehaviour
         _isOnPath = false;
         _tileIndex = 0;
 
-        PlayerParams.Controllers.playerMovement.TeleportTo(TileToPlayerPos(_enterRoomPos.position), 180f, null);
+        Vector3 tpDest = _enterRoomPos.position;
+        tpDest.y = PlayerParams.Objects.player.transform.position.y;
+        PlayerParams.Controllers.playerMovement.TeleportTo(tpDest, 180f, null);
     }
-
-    Vector3 TileToPlayerPos(Vector3 tilePos)
-    {
-        Vector3 playerPos = tilePos;
-        playerPos.y =PlayerParams.Objects.player.transform.position.y;
-        return playerPos;
-    }
-
 }

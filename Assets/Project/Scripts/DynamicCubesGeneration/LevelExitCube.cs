@@ -25,22 +25,10 @@ public class LevelExitCube : MonoBehaviour
 
     protected void Start() //finding all necessary objects
     {
-        _exitBounds = GetComponent<BoxCollider>();
-
         saveManager = GameParams.Managers.saveManager;
         spellbook = PlayerParams.Controllers.spellbook;
         inventory = PlayerParams.Controllers.inventory;
         journal = PlayerParams.Controllers.journal;
-    }
-
-    protected void Update() //checking if player is inside cube
-    {
-        if (_exitBounds.bounds.Contains(PlayerParams.Objects.player.transform.position) && !_isAnimationGoing)
-        {
-            _isAnimationGoing = true;
-            OnLevelChange?.Invoke();
-            ChangeLevel();
-        }
     }
 
     protected virtual void ChangeLevel()
@@ -78,5 +66,15 @@ public class LevelExitCube : MonoBehaviour
 
         //everything to file
         saveManager.SaveProgressToFile();
+    }
+
+    protected void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject == PlayerParams.Objects.player && !_isAnimationGoing)
+        {
+            _isAnimationGoing = true;
+            OnLevelChange?.Invoke();
+            ChangeLevel();
+        }
     }
 }

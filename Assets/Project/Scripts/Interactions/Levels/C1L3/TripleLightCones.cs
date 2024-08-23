@@ -21,8 +21,7 @@ public class TripleLightCones : MonoBehaviour
 
     bool IsPlayerOnTile(Transform position)
     {
-        if (position.position.x == PlayerParams.Controllers.playerMovement.currentTilePos.x
-            && position.position.z == PlayerParams.Controllers.playerMovement.currentTilePos.z)
+        if (position == PlayerParams.Controllers.playerMovement.currentTile)
         {
             return true;
         }
@@ -65,7 +64,7 @@ public class TripleLightCones : MonoBehaviour
             _lightCone.SetActive(false);
             _currentRow = 10;
         }
-        if (PlayerParams.Controllers.playerMovement.currentTilePos.x <= 20)
+        if (PlayerParams.Controllers.playerMovement.currentOnTilePos.x <= 20)
         {
             _lightCone.SetActive(false);
             _currentRow = 0;

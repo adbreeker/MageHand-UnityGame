@@ -11,10 +11,9 @@ public class SecretPlace : MonoBehaviour
         GameParams.Managers.levelInfoManager.AddSecretOnLevel();
     }
 
-    private void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        Bounds cubeBounds = GetComponent<BoxCollider>().bounds;
-        if (cubeBounds.Contains(PlayerParams.Objects.player.transform.position) && notVisited)
+        if (other.gameObject == PlayerParams.Objects.player && notVisited)
         {
             notVisited = false;
             GameParams.Managers.levelInfoManager.SecretFoundPopUp();

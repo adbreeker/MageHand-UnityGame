@@ -3,8 +3,11 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Current tile position:")]
-    public Vector3 currentTilePos;
+    [Header("Current tile:")]
+    /// <summary> Transform of tile on which player is currently staying  </summary>
+    public Transform currentTile;
+    /// <summary> Position of player on current tile  </summary>
+    public Vector3 currentOnTilePos;
 
     [Header("Movement")]
     public float movementSpeed = 7f;
@@ -43,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        currentTilePos = transform.position;
+        UpdateCurrentTile();
     }
 
     void Start()
@@ -61,6 +64,20 @@ public class PlayerMovement : MonoBehaviour
         MovementKeysListener(0, 0);
         RotationKeyListener(0);
         LeanKeyListener();
+    }
+
+    void UpdateCurrentTile()
+    {
+        currentOnTilePos = transform.position;
+        RaycastHit[] potentialTile = Physics.RaycastAll(transform.position, Vector3.down, 4.0f);
+        foreach (RaycastHit hit in potentialTile)
+        {
+            if(hit.transform.tag == "DungeonCube")
+            {
+                currentTile = hit.transform;
+                break;
+            }
+        }
     }
 
     void MovementKeysListener(float horizontalInputQueue, float verticalInputQueue)
@@ -114,11 +131,11 @@ public class PlayerMovement : MonoBehaviour
             {
                 //Debug.Log(stepTiming);
                 isMoving = false; //stop moving when the destination is reached
-                currentTilePos = transform.position;
+                UpdateCurrentTile();
             }
             if (!CanMove())
             {
-                _destination = currentTilePos; //back to previous tile if collide with something
+                _destination = currentOnTilePos; //back to previous tile if collide with something
             }
         }
     }
@@ -303,7 +320,7 @@ public class PlayerMovement : MonoBehaviour
         _movementInputQueue = Vector3.zero;
         _rotationInputQueue = 0;
 
-        currentTilePos = transform.position;
+        UpdateCurrentTile();
     }
     public void TeleportTo(Vector3 tpDestination, float tpRotation, Color? tpEffectColor)
     {
@@ -318,7 +335,7 @@ public class PlayerMovement : MonoBehaviour
         _movementInputQueue = Vector3.zero;
         _rotationInputQueue = 0;
 
-        currentTilePos = transform.position;
+        UpdateCurrentTile();
 
         AudioSource tpSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MagicalTeleportation);
         tpSound.Play();

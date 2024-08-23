@@ -19,23 +19,16 @@ public class SurpriseRunningWolves : MonoBehaviour
 
     private void Update()
     {
-        if(!_wolf1Activated && PlayerParams.Objects.player.transform.position == TileToPlayerPos(_triggerTile1.position))
+        if(!_wolf1Activated && PlayerParams.Controllers.playerMovement.currentTile == _triggerTile1)
         {
             _wolf1Activated=true;
             _wolf1Controller.SetWolfMovement(_wolf1Path, true, true);
         }
 
-        if (!_wolf2Activated && PlayerParams.Objects.player.transform.position == TileToPlayerPos(_triggerTile2.position))
+        if (!_wolf2Activated && PlayerParams.Controllers.playerMovement.currentTile == _triggerTile2)
         {
             _wolf2Activated = true;
             _wolf2Controller.SetWolfMovement(_wolf2Path, true, true);
         }
-    }
-
-    Vector3 TileToPlayerPos(Vector3 tilePos)
-    {
-        Vector3 playerPos = tilePos;
-        playerPos.y = PlayerParams.Objects.player.transform.position.y;
-        return playerPos;
     }
 }

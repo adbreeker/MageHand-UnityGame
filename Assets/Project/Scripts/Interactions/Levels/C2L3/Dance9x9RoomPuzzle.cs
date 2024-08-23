@@ -19,11 +19,11 @@ public class Dance9x9RoomPuzzle : MonoBehaviour
 
     void Update()
     {
-        Vector3 playerPos = PlayerParams.Controllers.playerMovement.currentTilePos;
+        Transform playerPos = PlayerParams.Controllers.playerMovement.currentTile;
 
         if (!_isOnPath)
         {
-            if (playerPos == TileToPlayerPos(_danceTiles[_tileIndex].position))
+            if (playerPos == _danceTiles[_tileIndex])
             {
                 _isOnPath = true;
             }
@@ -33,7 +33,7 @@ public class Dance9x9RoomPuzzle : MonoBehaviour
             //resolving special situations - being on last tile of path
             if (_tileIndex == _danceTiles.Count - 1)
             {
-                if (playerPos == TileToPlayerPos(_danceTiles[_tileIndex].position))
+                if (playerPos == _danceTiles[_tileIndex])
                 {
                     foreach(OpenWallPassage owp in _wallsToOpen)
                     {
@@ -49,13 +49,13 @@ public class Dance9x9RoomPuzzle : MonoBehaviour
                 }
             }
             //checking if player following path
-            if (playerPos != TileToPlayerPos(_danceTiles[_tileIndex].position) && playerPos != TileToPlayerPos(_danceTiles[_tileIndex + 1].position))
+            if (playerPos != _danceTiles[_tileIndex] && playerPos != _danceTiles[_tileIndex + 1])
             {
                 PlayerMissedPath();
                 return;
             }
             //increasing path index if path is followed
-            if (playerPos == TileToPlayerPos(_danceTiles[_tileIndex + 1].position))
+            if (playerPos == _danceTiles[_tileIndex + 1])
             {
                 _tileIndex += 1;
             }
@@ -132,12 +132,5 @@ public class Dance9x9RoomPuzzle : MonoBehaviour
             StopCoroutine(_pirouetteCoroutine);
             _pirouetteCoroutine = null;
         }
-    }
-
-    Vector3 TileToPlayerPos(Vector3 tilePos)
-    {
-        Vector3 playerPos = tilePos;
-        playerPos.y = PlayerParams.Objects.player.transform.position.y;
-        return playerPos;
     }
 }

@@ -45,8 +45,7 @@ public class StaringContestSecret : MonoBehaviour
 
     bool IsStaring()
     {
-        if(PlayerParams.Controllers.playerMovement.currentTilePos.x == _staringContestCube.transform.position.x
-            && PlayerParams.Controllers.playerMovement.currentTilePos.z == _staringContestCube.transform.position.z)
+        if(PlayerParams.Controllers.playerMovement.currentTile == _staringContestCube.transform)
         {
             if(PlayerParams.Objects.player.transform.rotation.eulerAngles == Vector3.zero)
             {
