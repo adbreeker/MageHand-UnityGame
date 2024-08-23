@@ -16,16 +16,6 @@ public class LabirynthTraps : MonoBehaviour
     bool _onCage2Trigger = false;
     bool _onCage3Trigger = false;
 
-    bool IsPlayerOnPosition(Transform position)
-    {
-        if(position.position.x == PlayerParams.Controllers.playerMovement.currentTilePos.x
-            && position.position.z == PlayerParams.Controllers.playerMovement.currentTilePos.z)
-        {
-            return true;
-        }
-        return false;
-    }
-
     private void Update()
     {
         CheckRightTunnel();
@@ -37,7 +27,7 @@ public class LabirynthTraps : MonoBehaviour
 
     void CheckLeftTunnel()
     {
-        if(IsPlayerOnPosition(_leftTunnel) && !_onLeftTunnelTrigger)
+        if(PlayerParams.Controllers.playerMovement.currentTile == _leftTunnel && !_onLeftTunnelTrigger)
         {
             _onLeftTunnelTrigger = true;
             if(_wallLeft.passageOpen)
@@ -46,7 +36,7 @@ public class LabirynthTraps : MonoBehaviour
             }
         }
 
-        if(!IsPlayerOnPosition(_leftTunnel) && _onLeftTunnelTrigger)
+        if(PlayerParams.Controllers.playerMovement.currentTile != _leftTunnel && _onLeftTunnelTrigger)
         {
             _onLeftTunnelTrigger = false;
         }
@@ -54,7 +44,7 @@ public class LabirynthTraps : MonoBehaviour
 
     void CheckRightTunnel()
     {
-        if (IsPlayerOnPosition(_rightTunnel) && !_onRightTunnelTrigger)
+        if (PlayerParams.Controllers.playerMovement.currentTile == _rightTunnel && !_onRightTunnelTrigger)
         {
             _onRightTunnelTrigger = true;
             if (_wallRight.passageOpen)
@@ -63,7 +53,7 @@ public class LabirynthTraps : MonoBehaviour
             }
         }
 
-        if (!IsPlayerOnPosition(_rightTunnel) && _onRightTunnelTrigger)
+        if (PlayerParams.Controllers.playerMovement.currentTile != _rightTunnel && _onRightTunnelTrigger)
         {
             _onRightTunnelTrigger = false;
         }
@@ -71,7 +61,7 @@ public class LabirynthTraps : MonoBehaviour
 
     void CheckCage1()
     {
-        if (IsPlayerOnPosition(_cage1) && !_onCage1Trigger)
+        if (PlayerParams.Controllers.playerMovement.currentTile == _cage1 && !_onCage1Trigger)
         {
             _onCage1Trigger = true;
             if (_bars1.passageOpen)
@@ -80,7 +70,7 @@ public class LabirynthTraps : MonoBehaviour
             }
         }
 
-        if (!IsPlayerOnPosition(_cage1) && _onCage1Trigger)
+        if (PlayerParams.Controllers.playerMovement.currentTile != _cage1 && _onCage1Trigger)
         {
             _onCage1Trigger = false;
         }
@@ -88,7 +78,7 @@ public class LabirynthTraps : MonoBehaviour
 
     void CheckCage2() 
     {
-        if (IsPlayerOnPosition(_cage2) && !_onCage2Trigger)
+        if (PlayerParams.Controllers.playerMovement.currentTile == _cage1 && !_onCage2Trigger)
         {
             _onCage2Trigger = true;
             if (_bars2.passageOpen)
@@ -97,7 +87,7 @@ public class LabirynthTraps : MonoBehaviour
             }
         }
 
-        if (!IsPlayerOnPosition(_cage2) && _onCage2Trigger)
+        if (PlayerParams.Controllers.playerMovement.currentTile != _cage2 && _onCage2Trigger)
         {
             _onCage2Trigger = false;
         }
@@ -105,7 +95,7 @@ public class LabirynthTraps : MonoBehaviour
 
     void CheckCage3()
     {
-        if (IsPlayerOnPosition(_cage3) && !_onCage3Trigger)
+        if (PlayerParams.Controllers.playerMovement.currentTile == _cage1 && !_onCage3Trigger)
         {
             _onCage3Trigger = true;
             if (_bars3.passageOpen)
@@ -114,7 +104,7 @@ public class LabirynthTraps : MonoBehaviour
             }
         }
 
-        if (!IsPlayerOnPosition(_cage3) && _onCage3Trigger)
+        if (PlayerParams.Controllers.playerMovement.currentTile != _cage3 && _onCage3Trigger)
         {
             _onCage3Trigger = false;
         }

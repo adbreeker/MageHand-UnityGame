@@ -14,18 +14,21 @@ public class SI_Teleportation : SwitchInteraction
 
     public override void Interact()
     {
-        if(interactedObject.tag == "Player")
+        foreach(GameObject interactedObject in interactedObjects)
         {
-            Vector3 tpDest = tpDestination;
-            float tpRot = tpRotation;
-            if(teleportOnCurrentHeight) { tpDest.y = PlayerParams.Objects.player.transform.position.y; }
-            if(teleportWithCurrentRotation) { tpRot = PlayerParams.Objects.player.transform.rotation.eulerAngles.y; }
+            if (interactedObject.tag == "Player")
+            {
+                Vector3 tpDest = tpDestination;
+                float tpRot = tpRotation;
+                if (teleportOnCurrentHeight) { tpDest.y = PlayerParams.Objects.player.transform.position.y; }
+                if (teleportWithCurrentRotation) { tpRot = PlayerParams.Objects.player.transform.rotation.eulerAngles.y; }
 
-            PlayerParams.Controllers.playerMovement.TeleportTo(tpDest, tpRot, null);
-        }
-        else
-        {
+                PlayerParams.Controllers.playerMovement.TeleportTo(tpDest, tpRot, null);
+            }
+            else
+            {
 
+            }
         }
     }
 }

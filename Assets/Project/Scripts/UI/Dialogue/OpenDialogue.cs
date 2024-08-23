@@ -20,11 +20,9 @@ public class OpenDialogue : MonoBehaviour
 
     public event Action DialogueStarted;
 
-    private void Update()
+    private void OnTriggerStay(Collider other)
     {
-        //Activates canvas (dialogue) while player enters bounds of object that this script is connected to
-        Bounds cubeBounds = GetComponent<BoxCollider>().bounds;
-        if (cubeBounds.Contains(PlayerParams.Objects.player.transform.position) && allowToActivate)
+        if (other.gameObject == PlayerParams.Objects.player && allowToActivate)
         {
             allowToActivate = false;
 
@@ -37,11 +35,10 @@ public class OpenDialogue : MonoBehaviour
                     PlayerParams.Controllers.journal.dialoguesJournal.Add(dialogueSaveName, new List<List<string>>());
                 }
             }
-            
+
             dialogueCanvas.gameObject.SetActive(true);
         }
     }
-
 
     private List<DialogueTreeElement> dialogueTree = new List<DialogueTreeElement>();
     private List<int> treeEndpoints = new List<int>();

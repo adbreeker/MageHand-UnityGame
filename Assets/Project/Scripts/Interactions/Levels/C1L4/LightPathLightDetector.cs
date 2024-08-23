@@ -7,7 +7,7 @@ public class LightPathLightDetector : MonoBehaviour
     [SerializeField] Transform _nextDetector;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponent<LightSpellBehavior>() != null)
+        if (other.gameObject.GetComponent<LightSpellBehavior>() != null && other.transform.parent == null)
         {
             RotateTowardsNextDetector(other.gameObject);
         }

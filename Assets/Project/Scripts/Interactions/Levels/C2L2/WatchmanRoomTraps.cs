@@ -15,21 +15,11 @@ public class WatchmanRoomTraps : MonoBehaviour
     bool _trap1Triggered = false;
     bool _trap2Triggered = false;
 
-    bool IsPlayerOnPosition(Transform position)
-    {
-        if (position.position.x == PlayerParams.Controllers.playerMovement.currentTilePos.x
-            && position.position.z == PlayerParams.Controllers.playerMovement.currentTilePos.z)
-        {
-            return true;
-        }
-        return false;
-    }
-
     void Update()
     {
         if(!_trap1Triggered) 
         {
-            if(IsPlayerOnPosition(_cage1))
+            if(PlayerParams.Controllers.playerMovement.currentTile == _cage1)
             {
                 _trap1Triggered=true;
                 _bars1.Interaction();
@@ -38,7 +28,7 @@ public class WatchmanRoomTraps : MonoBehaviour
 
         if (!_trap2Triggered)
         {
-            if(IsPlayerOnPosition(_cage2))
+            if(PlayerParams.Controllers.playerMovement.currentTile == _cage2)
             {
                 _trap2Triggered=true;
                 _bars2.Interaction();

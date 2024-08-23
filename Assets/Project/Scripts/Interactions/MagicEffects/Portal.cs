@@ -15,43 +15,28 @@ public class Portal : MonoBehaviour
     [Header("Teleportation beneficiaries mask")]
     public LayerMask toTeleport;
 
-    BoxCollider portalCollider;
-
-    private void Awake() //get teleport collider and set teleportation destination y variable to 1
+    private void OnTriggerEnter(Collider toTeleport)
     {
-        portalCollider = GetComponent<BoxCollider>();
-        teleportationDestination.y = 1;
-    }
+        Vector3 tpDest = teleportationDestination;
+        float tpRot = teleportationRotation;
+        if (teleportOnCurrentHeight) { tpDest.y = toTeleport.transform.position.y; }
+        if (teleportOnCurrentRotation) { tpRot = toTeleport.transform.rotation.eulerAngles.y; }
 
-    private void Update()
-    {
-        //get colliders on specified layers inside portal collider
-        Collider[] colliders = Physics.OverlapBox(portalCollider.bounds.center, portalCollider.bounds.extents, Quaternion.identity, toTeleport);
-
-        //teleport all found objects
-        foreach(Collider toTeleport in colliders)
+        if (toTeleport.gameObject.tag == "Player") //if player add player teleportation effect
         {
-            Vector3 tpDest = teleportationDestination;
-            float tpRot = teleportationRotation;
-            if(teleportOnCurrentHeight) { tpDest.y = toTeleport.transform.position.y; }
-            if(teleportOnCurrentRotation) { tpRot = toTeleport.transform.rotation.eulerAngles.y; }
 
-            if (toTeleport.gameObject.tag == "Player") //if player add player teleportation effect
+            toTeleport.GetComponent<PlayerMovement>().TeleportTo(tpDest, tpRot, gameObject.GetComponent<ParticleSystem>().main.startColor.color);
+        }
+        else
+        {
+            if (toTeleport.transform.parent == null) //else add object teleportation effect
             {
+                toTeleport.gameObject.transform.position = tpDest;
+                toTeleport.gameObject.transform.rotation = Quaternion.Euler(toTeleport.gameObject.transform.rotation.eulerAngles.x, tpRot, toTeleport.gameObject.transform.rotation.eulerAngles.z);
 
-                toTeleport.GetComponent<PlayerMovement>().TeleportTo(tpDest, tpRot, gameObject.GetComponent<ParticleSystem>().main.startColor.color);
-            }
-            else
-            {
-                if(toTeleport.transform.parent == null) //else add object teleportation effect
-                {
-                    toTeleport.gameObject.transform.position = tpDest;
-                    toTeleport.gameObject.transform.rotation = Quaternion.Euler(toTeleport.gameObject.transform.rotation.eulerAngles.x, tpRot, toTeleport.gameObject.transform.rotation.eulerAngles.z);
-                    
-                    GameObject tpEffect = GameParams.Holders.materialsAndEffectsHolder.GetEffect(MaterialsAndEffectsHolder.Effects.teleportationObject);
-                    Instantiate(tpEffect, teleportationDestination, Quaternion.identity)
-                        .GetComponent<ParticlesColor>().ChangeColorOfEffect(gameObject.GetComponent<ParticleSystem>().main.startColor.color);
-                }
+                GameObject tpEffect = GameParams.Holders.materialsAndEffectsHolder.GetEffect(MaterialsAndEffectsHolder.Effects.teleportationObject);
+                Instantiate(tpEffect, teleportationDestination, Quaternion.identity)
+                    .GetComponent<ParticlesColor>().ChangeColorOfEffect(gameObject.GetComponent<ParticleSystem>().main.startColor.color);
             }
         }
     }

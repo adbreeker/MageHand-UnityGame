@@ -10,16 +10,19 @@ public class SI_WallCannon : SwitchInteraction
 
     public override void Interact()
     {
-        WallCannonBehavior wallCannon = interactedObject.GetComponent<WallCannonBehavior>();
+        foreach(GameObject interactedObject in interactedObjects)
+        {
+            WallCannonBehavior wallCannon = interactedObject.GetComponent<WallCannonBehavior>();
 
-        if(launchOnce) 
-        {
-            wallCannon.LaunchMissile();
-        }
-        if(changeLaunchingStatus)
-        {
-            if (wallCannon.IsLaunching()) { wallCannon.SetLaunching(false); }
-            else { wallCannon.SetLaunching(true); }
+            if (launchOnce)
+            {
+                wallCannon.LaunchMissile();
+            }
+            if (changeLaunchingStatus)
+            {
+                if (wallCannon.IsLaunching()) { wallCannon.SetLaunching(false); }
+                else { wallCannon.SetLaunching(true); }
+            }
         }
     }
 }

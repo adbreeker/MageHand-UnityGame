@@ -24,10 +24,11 @@ public class TutorialPanel : MonoBehaviour
     private void Update()
     {
         KeysListener();
+    }
 
-        //Activates panel while player enters bounds of object that this script is connected to
-        Bounds cubeBounds = GetComponent<BoxCollider>().bounds;
-        if (cubeBounds.Contains(PlayerParams.Objects.player.transform.position) && activatePanelOnEntry)
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject == PlayerParams.Objects.player && activatePanelOnEntry)
         {
             foreach (TutorialPanel panel in FindObjectsOfType<TutorialPanel>())
             {

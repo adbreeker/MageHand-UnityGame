@@ -5,7 +5,6 @@ using UnityEngine;
 public class SwitchInteraction : MonoBehaviour
 {
     [Header("Object to interact")]
-    public GameObject interactedObject;
     public List<GameObject> interactedObjects;
     
     public virtual void Interact() //invoking Interaction method on assigned object

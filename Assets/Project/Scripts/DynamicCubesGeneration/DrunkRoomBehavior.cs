@@ -14,7 +14,7 @@ public class DrunkRoomBehavior : MonoBehaviour
 
     private void Awake()
     {
-        playerPreviousPos = PlayerParams.Controllers.playerMovement.currentTilePos;
+        playerPreviousPos = PlayerParams.Controllers.playerMovement.currentOnTilePos;
         StartCoroutine(WaitForAnimationAndDialogue());
     }
 

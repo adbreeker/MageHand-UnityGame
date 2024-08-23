@@ -34,9 +34,7 @@ public class WolfEncounter : MonoBehaviour
 
     void Update()
     {
-        if(!_wolfTriggered
-            && PlayerParams.Controllers.playerMovement.currentTilePos.x == _wolfEnterTrigger.position.x 
-            && PlayerParams.Controllers.playerMovement.currentTilePos.z == _wolfEnterTrigger.position.z)
+        if(!_wolfTriggered && PlayerParams.Controllers.playerMovement.currentTile == _wolfEnterTrigger)
         {
             _wolfTriggered = true;
             _wolf.SetWolfMovement(_runningInPath);
@@ -55,8 +53,7 @@ public class WolfEncounter : MonoBehaviour
             _wallSecret.Interaction();
         }
 
-        if (PlayerParams.Controllers.playerMovement.currentTilePos.x == _afterTeleportTrigger.position.x
-            && PlayerParams.Controllers.playerMovement.currentTilePos.z == _afterTeleportTrigger.position.z)
+        if (PlayerParams.Controllers.playerMovement.currentTile == _afterTeleportTrigger)
         {
             if(_wolf == null) { PlayerParams.Controllers.pointsManager.plotPoints -= 4; Debug.Log("-4pkt"); }
             else if(_wolfWalkingPeacefully) { PlayerParams.Controllers.pointsManager.plotPoints += 4; Debug.Log("4pkt"); }
