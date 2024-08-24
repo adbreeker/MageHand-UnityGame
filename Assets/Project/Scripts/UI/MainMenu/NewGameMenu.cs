@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System;
+using FMODUnity;
 
 public class NewGameMenu : MonoBehaviour
 {
@@ -19,10 +20,6 @@ public class NewGameMenu : MonoBehaviour
     private int pointedOptionMenu;
     private bool closing = false;
     private List<TextMeshProUGUI> menuOptions = new List<TextMeshProUGUI>();
-
-    private AudioSource closeSound;
-    private AudioSource changeSound;
-    private AudioSource selectSound;
 
     private float keyTimeDelayFirst = 20f;
     private float keyTimeDelay = 10f;
@@ -43,13 +40,13 @@ public class NewGameMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            closeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
             CloseMenu();
         }
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            changeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
             if (pointedOptionMenu < menuOptions.Count - 1)
             {
                 pointedOptionMenu++;
@@ -63,7 +60,7 @@ public class NewGameMenu : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            changeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
@@ -77,7 +74,7 @@ public class NewGameMenu : MonoBehaviour
 
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.S))
         {
-            changeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
             if (pointedOptionMenu < menuOptions.Count - 1)
             {
                 pointedOptionMenu++;
@@ -91,7 +88,7 @@ public class NewGameMenu : MonoBehaviour
 
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.W))
         {
-            changeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
@@ -105,7 +102,7 @@ public class NewGameMenu : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            selectSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_SelectOption);
             if (pointedOptionMenu == 0)
             {
                 closing = true;
@@ -147,10 +144,6 @@ public class NewGameMenu : MonoBehaviour
 
         pointer = givenPointer;
 
-        closeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Close);
-        changeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
-        selectSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption);
-
         for (int i = 1; i < 3; i++)
         {
             string text = i.ToString();
@@ -170,9 +163,6 @@ public class NewGameMenu : MonoBehaviour
             instantiatedSavesMenu.GetComponent<SavesMenu>().OpenMenu(pointer, int.Parse(saveName.Substring(saveName.Length - 1)) - 1);
 
             menuOptions.Clear();
-            Destroy(closeSound.gameObject, closeSound.clip.length);
-            Destroy(changeSound.gameObject, changeSound.clip.length);
-            Destroy(selectSound.gameObject, selectSound.clip.length);
             Destroy(gameObject);
         }
         else
@@ -180,9 +170,6 @@ public class NewGameMenu : MonoBehaviour
             pointer.transform.SetParent(transform.parent.transform.Find("Menu"));
             menuOptions.Clear();
             transform.parent.transform.Find("Menu").gameObject.SetActive(true);
-            Destroy(closeSound.gameObject, closeSound.clip.length);
-            Destroy(changeSound.gameObject, changeSound.clip.length);
-            Destroy(selectSound.gameObject, selectSound.clip.length);
             Destroy(gameObject);
         }
     }

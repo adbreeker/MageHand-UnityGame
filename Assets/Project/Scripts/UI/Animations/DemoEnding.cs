@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -22,7 +23,7 @@ public class DemoEnding : MonoBehaviour
     {
         if (end && !ending && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Escape)))
         {
-            GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption).Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_SelectOption);
             GameParams.Managers.fadeInOutManager.CloseGame();
             ending = true;
         }

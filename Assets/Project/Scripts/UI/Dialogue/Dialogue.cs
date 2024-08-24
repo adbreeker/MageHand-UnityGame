@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using FMODUnity;
 
 public class Dialogue : MonoBehaviour
 {
@@ -34,8 +35,6 @@ public class Dialogue : MonoBehaviour
     [Header("Player choice")]
     public string playerChoice = "";
 
-    private AudioSource changeSound;
-    private AudioSource selectSound;
     private AudioSource voice;
     private GameObject pointer;
     private TextMeshProUGUI nameTextObject;
@@ -76,8 +75,6 @@ public class Dialogue : MonoBehaviour
         nameTextObject = transform.Find("Text").Find("Name").GetComponent<TextMeshProUGUI>();
         contentTextObject = transform.Find("Text").Find("Content").GetComponent<TextMeshProUGUI>();
 
-        changeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
-        selectSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption);
         if (guideVoiceline) voice = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.VOICES_Guide);
         else voice = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.VOICES_Mage);
         voice.loop = true;
@@ -145,7 +142,7 @@ public class Dialogue : MonoBehaviour
                     if (!string.IsNullOrWhiteSpace(options[i].text))
                     {
                         choice = i;
-                        if(choice != 1) changeSound.Play();
+                        if(choice != 1) RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                         PointOption(options[choice]);
                         break;
                     }
@@ -153,7 +150,7 @@ public class Dialogue : MonoBehaviour
             }
             else
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                 choice--;
                 PointOption(options[choice]);
             }
@@ -165,19 +162,19 @@ public class Dialogue : MonoBehaviour
         {
             if (choice == 4)
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                 choice = 1;
                 PointOption(options[choice]); 
             }
             else if (string.IsNullOrWhiteSpace(options[choice + 1].text))
             {
-                if(choice != 1) changeSound.Play();
+                if(choice != 1) RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                 choice = 1;
                 PointOption(options[choice]);
             }
             else
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                 choice++;
                 PointOption(options[choice]);
             }
@@ -193,7 +190,7 @@ public class Dialogue : MonoBehaviour
                     if (!string.IsNullOrWhiteSpace(options[i].text))
                     {
                         choice = i;
-                        if (choice != 1) changeSound.Play();
+                        if (choice != 1) RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                         PointOption(options[choice]);
                         break;
                     }
@@ -201,7 +198,7 @@ public class Dialogue : MonoBehaviour
             }
             else
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                 choice--;
                 PointOption(options[choice]);
             }
@@ -213,19 +210,19 @@ public class Dialogue : MonoBehaviour
 
             if (choice == 4)
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                 choice = 1;
                 PointOption(options[choice]);
             }
             else if (string.IsNullOrWhiteSpace(options[choice + 1].text))
             {
-                if(choice != 1) changeSound.Play();
+                if(choice != 1) RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                 choice = 1;
                 PointOption(options[choice]);
             }
             else
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                 choice++;
                 PointOption(options[choice]);
             }
@@ -235,7 +232,7 @@ public class Dialogue : MonoBehaviour
         //Choose pointed option (if choice is null, end dialogue and activate other controls)
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            selectSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_SelectOption);
 
             //Save dialogue to player's diary
             if (transform.parent.GetComponent<OpenDialogue>().saveDialogue)
@@ -267,9 +264,6 @@ public class Dialogue : MonoBehaviour
             {
                 optionsChoices[choice].gameObject.SetActive(true);
             }
-
-            Destroy(changeSound.gameObject, changeSound.clip.length);
-            Destroy(selectSound.gameObject, selectSound.clip.length);
         }
     }
 

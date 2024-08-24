@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,10 +17,6 @@ public class TutorialPanel : MonoBehaviour
 
     private bool openedPanel;
     private int currentPanelNumber;
-
-    private AudioSource openSound;
-    private AudioSource closeSound;
-    private AudioSource selectSound;
 
     private void Update()
     {
@@ -41,7 +38,7 @@ public class TutorialPanel : MonoBehaviour
 
             OpenPanel();
             wasLatelyOpened = true;
-            if (playOpenSound) openSound.Play();
+            if (playOpenSound) RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Open);
             activatePanelOnEntry = false;
         }
     }
@@ -50,12 +47,12 @@ public class TutorialPanel : MonoBehaviour
     {
         if (currentPanelNumber == tutorialPanelPrefabs.Count - 1 && openedPanel && Input.GetKeyDown(KeyCode.Space))
         {
-            closeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
             ClosePanel();
         }
         else if (openedPanel && Input.GetKeyDown(KeyCode.Space))
         {
-            selectSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_SelectOption);
             Destroy(tutorialPanel);
             currentPanelNumber++;
             tutorialPanel = Instantiate(tutorialPanelPrefabs[currentPanelNumber], new Vector3(0, 0, 0), Quaternion.identity);
@@ -66,7 +63,7 @@ public class TutorialPanel : MonoBehaviour
         if (wasLatelyOpened && !openedPanel && !PlayerParams.Variables.uiActive && Input.GetKeyDown(KeyCode.T))
         {
             OpenPanel();
-            openSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Open);
         }
     }
 
@@ -84,10 +81,6 @@ public class TutorialPanel : MonoBehaviour
         PlayerParams.Controllers.journal.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
-
-        openSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Open);
-        closeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Close);
-        selectSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption);
 
         currentPanelNumber = 0;
 
@@ -108,9 +101,6 @@ public class TutorialPanel : MonoBehaviour
         PlayerParams.Controllers.spellbook.ableToInteract = true;
         PlayerParams.Controllers.pauseMenu.ableToInteract = true;
         PlayerParams.Controllers.journal.ableToInteract = true;
-
-
-        if(openSound != null) Destroy(openSound.gameObject, openSound.clip.length);
 
         //if (tutorialPanelHitboxToActivate != null) tutorialPanelHitboxToActivate.SetActive(true);
         if (tutorialPanelHitboxToDeactivate != null) tutorialPanelHitboxToDeactivate.GetComponent<TutorialPanel>().activatePanelOnEntry = false;

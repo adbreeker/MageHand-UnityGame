@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using FMODUnity;
 
 public class Spellbook : MonoBehaviour
 {
@@ -19,11 +20,7 @@ public class Spellbook : MonoBehaviour
 
     //[Header("Voices")]
     private bool voiceIsPlaying;
-    private AudioSource closeSound;
-    private AudioSource openSound;
-    private AudioSource changeSound;
     private AudioSource lightVoice;
-    private AudioSource pickUpVoice;
     private AudioSource fireVoice;
     //private AudioSource fireVoice; etc.
 
@@ -65,18 +62,18 @@ public class Spellbook : MonoBehaviour
             if (!spellbookOpened && bookOwned)
             {
                 OpenSpellbook();
-                openSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Open);
             }
             else if (spellbookOpened) 
             {
-                closeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
                 CloseSpellbook();
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape) && spellbookOpened)
         {
-            closeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
             CloseSpellbook();
         }
 
@@ -84,14 +81,13 @@ public class Spellbook : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && spellbookOpened && GameSettings.useSpeech)
         {
 
-            if (lightVoice.isPlaying || pickUpVoice.isPlaying || fireVoice.isPlaying) voiceIsPlaying = true;
+            if (lightVoice.isPlaying || fireVoice.isPlaying) voiceIsPlaying = true;
             //if (lightVoice.isPlaying || fireVoice.isPlaying etc.) voiceIsPlaying = true; ^in place of that
             else voiceIsPlaying = false;
 
             if (!voiceIsPlaying)
             {
                 if (spellbookPages[page][pointed - 1].spellName == "Light") lightVoice.Play();
-                if (spellbookPages[page][pointed - 1].spellName == "Collect") pickUpVoice.Play();
                 if (spellbookPages[page][pointed - 1].spellName == "Fire") fireVoice.Play();
                 //if (spellbookPages[page][pointed - 1].spellName == "Fire") fireVoice.Play(); etc.
             }
@@ -104,13 +100,13 @@ public class Spellbook : MonoBehaviour
         {
             if (pointed == 2)
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                 pointed = 1;
                 PointOption(pointed);
             }
             else if (pointed == 1 && page > 0)
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                 page--;
                 DisplayPage(page);
                 pointed = 2;
@@ -123,13 +119,13 @@ public class Spellbook : MonoBehaviour
         {
             if (pointed == 1 && spellbookPages[page].Count == 2)
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                 pointed = 2;
                 PointOption(pointed);
             }
             else if (pointed == 2 && page + 1 < spellbookPages.Count)
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                 page++;
                 DisplayPage(page);
                 pointed = 1;
@@ -156,13 +152,8 @@ public class Spellbook : MonoBehaviour
         }
 
         //Assign proper voices
-        openSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Open);
-        closeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Close);
-        changeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
         lightVoice = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.READING_Light);
         lightVoice.volume *= 2f;
-        pickUpVoice = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.READING_PickUp);
-        pickUpVoice.volume *= 2f;
         fireVoice = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.READING_Fire);
         fireVoice.volume *= 2f;
         //fireVoice = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.READING_Fire); etc.
@@ -225,11 +216,7 @@ public class Spellbook : MonoBehaviour
     {
         if(spellbookOpened)
         {
-            Destroy(openSound.gameObject, openSound.clip.length);
-            Destroy(closeSound.gameObject, closeSound.clip.length);
-            Destroy(changeSound.gameObject, changeSound.clip.length);
             Destroy(lightVoice.gameObject, lightVoice.clip.length);
-            Destroy(pickUpVoice.gameObject, pickUpVoice.clip.length);
             Destroy(fireVoice.gameObject, fireVoice.clip.length);
             //Destroy(fireVoice.gameObject, fireVoice.clip.length); etc.
         }

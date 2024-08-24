@@ -20,18 +20,16 @@ public class FmodEvents : MonoBehaviour
     [field: SerializeField] public EventReference UI_Close { get; private set; }
     [field: SerializeField] public EventReference UI_Open { get; private set; }
     [field: SerializeField] public EventReference UI_PopUp { get; private set; }
-    [field: SerializeField] public EventReference UI_SecretFound { get; private set; }
-    [field: SerializeField] public EventReference UI_LevelInfoSound { get; private set; }
 
     [field: Header("SFX Voices")]
-    [field: SerializeField] public EventReference VOICES_Mage { get; private set; }
-    [field: SerializeField] public EventReference VOICES_Guide { get; private set; }
+    [field: SerializeField] public EventReference VOICE_Guide { get; private set; }
+    [field: SerializeField] public EventReference VOICE_Alandos { get; private set; }
 
     [field: Header("SFX Reading spells")]
-    [field: SerializeField] public EventReference READING_Light { get; private set; }
-    [field: SerializeField] public EventReference READING_Mark { get; private set; }
-    [field: SerializeField] public EventReference READING_Fire { get; private set; }
-    [field: SerializeField] public EventReference READING_Speak { get; private set; }
+    [field: SerializeField] public EventReference READ_Light { get; private set; }
+    [field: SerializeField] public EventReference READ_Mark { get; private set; }
+    [field: SerializeField] public EventReference READ_Fire { get; private set; }
+    [field: SerializeField] public EventReference READ_Speak { get; private set; }
 
     [field: Header("SFX Spells")]
     [field: SerializeField] public EventReference SFX_CastingSpell { get; private set; }
@@ -63,4 +61,6 @@ public class FmodEvents : MonoBehaviour
     [field: SerializeField] public EventReference SFX_Punch { get; private set; }
     [field: SerializeField] public EventReference SFX_IllusionBroken { get; private set; }
     [field: SerializeField] public EventReference SFX_MagicalTeleportation { get; private set; }
+    [field: SerializeField] public EventReference SFX_SecretFound { get; private set; }
+    [field: SerializeField] public EventReference SFX_LevelInfo { get; private set; }
 }

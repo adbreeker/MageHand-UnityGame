@@ -9,6 +9,7 @@ public class SoundManager : MonoBehaviour
         VOICES_Mage, //1
         VOICES_Guide, //1
 
+        /*
         MUSIC_Dungeon1Start, //0.25
         MUSIC_Dungeon1Loop, //0.25
         MUSIC_Dungeon2Start,
@@ -29,6 +30,7 @@ public class SoundManager : MonoBehaviour
         UI_Close, //1
         UI_Open, //1
         UI_PopUp, //1
+        */
 
         SFX_StepStone1, //0.5
         SFX_StepStone2, //0.5
@@ -53,11 +55,8 @@ public class SoundManager : MonoBehaviour
         SFX_CastingSpellFinished, //1
 
         READING_Light, //1
-        READING_PickUp, //1
         READING_Fire,
         READING_Mark,
-        READING_Return,
-        READING_Levitate,
 
         SFX_SpellLightRemaining, //1
         SFX_SpellLightBurst, //0.6
@@ -73,8 +72,8 @@ public class SoundManager : MonoBehaviour
         SFX_Earthquake, //1
         SFX_BodyFall, //1
         SFX_Punch, //0.9
-        SFX_SecretFound,
-        SFX_LevelInfoSound
+        //SFX_SecretFound,
+        //SFX_LevelInfoSound
     }
 
     private float volume;
@@ -88,9 +87,6 @@ public class SoundManager : MonoBehaviour
         public AudioClip audioClip;
         public float baseVolume;
     }
-
-    public Transform SoundsParent;
-
 
     public AudioSource CreateAudioSource(Sound sound, GameObject soundParent = null, float minHearingDistance = 4f, float maxHearingDistance = 20f)
     {
@@ -109,7 +105,7 @@ public class SoundManager : MonoBehaviour
             GameObject soundGameObject = new GameObject(sound.ToString());
             audioSource = soundGameObject.AddComponent<AudioSource>();
 
-            soundGameObject.transform.parent = SoundsParent;
+            soundGameObject.transform.parent = transform;
         }
 
         audioSource.clip = GetAudioClip(sound);

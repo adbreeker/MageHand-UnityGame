@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using FMODUnity;
 
 public class HUD : MonoBehaviour
 {
@@ -14,7 +15,6 @@ public class HUD : MonoBehaviour
     public GameObject popUpPrefab;
 
     private GameObject instantiatedPopUp;
-    private AudioSource popUpSound;
     private string ununnormalizedGestureText;
 
     void Update()
@@ -65,11 +65,7 @@ public class HUD : MonoBehaviour
 
         contentObject.text = content;
 
-        if (playSound)
-        {
-            if(popUpSound == null) popUpSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_PopUp);
-            popUpSound.Play();
-        }
+        if (playSound) RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_PopUp);
 
         StartCoroutine(FadeOutPopUp(instantiatedPopUp, timeToFadeOut, timeOfFadingOut, playSound));
     }

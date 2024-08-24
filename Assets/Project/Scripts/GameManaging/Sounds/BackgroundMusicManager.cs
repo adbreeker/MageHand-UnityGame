@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CreateBackgroundMusic : MonoBehaviour
+public class BackgroundMusicManager : MonoBehaviour
 {
     [SerializeField] private EventReference musicRef;
     void Awake()

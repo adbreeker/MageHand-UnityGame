@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using FMODUnity;
 
 public class SpellsMenu : MonoBehaviour
 {
@@ -17,15 +18,13 @@ public class SpellsMenu : MonoBehaviour
     private GameObject instantiatedMenu;
     private List<SpellCell> spellCells;
 
-    private AudioSource openSound;
-    private AudioSource closeSound;
     private AudioSource spellCastingSound;
 
     void Update()
     {
         if (menuOpened && Input.GetKeyDown(KeyCode.Escape))
         {
-            closeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
             CloseMenu();
         }
 
@@ -52,14 +51,10 @@ public class SpellsMenu : MonoBehaviour
         PlayerParams.Variables.uiActive = true;
 
 
-        openSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Open);
-        openSound.Play();
-        Destroy(openSound.gameObject, openSound.clip.length);
+        RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Open);
         spellCastingSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpell);
         spellCastingSound.loop = true;
         spellCastingSound.Play();
-
-        closeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Close);
 
         spellCells = new List<SpellCell>();
 
@@ -130,8 +125,6 @@ public class SpellsMenu : MonoBehaviour
 
         if (menuOpened)
         {
-            Destroy(closeSound.gameObject, closeSound.clip.length);
-
             Destroy(spellCastingSound.gameObject);
         }
 

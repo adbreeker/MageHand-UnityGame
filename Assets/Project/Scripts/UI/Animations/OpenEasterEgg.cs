@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using FMODUnity;
 
 public class OpenEasterEgg : MonoBehaviour
 {
@@ -30,7 +31,7 @@ public class OpenEasterEgg : MonoBehaviour
         if (animationEnded && Input.GetKeyDown(KeyCode.Space))
         {
             StartCoroutine(RestartScene());
-            GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption).Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_SelectOption);
             animationEnded = false;
         }
         if (Input.GetKeyDown(KeyCode.Space)) skip = true;

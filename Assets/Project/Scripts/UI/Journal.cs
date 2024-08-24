@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System;
+using FMODUnity;
 
 public class Journal : MonoBehaviour
 {
@@ -23,11 +24,6 @@ public class Journal : MonoBehaviour
     [Header("Settings")]
     public bool ableToInteract = true;
     public bool journalOpened = false;
-
-    private AudioSource closeSound;
-    private AudioSource openSound;
-    private AudioSource changeSound;
-    private AudioSource selectSound;
 
     private GameObject instantiatedJournal;
     private GameObject pointer;
@@ -164,11 +160,11 @@ public class Journal : MonoBehaviour
             if (!journalOpened)
             {
                 OpenJournal();
-                openSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Open);
             }
             else 
             {
-                closeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
                 CloseJournal();
             }
         }
@@ -178,7 +174,7 @@ public class Journal : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                closeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
                 CloseJournal();
             }
 
@@ -187,7 +183,7 @@ public class Journal : MonoBehaviour
             {
                 if(atDialoguesNamesList && instantiatedDialoguesNames.Count > 0)
                 {
-                    selectSound.Play();
+                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_SelectOption);
                     DisplayDialogue(instantiatedDialoguesNames[pointedDialogueName].text);
                 }
                 if(atNotesNamesList && instantiatedNotesNames.Count > 0)
@@ -201,8 +197,8 @@ public class Journal : MonoBehaviour
             {
                 if (atDialoguesNamesList)
                 {
-                    changeSound.Play();
-                    if(pointedDialogueName > 0)
+                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+                    if (pointedDialogueName > 0)
                     {
                         pointedDialogueName--;
                         dialoguesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += 1f / (instantiatedDialoguesNames.Count - 1);
@@ -217,7 +213,7 @@ public class Journal : MonoBehaviour
                 }
                 if (atNotesNamesList)
                 {
-                    changeSound.Play();
+                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                     if (pointedNoteName > 0)
                     {
                         pointedNoteName--;
@@ -238,8 +234,8 @@ public class Journal : MonoBehaviour
             {
                 if (atDialoguesNamesList)
                 {
-                    changeSound.Play();
-                    if(pointedDialogueName < instantiatedDialoguesNames.Count - 1)
+                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+                    if (pointedDialogueName < instantiatedDialoguesNames.Count - 1)
                     {
                         pointedDialogueName++;
                         dialoguesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -1f / (instantiatedDialoguesNames.Count - 1);
@@ -254,8 +250,8 @@ public class Journal : MonoBehaviour
                 }
                 if (atNotesNamesList)
                 {
-                    changeSound.Play();
-                    if(pointedNoteName < instantiatedNotesNames.Count - 1)
+                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+                    if (pointedNoteName < instantiatedNotesNames.Count - 1)
                     {
                         pointedNoteName++;
                         notesNamesScrollView.GetComponent<ScrollRect>().verticalNormalizedPosition += -1f / (instantiatedNotesNames.Count - 1);
@@ -274,7 +270,7 @@ public class Journal : MonoBehaviour
             {
                 if (atDialoguesNamesList)
                 {
-                    changeSound.Play();
+                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                     if (pointedDialogueName > 0)
                     {
                         pointedDialogueName--;
@@ -290,7 +286,7 @@ public class Journal : MonoBehaviour
                 }
                 if (atNotesNamesList)
                 {
-                    changeSound.Play();
+                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                     if (pointedNoteName > 0)
                     {
                         pointedNoteName--;
@@ -311,7 +307,7 @@ public class Journal : MonoBehaviour
             {
                 if (atDialoguesNamesList)
                 {
-                    changeSound.Play();
+                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                     if (pointedDialogueName < instantiatedDialoguesNames.Count - 1)
                     {
                         pointedDialogueName++;
@@ -327,7 +323,7 @@ public class Journal : MonoBehaviour
                 }
                 if (atNotesNamesList)
                 {
-                    changeSound.Play();
+                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                     if (pointedNoteName < instantiatedNotesNames.Count - 1)
                     {
                         pointedNoteName++;
@@ -345,7 +341,7 @@ public class Journal : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.A) && atNotesNamesList && pointedDialogueName < instantiatedDialoguesNames.Count)
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                 atDialoguesNamesList = true;
                 atNotesNamesList = false;
                 PointName(pointedDialogueName);
@@ -353,7 +349,7 @@ public class Journal : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.D) && atDialoguesNamesList && pointedNoteName < instantiatedNotesNames.Count)
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
                 atDialoguesNamesList = false;
                 atNotesNamesList = true;
                 PointName(pointedNoteName);
@@ -367,7 +363,7 @@ public class Journal : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                closeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
                 DisplayNamesBack();
             }
 
@@ -399,11 +395,6 @@ public class Journal : MonoBehaviour
         PlayerParams.Controllers.pauseMenu.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
-
-        openSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Open);
-        closeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Close);
-        changeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
-        selectSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption);
 
         pointer = instantiatedJournal.transform.Find("ScrollableDialoguesNames").Find("Pointer").gameObject;
         namesBackground = instantiatedJournal.transform.Find("Background").Find("NamesBackgroud").gameObject;
@@ -503,13 +494,6 @@ public class Journal : MonoBehaviour
 
     public void CloseJournal()
     {
-        if (journalOpened)
-        {
-            Destroy(openSound.gameObject, openSound.clip.length);
-            Destroy(closeSound.gameObject, closeSound.clip.length);
-            Destroy(selectSound.gameObject, selectSound.clip.length);
-            Destroy(changeSound.gameObject, changeSound.clip.length);
-        }
         if (instantiatedNote != null) Destroy(instantiatedNote);
         Destroy(instantiatedJournal);
         journalOpened = false;

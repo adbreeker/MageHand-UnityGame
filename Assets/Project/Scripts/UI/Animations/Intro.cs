@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using FMODUnity;
 
 public class Intro : MonoBehaviour
 {
@@ -26,7 +27,7 @@ public class Intro : MonoBehaviour
         if (animationEnded && Input.GetKeyDown(KeyCode.Space))
         {
             GameParams.Managers.fadeInOutManager.ChangeScene(nextLevel);
-            GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption).Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_SelectOption);
             animationEnded = false;
         }
 
