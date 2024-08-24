@@ -15,7 +15,7 @@ public class ControlsMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiClose);
             CloseMenu();
         }
     }

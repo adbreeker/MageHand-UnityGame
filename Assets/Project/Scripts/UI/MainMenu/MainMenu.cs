@@ -72,7 +72,7 @@ public class MainMenu : MonoBehaviour
         //Move down
         if (Input.GetKeyDown(KeyCode.S))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             GoDown(pointedOptionMenu);
             keyTimeDelayer = keyTimeDelayFirst;
         }
@@ -80,21 +80,21 @@ public class MainMenu : MonoBehaviour
         //Move up
         if (Input.GetKeyDown(KeyCode.W))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             GoUp(pointedOptionMenu);
             keyTimeDelayer = keyTimeDelayFirst;
         }
 
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.S))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             GoDown(pointedOptionMenu);
             keyTimeDelayer = keyTimeDelay;
         }
 
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.W))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             GoUp(pointedOptionMenu);
             keyTimeDelayer = keyTimeDelay;
         }
@@ -102,7 +102,7 @@ public class MainMenu : MonoBehaviour
         //Choice
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_SelectOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
             if (pointedOptionMenu == 0)
             {
                 //Continue

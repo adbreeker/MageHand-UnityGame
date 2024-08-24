@@ -52,23 +52,23 @@ public class Inventory : MonoBehaviour
                     PlayerParams.Controllers.handInteractions.PutDownObject();
                 }
                 OpenInventory();
-                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Open);
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiOpen);
             }
             else if (!inventoryOpened)
             {
                 OpenInventory();
-                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Open);
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiOpen);
             }
             else
             {
-                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiClose);
                 CloseInventory();
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape) && inventoryOpened)
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiClose);
             CloseInventory();
         }
 
@@ -77,7 +77,7 @@ public class Inventory : MonoBehaviour
         {
             if (page > 0)
             {
-                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
                 page--;
                 DisplayPage(page);
             }
@@ -88,7 +88,7 @@ public class Inventory : MonoBehaviour
         {
             if (page + 1 < inventoryPages.Count)
             {
-                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
                 page++;
                 DisplayPage(page);
             }

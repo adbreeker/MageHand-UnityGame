@@ -62,18 +62,18 @@ public class Spellbook : MonoBehaviour
             if (!spellbookOpened && bookOwned)
             {
                 OpenSpellbook();
-                RuntimeManager.PlayOneShot(FmodEvents.UI_Open);
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiOpen);
             }
             else if (spellbookOpened) 
             {
-                RuntimeManager.PlayOneShot(FmodEvents.UI_Close);
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiClose);
                 CloseSpellbook();
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape) && spellbookOpened)
         {
-            RuntimeManager.PlayOneShot(FmodEvents.UI_Close);
+            RuntimeManager.PlayOneShot(FmodEvents.NP_UiClose);
             CloseSpellbook();
         }
 
@@ -83,15 +83,15 @@ public class Spellbook : MonoBehaviour
             if (!readingSound.isValid())
             {
                 EventReference readingSpellRef;
-                if (spellbookPages[page][pointed - 1].spellName == "Light") readingSpellRef = FmodEvents.READ_Light;
-                else if (spellbookPages[page][pointed - 1].spellName == "Mark") readingSpellRef = FmodEvents.READ_Mark;
-                else if (spellbookPages[page][pointed - 1].spellName == "Fire") readingSpellRef = FmodEvents.READ_Fire;
-                else if (spellbookPages[page][pointed - 1].spellName == "Speak") readingSpellRef = FmodEvents.READ_Speak;
+                if (spellbookPages[page][pointed - 1].spellName == "Light") readingSpellRef = FmodEvents.SFX_ReadLight;
+                else if (spellbookPages[page][pointed - 1].spellName == "Mark") readingSpellRef = FmodEvents.SFX_ReadMark;
+                else if (spellbookPages[page][pointed - 1].spellName == "Fire") readingSpellRef = FmodEvents.SFX_ReadFire;
+                else if (spellbookPages[page][pointed - 1].spellName == "Speak") readingSpellRef = FmodEvents.SFX_ReadSpeak;
                 //etc.
                 else
                 {
                     Debug.LogError("Spell with no reading assign");
-                    readingSpellRef = FmodEvents.UI_SelectOption;
+                    readingSpellRef = FmodEvents.NP_UiSelectOption;
                 } 
 
                 readingSound = GameParams.Managers.audioManager.PlayOneShotReturnInstance(readingSpellRef);
@@ -106,13 +106,13 @@ public class Spellbook : MonoBehaviour
         {
             if (pointed == 2)
             {
-                RuntimeManager.PlayOneShot(FmodEvents.UI_ChangeOption);
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 pointed = 1;
                 PointOption(pointed);
             }
             else if (pointed == 1 && page > 0)
             {
-                RuntimeManager.PlayOneShot(FmodEvents.UI_ChangeOption);
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 page--;
                 DisplayPage(page);
                 pointed = 2;
@@ -125,13 +125,13 @@ public class Spellbook : MonoBehaviour
         {
             if (pointed == 1 && spellbookPages[page].Count == 2)
             {
-                RuntimeManager.PlayOneShot(FmodEvents.UI_ChangeOption);
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 pointed = 2;
                 PointOption(pointed);
             }
             else if (pointed == 2 && page + 1 < spellbookPages.Count)
             {
-                RuntimeManager.PlayOneShot(FmodEvents.UI_ChangeOption);
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 page++;
                 DisplayPage(page);
                 pointed = 1;

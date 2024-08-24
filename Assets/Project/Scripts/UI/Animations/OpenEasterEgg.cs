@@ -31,7 +31,7 @@ public class OpenEasterEgg : MonoBehaviour
         if (animationEnded && Input.GetKeyDown(KeyCode.Space))
         {
             StartCoroutine(RestartScene());
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_SelectOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
             animationEnded = false;
         }
         if (Input.GetKeyDown(KeyCode.Space)) skip = true;

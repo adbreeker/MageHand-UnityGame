@@ -38,17 +38,25 @@ public class SoundManager : MonoBehaviour
         READING_Fire,
         READING_Mark,
         */
-
+        /*
         SFX_StepStone1, //0.5
         SFX_StepStone2, //0.5
+        SFX_SecretFound,
+        SFX_LevelInfoSound
+        SFX_PickUpItem, //0.7
+        SFX_PutToInventory, //0.9
+        SFX_Drink, //0.9
+        SFX_Earthquake, //1
+        SFX_BodyFall, //1
+        SFX_CastingSpell, //0.6
+        SFX_CastingSpellFailed, //1
+        SFX_CastingSpellFinished, //1
+        */
         SFX_OpenChest, //0.7
         SFX_CloseChest, //0.7
         SFX_Button, //0.8
         SFX_LeverToUp, //0.7
         SFX_LeverToDown, //0.7
-        SFX_PickUpItem, //0.7
-        SFX_PutToInventory, //0.9
-        SFX_Drink, //0.9
         SFX_UnlockOpenDoor, //0.8
         SFX_IllusionBroken, //0.8
         SFX_Collision1, //0.7
@@ -56,27 +64,11 @@ public class SoundManager : MonoBehaviour
         SFX_Collision3, //0.7
         SFX_MovingWall, //0.7
         SFX_MovingMetalGate, //1 
-
-        SFX_CastingSpell, //0.6
-        SFX_CastingSpellFailed, //1
-        SFX_CastingSpellFinished, //1
-
         SFX_SpellLightRemaining, //1
         SFX_SpellLightBurst, //0.6
-        SFX_SpellPickUpActivation, //0.9
         SFX_MagicalTeleportation, //0.8
-        SFX_LockPickSpell,
         SFX_FireSpellRemaining, //0.6
         SFX_FireSpellBurst, //1
-        SFX_MarkSpellActivation,
-        SFX_ReturnSpellActivation,
-        SFX_LevitateSpellRemaining,
-
-        SFX_Earthquake, //1
-        SFX_BodyFall, //1
-        SFX_Punch, //0.9
-        //SFX_SecretFound,
-        //SFX_LevelInfoSound
     }
 
     private float volume;

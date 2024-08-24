@@ -38,7 +38,7 @@ public class TutorialPanel : MonoBehaviour
 
             OpenPanel();
             wasLatelyOpened = true;
-            if (playOpenSound) RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Open);
+            if (playOpenSound) RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiOpen);
             activatePanelOnEntry = false;
         }
     }
@@ -47,12 +47,12 @@ public class TutorialPanel : MonoBehaviour
     {
         if (currentPanelNumber == tutorialPanelPrefabs.Count - 1 && openedPanel && Input.GetKeyDown(KeyCode.Space))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiClose);
             ClosePanel();
         }
         else if (openedPanel && Input.GetKeyDown(KeyCode.Space))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_SelectOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
             Destroy(tutorialPanel);
             currentPanelNumber++;
             tutorialPanel = Instantiate(tutorialPanelPrefabs[currentPanelNumber], new Vector3(0, 0, 0), Quaternion.identity);
@@ -63,7 +63,7 @@ public class TutorialPanel : MonoBehaviour
         if (wasLatelyOpened && !openedPanel && !PlayerParams.Variables.uiActive && Input.GetKeyDown(KeyCode.T))
         {
             OpenPanel();
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Open);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiOpen);
         }
     }
 

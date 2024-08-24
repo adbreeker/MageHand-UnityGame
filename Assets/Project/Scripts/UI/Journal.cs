@@ -160,11 +160,11 @@ public class Journal : MonoBehaviour
             if (!journalOpened)
             {
                 OpenJournal();
-                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Open);
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiOpen);
             }
             else 
             {
-                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiClose);
                 CloseJournal();
             }
         }
@@ -174,7 +174,7 @@ public class Journal : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiClose);
                 CloseJournal();
             }
 
@@ -183,7 +183,7 @@ public class Journal : MonoBehaviour
             {
                 if(atDialoguesNamesList && instantiatedDialoguesNames.Count > 0)
                 {
-                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_SelectOption);
+                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
                     DisplayDialogue(instantiatedDialoguesNames[pointedDialogueName].text);
                 }
                 if(atNotesNamesList && instantiatedNotesNames.Count > 0)
@@ -197,7 +197,7 @@ public class Journal : MonoBehaviour
             {
                 if (atDialoguesNamesList)
                 {
-                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
                     if (pointedDialogueName > 0)
                     {
                         pointedDialogueName--;
@@ -213,7 +213,7 @@ public class Journal : MonoBehaviour
                 }
                 if (atNotesNamesList)
                 {
-                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
                     if (pointedNoteName > 0)
                     {
                         pointedNoteName--;
@@ -234,7 +234,7 @@ public class Journal : MonoBehaviour
             {
                 if (atDialoguesNamesList)
                 {
-                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
                     if (pointedDialogueName < instantiatedDialoguesNames.Count - 1)
                     {
                         pointedDialogueName++;
@@ -250,7 +250,7 @@ public class Journal : MonoBehaviour
                 }
                 if (atNotesNamesList)
                 {
-                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
                     if (pointedNoteName < instantiatedNotesNames.Count - 1)
                     {
                         pointedNoteName++;
@@ -270,7 +270,7 @@ public class Journal : MonoBehaviour
             {
                 if (atDialoguesNamesList)
                 {
-                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
                     if (pointedDialogueName > 0)
                     {
                         pointedDialogueName--;
@@ -286,7 +286,7 @@ public class Journal : MonoBehaviour
                 }
                 if (atNotesNamesList)
                 {
-                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
                     if (pointedNoteName > 0)
                     {
                         pointedNoteName--;
@@ -307,7 +307,7 @@ public class Journal : MonoBehaviour
             {
                 if (atDialoguesNamesList)
                 {
-                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
                     if (pointedDialogueName < instantiatedDialoguesNames.Count - 1)
                     {
                         pointedDialogueName++;
@@ -323,7 +323,7 @@ public class Journal : MonoBehaviour
                 }
                 if (atNotesNamesList)
                 {
-                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
                     if (pointedNoteName < instantiatedNotesNames.Count - 1)
                     {
                         pointedNoteName++;
@@ -341,7 +341,7 @@ public class Journal : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.A) && atNotesNamesList && pointedDialogueName < instantiatedDialoguesNames.Count)
             {
-                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
                 atDialoguesNamesList = true;
                 atNotesNamesList = false;
                 PointName(pointedDialogueName);
@@ -349,7 +349,7 @@ public class Journal : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.D) && atDialoguesNamesList && pointedNoteName < instantiatedNotesNames.Count)
             {
-                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
                 atDialoguesNamesList = false;
                 atNotesNamesList = true;
                 PointName(pointedNoteName);
@@ -363,7 +363,7 @@ public class Journal : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiClose);
                 DisplayNamesBack();
             }
 

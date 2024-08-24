@@ -23,7 +23,7 @@ public class DemoEnding : MonoBehaviour
     {
         if (end && !ending && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Escape)))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_SelectOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
             GameParams.Managers.fadeInOutManager.CloseGame();
             ending = true;
         }

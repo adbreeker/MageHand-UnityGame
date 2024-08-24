@@ -7,7 +7,7 @@ public class PythonCrashed : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_SelectOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
             GameParams.Managers.fadeInOutManager.CloseGame();
         }
     }

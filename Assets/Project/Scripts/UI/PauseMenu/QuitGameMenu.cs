@@ -30,13 +30,13 @@ public class QuitGameMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiClose);
             CloseMenu();
         }
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu < menuOptions.Count - 1)
             {
                 pointedOptionMenu++;
@@ -50,7 +50,7 @@ public class QuitGameMenu : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
@@ -64,7 +64,7 @@ public class QuitGameMenu : MonoBehaviour
 
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.S))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu < menuOptions.Count - 1)
             {
                 pointedOptionMenu++;
@@ -78,7 +78,7 @@ public class QuitGameMenu : MonoBehaviour
 
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.W))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
@@ -92,7 +92,7 @@ public class QuitGameMenu : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_SelectOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
             if (pointedOptionMenu == 0)
             {
                 closing = true;

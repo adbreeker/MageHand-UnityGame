@@ -27,7 +27,7 @@ public class Intro : MonoBehaviour
         if (animationEnded && Input.GetKeyDown(KeyCode.Space))
         {
             GameParams.Managers.fadeInOutManager.ChangeScene(nextLevel);
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_SelectOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
             animationEnded = false;
         }
 

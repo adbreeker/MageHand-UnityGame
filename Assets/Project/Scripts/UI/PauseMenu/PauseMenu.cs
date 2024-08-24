@@ -52,7 +52,7 @@ public class PauseMenu : MonoBehaviour
         if (ableToInteract && !PlayerParams.Variables.uiActive && Input.GetKeyDown(KeyCode.Escape))
         {
             OpenMenu();
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Open);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiOpen);
         }
 
         //if menu is opened and is at main page listen to keys
@@ -73,14 +73,14 @@ public class PauseMenu : MonoBehaviour
         //Close menu
         if (Input.GetKeyDown(KeyCode.Escape) && menuOpened && atMainMenu)
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiClose);
             CloseMenu();
         }
 
         //Move down
         if (Input.GetKeyDown(KeyCode.S))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu < menuOptions.Count-1)
             {
                 pointedOptionMenu++;
@@ -95,7 +95,7 @@ public class PauseMenu : MonoBehaviour
         //Move up
         if (Input.GetKeyDown(KeyCode.W))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
@@ -109,7 +109,7 @@ public class PauseMenu : MonoBehaviour
 
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.S))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu < menuOptions.Count - 1)
             {
                 pointedOptionMenu++;
@@ -123,7 +123,7 @@ public class PauseMenu : MonoBehaviour
 
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.W))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
@@ -138,7 +138,7 @@ public class PauseMenu : MonoBehaviour
         //Choice
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_SelectOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
             if (pointedOptionMenu == 0)
             {
                 //Spawn ResetMenu

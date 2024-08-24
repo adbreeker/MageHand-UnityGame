@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 
 
@@ -38,23 +39,9 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _movementInputQueue = Vector3.zero;
     private float _rotationInputQueue = 0;
 
-    //steps sounds
-    private bool lastWasStep1 = false;
-    private AudioSource stepStone1;
-    private AudioSource stepStone2;
-    //private float stepTiming = 0;
-
     private void Awake()
     {
         UpdateCurrentTile();
-    }
-
-    void Start()
-    {       
-        stepStone1 = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_StepStone1);
-        stepStone1.panStereo = -0.07f;
-        stepStone2 = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_StepStone2);
-        stepStone2.panStereo = 0.07f;
     }
 
     void Update() //listen to movement inputs
@@ -104,21 +91,7 @@ public class PlayerMovement : MonoBehaviour
             if (CanMove())
             {
                 isMoving = true;
-                //stepTiming = 0;
-                if (lastWasStep1)
-                {
-                    //if it is single step play delayed; if not play without delay
-                    stepStone2.PlayDelayed(0.2f);
-                    //stepStone2.Play();
-                    lastWasStep1 = false;
-                }
-                else
-                {
-                    //if it is single step play delayed; if not play without delay
-                    stepStone1.PlayDelayed(0.2f);
-                    //stepStone1.Play();
-                    lastWasStep1 = true;
-                }
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerSteps);
             }
         }
 
@@ -157,7 +130,7 @@ public class PlayerMovement : MonoBehaviour
                 //if obstacle near player then can't move
                 AudioSource collisionSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_Collision2);
                 collisionSound.Play();
-                Destroy(collisionSound.gameObject, collisionSound.clip.length);
+                //Destroy(collisionSound.gameObject, collisionSound.clip.length);
 
                 return false;
             }

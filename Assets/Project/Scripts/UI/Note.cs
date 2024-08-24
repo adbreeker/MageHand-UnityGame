@@ -32,13 +32,13 @@ public class Note : MonoBehaviour
         //Choose option continue, back or close
         if (Input.GetKeyDown(KeyCode.Space) && openedNote)
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_SelectOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
             CloseNote();
         }
 
         if (Input.GetKeyDown(KeyCode.Escape) && openedNote && fromJournal)
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiClose);
             CloseNote();
         }
 
@@ -82,7 +82,7 @@ public class Note : MonoBehaviour
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
 
-        RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Open);
+        RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiOpen);
 
         //Set proper values
         title.text = titleText;

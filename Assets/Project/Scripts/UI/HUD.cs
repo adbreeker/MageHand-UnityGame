@@ -65,7 +65,7 @@ public class HUD : MonoBehaviour
 
         contentObject.text = content;
 
-        if (playSound) RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_PopUp);
+        if (playSound) RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiPopUp);
 
         StartCoroutine(FadeOutPopUp(instantiatedPopUp, timeToFadeOut, timeOfFadingOut, playSound));
     }

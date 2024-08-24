@@ -82,8 +82,8 @@ public class Dialogue : MonoBehaviour
         nameTextObject = transform.Find("Text").Find("Name").GetComponent<TextMeshProUGUI>();
         contentTextObject = transform.Find("Text").Find("Content").GetComponent<TextMeshProUGUI>();
 
-        if (guideVoiceline) voiceRef = FmodEvents.VOICE_Guide;
-        else voiceRef = FmodEvents.VOICE_Alandos;
+        if (guideVoiceline) voiceRef = FmodEvents.SFX_VoiceGuide;
+        else voiceRef = FmodEvents.SFX_VoiceAlandos;
 
         //Create dicts of options, choices when options are chosen and text of options (indexed 1-4)
         options = new Dictionary<int, TextMeshProUGUI>();
@@ -153,7 +153,7 @@ public class Dialogue : MonoBehaviour
                     if (!string.IsNullOrWhiteSpace(options[i].text))
                     {
                         choice = i;
-                        if(choice != 1) RuntimeManager.PlayOneShot(FmodEvents.UI_ChangeOption);
+                        if(choice != 1) RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                         PointOption(options[choice]);
                         break;
                     }
@@ -161,7 +161,7 @@ public class Dialogue : MonoBehaviour
             }
             else
             {
-                RuntimeManager.PlayOneShot(FmodEvents.UI_ChangeOption);
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 choice--;
                 PointOption(options[choice]);
             }
@@ -173,19 +173,19 @@ public class Dialogue : MonoBehaviour
         {
             if (choice == 4)
             {
-                RuntimeManager.PlayOneShot(FmodEvents.UI_ChangeOption);
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 choice = 1;
                 PointOption(options[choice]); 
             }
             else if (string.IsNullOrWhiteSpace(options[choice + 1].text))
             {
-                if(choice != 1) RuntimeManager.PlayOneShot(FmodEvents.UI_ChangeOption);
+                if(choice != 1) RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 choice = 1;
                 PointOption(options[choice]);
             }
             else
             {
-                RuntimeManager.PlayOneShot(FmodEvents.UI_ChangeOption);
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 choice++;
                 PointOption(options[choice]);
             }
@@ -201,7 +201,7 @@ public class Dialogue : MonoBehaviour
                     if (!string.IsNullOrWhiteSpace(options[i].text))
                     {
                         choice = i;
-                        if (choice != 1) RuntimeManager.PlayOneShot(FmodEvents.UI_ChangeOption);
+                        if (choice != 1) RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                         PointOption(options[choice]);
                         break;
                     }
@@ -209,7 +209,7 @@ public class Dialogue : MonoBehaviour
             }
             else
             {
-                RuntimeManager.PlayOneShot(FmodEvents.UI_ChangeOption);
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 choice--;
                 PointOption(options[choice]);
             }
@@ -221,19 +221,19 @@ public class Dialogue : MonoBehaviour
 
             if (choice == 4)
             {
-                RuntimeManager.PlayOneShot(FmodEvents.UI_ChangeOption);
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 choice = 1;
                 PointOption(options[choice]);
             }
             else if (string.IsNullOrWhiteSpace(options[choice + 1].text))
             {
-                if(choice != 1) RuntimeManager.PlayOneShot(FmodEvents.UI_ChangeOption);
+                if(choice != 1) RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 choice = 1;
                 PointOption(options[choice]);
             }
             else
             {
-                RuntimeManager.PlayOneShot(FmodEvents.UI_ChangeOption);
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 choice++;
                 PointOption(options[choice]);
             }
@@ -243,7 +243,7 @@ public class Dialogue : MonoBehaviour
         //Choose pointed option (if choice is null, end dialogue and activate other controls)
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            RuntimeManager.PlayOneShot(FmodEvents.UI_SelectOption);
+            RuntimeManager.PlayOneShot(FmodEvents.NP_UiSelectOption);
 
             //Save dialogue to player's diary
             if (transform.parent.GetComponent<OpenDialogue>().saveDialogue)

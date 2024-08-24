@@ -1,3 +1,5 @@
+using FMOD.Studio;
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,9 +17,6 @@ public class TutorialEndingPickUp : MonoBehaviour
 
     ProgressSaving _saveManager;
     string _nextLevel = "Chapter_1_Level_1";
-    AudioSource hitSound;
-    AudioSource fallingSound;
-
     AudioManager AudioManager => GameParams.Managers.audioManager;
     private void Start()
     {
@@ -41,9 +40,6 @@ public class TutorialEndingPickUp : MonoBehaviour
                 PlayerParams.Controllers.journal.ableToInteract = false;
                 PlayerParams.Variables.uiActive = true;
                 PlayerParams.Objects.hand.SetActive(false);
-
-                hitSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_Punch);
-                fallingSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_BodyFall);
 
                 _isEndingOnGoing =true;
                 StartCoroutine(TutorialEnding());
@@ -72,8 +68,11 @@ public class TutorialEndingPickUp : MonoBehaviour
             yield return new WaitForSeconds(0);
         }
 
-        fallingSound.Play();
-        yield return new WaitForSeconds(fallingSound.clip.length + 0.5f);
+
+        EventInstance fallInstance = AudioManager.PlayOneShotReturnInstance(GameParams.Managers.fmodEvents.NP_BodyFall);
+        fallInstance.getDescription(out EventDescription description);
+        description.getLength(out int lenght);
+        yield return new WaitForSeconds(2.5f);
 
         _saveManager.SaveGameState(_nextLevel, 0, 0, 0, 0, 0, 0, 0);
         _saveManager.SaveProgressToFile();

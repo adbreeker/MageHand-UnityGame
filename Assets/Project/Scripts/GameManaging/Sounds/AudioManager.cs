@@ -13,11 +13,11 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        SetBusVolume(FmodBuses.UI, 1f);
+        SetBusVolume(FmodBuses.Nonpausable, 1f);
         SetBusVolume(FmodBuses.Music, 1f);
         SetBusVolume(FmodBuses.SFX, 1f);
 
-        FmodBuses.UI.setPaused(false);
+        FmodBuses.Nonpausable.setPaused(false);
         FmodBuses.Music.setPaused(false);
         FmodBuses.SFX.setPaused(false);
     }

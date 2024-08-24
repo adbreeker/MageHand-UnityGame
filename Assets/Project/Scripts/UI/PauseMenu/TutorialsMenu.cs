@@ -30,7 +30,7 @@ public class TutorialsMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiClose);
             CloseMenu();
         }
 
@@ -38,7 +38,7 @@ public class TutorialsMenu : MonoBehaviour
         //W
         if (Input.GetKeyDown(KeyCode.W))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
@@ -55,7 +55,7 @@ public class TutorialsMenu : MonoBehaviour
         //S
         if (Input.GetKeyDown(KeyCode.S))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu < menuOptions.Count - 1)
             {
                 pointedOptionMenu++;
@@ -72,7 +72,7 @@ public class TutorialsMenu : MonoBehaviour
         //W hold
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.W))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
@@ -89,7 +89,7 @@ public class TutorialsMenu : MonoBehaviour
         //S hold
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.S))
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu < menuOptions.Count - 1)
             {
                 pointedOptionMenu++;

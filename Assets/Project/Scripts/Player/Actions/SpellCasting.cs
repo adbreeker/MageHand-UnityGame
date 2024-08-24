@@ -7,6 +7,8 @@ using System.IO.MemoryMappedFiles;
 using System.IO;
 using System.IO.Pipes;
 using System;
+using FMODUnity;
+using FMOD.Studio;
 
 
 public class SpellCasting : MonoBehaviour
@@ -46,11 +48,9 @@ public class SpellCasting : MonoBehaviour
     public GameObject openEasterEggPrefab;
     private GameObject instantiatedOpenEasterEggPrefab;
 
-    //private AudioSource castingSound;
-    private AudioSource castingFailSound;
-    private AudioSource castingFinishedSound;
-
     //private bool isTranscribing = false;
+
+    FmodEvents FmodEvents => GameParams.Managers.fmodEvents;
 
     private bool _isAbleToCast = true;
 
@@ -79,18 +79,13 @@ public class SpellCasting : MonoBehaviour
         {
             mana -= scroll.manaCost;
 
-            castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
-            castingFinishedSound.Play();
-            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
-
+            RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFinished);
             currentSpell = "Light";
             PlayerParams.Controllers.handInteractions.AddToHand(Instantiate(lightPrefab), true, true);
         }
         else
         {
-            castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
-            castingFailSound.Play();
-            Destroy(castingFailSound, castingFailSound.clip.length);
+            RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFailed);
         }
     }
 
@@ -100,10 +95,6 @@ public class SpellCasting : MonoBehaviour
         if(scroll != null)
         {
             mana -= scroll.manaCost;
-
-            castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_SpellPickUpActivation);
-            castingFinishedSound.Play();
-            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
 
             Vector3 castPos = PlayerParams.Objects.player.transform.position;
             castPos.y = PlayerParams.Objects.player.transform.position.y - 1.0f;
@@ -136,9 +127,7 @@ public class SpellCasting : MonoBehaviour
         }
         else
         {
-            castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
-            castingFailSound.Play();
-            Destroy(castingFailSound, castingFailSound.clip.length);
+            RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFailed);
         }
     }
 
@@ -149,18 +138,13 @@ public class SpellCasting : MonoBehaviour
         {
             mana -= scroll.manaCost;
 
-            castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
-            castingFinishedSound.Play();
-            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
-
+            RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFinished);
             currentSpell = "Fire";
             PlayerParams.Controllers.handInteractions.AddToHand(Instantiate(firePrefab), true, true);
         }
         else
         {
-            castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
-            castingFailSound.Play();
-            Destroy(castingFailSound, castingFailSound.clip.length);
+            RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFailed);
         }
     }
 
@@ -183,25 +167,18 @@ public class SpellCasting : MonoBehaviour
             {
                 mana -= scroll.manaCost;
 
-                castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
-                castingFinishedSound.Play();
-                Destroy(castingFinishedSound, castingFinishedSound.clip.length);
-
+                RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFinished);
                 currentSpell = "Speak";
                 skullPlatform.UsePlatform();
             }
             else
             {
-                castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
-                castingFailSound.Play();
-                Destroy(castingFailSound, castingFailSound.clip.length);
+                RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFailed);
             }
         }
         else
         {
-            castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
-            castingFailSound.Play();
-            Destroy(castingFailSound, castingFailSound.clip.length);
+            RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFailed);
         }
     }
 
@@ -212,18 +189,13 @@ public class SpellCasting : MonoBehaviour
         {
             mana -= scroll.manaCost;
 
-            castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
-            castingFinishedSound.Play();
-            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
-
+            RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFinished);
             currentSpell = "Mark";
             PlayerParams.Controllers.handInteractions.AddToHand(Instantiate(markPrefab), true, true);
         }
         else
         {
-            castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
-            castingFailSound.Play();
-            Destroy(castingFailSound, castingFailSound.clip.length);
+            RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFailed);
         }
     }
 
@@ -234,10 +206,7 @@ public class SpellCasting : MonoBehaviour
         {
             mana -= scroll.manaCost;
 
-            castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
-            castingFinishedSound.Play();
-            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
-
+            RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFinished);
             GameObject slowEffect = Instantiate(slowEffectPrefab, PlayerParams.Objects.player.transform);
 
             float slowValue = 0.1f;
@@ -252,9 +221,7 @@ public class SpellCasting : MonoBehaviour
         }
         else
         {
-            castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
-            castingFailSound.Play();
-            Destroy(castingFailSound, castingFailSound.clip.length);
+            RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFailed);
         }
     }
 
@@ -265,10 +232,7 @@ public class SpellCasting : MonoBehaviour
         {
             mana -= scroll.manaCost;
 
-            castingFinishedSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFinished);
-            castingFinishedSound.Play();
-            Destroy(castingFinishedSound, castingFinishedSound.clip.length);
-
+            RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFinished);
             Vector3 castPos = PlayerParams.Objects.player.transform.position;
             Collider[] nearObjects = Physics.OverlapSphere(castPos, 2.0f, LayerMask.GetMask("Default"));
             foreach(Collider potentialLock in nearObjects) 
@@ -282,9 +246,7 @@ public class SpellCasting : MonoBehaviour
         }
         else
         {
-            castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
-            castingFailSound.Play();
-            Destroy(castingFailSound, castingFailSound.clip.length);
+            RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFailed);
 
             if (instantiatedOpenEasterEggPrefab == null)
             {
@@ -313,8 +275,7 @@ public class SpellCasting : MonoBehaviour
 
         // Effects
         GameObject castingEffect = Instantiate(castingEffectPrefab, hand);
-        AudioSource castingSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpell);
-        castingSound.Play();
+        EventInstance castingSound = GameParams.Managers.audioManager.PlayOneShotReturnInstance(FmodEvents.SFX_CastingSpell);
 
         // Wait for the specified recording time
         yield return new WaitForSecondsRealtime(2f);
@@ -356,7 +317,7 @@ public class SpellCasting : MonoBehaviour
         }
         else { PlayerParams.Controllers.HUD.SpawnPopUp("Casting word:<br>" + word, timeToFadeOutPopUp, timeOfFadingOutPopUp, false); }
 
-        Destroy(castingSound);
+        castingSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         Destroy(castingEffect);
 
         WriteToMemoryMappedFile("magehand_whisper_run", "no");
@@ -475,9 +436,7 @@ public class SpellCasting : MonoBehaviour
         }
         else
         {
-            castingFailSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CastingSpellFailed);
-            castingFailSound.Play();
-            Destroy(castingFailSound, castingFailSound.clip.length);
+            RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFailed);
         }
     }
 
