@@ -6,9 +6,10 @@ public class SoundManager : MonoBehaviour
 {
     public enum Sound
     {
+        /*
         VOICES_Mage, //1
         VOICES_Guide, //1
-
+        */
         /*
         MUSIC_Dungeon1Start, //0.25
         MUSIC_Dungeon1Loop, //0.25
@@ -24,12 +25,18 @@ public class SoundManager : MonoBehaviour
         MUSIC_MenuLoop, //?? PLACEHOLDER
         MUSIC_LoadingAmbientStart, //?? PLACEHOLDER
         MUSIC_LoadingAmbientLoop, //?? PLACEHOLDER
-
+        */
+        /*
         UI_ChangeOption, //1
         UI_SelectOption, //1
         UI_Close, //1
         UI_Open, //1
         UI_PopUp, //1
+        */
+        /*
+        READING_Light, //1
+        READING_Fire,
+        READING_Mark,
         */
 
         SFX_StepStone1, //0.5
@@ -53,10 +60,6 @@ public class SoundManager : MonoBehaviour
         SFX_CastingSpell, //0.6
         SFX_CastingSpellFailed, //1
         SFX_CastingSpellFinished, //1
-
-        READING_Light, //1
-        READING_Fire,
-        READING_Mark,
 
         SFX_SpellLightRemaining, //1
         SFX_SpellLightBurst, //0.6

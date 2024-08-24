@@ -43,6 +43,8 @@ public class Spellbook : MonoBehaviour
     //this means views not actual pages (spellbookPage = 1 view = 2 real pages)
     private List<List<SpellScrollInfo>> spellbookPages;
 
+    private FmodEvents FmodEvents => GameParams.Managers.fmodEvents;
+
 
     void Update()
     {
@@ -60,18 +62,18 @@ public class Spellbook : MonoBehaviour
             if (!spellbookOpened && bookOwned)
             {
                 OpenSpellbook();
-                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Open);
+                RuntimeManager.PlayOneShot(FmodEvents.UI_Open);
             }
             else if (spellbookOpened) 
             {
-                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
+                RuntimeManager.PlayOneShot(FmodEvents.UI_Close);
                 CloseSpellbook();
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape) && spellbookOpened)
         {
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_Close);
+            RuntimeManager.PlayOneShot(FmodEvents.UI_Close);
             CloseSpellbook();
         }
 
@@ -81,20 +83,18 @@ public class Spellbook : MonoBehaviour
             if (!readingSound.isValid())
             {
                 EventReference readingSpellRef;
-                if (spellbookPages[page][pointed - 1].spellName == "Light") readingSpellRef = GameParams.Managers.fmodEvents.READ_Light;
-                else if (spellbookPages[page][pointed - 1].spellName == "Mark") readingSpellRef = GameParams.Managers.fmodEvents.READ_Mark;
-                else if (spellbookPages[page][pointed - 1].spellName == "Fire") readingSpellRef = GameParams.Managers.fmodEvents.READ_Fire;
-                else if (spellbookPages[page][pointed - 1].spellName == "Speak") readingSpellRef = GameParams.Managers.fmodEvents.READ_Speak;
+                if (spellbookPages[page][pointed - 1].spellName == "Light") readingSpellRef = FmodEvents.READ_Light;
+                else if (spellbookPages[page][pointed - 1].spellName == "Mark") readingSpellRef = FmodEvents.READ_Mark;
+                else if (spellbookPages[page][pointed - 1].spellName == "Fire") readingSpellRef = FmodEvents.READ_Fire;
+                else if (spellbookPages[page][pointed - 1].spellName == "Speak") readingSpellRef = FmodEvents.READ_Speak;
                 //etc.
                 else
                 {
                     Debug.LogError("Spell with no reading assign");
-                    readingSpellRef = GameParams.Managers.fmodEvents.UI_SelectOption;
+                    readingSpellRef = FmodEvents.UI_SelectOption;
                 } 
 
-                readingSound = RuntimeManager.CreateInstance(readingSpellRef);
-                readingSound.start();
-                readingSound.release();
+                readingSound = GameParams.Managers.audioManager.PlayOneShotReturnInstance(readingSpellRef);
             }
 
 
@@ -106,13 +106,13 @@ public class Spellbook : MonoBehaviour
         {
             if (pointed == 2)
             {
-                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+                RuntimeManager.PlayOneShot(FmodEvents.UI_ChangeOption);
                 pointed = 1;
                 PointOption(pointed);
             }
             else if (pointed == 1 && page > 0)
             {
-                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+                RuntimeManager.PlayOneShot(FmodEvents.UI_ChangeOption);
                 page--;
                 DisplayPage(page);
                 pointed = 2;
@@ -125,13 +125,13 @@ public class Spellbook : MonoBehaviour
         {
             if (pointed == 1 && spellbookPages[page].Count == 2)
             {
-                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+                RuntimeManager.PlayOneShot(FmodEvents.UI_ChangeOption);
                 pointed = 2;
                 PointOption(pointed);
             }
             else if (pointed == 2 && page + 1 < spellbookPages.Count)
             {
-                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.UI_ChangeOption);
+                RuntimeManager.PlayOneShot(FmodEvents.UI_ChangeOption);
                 page++;
                 DisplayPage(page);
                 pointed = 1;

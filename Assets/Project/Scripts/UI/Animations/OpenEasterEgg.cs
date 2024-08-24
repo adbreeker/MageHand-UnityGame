@@ -44,6 +44,7 @@ public class OpenEasterEgg : MonoBehaviour
         {
             openDialogue.gameObject.SetActive(false);
         }
+        /*
         foreach (AudioSource audioSource in FindObjectsOfType<AudioSource>())
         {
             if (audioSource.gameObject.name.StartsWith("VOICES_"))
@@ -51,6 +52,8 @@ public class OpenEasterEgg : MonoBehaviour
                 Destroy(audioSource.gameObject);
             }
         }
+        */
+
         PlayerParams.Variables.uiActive = false;
         PlayerParams.Objects.hand.SetActive(true);
         PlayerParams.Controllers.inventory.ableToInteract = true;

@@ -30,6 +30,14 @@ public class AudioManager : MonoBehaviour
         return eventEmitter;
     }
 
+    public EventInstance PlayOneShotReturnInstance(EventReference eventRef)
+    {
+        EventInstance eventInstance = RuntimeManager.CreateInstance(eventRef);
+        eventInstance.start();
+        eventInstance.release();
+        return eventInstance;
+    }
+
     public void SetGameVolume(float givenVolume)
     {
         SetBusVolume(FmodBuses.Master, givenVolume);
@@ -47,10 +55,10 @@ public class AudioManager : MonoBehaviour
         bus.setVolume(volume);
     }
 
-    public float GetBusVolume(Bus bus)
+    public void SetInstanceVolume(EventInstance eventInstance, float volume)
     {
-        bus.getVolume(out float volume);
-        return volume;
+        volume = Mathf.Clamp01(volume);
+        eventInstance.setVolume(volume);
     }
 
     public void PauseSFXsFadeOutMusic(float fadeSpeed)
