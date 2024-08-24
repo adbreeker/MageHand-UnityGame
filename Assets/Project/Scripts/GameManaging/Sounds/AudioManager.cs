@@ -16,6 +16,7 @@ public class AudioManager : MonoBehaviour
         SetBusVolume(FmodBuses.UI, 1f);
         SetBusVolume(FmodBuses.Music, 1f);
         SetBusVolume(FmodBuses.SFX, 1f);
+
         FmodBuses.UI.setPaused(false);
         FmodBuses.Music.setPaused(false);
         FmodBuses.SFX.setPaused(false);
@@ -70,7 +71,6 @@ public class AudioManager : MonoBehaviour
         bus.getVolume(out float volume);
         while (volume > 0)
         {
-            //Debug.Log("FadeOut: " + volume);
             SetBusVolume(bus, volume - fadeSpeed);
             yield return new WaitForSecondsRealtime(0);
             bus.getVolume(out volume);
@@ -86,7 +86,6 @@ public class AudioManager : MonoBehaviour
         bus.getVolume(out float volume);
         while (volume < 1)
         {
-            //Debug.Log("FadeIn: " + volume);
             SetBusVolume(bus, volume + fadeSpeed);
             yield return new WaitForSecondsRealtime(0);
             bus.getVolume(out volume);

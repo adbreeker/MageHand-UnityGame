@@ -9,7 +9,7 @@ public class GameSettings : MonoBehaviour
     public static Process mediapipeHandProcess;
     public static Process whisperProcess;
 
-    private SoundManager soundManager;
+    AudioManager AudioManager => GameParams.Managers.audioManager;
 
     public enum GraphicsQuality
     {
@@ -56,10 +56,8 @@ public class GameSettings : MonoBehaviour
     //applying player setting from saves (now it's hardcoded)
     private void Start()
     {
-        soundManager = GameParams.Managers.soundManager;
-
         //set volume
-        soundManager.ChangeVolume(soundVolume);
+        AudioManager.SetGameVolume(soundVolume);
 
         //set microphone
         UpdateMicrophone();
@@ -92,7 +90,7 @@ public class GameSettings : MonoBehaviour
     private void Update()
     {
         //update soundVolume
-        if (soundVolume != soundManager.GetVolume()) soundManager.ChangeVolume(soundVolume, fromPauseMenu: true);
+        if (soundVolume != AudioManager.GetGameVolume()) AudioManager.SetGameVolume(soundVolume);
 
         //update webcam and microphone
         UpdateMicrophone();

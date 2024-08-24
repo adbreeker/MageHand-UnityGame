@@ -91,8 +91,7 @@ public class SoundManager : MonoBehaviour
 
     public Transform SoundsParent;
 
-    private List<Coroutine> fadingOutCoroutines = new List<Coroutine>();
-    private List<Coroutine> fadingInCoroutines = new List<Coroutine>();
+
     public AudioSource CreateAudioSource(Sound sound, GameObject soundParent = null, float minHearingDistance = 4f, float maxHearingDistance = 20f)
     {
         AudioSource audioSource;
@@ -119,6 +118,26 @@ public class SoundManager : MonoBehaviour
         return audioSource;
     }
 
+    public AudioClip GetAudioClip(Sound sound)
+    {
+        foreach (SoundAudioClip soundAudioClip in soundAudioClipArray)
+        {
+            if (soundAudioClip.sound == sound) return soundAudioClip.audioClip;
+        }
+        return null;
+    }
+
+    public float GetBaseVolume(Sound sound)
+    {
+        volume = Mathf.Clamp01(volume);
+        foreach (SoundAudioClip soundAudioClip in soundAudioClipArray)
+        {
+            if (soundAudioClip.sound == sound) return soundAudioClip.baseVolume;
+        }
+        return 0;
+    }
+
+    /*
     public void ChangeVolume(float givenVolume, bool fromPauseMenu = false)
     {
         volume = Mathf.Clamp01(givenVolume);
@@ -133,7 +152,6 @@ public class SoundManager : MonoBehaviour
             if (!fromPauseMenu) audioSource.volume = GetBaseVolume(GetFirstSoundEnumByAudioClip(audioSource.clip)) * volume;
         }
     }
-    /*
     public void PauseAllAudioSourcesAndFadeOutMusic()
     {
         AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
@@ -200,19 +218,9 @@ public class SoundManager : MonoBehaviour
             }
         }
     }
-    */
     public float GetVolume()
     {
         return volume;
-    }
-
-    public AudioClip GetAudioClip(Sound sound)
-    {
-        foreach(SoundAudioClip soundAudioClip in soundAudioClipArray)
-        {
-            if (soundAudioClip.sound == sound) return soundAudioClip.audioClip;
-        }
-        return null;
     }
 
     public Sound GetFirstSoundEnumByAudioClip(AudioClip audioClip)
@@ -226,14 +234,5 @@ public class SoundManager : MonoBehaviour
         }
         return Sound.SFX_CastingSpellFailed;
     }
-
-    public float GetBaseVolume(Sound sound)
-    {
-        volume = Mathf.Clamp01(volume);
-        foreach (SoundAudioClip soundAudioClip in soundAudioClipArray)
-        {
-            if (soundAudioClip.sound == sound) return soundAudioClip.baseVolume;
-        }
-        return 0;
-    }
+    */
 }
