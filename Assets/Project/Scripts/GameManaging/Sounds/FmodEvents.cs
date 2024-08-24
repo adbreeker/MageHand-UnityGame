@@ -11,7 +11,7 @@ public class FmodEvents : MonoBehaviour
     [field: SerializeField] public EventReference MUSIC_Dungeon3 { get; private set; }
     [field: SerializeField] public EventReference MUSIC_Dungeon4 { get; private set; }
     [field: SerializeField] public EventReference MUSIC_Dungeon5 { get; private set; }
-    [field: SerializeField] public EventReference MUSIC_Menu { get; private set; }
+    [field: SerializeField] public EventReference MUSIC_MainTheme { get; private set; }
     [field: SerializeField] public EventReference MUSIC_LoadingAmbient { get; private set; }
 
     [field: Header("UI")]
@@ -25,7 +25,7 @@ public class FmodEvents : MonoBehaviour
     [field: SerializeField] public EventReference VOICE_Guide { get; private set; }
     [field: SerializeField] public EventReference VOICE_Alandos { get; private set; }
 
-    [field: Header("SFX Reading spells")]
+    [field: Header("SFX Reading")]
     [field: SerializeField] public EventReference READ_Light { get; private set; }
     [field: SerializeField] public EventReference READ_Mark { get; private set; }
     [field: SerializeField] public EventReference READ_Fire { get; private set; }
