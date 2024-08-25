@@ -18,7 +18,6 @@ public class LeverBehavior : InteractableBehavior
     [SerializeField] Material _singleUseMat;
 
     bool leverChanging = false;
-    private AudioSource changingSound;
 
     public void OnClick() //on lever click invoke interaction on connected object
     {
@@ -41,8 +40,7 @@ public class LeverBehavior : InteractableBehavior
         leverChanging = true;
         if(leverON) //if leverOn then lever go up
         {
-            changingSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_LeverToUp, gameObject);
-            changingSound.Play();
+            GameParams.Managers.audioManager.PlayOneShotSpatialized(GameParams.Managers.fmodEvents.SFX_LeverToUp, transform);
 
             for (int i = 1; i<=10; i++)
             {
@@ -53,8 +51,7 @@ public class LeverBehavior : InteractableBehavior
         }
         else //else lever go down
         {
-            changingSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_LeverToDown);
-            changingSound.Play();
+            GameParams.Managers.audioManager.PlayOneShotSpatialized(GameParams.Managers.fmodEvents.SFX_LeverToDown, transform);
 
             for (int i = 1; i <= 10; i++)
             {
@@ -63,10 +60,6 @@ public class LeverBehavior : InteractableBehavior
             }
             leverON = true;
         }
-
-        while (changingSound.isPlaying) yield return null;
-
-        Destroy(changingSound);
         leverChanging = false;
     }
 

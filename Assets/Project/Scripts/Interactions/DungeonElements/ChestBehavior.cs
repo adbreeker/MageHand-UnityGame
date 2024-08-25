@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,17 +19,14 @@ public class ChestBehavior : InteractableBehavior
     PlayerMovement playerMovement;
     PauseMenu pauseMenu;
 
-    private AudioSource openingChestSound;
-    private AudioSource closingChestSound;
+    EventInstance openingChestSound;
+    EventInstance closingChestSound;
 
     private void Start() //get necessary components on awake
     {
         mainCamera = PlayerParams.Objects.playerCamera.gameObject;
         playerMovement = PlayerParams.Controllers.playerMovement;
         pauseMenu = PlayerParams.Controllers.pauseMenu;
-
-        openingChestSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_OpenChest, gameObject);
-        closingChestSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_CloseChest, gameObject);
     }
 
     private void Update() //listen to chest close input if chest is open
@@ -56,7 +54,10 @@ public class ChestBehavior : InteractableBehavior
     {
         if(chestOpen) //if chest is open then close lid
         {
-            if (!closingChestSound.isPlaying) closingChestSound.Play();
+            if (!closingChestSound.isValid())
+            {
+                closingChestSound = GameParams.Managers.audioManager.PlayOneShotSpatialized(GameParams.Managers.fmodEvents.SFX_CloseChest, transform);
+            }
             while (chestLid.transform.localRotation != Quaternion.Euler(0, 0, 0))
             {
                 yield return new WaitForFixedUpdate();
@@ -67,7 +68,10 @@ public class ChestBehavior : InteractableBehavior
         }
         else //else open lid
         {
-            if(!openingChestSound.isPlaying) openingChestSound.Play();
+            if (!openingChestSound.isValid())
+            {
+                openingChestSound = GameParams.Managers.audioManager.PlayOneShotSpatialized(GameParams.Managers.fmodEvents.SFX_OpenChest, transform);
+            }
             while (chestLid.transform.localRotation != Quaternion.Euler(-135, 0, 0))
             {
                 yield return new WaitForFixedUpdate();

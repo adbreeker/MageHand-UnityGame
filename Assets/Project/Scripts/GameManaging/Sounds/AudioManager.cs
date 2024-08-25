@@ -23,21 +23,51 @@ public class AudioManager : MonoBehaviour
         FmodBuses.SFX.setPaused(false);
     }
 
-    public EventInstance CreateSpatializedAudio(EventReference eventRef, Transform audioParent, bool addOcclusion, float audioOcclusionWidening = 1f, float playerOcclusionWidening = 1f)
+    public EventInstance CreateSpatializedInstance(EventReference eventRef, Transform audioParent)
+    {
+        EventInstance eventInstance = RuntimeManager.CreateInstance(eventRef);
+        RuntimeManager.AttachInstanceToGameObject(eventInstance, audioParent);
+        return eventInstance;
+    }
+
+    public EventInstance CreateOccludedInstance(EventReference eventRef, Transform audioParent, float audioOcclusionWidening = 1f, float playerOcclusionWidening = 1f)
     {
         EventInstance eventInstance = RuntimeManager.CreateInstance(eventRef);
         RuntimeManager.AttachInstanceToGameObject(eventInstance, audioParent);
 
-        if (addOcclusion)
-        {
-            AudioOcclusion audioOcclusion = audioParent.gameObject.AddComponent<AudioOcclusion>();
-            audioOcclusion.audioEvent = eventInstance;
-            audioOcclusion.audioRef = eventRef;
-            audioOcclusion.occlusionLayer = occlusionLayer;
-            audioOcclusion.audioOcclusionWidening = audioOcclusionWidening;
-            audioOcclusion.playerOcclusionWidening = playerOcclusionWidening;
-        }
+        AudioOcclusion audioOcclusion = audioParent.gameObject.AddComponent<AudioOcclusion>();
+        audioOcclusion.audioEvent = eventInstance;
+        audioOcclusion.audioRef = eventRef;
+        audioOcclusion.occlusionLayer = occlusionLayer;
+        audioOcclusion.audioOcclusionWidening = audioOcclusionWidening;
+        audioOcclusion.playerOcclusionWidening = playerOcclusionWidening;
 
+        return eventInstance;
+    }
+
+    public EventInstance PlayOneShotSpatialized(EventReference eventRef, Transform audioParent)
+    {
+        EventInstance eventInstance = RuntimeManager.CreateInstance(eventRef);
+        RuntimeManager.AttachInstanceToGameObject(eventInstance, audioParent);
+        eventInstance.start();
+        eventInstance.release();
+        return eventInstance;
+    }
+
+    public EventInstance PlayOneShotOccluded(EventReference eventRef, Transform audioParent, float audioOcclusionWidening = 1f, float playerOcclusionWidening = 1f)
+    {
+        EventInstance eventInstance = RuntimeManager.CreateInstance(eventRef);
+        RuntimeManager.AttachInstanceToGameObject(eventInstance, audioParent);
+
+        AudioOcclusion audioOcclusion = audioParent.gameObject.AddComponent<AudioOcclusion>();
+        audioOcclusion.audioEvent = eventInstance;
+        audioOcclusion.audioRef = eventRef;
+        audioOcclusion.occlusionLayer = occlusionLayer;
+        audioOcclusion.audioOcclusionWidening = audioOcclusionWidening;
+        audioOcclusion.playerOcclusionWidening = playerOcclusionWidening;
+
+        eventInstance.start();
+        eventInstance.release();
         return eventInstance;
     }
 

@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,12 +14,12 @@ public class OpenWallPassage : MonoBehaviour
     [Header("Opening speed")]
     public float wallSpeed = 0.03f;
 
-    private AudioSource wallSound;
+    private EventInstance wallSound;
 
     public void Interaction() //open or close passage on interaction
     {
         StopAllCoroutines();
-        if (wallSound != null) Destroy(wallSound);
+        if(wallSound.isValid()) wallSound.stop(STOP_MODE.IMMEDIATE);
 
         if (passageOpen) //if passage open then close
         {
@@ -35,15 +36,13 @@ public class OpenWallPassage : MonoBehaviour
 
     IEnumerator MoveWall(float wallDestination) //animating passage opening
     {
-        wallSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MovingWall, wall, 8f, 30f);
-        wallSound.Play();
-
+        wallSound = GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_MovingWall, wall.transform);
         while (wall.transform.localPosition.y != wallDestination)
         {
             yield return new WaitForFixedUpdate();
             wall.transform.localPosition = Vector3.MoveTowards(wall.transform.localPosition, new Vector3(wall.transform.localPosition.x, wallDestination, wall.transform.localPosition.z), wallSpeed);
         }
-        Destroy(wallSound);
+        wallSound.stop(STOP_MODE.IMMEDIATE);
     }
 
     private void OnValidate()

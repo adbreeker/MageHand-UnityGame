@@ -30,8 +30,8 @@ public class FmodEvents : MonoBehaviour
     [field: SerializeField] public EventReference SFX_CastingSpellFailed { get; private set; }
     [field: SerializeField] public EventReference SFX_CastingSpellFinished { get; private set; }
     //[field: SerializeField] public EventReference SFX_OpenSpellActivation { get; private set; }
-    [field: SerializeField] public EventReference SFX_SpellLightRemaining { get; private set; }
-    [field: SerializeField] public EventReference SFX_SpellLightBurst { get; private set; }
+    [field: SerializeField] public EventReference SFX_LightSpellRemaining { get; private set; }
+    [field: SerializeField] public EventReference SFX_LightSpellBurst { get; private set; }
     //[field: SerializeField] public EventReference SFX_MarkSpellRemaining { get; private set; }
     [field: SerializeField] public EventReference SFX_FireSpellRemaining { get; private set; }
     [field: SerializeField] public EventReference SFX_FireSpellBurst { get; private set; }
@@ -41,7 +41,7 @@ public class FmodEvents : MonoBehaviour
     [field: SerializeField] public EventReference SFX_PlayerSteps { get; private set; }
     [field: SerializeField] public EventReference SFX_OpenChest { get; private set; }
     [field: SerializeField] public EventReference SFX_CloseChest { get; private set; }
-    [field: SerializeField] public EventReference SFX_Button { get; private set; }
+    [field: SerializeField] public EventReference SFX_ButtonPress { get; private set; }
     [field: SerializeField] public EventReference SFX_LeverToUp { get; private set; }
     [field: SerializeField] public EventReference SFX_LeverToDown { get; private set; }
     [field: SerializeField] public EventReference SFX_PickUpItem { get; private set; }
@@ -52,10 +52,12 @@ public class FmodEvents : MonoBehaviour
     [field: SerializeField] public EventReference SFX_MovingWall { get; private set; }
     [field: SerializeField] public EventReference SFX_MovingMetalGate { get; private set; }
     [field: SerializeField] public EventReference SFX_Earthquake { get; private set; }
-    [field: SerializeField] public EventReference SFX_IllusionBroken { get; private set; }
-    [field: SerializeField] public EventReference SFX_MagicalTeleportation { get; private set; }
+    [field: SerializeField] public EventReference SFX_IllusionBreak { get; private set; }
+    [field: SerializeField] public EventReference SFX_Teleport { get; private set; }
+    [field: SerializeField] public EventReference SFX_TeleportSpatialized { get; private set; }
     [field: SerializeField] public EventReference SFX_SecretFound { get; private set; }
     [field: SerializeField] public EventReference SFX_LevelInfo { get; private set; }
+    //[field: SerializeField] public EventReference SFX_FlyingMagicMissile { get; private set; }
     [field: Header("------------------------------------------------------------------")]
     [field: Header("Nonpausable")]
     [field: SerializeField] public EventReference NP_UiChangeOption { get; private set; }

@@ -12,7 +12,6 @@ public class ButtonBehavior : InteractableBehavior
     public int clickCounterCap = 0;
 
     bool buttonChanging = false;
-    private AudioSource clickSound;
 
     public void OnClick() //on click invoke interaction on connected object and increase click counter
     {
@@ -35,9 +34,7 @@ public class ButtonBehavior : InteractableBehavior
 
     IEnumerator ButtonAnimation() //button animation
     {
-        clickSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_Button, button);
-        clickSound.Play();
-        Destroy(clickSound, clickSound.clip.length);
+        GameParams.Managers.audioManager.PlayOneShotSpatialized(GameParams.Managers.fmodEvents.SFX_ButtonPress, button.transform);
 
         buttonChanging = true;
         for(int i=0; i<10; i++)

@@ -1,3 +1,4 @@
+using FMODUnity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -259,9 +260,7 @@ public class CaveWolfController : MonoBehaviour
         transform.position = tpDestination;
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, tpRotation, transform.rotation.eulerAngles.z);
 
-        AudioSource tpSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MagicalTeleportation);
-        tpSound.Play();
-        Destroy(tpSound, tpSound.clip.length);
+        RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_Teleport);
 
         if (tpEffectColor != null)
         {

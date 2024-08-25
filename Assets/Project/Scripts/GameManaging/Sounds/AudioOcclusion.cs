@@ -9,8 +9,8 @@ public class AudioOcclusion : MonoBehaviour
     public EventInstance audioEvent;
     public EventReference audioRef;
     public LayerMask occlusionLayer;
-    public float audioOcclusionWidening;
-    public float playerOcclusionWidening;
+    public float audioOcclusionWidening = 1f;
+    public float playerOcclusionWidening = 1f;
 
     private EventDescription audioDes;
     private StudioListener listener;

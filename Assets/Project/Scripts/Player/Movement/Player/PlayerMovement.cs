@@ -128,8 +128,7 @@ public class PlayerMovement : MonoBehaviour
             if (collider.gameObject.tag == "Wall" || collider.gameObject.tag == "Obstacle")
             {
                 //if obstacle near player then can't move
-                AudioSource collisionSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_Collision2);
-                collisionSound.Play();
+                GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_Collision, transform);
                 //Destroy(collisionSound.gameObject, collisionSound.clip.length);
 
                 return false;
@@ -310,9 +309,7 @@ public class PlayerMovement : MonoBehaviour
 
         UpdateCurrentTile();
 
-        AudioSource tpSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MagicalTeleportation);
-        tpSound.Play();
-        Destroy(tpSound, tpSound.clip.length);
+        RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_Teleport);
 
         if (tpEffectColor != null) 
         {

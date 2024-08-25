@@ -7,15 +7,11 @@ using UnityEngine.XR;
 public class LightSpellBehavior : SpellBehavior
 {
     private GameObject instantiatedEffect;
-
-    private AudioSource spellBurst;
     private EventInstance spellRemainingSound;
 
     private void Start()
     {
-        spellRemainingSound = GameParams.Managers.audioManager.CreateSpatializedAudio(GameParams.Managers.fmodEvents.SFX_SpellLightRemaining, transform, true);
-        spellRemainingSound.start();
-        spellRemainingSound.release();
+        spellRemainingSound = GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_LightSpellRemaining, transform);
     }
 
     private void OnDestroy()
@@ -32,8 +28,7 @@ public class LightSpellBehavior : SpellBehavior
     {
         spellRemainingSound.stop(STOP_MODE.IMMEDIATE);
         instantiatedEffect = Instantiate(specialEffectPrefab, transform.position, Quaternion.identity);
-        spellBurst = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_SpellLightBurst, instantiatedEffect, 8f, 30f);
-        spellBurst.Play();
+        GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_LightSpellBurst, instantiatedEffect.transform);
 
         if(impactTarget != null) 
         {

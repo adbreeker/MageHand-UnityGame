@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,10 +7,6 @@ public class SpellBehavior : MonoBehaviour
 {
     [Header("Special effect")]
     public GameObject specialEffectPrefab;
-
-    [Header("Sound distance:")]
-    public float minHearingDistance = 10.0f;
-    public float maxHearingDistance = 30.0f;
 
     public virtual void OnThrow() //rotate fireball on throw to face good direction
     {
@@ -36,9 +33,7 @@ public class SpellBehavior : MonoBehaviour
         transform.position = tpDestination;
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, tpRotation, transform.rotation.eulerAngles.z);
 
-        AudioSource tpSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MagicalTeleportation);
-        tpSound.Play();
-        Destroy(tpSound, tpSound.clip.length);
+        RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_Teleport);
 
         GameObject tpEffect = GameParams.Holders.materialsAndEffectsHolder.GetEffect(MaterialsAndEffectsHolder.Effects.teleportationObject);
 

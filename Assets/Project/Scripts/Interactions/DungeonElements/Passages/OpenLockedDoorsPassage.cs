@@ -13,8 +13,6 @@ public class OpenLockedDoorsPassage : MonoBehaviour
     [Header("Is door open?")]
     public bool doorsOpen = false;
 
-    private AudioSource openDoorsSound;
-
     private void Start()
     {
         if(doorsOpen) { doors.tag = "Untagged"; }
@@ -24,8 +22,6 @@ public class OpenLockedDoorsPassage : MonoBehaviour
     public void Interaction() //open assigned doors
     {
         StopAllCoroutines();
-        if (openDoorsSound != null) Destroy(openDoorsSound);
-
         if (doorsOpen) //if passege is open then close
         {
             doorsOpen = false;
@@ -41,9 +37,9 @@ public class OpenLockedDoorsPassage : MonoBehaviour
 
     IEnumerator RotateDoors(float destinationDegree) //animating doors opening, then change doors to not obstacle, and make lock object unactive
     {
-        openDoorsSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_UnlockOpenDoor, doors);
-        openDoorsSound.Play();
-        while(transform.localRotation.eulerAngles.y  != destinationDegree)
+        GameParams.Managers.audioManager.PlayOneShotSpatialized(GameParams.Managers.fmodEvents.SFX_UnlockOpenDoor, doors.transform);
+
+        while (transform.localRotation.eulerAngles.y  != destinationDegree)
         {
             yield return new WaitForFixedUpdate();
             doors.transform.localRotation = Quaternion.RotateTowards(doors.transform.localRotation, Quaternion.Euler(0, destinationDegree, 0), 1f);
@@ -59,7 +55,6 @@ public class OpenLockedDoorsPassage : MonoBehaviour
                 doors.tag = "Wall";
             }
         }
-        Destroy(openDoorsSound, openDoorsSound.clip.length);
     }
 
     private void OnValidate()

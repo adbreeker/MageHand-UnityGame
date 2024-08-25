@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,7 @@ public class RotateWallPassage : MonoBehaviour
 
     bool wallMoving = false;
 
-    private AudioSource wallSound;
+    private EventInstance wallSound;
 
     public void Interaction() //on iteraction start rotating
     {
@@ -28,14 +29,12 @@ public class RotateWallPassage : MonoBehaviour
 
     IEnumerator RotateDoors() //walls rotation animation
     {
-        wallSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MovingWall, wall, 8f, 30f);
-        wallSound.Play();
-
+        wallSound = GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_MovingWall, wall.transform);
         for (int i = 0; i < 90; i++)
         {
             yield return new WaitForFixedUpdate();
             wall.transform.RotateAround(pivot.position ,new Vector3(0, 1, 0), 1.0f * rotationMultiplier);
         }
-        Destroy(wallSound);
+        wallSound.stop(STOP_MODE.IMMEDIATE);
     }
 }

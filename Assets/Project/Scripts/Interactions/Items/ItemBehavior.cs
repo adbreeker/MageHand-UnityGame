@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,9 +40,7 @@ public class ItemBehavior : InteractableBehavior
         transform.position = tpDestination;
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, tpRotation, transform.rotation.eulerAngles.z);
 
-        AudioSource tpSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MagicalTeleportation);
-        tpSound.Play();
-        Destroy(tpSound, tpSound.clip.length);
+        RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_Teleport);
 
         GameObject tpEffect = GameParams.Holders.materialsAndEffectsHolder.GetEffect(MaterialsAndEffectsHolder.Effects.teleportationObject);
 
@@ -60,16 +59,7 @@ public class ItemBehavior : InteractableBehavior
     {
         if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "Obstacle" || collision.gameObject.tag == "DungeonCube")
         {
-            int random = Random.Range(1, 4);
-
-            AudioSource collisionSound;
-
-            if (random == 1) collisionSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_Collision1, gameObject, maxHearingDistance: 15f);
-            else if (random == 2) collisionSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_Collision2, gameObject, maxHearingDistance: 15f);
-            else collisionSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_Collision3, gameObject, maxHearingDistance: 15f);
-
-            collisionSound.Play();
-            Destroy(collisionSound, collisionSound.clip.length);
+            GameParams.Managers.audioManager.PlayOneShotSpatialized(GameParams.Managers.fmodEvents.SFX_Collision, transform);
         }
     }
 }

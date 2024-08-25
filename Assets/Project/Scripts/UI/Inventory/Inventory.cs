@@ -25,8 +25,6 @@ public class Inventory : MonoBehaviour
     private List<GameObject> itemIconActiveInstances = new List<GameObject>();
     private List<List<GameObject>> inventoryPages;
 
-    private AudioSource equipSound;
-
     void Update()
     {
         if (ableToInteract)

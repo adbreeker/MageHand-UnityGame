@@ -63,9 +63,7 @@ public class ThreePillarsPuzzle : MonoBehaviour
                 if (!_soundMade)
                 {
                     _soundMade = true;
-                    AudioSource puzzleSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_Button);
-                    puzzleSound.Play();
-                    Destroy(puzzleSound, puzzleSound.clip.length);
+                    GameParams.Managers.audioManager.PlayOneShotSpatialized(GameParams.Managers.fmodEvents.SFX_ButtonPress, _wallToOpen.transform);
                 }
             }
             else { _soundMade = false; }
