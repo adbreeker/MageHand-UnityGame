@@ -7,6 +7,7 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     public BackgroundMusic backgroundMusic;
+    public LayerMask occlusionLayer;
 
     private Coroutine fadeOutPauseMenuCoroutine;
     private Coroutine fadeInPauseMenuCoroutine;
@@ -22,12 +23,22 @@ public class AudioManager : MonoBehaviour
         FmodBuses.SFX.setPaused(false);
     }
 
-    public StudioEventEmitter CreateAudioEmitter(EventReference eventRef, GameObject soundParent)
+    public EventInstance CreateSpatializedAudio(EventReference eventRef, Transform audioParent, bool addOcclusion, float audioOcclusionWidening = 1f, float playerOcclusionWidening = 1f)
     {
-        StudioEventEmitter eventEmitter;
-        eventEmitter = soundParent.AddComponent<StudioEventEmitter>();
-        eventEmitter.EventReference = eventRef;
-        return eventEmitter;
+        EventInstance eventInstance = RuntimeManager.CreateInstance(eventRef);
+        RuntimeManager.AttachInstanceToGameObject(eventInstance, audioParent);
+
+        if (addOcclusion)
+        {
+            AudioOcclusion audioOcclusion = audioParent.gameObject.AddComponent<AudioOcclusion>();
+            audioOcclusion.audioEvent = eventInstance;
+            audioOcclusion.audioRef = eventRef;
+            audioOcclusion.occlusionLayer = occlusionLayer;
+            audioOcclusion.audioOcclusionWidening = audioOcclusionWidening;
+            audioOcclusion.playerOcclusionWidening = playerOcclusionWidening;
+        }
+
+        return eventInstance;
     }
 
     public EventInstance PlayOneShotReturnInstance(EventReference eventRef)

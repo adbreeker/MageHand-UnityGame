@@ -233,6 +233,8 @@ public class SpellCasting : MonoBehaviour
             mana -= scroll.manaCost;
 
             RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFinished);
+            //^ instead of this
+            //RuntimeManager.PlayOneShot(FmodEvents.SFX_OpenSpellActivation);
             Vector3 castPos = PlayerParams.Objects.player.transform.position;
             Collider[] nearObjects = Physics.OverlapSphere(castPos, 2.0f, LayerMask.GetMask("Default"));
             foreach(Collider potentialLock in nearObjects) 

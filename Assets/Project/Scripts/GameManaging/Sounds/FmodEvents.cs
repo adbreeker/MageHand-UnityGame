@@ -29,7 +29,7 @@ public class FmodEvents : MonoBehaviour
     [field: SerializeField] public EventReference SFX_CastingSpell { get; private set; }
     [field: SerializeField] public EventReference SFX_CastingSpellFailed { get; private set; }
     [field: SerializeField] public EventReference SFX_CastingSpellFinished { get; private set; }
-    //[field: SerializeField] public EventReference SFX_OpenSpell { get; private set; }
+    //[field: SerializeField] public EventReference SFX_OpenSpellActivation { get; private set; }
     [field: SerializeField] public EventReference SFX_SpellLightRemaining { get; private set; }
     [field: SerializeField] public EventReference SFX_SpellLightBurst { get; private set; }
     //[field: SerializeField] public EventReference SFX_MarkSpellRemaining { get; private set; }

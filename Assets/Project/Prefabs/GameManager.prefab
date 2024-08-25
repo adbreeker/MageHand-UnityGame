@@ -79,6 +79,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundMusic: {fileID: 0}
+  occlusionLayer:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!114 &8220826160358160083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,34 +319,6 @@ MonoBehaviour:
       Data3: -1457467494
       Data4: -757529718
     Path: event:/Music/MUSIC_DungeonMusic1
-  <MUSIC_Dungeon2>k__BackingField:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  <MUSIC_Dungeon3>k__BackingField:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  <MUSIC_Dungeon4>k__BackingField:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  <MUSIC_Dungeon5>k__BackingField:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
   <MUSIC_MainTheme>k__BackingField:
     Guid:
       Data1: -1635084229
@@ -358,48 +333,6 @@ MonoBehaviour:
       Data3: 1408505256
       Data4: -1886721990
     Path: event:/Music/MUSIC_LoadingAmbient
-  <NP_UiChangeOption>k__BackingField:
-    Guid:
-      Data1: -1399690091
-      Data2: 1237873509
-      Data3: 1230045067
-      Data4: 994992132
-    Path: event:/Nonpausable/NP_UiChangeOption
-  <NP_UiSelectOption>k__BackingField:
-    Guid:
-      Data1: -1078412269
-      Data2: 1302414394
-      Data3: -576985410
-      Data4: -2011239481
-    Path: event:/Nonpausable/NP_UiSelectOption
-  <NP_UiClose>k__BackingField:
-    Guid:
-      Data1: 1961901652
-      Data2: 1123407451
-      Data3: -740861013
-      Data4: 364739258
-    Path: event:/Nonpausable/NP_UiClose
-  <NP_UiOpen>k__BackingField:
-    Guid:
-      Data1: -1632426489
-      Data2: 1284920902
-      Data3: 759089825
-      Data4: -2119938108
-    Path: event:/Nonpausable/NP_UiOpen
-  <NP_UiPopUp>k__BackingField:
-    Guid:
-      Data1: -35207014
-      Data2: 1308353826
-      Data3: -1514378609
-      Data4: 799292583
-    Path: event:/Nonpausable/NP_UiPopUp
-  <NP_BodyFall>k__BackingField:
-    Guid:
-      Data1: -1997117524
-      Data2: 1230249400
-      Data3: -1070974306
-      Data4: 598684524
-    Path: event:/Nonpausable/NP_BodyFall
   <SFX_VoiceGuide>k__BackingField:
     Guid:
       Data1: -1714254614
@@ -463,28 +396,14 @@ MonoBehaviour:
       Data3: 1131340445
       Data4: -2077615876
     Path: event:/SFX Spells/SFX_CastingSpellFinished
-  <SFX_OpenSpell>k__BackingField:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
   <SFX_SpellLightRemaining>k__BackingField:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: -2086759213
+      Data2: 1133833946
+      Data3: 1352984488
+      Data4: 714090290
+    Path: event:/SFX Spells/SFX_SpellLightRemaining
   <SFX_SpellLightBurst>k__BackingField:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  <SFX_MarkSpellActivation>k__BackingField:
     Guid:
       Data1: 0
       Data2: 0
@@ -603,13 +522,6 @@ MonoBehaviour:
       Data3: 694535841
       Data4: -2077101860
     Path: event:/SFX Regular/SFX_Earthquake
-  <SFX_Punch>k__BackingField:
-    Guid:
-      Data1: -919442001
-      Data2: 1325778146
-      Data3: -788479321
-      Data4: -618976186
-    Path: event:/SFX Regular/SFX_Punch
   <SFX_IllusionBroken>k__BackingField:
     Guid:
       Data1: 0
@@ -638,6 +550,48 @@ MonoBehaviour:
       Data3: 297430714
       Data4: -1222370462
     Path: event:/SFX Regular/SFX_LevelInfo
+  <NP_UiChangeOption>k__BackingField:
+    Guid:
+      Data1: -1399690091
+      Data2: 1237873509
+      Data3: 1230045067
+      Data4: 994992132
+    Path: event:/Nonpausable/NP_UiChangeOption
+  <NP_UiSelectOption>k__BackingField:
+    Guid:
+      Data1: -1078412269
+      Data2: 1302414394
+      Data3: -576985410
+      Data4: -2011239481
+    Path: event:/Nonpausable/NP_UiSelectOption
+  <NP_UiClose>k__BackingField:
+    Guid:
+      Data1: 1961901652
+      Data2: 1123407451
+      Data3: -740861013
+      Data4: 364739258
+    Path: event:/Nonpausable/NP_UiClose
+  <NP_UiOpen>k__BackingField:
+    Guid:
+      Data1: -1632426489
+      Data2: 1284920902
+      Data3: 759089825
+      Data4: -2119938108
+    Path: event:/Nonpausable/NP_UiOpen
+  <NP_UiPopUp>k__BackingField:
+    Guid:
+      Data1: -35207014
+      Data2: 1308353826
+      Data3: -1514378609
+      Data4: 799292583
+    Path: event:/Nonpausable/NP_UiPopUp
+  <NP_BodyFall>k__BackingField:
+    Guid:
+      Data1: -1997117524
+      Data2: 1230249400
+      Data3: -1070974306
+      Data4: 598684524
+    Path: event:/Nonpausable/NP_BodyFall
 --- !u!1 &4871858993183020671
 GameObject:
   m_ObjectHideFlags: 0

@@ -51,6 +51,7 @@ public class SoundManager : MonoBehaviour
         SFX_CastingSpell, //0.6
         SFX_CastingSpellFailed, //1
         SFX_CastingSpellFinished, //1
+        SFX_SpellLightRemaining, //1
         */
         SFX_OpenChest, //0.7
         SFX_CloseChest, //0.7
@@ -64,7 +65,6 @@ public class SoundManager : MonoBehaviour
         SFX_Collision3, //0.7
         SFX_MovingWall, //0.7
         SFX_MovingMetalGate, //1 
-        SFX_SpellLightRemaining, //1
         SFX_SpellLightBurst, //0.6
         SFX_MagicalTeleportation, //0.8
         SFX_FireSpellRemaining, //0.6
