@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MagicBarrierBehavior : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] GameObject _impactEffectPrefab;
     void Start()
     {
         
@@ -14,5 +14,16 @@ public class MagicBarrierBehavior : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Instantiate(_impactEffectPrefab, collision.contacts[0].point, Quaternion.LookRotation(collision.contacts[0].point - gameObject.transform.position), gameObject.transform);
+
+        if(collision.collider.GetComponent<ItemBehavior>() != null)
+        {
+            Rigidbody rb = collision.collider.GetComponent<Rigidbody>();
+            rb.AddExplosionForce(5.0f, collision.contacts[0].point, 1.0f, 3.0f, ForceMode.Impulse);
+        }
     }
 }
