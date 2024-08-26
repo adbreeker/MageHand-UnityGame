@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class WallCannonBehavior : MonoBehaviour
 {
     public enum MissileType
     {
-        teleportingMissile
+        teleportingMissile,
+        freezingMissile
     }
 
     [Header("Launching settings:")]
@@ -16,10 +19,14 @@ public class WallCannonBehavior : MonoBehaviour
     [SerializeField] bool _isLaunching = true;
 
     [Header("Additional launch settings:")]
+
     [Header("Teleporting missile")]
     public Vector3 tpDestination;
     public float tpRotation;
     public bool tpOnCurrentRotation = true;
+
+    [Header("Freezing missile")]
+    public float freezeDuration;
 
     Vector3 _launchingPos;
 
@@ -65,6 +72,9 @@ public class WallCannonBehavior : MonoBehaviour
             case MissileType.teleportingMissile:
                 LaunchTeleportingMissile();
                 break;
+            case MissileType.freezingMissile:
+                LaunchFreezingMissile();
+                break;
         }
     }
 
@@ -83,5 +93,68 @@ public class WallCannonBehavior : MonoBehaviour
 
         Rigidbody rb = missile.GetComponent<Rigidbody>();
         rb.AddForce(gameObject.transform.up * 10, ForceMode.Impulse);
+    }
+
+    public void LaunchFreezingMissile()
+    {
+        Quaternion _launchingRot = transform.rotation * Quaternion.Euler(180.0f, 0, 0);
+        GameObject missile = Instantiate(missilesPrefabs[(int)missileType], _launchingPos, _launchingRot);
+
+        FreezingMissileBehavior missileBehavior = missile.GetComponent<FreezingMissileBehavior>();
+        missileBehavior.freezeDuration = freezeDuration;
+
+        Rigidbody rb = missile.GetComponent<Rigidbody>();
+        rb.AddForce(gameObject.transform.up * 10, ForceMode.Impulse);
+    }
+}
+
+[CustomEditor(typeof(WallCannonBehavior))]
+public class WallCannonBehaviorEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        // Reference to the target script
+        WallCannonBehavior wallCannon = (WallCannonBehavior)target;
+
+        // Draw the default fields up to the MissileType selection
+        EditorGUILayout.LabelField("Launching settings:", EditorStyles.boldLabel);
+
+        //missile type
+        wallCannon.missileType = (WallCannonBehavior.MissileType)EditorGUILayout.EnumPopup("Missile Type", wallCannon.missileType);
+        
+        //missiles prefabs 
+        SerializedProperty missilesPrefabsProp = serializedObject.FindProperty("missilesPrefabs");
+        EditorGUILayout.PropertyField(missilesPrefabsProp, new GUIContent("Missiles Prefabs"), true);
+
+        //launching deley
+        wallCannon.launchingDeley = EditorGUILayout.FloatField("Launching Delay", wallCannon.launchingDeley);
+
+        //is launching
+        SerializedProperty isLaunchingProp = serializedObject.FindProperty("_isLaunching");
+        EditorGUILayout.PropertyField(isLaunchingProp, new GUIContent("Is Launching"));
+
+        EditorGUILayout.Space();
+
+        // Conditionally show additional settings based on the selected missile type
+        EditorGUILayout.LabelField("Additional launch settings:", EditorStyles.boldLabel);
+
+        if (wallCannon.missileType == WallCannonBehavior.MissileType.teleportingMissile)
+        {
+            EditorGUILayout.LabelField("Teleporting missile", EditorStyles.boldLabel);
+            wallCannon.tpDestination = EditorGUILayout.Vector3Field("TP Destination", wallCannon.tpDestination);
+            wallCannon.tpRotation = EditorGUILayout.FloatField("TP Rotation", wallCannon.tpRotation);
+            wallCannon.tpOnCurrentRotation = EditorGUILayout.Toggle("TP On Current Rotation", wallCannon.tpOnCurrentRotation);
+        }
+        else if (wallCannon.missileType == WallCannonBehavior.MissileType.freezingMissile)
+        {
+            EditorGUILayout.LabelField("Freezing missile", EditorStyles.boldLabel);
+            wallCannon.freezeDuration = EditorGUILayout.FloatField("Freeze Duration", wallCannon.freezeDuration);
+        }
+
+        // Apply any changes made in the Inspector
+        if (GUI.changed)
+        {
+            EditorUtility.SetDirty(wallCannon);
+        }
     }
 }
