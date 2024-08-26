@@ -23,25 +23,33 @@ public class FreezingMissileBehavior : SpellBehavior
         //managing all freezing
         if (impactTarget.layer == LayerMask.NameToLayer("Player")) //player
         {
-            FreezeEffect fe;
-            if (PlayerParams.Objects.player.GetComponent<FreezeEffect>() != null)
-            {
-                fe = PlayerParams.Objects.player.GetComponent<FreezeEffect>();
-            }
-            else
-            {
-                fe = PlayerParams.Objects.player.AddComponent<FreezeEffect>();
-            }
-
-            fe.ActivateFreezeEffect(freezeDuration, freezeEffectPrefab);
-
+            ManageFreezingPlayer();
         }
         else if (impactTarget.GetComponent<ItemBehavior>() != null)  //item
         {
             ManageFreezingItem(impactTarget);
         }
+        else if (impactTarget.GetComponent<SpellBehavior>() != null) // spell
+        {
+            ManageFreezingSpell(impactTarget);
+        }
 
         Destroy(gameObject);
+    }
+
+    void ManageFreezingPlayer()
+    {
+        FreezeEffect fe;
+        if (PlayerParams.Objects.player.GetComponent<FreezeEffect>() != null)
+        {
+            fe = PlayerParams.Objects.player.GetComponent<FreezeEffect>();
+        }
+        else
+        {
+            fe = PlayerParams.Objects.player.AddComponent<FreezeEffect>();
+        }
+
+        fe.ActivateFreezeEffect(freezeDuration, freezeEffectPrefab);
     }
 
     void ManageFreezingItem(GameObject item)
@@ -54,7 +62,7 @@ public class FreezingMissileBehavior : SpellBehavior
         {
             if (item.tag == "Shield")
             {
-                
+                //shield is protecting from magic missiles
             }
             else
             {
@@ -77,11 +85,26 @@ public class FreezingMissileBehavior : SpellBehavior
         }
     }
 
+    void ManageFreezingSpell(GameObject spell)
+    {
+        if (PlayerParams.Controllers.handInteractions.inHand == spell )
+        {
+            FreezeEffect fe;
+            if (PlayerParams.Objects.player.GetComponent<FreezeEffect>() != null)
+            {
+                fe = PlayerParams.Objects.player.GetComponent<FreezeEffect>();
+            }
+            else
+            {
+                fe = PlayerParams.Objects.player.AddComponent<FreezeEffect>();
+            }
+
+            fe.ActivateFreezeEffect(freezeDuration, freezeEffectPrefab);
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
-        if(!(collision.gameObject.layer == LayerMask.NameToLayer("Spell") && collision.gameObject.GetComponent<MagicBarrierBehavior>() == null))
-        {
-            OnImpact(collision.gameObject);
-        }
+        OnImpact(collision.collider.gameObject);
     }
 }
