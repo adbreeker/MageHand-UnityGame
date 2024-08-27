@@ -16,6 +16,8 @@ public class WolfEncounter : MonoBehaviour
     [SerializeField] BoxCollider _closeWallTrigger;
     [SerializeField] BoxCollider _closeWallSecretTrigger;
     [SerializeField] Transform _afterTeleportTrigger;
+    [SerializeField] GameObject _dialogue;
+    bool _wolfWalkingAway = false;
     bool _wolfTriggered = false;
     bool _wallTriggered = false;
     bool _wolfIsBlinded = false;
@@ -38,6 +40,11 @@ public class WolfEncounter : MonoBehaviour
         {
             _wolfTriggered = true;
             _wolf.SetWolfMovement(_runningInPath);
+        }
+
+        if (!_wolfWalkingAway && !_dialogue.activeSelf)
+        {
+            _wolfWalkingAway = true;
             StartCoroutine(WaitingForWolf());
         }
 

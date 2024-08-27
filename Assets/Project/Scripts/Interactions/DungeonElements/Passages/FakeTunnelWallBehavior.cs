@@ -33,8 +33,8 @@ public class FakeTunnelWallBehavior : MonoBehaviour
 
     IEnumerator FadeAlpha()
     {
-        //AudioSource sound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_IllusionBroken);
-        //sound.Play();
+        GameParams.Managers.audioManager.PlayOneShotSpatialized(GameParams.Managers.fmodEvents.SFX_IllusionBreak, transform);
+
 
         Material[] prevWall1Materials = _wall1Renderer.materials;
         Material[] prevWall2Materials = _wall2Renderer.materials;
