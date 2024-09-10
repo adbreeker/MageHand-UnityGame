@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Linq;
+using FMODUnity;
 
 public class Inventory : MonoBehaviour
 {
@@ -23,11 +24,6 @@ public class Inventory : MonoBehaviour
     private List<GameObject> itemSlots;
     private List<GameObject> itemIconActiveInstances = new List<GameObject>();
     private List<List<GameObject>> inventoryPages;
-
-    private AudioSource equipSound;
-    private AudioSource closeSound;
-    private AudioSource openSound;
-    private AudioSource changeSound;
 
     void Update()
     {
@@ -54,23 +50,23 @@ public class Inventory : MonoBehaviour
                     PlayerParams.Controllers.handInteractions.PutDownObject();
                 }
                 OpenInventory();
-                openSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiOpen);
             }
             else if (!inventoryOpened)
             {
                 OpenInventory();
-                openSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiOpen);
             }
             else
             {
-                closeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiClose);
                 CloseInventory();
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape) && inventoryOpened)
         {
-            closeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiClose);
             CloseInventory();
         }
 
@@ -79,7 +75,7 @@ public class Inventory : MonoBehaviour
         {
             if (page > 0)
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
                 page--;
                 DisplayPage(page);
             }
@@ -90,7 +86,7 @@ public class Inventory : MonoBehaviour
         {
             if (page + 1 < inventoryPages.Count)
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
                 page++;
                 DisplayPage(page);
             }
@@ -110,10 +106,6 @@ public class Inventory : MonoBehaviour
         PlayerParams.Controllers.pauseMenu.CloseMenu();
         PlayerParams.Controllers.pauseMenu.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
-
-        openSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Open);
-        closeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Close);
-        changeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
 
         //Create list of slots for items to display on one page
         itemSlots = new List<GameObject>();
@@ -166,12 +158,6 @@ public class Inventory : MonoBehaviour
     public void CloseInventory()
     {
         Destroy(instantiatedInventory);
-        if (inventoryOpened)
-        {
-            Destroy(openSound.gameObject, openSound.clip.length);
-            Destroy(closeSound.gameObject, closeSound.clip.length);
-            Destroy(changeSound.gameObject, changeSound.clip.length);
-        }
         inventoryOpened = false;
 
         //Enable other controls

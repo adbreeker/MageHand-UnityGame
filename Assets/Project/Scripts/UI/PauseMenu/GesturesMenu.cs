@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using FMODUnity;
 
 public class GesturesMenu : MonoBehaviour
 {
@@ -10,9 +11,6 @@ public class GesturesMenu : MonoBehaviour
     private int pointedOptionMenu;
     private TextMeshProUGUI description;
     private List<TextMeshProUGUI> menuOptions = new List<TextMeshProUGUI>();
-
-    private AudioSource closeSound;
-    private AudioSource changeSound;
 
     [Header("Click")]
     public string gestureDescription1;
@@ -59,13 +57,13 @@ public class GesturesMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            closeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiClose);
             CloseMenu();
         }
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            changeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu < menuOptions.Count - 1)
             {
                 pointedOptionMenu++;
@@ -79,7 +77,7 @@ public class GesturesMenu : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            changeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
@@ -93,7 +91,7 @@ public class GesturesMenu : MonoBehaviour
 
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.S))
         {
-            changeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu < menuOptions.Count - 1)
             {
                 pointedOptionMenu++;
@@ -107,7 +105,7 @@ public class GesturesMenu : MonoBehaviour
 
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.W))
         {
-            changeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
@@ -142,9 +140,6 @@ public class GesturesMenu : MonoBehaviour
 
         pointer = givenPointer;
 
-        closeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Close);
-        changeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
-
         for (int i = 1; i < 7; i++)
         {
             string text = i.ToString();
@@ -163,8 +158,6 @@ public class GesturesMenu : MonoBehaviour
         pointer.transform.SetParent(transform.parent.transform.Find("Menu"));
         menuOptions.Clear();
         transform.parent.transform.Find("Menu").gameObject.SetActive(true);
-        Destroy(closeSound.gameObject, closeSound.clip.length);
-        Destroy(changeSound.gameObject, changeSound.clip.length);
         Destroy(gameObject);
     }
 

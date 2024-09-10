@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 
 public class PythonCrashed : MonoBehaviour
@@ -6,7 +7,7 @@ public class PythonCrashed : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption).Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
             GameParams.Managers.fadeInOutManager.CloseGame();
         }
     }

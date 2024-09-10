@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO.MemoryMappedFiles;
 using System.IO;
 using UnityEngine;
+using FMODUnity;
 
 public class HandInteractions : MonoBehaviour
 {
@@ -25,25 +26,18 @@ public class HandInteractions : MonoBehaviour
     bool CooldownPutDown = false;
     bool CooldownDrink = false;
 
-    private AudioSource pickUpItemSound;
-    private AudioSource putToInventorySound;
-    private AudioSource drinkSound;
-
     LayerMask inHandPreviousLayer;
 
     [Header("Pop up options")]
     public float timeToFadeOutPopUp = 1;
     public float timeOfFadingOutPopUp = 0.007f;
 
+    FmodEvents FmodEvents => GameParams.Managers.fmodEvents;
 
     private void Awake() //get necessary components
     {
         gestureHandler = GetComponent<MoveHandPoints>();
         pointer = GetComponent<GetObjectsNearHand>();
-
-        pickUpItemSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_PickUpItem);
-        putToInventorySound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_PutToInventory);
-        drinkSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_Drink);
     }
 
     void Update()
@@ -139,7 +133,11 @@ public class HandInteractions : MonoBehaviour
             if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("UI") 
                 && PlayerParams.Controllers.inventory.inventoryOpened) //picking item from inventory
             {
-                if (pointer.currentlyPointing.GetComponent<ReadableBehavior>() == null && pointer.currentlyPointing.GetComponent<PopUpActivateOnPickUp>() == null) pickUpItemSound.Play();
+                if (pointer.currentlyPointing.GetComponent<ReadableBehavior>() == null 
+                    && pointer.currentlyPointing.GetComponent<PopUpActivateOnPickUp>() == null)
+                {
+                    RuntimeManager.PlayOneShot(FmodEvents.SFX_PickUpItem);
+                }
 
                 //getting item from inventory
                 GameObject itemFromInventory = pointer.currentlyPointing.transform.parent.GetComponent<IconParameters>().originalObject;
@@ -208,7 +206,7 @@ public class HandInteractions : MonoBehaviour
 
         if (inHand.layer == LayerMask.NameToLayer("Item")) //if item in hand then just putting it down to inventory
         {
-            putToInventorySound.Play();
+            RuntimeManager.PlayOneShot(FmodEvents.SFX_PutToInventory);
             PlayerParams.Controllers.inventory.AddItem(inHand);
         }
         else if (inHand.layer == LayerMask.NameToLayer("Spell")) //if spell in hand use reactivation
@@ -222,7 +220,7 @@ public class HandInteractions : MonoBehaviour
     {
         if(inHand.tag == "Potion")
         {
-            drinkSound.Play();
+            RuntimeManager.PlayOneShot(FmodEvents.SFX_Drink);
             inHand.GetComponent<PotionEffect>().Drink();
             inHand = null;
         }
@@ -235,7 +233,7 @@ public class HandInteractions : MonoBehaviour
     {
         if (toHand.GetComponent<ReadableBehavior>() == null && toHand.GetComponent<PopUpActivateOnPickUp>() == null && withPositionChange && !isSpell)
         {
-            pickUpItemSound.Play();
+            RuntimeManager.PlayOneShot(FmodEvents.SFX_PickUpItem);
         }
 
         inHand = toHand;

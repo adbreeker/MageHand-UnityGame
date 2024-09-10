@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using FMODUnity;
+using FMOD.Studio;
+using UnityEngine.Rendering;
 
 public class Dialogue : MonoBehaviour
 {
@@ -34,9 +37,6 @@ public class Dialogue : MonoBehaviour
     [Header("Player choice")]
     public string playerChoice = "";
 
-    private AudioSource changeSound;
-    private AudioSource selectSound;
-    private AudioSource voice;
     private GameObject pointer;
     private TextMeshProUGUI nameTextObject;
     private TextMeshProUGUI contentTextObject;
@@ -50,9 +50,15 @@ public class Dialogue : MonoBehaviour
     private bool skip = false;
     private int choice;
 
+    private EventReference voiceRef;
+    private EventInstance voiceInstance;
+
     private float keyTimeDelayFirst = 20f;
     private float keyTimeDelay = 10f;
     private float keyTimeDelayer = 0;
+
+    private FmodEvents FmodEvents => GameParams.Managers.fmodEvents;
+    private AudioManager AudioManager => GameParams.Managers.audioManager;
     void Start()
     {
         textSpeed = transform.parent.GetComponent<OpenDialogue>().textSpeed;
@@ -76,11 +82,8 @@ public class Dialogue : MonoBehaviour
         nameTextObject = transform.Find("Text").Find("Name").GetComponent<TextMeshProUGUI>();
         contentTextObject = transform.Find("Text").Find("Content").GetComponent<TextMeshProUGUI>();
 
-        changeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
-        selectSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption);
-        if (guideVoiceline) voice = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.VOICES_Guide);
-        else voice = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.VOICES_Mage);
-        voice.loop = true;
+        if (guideVoiceline) voiceRef = FmodEvents.SFX_VoiceGuide;
+        else voiceRef = FmodEvents.SFX_VoiceAlandos;
 
         //Create dicts of options, choices when options are chosen and text of options (indexed 1-4)
         options = new Dictionary<int, TextMeshProUGUI>();
@@ -117,6 +120,11 @@ public class Dialogue : MonoBehaviour
         if (keyTimeDelayer > 0) keyTimeDelayer -= 75 * Time.unscaledDeltaTime;
     }
 
+    private void OnDisable()
+    {
+        if (voiceInstance.isValid()) voiceInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+    }
+
     void PointOption(TextMeshProUGUI option)
     {
         //Change color of all options to darkGrey (68, 68, 68)
@@ -145,7 +153,7 @@ public class Dialogue : MonoBehaviour
                     if (!string.IsNullOrWhiteSpace(options[i].text))
                     {
                         choice = i;
-                        if(choice != 1) changeSound.Play();
+                        if(choice != 1) RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                         PointOption(options[choice]);
                         break;
                     }
@@ -153,7 +161,7 @@ public class Dialogue : MonoBehaviour
             }
             else
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 choice--;
                 PointOption(options[choice]);
             }
@@ -165,19 +173,19 @@ public class Dialogue : MonoBehaviour
         {
             if (choice == 4)
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 choice = 1;
                 PointOption(options[choice]); 
             }
             else if (string.IsNullOrWhiteSpace(options[choice + 1].text))
             {
-                if(choice != 1) changeSound.Play();
+                if(choice != 1) RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 choice = 1;
                 PointOption(options[choice]);
             }
             else
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 choice++;
                 PointOption(options[choice]);
             }
@@ -193,7 +201,7 @@ public class Dialogue : MonoBehaviour
                     if (!string.IsNullOrWhiteSpace(options[i].text))
                     {
                         choice = i;
-                        if (choice != 1) changeSound.Play();
+                        if (choice != 1) RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                         PointOption(options[choice]);
                         break;
                     }
@@ -201,7 +209,7 @@ public class Dialogue : MonoBehaviour
             }
             else
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 choice--;
                 PointOption(options[choice]);
             }
@@ -213,19 +221,19 @@ public class Dialogue : MonoBehaviour
 
             if (choice == 4)
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 choice = 1;
                 PointOption(options[choice]);
             }
             else if (string.IsNullOrWhiteSpace(options[choice + 1].text))
             {
-                if(choice != 1) changeSound.Play();
+                if(choice != 1) RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 choice = 1;
                 PointOption(options[choice]);
             }
             else
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 choice++;
                 PointOption(options[choice]);
             }
@@ -235,7 +243,7 @@ public class Dialogue : MonoBehaviour
         //Choose pointed option (if choice is null, end dialogue and activate other controls)
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            selectSound.Play();
+            RuntimeManager.PlayOneShot(FmodEvents.NP_UiSelectOption);
 
             //Save dialogue to player's diary
             if (transform.parent.GetComponent<OpenDialogue>().saveDialogue)
@@ -267,9 +275,6 @@ public class Dialogue : MonoBehaviour
             {
                 optionsChoices[choice].gameObject.SetActive(true);
             }
-
-            Destroy(changeSound.gameObject, changeSound.clip.length);
-            Destroy(selectSound.gameObject, selectSound.clip.length);
         }
     }
 
@@ -293,7 +298,7 @@ public class Dialogue : MonoBehaviour
         else
         {
             nameTextObject.text = nameText;
-            voice.Play();
+            voiceInstance = AudioManager.PlayOneShotReturnInstance(voiceRef);
         }
 
         //Set position of pointer to first option
@@ -341,23 +346,23 @@ public class Dialogue : MonoBehaviour
 
         //Activate KeysListener
         listen = true;
-        Destroy(voice.gameObject);
     }
 
     IEnumerator FadeOutVoice(float speed)
     {
-        if (voice != null)
+        if (voiceInstance.isValid())
         {
-            float startVolume = voice.volume;
+            voiceInstance.getVolume(out float currentVolume);
+            float startVolume = currentVolume;
 
-            while (voice != null && voice.volume > 0)
+            while (voiceInstance.isValid() && currentVolume > 0)
             {
-                voice.volume -= startVolume * Time.deltaTime / speed;
-
+                AudioManager.SetInstanceVolume(voiceInstance, currentVolume - startVolume * Time.deltaTime / speed);
                 if (!skip) yield return new WaitForSeconds(textSpeed);
+                voiceInstance.getVolume(out currentVolume);
             }
 
-            if (voice != null) { voice.Stop(); }
+            if (voiceInstance.isValid()) voiceInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         }
     }
 }

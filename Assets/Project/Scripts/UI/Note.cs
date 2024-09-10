@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 using UnityEngine.UI;
+using FMODUnity;
 
 public class Note : MonoBehaviour
 {
@@ -12,11 +13,6 @@ public class Note : MonoBehaviour
     public TextMeshProUGUI title;
     public TextMeshProUGUI content;
     public GameObject scrollView;
-
-    private AudioSource openSound;
-    private AudioSource closeSound;
-    private AudioSource changeSound;
-    private AudioSource selectSound;
 
     private bool openedNote = false;
     private bool fromJournal = false;
@@ -36,13 +32,13 @@ public class Note : MonoBehaviour
         //Choose option continue, back or close
         if (Input.GetKeyDown(KeyCode.Space) && openedNote)
         {
-            selectSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
             CloseNote();
         }
 
         if (Input.GetKeyDown(KeyCode.Escape) && openedNote && fromJournal)
         {
-            closeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiClose);
             CloseNote();
         }
 
@@ -86,12 +82,7 @@ public class Note : MonoBehaviour
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
 
-        openSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Open);
-        closeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Close);
-        changeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
-        selectSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption);
-
-        openSound.Play();
+        RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiOpen);
 
         //Set proper values
         title.text = titleText;
@@ -101,9 +92,6 @@ public class Note : MonoBehaviour
 
     void CloseNote()
     {
-        Destroy(openSound.gameObject, openSound.clip.length);
-        Destroy(changeSound.gameObject, changeSound.clip.length);
-        Destroy(selectSound.gameObject, selectSound.clip.length);
         Destroy(gameObject);
 
         //Enable other controls

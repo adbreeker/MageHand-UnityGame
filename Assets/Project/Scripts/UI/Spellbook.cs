@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using FMODUnity;
+using FMOD.Studio;
+using UnityEngine.UIElements;
 
 public class Spellbook : MonoBehaviour
 {
@@ -17,15 +20,7 @@ public class Spellbook : MonoBehaviour
     public bool ableToInteract = true;
     public bool spellbookOpened = false;
 
-    //[Header("Voices")]
-    private bool voiceIsPlaying;
-    private AudioSource closeSound;
-    private AudioSource openSound;
-    private AudioSource changeSound;
-    private AudioSource lightVoice;
-    private AudioSource pickUpVoice;
-    private AudioSource fireVoice;
-    //private AudioSource fireVoice; etc.
+    private EventInstance readingSound;
 
     private int page;
     private int pointed;
@@ -48,6 +43,8 @@ public class Spellbook : MonoBehaviour
     //this means views not actual pages (spellbookPage = 1 view = 2 real pages)
     private List<List<SpellScrollInfo>> spellbookPages;
 
+    private FmodEvents FmodEvents => GameParams.Managers.fmodEvents;
+
 
     void Update()
     {
@@ -65,37 +62,42 @@ public class Spellbook : MonoBehaviour
             if (!spellbookOpened && bookOwned)
             {
                 OpenSpellbook();
-                openSound.Play();
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiOpen);
             }
             else if (spellbookOpened) 
             {
-                closeSound.Play();
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiClose);
                 CloseSpellbook();
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape) && spellbookOpened)
         {
-            closeSound.Play();
+            RuntimeManager.PlayOneShot(FmodEvents.NP_UiClose);
             CloseSpellbook();
         }
 
         //Play pointed voice
         if (Input.GetKeyDown(KeyCode.Space) && spellbookOpened && GameSettings.useSpeech)
         {
-
-            if (lightVoice.isPlaying || pickUpVoice.isPlaying || fireVoice.isPlaying) voiceIsPlaying = true;
-            //if (lightVoice.isPlaying || fireVoice.isPlaying etc.) voiceIsPlaying = true; ^in place of that
-            else voiceIsPlaying = false;
-
-            if (!voiceIsPlaying)
+            if (!readingSound.isValid())
             {
-                if (spellbookPages[page][pointed - 1].spellName == "Light") lightVoice.Play();
-                if (spellbookPages[page][pointed - 1].spellName == "Collect") pickUpVoice.Play();
-                if (spellbookPages[page][pointed - 1].spellName == "Fire") fireVoice.Play();
-                //if (spellbookPages[page][pointed - 1].spellName == "Fire") fireVoice.Play(); etc.
+                EventReference readingSpellRef;
+                if (spellbookPages[page][pointed - 1].spellName == "Light") readingSpellRef = FmodEvents.SFX_ReadLight;
+                else if (spellbookPages[page][pointed - 1].spellName == "Mark") readingSpellRef = FmodEvents.SFX_ReadMark;
+                else if (spellbookPages[page][pointed - 1].spellName == "Fire") readingSpellRef = FmodEvents.SFX_ReadFire;
+                else if (spellbookPages[page][pointed - 1].spellName == "Speak") readingSpellRef = FmodEvents.SFX_ReadSpeak;
+                //etc.
+                else
+                {
+                    Debug.LogError("Spell with no reading assign");
+                    readingSpellRef = FmodEvents.NP_UiSelectOption;
+                } 
+
+                readingSound = GameParams.Managers.audioManager.PlayOneShotReturnInstance(readingSpellRef);
             }
-        
+
+
 
         }
 
@@ -104,13 +106,13 @@ public class Spellbook : MonoBehaviour
         {
             if (pointed == 2)
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 pointed = 1;
                 PointOption(pointed);
             }
             else if (pointed == 1 && page > 0)
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 page--;
                 DisplayPage(page);
                 pointed = 2;
@@ -123,13 +125,13 @@ public class Spellbook : MonoBehaviour
         {
             if (pointed == 1 && spellbookPages[page].Count == 2)
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 pointed = 2;
                 PointOption(pointed);
             }
             else if (pointed == 2 && page + 1 < spellbookPages.Count)
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(FmodEvents.NP_UiChangeOption);
                 page++;
                 DisplayPage(page);
                 pointed = 1;
@@ -154,20 +156,6 @@ public class Spellbook : MonoBehaviour
         {
             instantiatedSpellbook.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
         }
-
-        //Assign proper voices
-        openSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Open);
-        closeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Close);
-        changeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
-        lightVoice = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.READING_Light);
-        lightVoice.volume *= 2f;
-        pickUpVoice = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.READING_PickUp);
-        pickUpVoice.volume *= 2f;
-        fireVoice = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.READING_Fire);
-        fireVoice.volume *= 2f;
-        //fireVoice = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.READING_Fire); etc.
-        //fireVoice.volume *= 2f; etc.
-
 
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.inventory.CloseInventory();
@@ -223,16 +211,6 @@ public class Spellbook : MonoBehaviour
 
     public void CloseSpellbook()
     {
-        if(spellbookOpened)
-        {
-            Destroy(openSound.gameObject, openSound.clip.length);
-            Destroy(closeSound.gameObject, closeSound.clip.length);
-            Destroy(changeSound.gameObject, changeSound.clip.length);
-            Destroy(lightVoice.gameObject, lightVoice.clip.length);
-            Destroy(pickUpVoice.gameObject, pickUpVoice.clip.length);
-            Destroy(fireVoice.gameObject, fireVoice.clip.length);
-            //Destroy(fireVoice.gameObject, fireVoice.clip.length); etc.
-        }
         Destroy(instantiatedSpellbook);
         spellbookOpened = false;
 

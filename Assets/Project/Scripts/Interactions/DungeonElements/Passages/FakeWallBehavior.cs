@@ -32,8 +32,8 @@ public class FakeWallBehavior : MonoBehaviour
 
     IEnumerator FadeAlpha()
     {
-        //AudioSource sound = FindObjectOfType<SoundManager>().CreateAudioSource(SoundManager.Sound.SFX_IllusionBroken);
-        //sound.Play();
+        GameParams.Managers.audioManager.PlayOneShotSpatialized(GameParams.Managers.fmodEvents.SFX_IllusionBreak, transform);
+
 
         Material prevWall1Material = _wall1Renderer.material;
         Material prevWall2Material = _wall2Renderer.material;

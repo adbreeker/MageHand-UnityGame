@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,6 @@ public class EnteringEarthquake : MonoBehaviour
     [SerializeField] GameObject _firstTutorial;
 
     Vector3 _firstTilePos;
-    AudioSource earthquakeSound;
     ProgressSaving progressSaving;
 
     void Start()
@@ -20,7 +20,6 @@ public class EnteringEarthquake : MonoBehaviour
         PlayerParams.Controllers.playerMovement.stopMovement = true;
         _firstTilePos = PlayerParams.Objects.player.transform.position;
         PlayerParams.Objects.player.transform.position = _enteringPosition;
-        earthquakeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_Earthquake);
 
         progressSaving = GameParams.Managers.saveManager;
         progressSaving.SaveGameState(SceneManager.GetActiveScene().name, 0, 0, 0, 0, 0, 0, 0);
@@ -39,8 +38,7 @@ public class EnteringEarthquake : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        earthquakeSound.Play();
-        Destroy(earthquakeSound, earthquakeSound.clip.length);
+        RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_Earthquake);
         yield return new WaitForSeconds(0.3f);
 
         float lightRemovingStep = _enteringLight.intensity / 150.0f;

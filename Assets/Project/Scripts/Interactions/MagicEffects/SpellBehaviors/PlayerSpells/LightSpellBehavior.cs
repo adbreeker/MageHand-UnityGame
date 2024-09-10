@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,15 +7,16 @@ using UnityEngine.XR;
 public class LightSpellBehavior : SpellBehavior
 {
     private GameObject instantiatedEffect;
-
-    private AudioSource spellRemaining;
-    private AudioSource spellBurst;
+    private EventInstance spellRemainingSound;
 
     private void Start()
     {
-        spellRemaining = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_SpellLightRemaining, gameObject, minHearingDistance, maxHearingDistance);
-        spellRemaining.loop = true;
-        spellRemaining.Play();
+        spellRemainingSound = GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_LightSpellRemaining, transform);
+    }
+
+    private void OnDestroy()
+    {
+        spellRemainingSound.stop(STOP_MODE.ALLOWFADEOUT);
     }
 
     public override void OnThrow()
@@ -24,10 +26,9 @@ public class LightSpellBehavior : SpellBehavior
 
     public override void OnImpact(GameObject impactTarget) //on impact spawn flash effect
     {
-        spellRemaining.Stop();
+        spellRemainingSound.stop(STOP_MODE.IMMEDIATE);
         instantiatedEffect = Instantiate(specialEffectPrefab, transform.position, Quaternion.identity);
-        spellBurst = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_SpellLightBurst, instantiatedEffect, 8f, 30f);
-        spellBurst.Play();
+        GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_LightSpellBurst, instantiatedEffect.transform);
 
         if(impactTarget != null) 
         {

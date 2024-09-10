@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -13,9 +14,6 @@ public class LevelInfoDisplay : MonoBehaviour
     public float timeToFadeOut = 2;
     public float timeOfFadingOut = 0.007f;
 
-    private AudioSource sound;
-    private AudioSource sound1;
-    private AudioSource soundSecret;
     private GameObject instantiatedDisplay;
     private TextMeshProUGUI levelName;
     private TextMeshProUGUI secretsNumber;
@@ -23,10 +21,6 @@ public class LevelInfoDisplay : MonoBehaviour
 
     void Start()
     {
-        sound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_LevelInfoSound);
-        sound1 = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_LevelInfoSound);
-        soundSecret = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_SecretFound);
-
         instantiatedDisplay = Instantiate(displayPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
 
         levelName = instantiatedDisplay.transform.Find("Name").GetComponent<TextMeshProUGUI>();
@@ -59,7 +53,7 @@ public class LevelInfoDisplay : MonoBehaviour
 
         yield return new WaitForSeconds(1);
 
-        sound.Play();
+        RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_LevelInfo);
         float alphaName = 0;
         while (alphaName < 1)
         {
@@ -70,7 +64,7 @@ public class LevelInfoDisplay : MonoBehaviour
 
         yield return new WaitForSeconds(1);
 
-        sound1.Play();
+        RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_LevelInfo);
         float alphaSecret = 0;
         while (alphaSecret < 1)
         {
@@ -91,9 +85,6 @@ public class LevelInfoDisplay : MonoBehaviour
             secretsNumber.alpha = alphaName;
             yield return new WaitForFixedUpdate();
         }
-
-        Destroy(sound, sound.clip.length);
-        Destroy(sound1, sound1.clip.length);
         Destroy(instantiatedDisplay);
     }
 
@@ -105,7 +96,7 @@ public class LevelInfoDisplay : MonoBehaviour
 
     public void SecretFoundPopUp()
     {
-        soundSecret.Play();
+        RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_SecretFound);
         PlayerParams.Controllers.pointsManager.foundSecrets += 1;
         foundSecretsOnLevel += 1;
         string text = "Secret found!<br>" + foundSecretsOnLevel + "/" + secretsOnLevel;

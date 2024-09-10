@@ -9,7 +9,7 @@ public class GameSettings : MonoBehaviour
     public static Process mediapipeHandProcess;
     public static Process whisperProcess;
 
-    private SoundManager soundManager;
+    AudioManager AudioManager => GameParams.Managers.audioManager;
 
     public enum GraphicsQuality
     {
@@ -56,10 +56,8 @@ public class GameSettings : MonoBehaviour
     //applying player setting from saves (now it's hardcoded)
     private void Start()
     {
-        soundManager = GameParams.Managers.soundManager;
-
         //set volume
-        soundManager.ChangeVolume(soundVolume);
+        AudioManager.SetGameVolume(soundVolume);
 
         //set microphone
         UpdateMicrophone();
@@ -84,12 +82,15 @@ public class GameSettings : MonoBehaviour
         Cursor.visible = !fullscreen;
         if(fullscreen) Cursor.lockState = CursorLockMode.Confined;
         else Cursor.lockState = CursorLockMode.None;
+
+        //set muteMusic
+        FmodBuses.Music.setMute(muteMusic);
     }
 
     private void Update()
     {
         //update soundVolume
-        if (soundVolume != soundManager.GetVolume()) soundManager.ChangeVolume(soundVolume, fromPauseMenu: true);
+        if (soundVolume != AudioManager.GetGameVolume()) AudioManager.SetGameVolume(soundVolume);
 
         //update webcam and microphone
         UpdateMicrophone();
@@ -128,6 +129,9 @@ public class GameSettings : MonoBehaviour
 
         //useSpeech
         if (microphoneName == null) useSpeech = false;
+
+        //set muteMusic
+        FmodBuses.Music.setMute(muteMusic);
 
         //resizing resolution while in window mode to stay in 16/9
         if (!Screen.fullScreen)

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using FMODUnity;
 
 public class Opening : MonoBehaviour
 {
@@ -23,7 +24,7 @@ public class Opening : MonoBehaviour
     {
         if (error && Input.GetKeyDown(KeyCode.Space))
         {
-            GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption).Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
             GameParams.Managers.fadeInOutManager.CloseGame();
         }
     }

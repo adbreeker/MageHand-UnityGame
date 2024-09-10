@@ -2,14 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using FMODUnity;
 
 public class ControlsMenu : MonoBehaviour
 {
-    private AudioSource closeSound;
-    private void Start()
-    {
-        closeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Close);
-    }
     void Update()
     {
         KeysListener();
@@ -19,7 +15,7 @@ public class ControlsMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            closeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiClose);
             CloseMenu();
         }
     }
@@ -27,7 +23,6 @@ public class ControlsMenu : MonoBehaviour
     public void CloseMenu()
     {
         transform.parent.transform.Find("Menu").gameObject.SetActive(true);
-        Destroy(closeSound.gameObject, closeSound.clip.length);
         Destroy(gameObject);
     }
 }

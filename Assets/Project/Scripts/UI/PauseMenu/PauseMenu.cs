@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using FMODUnity;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -35,14 +36,11 @@ public class PauseMenu : MonoBehaviour
     private bool atMainMenu = false;
     private List<TextMeshProUGUI> menuOptions = new List<TextMeshProUGUI>();
 
-    private AudioSource closeSound;
-    private AudioSource openSound;
-    private AudioSource changeSound;
-    private AudioSource selectSound;
-
     private float keyTimeDelayFirst = 20f;
     private float keyTimeDelay = 10f;
     private float keyTimeDelayer = 0;
+
+    private float fadeMusicSpeed = 0.05f;
 
     void Update()
     {
@@ -54,7 +52,7 @@ public class PauseMenu : MonoBehaviour
         if (ableToInteract && !PlayerParams.Variables.uiActive && Input.GetKeyDown(KeyCode.Escape))
         {
             OpenMenu();
-            openSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiOpen);
         }
 
         //if menu is opened and is at main page listen to keys
@@ -75,14 +73,14 @@ public class PauseMenu : MonoBehaviour
         //Close menu
         if (Input.GetKeyDown(KeyCode.Escape) && menuOpened && atMainMenu)
         {
-            closeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiClose);
             CloseMenu();
         }
 
         //Move down
         if (Input.GetKeyDown(KeyCode.S))
         {
-            changeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu < menuOptions.Count-1)
             {
                 pointedOptionMenu++;
@@ -97,7 +95,7 @@ public class PauseMenu : MonoBehaviour
         //Move up
         if (Input.GetKeyDown(KeyCode.W))
         {
-            changeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
@@ -111,7 +109,7 @@ public class PauseMenu : MonoBehaviour
 
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.S))
         {
-            changeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu < menuOptions.Count - 1)
             {
                 pointedOptionMenu++;
@@ -125,7 +123,7 @@ public class PauseMenu : MonoBehaviour
 
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.W))
         {
-            changeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
@@ -140,7 +138,7 @@ public class PauseMenu : MonoBehaviour
         //Choice
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            selectSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
             if (pointedOptionMenu == 0)
             {
                 //Spawn ResetMenu
@@ -214,7 +212,8 @@ public class PauseMenu : MonoBehaviour
 
     public void OpenMenu()
     {
-        GameParams.Managers.soundManager.PauseAllAudioSourcesAndFadeOutMusic();
+        //GameParams.Managers.soundManager.PauseAllAudioSourcesAndFadeOutMusic();
+        GameParams.Managers.audioManager.PauseSFXsFadeOutMusic(fadeMusicSpeed);
 
         instantiatedMenu = Instantiate(menuPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         //Disable other controls
@@ -226,11 +225,6 @@ public class PauseMenu : MonoBehaviour
 
         //Assing proper objects
         pointer = instantiatedMenu.transform.Find("Pointer").gameObject;
-
-        openSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Open);
-        closeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Close);
-        changeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
-        selectSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption);
 
         for (int i = 1; i < 8; i++)
         {
@@ -248,11 +242,8 @@ public class PauseMenu : MonoBehaviour
     {
         if (menuOpened)
         {
-            GameParams.Managers.soundManager.UnPauseAllAudioSourcesFadeInMusic();
-            Destroy(openSound.gameObject, openSound.clip.length);
-            Destroy(closeSound.gameObject, closeSound.clip.length);
-            Destroy(changeSound.gameObject, changeSound.clip.length);
-            Destroy(selectSound.gameObject, selectSound.clip.length);
+            //GameParams.Managers.soundManager.UnPauseAllAudioSourcesFadeInMusic();
+            GameParams.Managers.audioManager.UnpauseSFXsFadeInMusic(fadeMusicSpeed);
         }
         Destroy(instantiatedMenu);
 

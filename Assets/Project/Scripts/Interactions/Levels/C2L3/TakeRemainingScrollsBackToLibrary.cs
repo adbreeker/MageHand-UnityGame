@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -64,9 +65,7 @@ public class TakeRemainingScrollsBackToLibrary : MonoBehaviour
             item.transform.SetParent(null);
             PlayerParams.Controllers.handInteractions.inHand = null;
 
-            AudioSource tpSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MagicalTeleportation);
-            tpSound.Play();
-            Destroy(tpSound, tpSound.clip.length);
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_Teleport);
 
             GameObject tpEffect = GameParams.Holders.materialsAndEffectsHolder.GetEffect(MaterialsAndEffectsHolder.Effects.teleportationObject);
             Instantiate(tpEffect, transform.position, Quaternion.identity);
@@ -89,9 +88,7 @@ public class TakeRemainingScrollsBackToLibrary : MonoBehaviour
 
                 item.transform.SetParent(null);
 
-                AudioSource tpSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MagicalTeleportation);
-                tpSound.Play();
-                Destroy(tpSound, tpSound.clip.length);
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_Teleport);
 
                 GameObject tpEffect = GameParams.Holders.materialsAndEffectsHolder.GetEffect(MaterialsAndEffectsHolder.Effects.teleportationObject);
                 Instantiate(tpEffect, transform.position, Quaternion.identity);

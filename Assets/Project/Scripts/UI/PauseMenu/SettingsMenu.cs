@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using FMODUnity;
 
 public class SettingsMenu : MonoBehaviour
 {
@@ -26,10 +27,6 @@ public class SettingsMenu : MonoBehaviour
     private GameObject pointer;
     private int pointedOptionMenu;
     private List<GameObject> menuOptions = new List<GameObject>();
-
-    private AudioSource closeSound;
-    private AudioSource changeSound;
-    private AudioSource selectSound;
 
     private ScrollRect scrollView;
 
@@ -64,14 +61,14 @@ public class SettingsMenu : MonoBehaviour
         //General controls
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            closeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiClose);
             CloseMenu();
         }
 
         //W
         if (Input.GetKeyDown(KeyCode.W))
         {
-            changeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
@@ -88,7 +85,7 @@ public class SettingsMenu : MonoBehaviour
         //S
         if (Input.GetKeyDown(KeyCode.S))
         {
-            changeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu < menuOptions.Count - 1)
             {
                 pointedOptionMenu++;
@@ -105,7 +102,7 @@ public class SettingsMenu : MonoBehaviour
         //W hold
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.W))
         {
-            changeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu > 0)
             {
                 pointedOptionMenu--;
@@ -122,7 +119,7 @@ public class SettingsMenu : MonoBehaviour
         //S hold
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.S))
         {
-            changeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             if (pointedOptionMenu < menuOptions.Count - 1)
             {
                 pointedOptionMenu++;
@@ -178,7 +175,7 @@ public class SettingsMenu : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.A) && menuOptions[pointedOptionMenu].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.activeSelf)
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
                 microphoneIndex += -1;
                 ChangeMicrophone();
                 PlayerPrefs.SetString("microphoneName", GameSettings.microphoneName);
@@ -186,7 +183,7 @@ public class SettingsMenu : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.D) && menuOptions[pointedOptionMenu].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.activeSelf)
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
                 microphoneIndex += 1;
                 ChangeMicrophone();
                 PlayerPrefs.SetString("microphoneName", GameSettings.microphoneName);
@@ -294,7 +291,7 @@ public class SettingsMenu : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.A) && menuOptions[pointedOptionMenu].transform.Find("Desc").Find("DoublePointer").Find("LeftArrow").gameObject.activeSelf)
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
                 GameSettings.graphicsQuality -= 1;
                 DisplayGraphicQuality();
                 PlayerPrefs.SetInt("graphicsQuality", (int)GameSettings.graphicsQuality);
@@ -302,7 +299,7 @@ public class SettingsMenu : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.D) && menuOptions[pointedOptionMenu].transform.Find("Desc").Find("DoublePointer").Find("RightArrow").gameObject.activeSelf)
             {
-                changeSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
                 GameSettings.graphicsQuality += 1;
                 DisplayGraphicQuality();
                 PlayerPrefs.SetInt("graphicsQuality", (int)GameSettings.graphicsQuality);
@@ -314,7 +311,7 @@ public class SettingsMenu : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                selectSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
                 GameSettings.vSync = !GameSettings.vSync;
                 menuOptions[pointedOptionMenu].transform.Find("CheckBackground").Find("Checker").gameObject.SetActive(GameSettings.vSync);
                 PlayerPrefs.SetInt("vSync", (GameSettings.vSync ? 1 : 0));
@@ -326,7 +323,7 @@ public class SettingsMenu : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                selectSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
                 GameSettings.fullscreen = !GameSettings.fullscreen;
                 menuOptions[pointedOptionMenu].transform.Find("CheckBackground").Find("Checker").gameObject.SetActive(GameSettings.fullscreen);
                 PlayerPrefs.SetInt("fullScreen", (GameSettings.fullscreen ? 1 : 0));
@@ -338,7 +335,7 @@ public class SettingsMenu : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                selectSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
                 GameSettings.muteMusic = !GameSettings.muteMusic;
                 menuOptions[pointedOptionMenu].transform.Find("CheckBackground").Find("Checker").gameObject.SetActive(GameSettings.muteMusic);
                 PlayerPrefs.SetInt("muteMusic", (GameSettings.muteMusic ? 1 : 0));
@@ -350,7 +347,7 @@ public class SettingsMenu : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                selectSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
                 GameSettings.gestureHints = !GameSettings.gestureHints;
                 menuOptions[pointedOptionMenu].transform.Find("CheckBackground").Find("Checker").gameObject.SetActive(GameSettings.gestureHints);
                 PlayerPrefs.SetInt("gestureHints", (GameSettings.gestureHints ? 1 : 0));
@@ -362,7 +359,7 @@ public class SettingsMenu : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space) && speechChangeable)
             {
-                selectSound.Play();
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
                 GameSettings.useSpeech = !GameSettings.useSpeech;
                 menuOptions[pointedOptionMenu].transform.Find("CheckBackground").Find("Checker").gameObject.SetActive(GameSettings.useSpeech);
                 PlayerPrefs.SetInt("useSpeach", (GameSettings.useSpeech ? 1 : 0));
@@ -380,10 +377,6 @@ public class SettingsMenu : MonoBehaviour
         DisplayFPSText();
         pointer = givenPointer;
 
-        closeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_Close);
-        changeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
-        selectSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption);
-
         for (int i = 1; i < 10; i++)
         {
             string text = i.ToString();
@@ -396,6 +389,7 @@ public class SettingsMenu : MonoBehaviour
 
         DisplayMicrophone();
         //DisplayWebCam();
+
 
         DisplayGraphicQuality();
 
@@ -431,9 +425,6 @@ public class SettingsMenu : MonoBehaviour
         menuOptions.Clear();
         transform.parent.transform.Find("Menu").gameObject.SetActive(true);
         if (fromMainMenu) transform.parent.Find("Title").gameObject.SetActive(true);
-        Destroy(closeSound.gameObject, closeSound.clip.length);
-        Destroy(changeSound.gameObject, changeSound.clip.length);
-        Destroy(selectSound.gameObject, selectSound.clip.length);
         Destroy(gameObject);
     }
 

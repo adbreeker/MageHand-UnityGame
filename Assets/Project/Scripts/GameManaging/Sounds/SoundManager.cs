@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
+    /*
     public enum Sound
     {
         VOICES_Mage, //1
         VOICES_Guide, //1
-
         MUSIC_Dungeon1Start, //0.25
         MUSIC_Dungeon1Loop, //0.25
         MUSIC_Dungeon2Start,
@@ -23,58 +23,43 @@ public class SoundManager : MonoBehaviour
         MUSIC_MenuLoop, //?? PLACEHOLDER
         MUSIC_LoadingAmbientStart, //?? PLACEHOLDER
         MUSIC_LoadingAmbientLoop, //?? PLACEHOLDER
-
         UI_ChangeOption, //1
         UI_SelectOption, //1
         UI_Close, //1
         UI_Open, //1
         UI_PopUp, //1
-
+        READING_Light, //1
+        READING_Fire,
+        READING_Mark,
         SFX_StepStone1, //0.5
         SFX_StepStone2, //0.5
+        SFX_SecretFound,
+        SFX_LevelInfoSound
+        SFX_PickUpItem, //0.7
+        SFX_PutToInventory, //0.9
+        SFX_Drink, //0.9
+        SFX_Earthquake, //1
+        SFX_BodyFall, //1
+        SFX_CastingSpell, //0.6
+        SFX_CastingSpellFailed, //1
+        SFX_CastingSpellFinished, //1
+        SFX_SpellLightRemaining, //1
+        SFX_SpellLightBurst, //0.6
+        SFX_FireSpellRemaining, //0.6
+        SFX_FireSpellBurst, //1
+        SFX_MagicalTeleportation, //0.8
+        SFX_Collision1, //0.7
+        SFX_Collision2, //0.7
+        SFX_Collision3, //0.7
         SFX_OpenChest, //0.7
         SFX_CloseChest, //0.7
         SFX_Button, //0.8
         SFX_LeverToUp, //0.7
         SFX_LeverToDown, //0.7
-        SFX_PickUpItem, //0.7
-        SFX_PutToInventory, //0.9
-        SFX_Drink, //0.9
         SFX_UnlockOpenDoor, //0.8
         SFX_IllusionBroken, //0.8
-        SFX_Collision1, //0.7
-        SFX_Collision2, //0.7
-        SFX_Collision3, //0.7
         SFX_MovingWall, //0.7
         SFX_MovingMetalGate, //1 
-
-        SFX_CastingSpell, //0.6
-        SFX_CastingSpellFailed, //1
-        SFX_CastingSpellFinished, //1
-
-        READING_Light, //1
-        READING_PickUp, //1
-        READING_Fire,
-        READING_Mark,
-        READING_Return,
-        READING_Levitate,
-
-        SFX_SpellLightRemaining, //1
-        SFX_SpellLightBurst, //0.6
-        SFX_SpellPickUpActivation, //0.9
-        SFX_MagicalTeleportation, //0.8
-        SFX_LockPickSpell,
-        SFX_FireSpellRemaining, //0.6
-        SFX_FireSpellBurst, //1
-        SFX_MarkSpellActivation,
-        SFX_ReturnSpellActivation,
-        SFX_LevitateSpellRemaining,
-
-        SFX_Earthquake, //1
-        SFX_BodyFall, //1
-        SFX_Punch, //0.9
-        SFX_SecretFound,
-        SFX_LevelInfoSound
     }
 
     private float volume;
@@ -89,10 +74,6 @@ public class SoundManager : MonoBehaviour
         public float baseVolume;
     }
 
-    public Transform SoundsParent;
-
-    private List<Coroutine> fadingOutCoroutines = new List<Coroutine>();
-    private List<Coroutine> fadingInCoroutines = new List<Coroutine>();
     public AudioSource CreateAudioSource(Sound sound, GameObject soundParent = null, float minHearingDistance = 4f, float maxHearingDistance = 20f)
     {
         AudioSource audioSource;
@@ -110,13 +91,32 @@ public class SoundManager : MonoBehaviour
             GameObject soundGameObject = new GameObject(sound.ToString());
             audioSource = soundGameObject.AddComponent<AudioSource>();
 
-            soundGameObject.transform.parent = SoundsParent;
+            soundGameObject.transform.parent = transform;
         }
 
         audioSource.clip = GetAudioClip(sound);
         audioSource.volume = GetBaseVolume(sound) * volume;
 
         return audioSource;
+    }
+
+    public AudioClip GetAudioClip(Sound sound)
+    {
+        foreach (SoundAudioClip soundAudioClip in soundAudioClipArray)
+        {
+            if (soundAudioClip.sound == sound) return soundAudioClip.audioClip;
+        }
+        return null;
+    }
+
+    public float GetBaseVolume(Sound sound)
+    {
+        volume = Mathf.Clamp01(volume);
+        foreach (SoundAudioClip soundAudioClip in soundAudioClipArray)
+        {
+            if (soundAudioClip.sound == sound) return soundAudioClip.baseVolume;
+        }
+        return 0;
     }
 
     public void ChangeVolume(float givenVolume, bool fromPauseMenu = false)
@@ -133,7 +133,6 @@ public class SoundManager : MonoBehaviour
             if (!fromPauseMenu) audioSource.volume = GetBaseVolume(GetFirstSoundEnumByAudioClip(audioSource.clip)) * volume;
         }
     }
-
     public void PauseAllAudioSourcesAndFadeOutMusic()
     {
         AudioSource[] audioSources = FindObjectsOfType<AudioSource>();
@@ -200,19 +199,9 @@ public class SoundManager : MonoBehaviour
             }
         }
     }
-
     public float GetVolume()
     {
         return volume;
-    }
-
-    public AudioClip GetAudioClip(Sound sound)
-    {
-        foreach(SoundAudioClip soundAudioClip in soundAudioClipArray)
-        {
-            if (soundAudioClip.sound == sound) return soundAudioClip.audioClip;
-        }
-        return null;
     }
 
     public Sound GetFirstSoundEnumByAudioClip(AudioClip audioClip)
@@ -226,14 +215,5 @@ public class SoundManager : MonoBehaviour
         }
         return Sound.SFX_CastingSpellFailed;
     }
-
-    public float GetBaseVolume(Sound sound)
-    {
-        volume = Mathf.Clamp01(volume);
-        foreach (SoundAudioClip soundAudioClip in soundAudioClipArray)
-        {
-            if (soundAudioClip.sound == sound) return soundAudioClip.baseVolume;
-        }
-        return 0;
-    }
+    */
 }

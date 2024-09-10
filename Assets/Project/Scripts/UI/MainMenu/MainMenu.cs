@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using System;
+using FMODUnity;
 
 public class MainMenu : MonoBehaviour
 {
@@ -25,9 +26,6 @@ public class MainMenu : MonoBehaviour
     private bool checkAtMainMenuChange = true;
     private bool closing = false;
     private List<TextMeshProUGUI> menuOptions = new List<TextMeshProUGUI>();
-
-    private AudioSource changeSound;
-    private AudioSource selectSound;
 
     private float keyTimeDelayFirst = 20f;
     private float keyTimeDelay = 10f;
@@ -74,7 +72,7 @@ public class MainMenu : MonoBehaviour
         //Move down
         if (Input.GetKeyDown(KeyCode.S))
         {
-            changeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             GoDown(pointedOptionMenu);
             keyTimeDelayer = keyTimeDelayFirst;
         }
@@ -82,21 +80,21 @@ public class MainMenu : MonoBehaviour
         //Move up
         if (Input.GetKeyDown(KeyCode.W))
         {
-            changeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             GoUp(pointedOptionMenu);
             keyTimeDelayer = keyTimeDelayFirst;
         }
 
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.S))
         {
-            changeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             GoDown(pointedOptionMenu);
             keyTimeDelayer = keyTimeDelay;
         }
 
         if (keyTimeDelayer <= 0 && Input.GetKey(KeyCode.W))
         {
-            changeSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiChangeOption);
             GoUp(pointedOptionMenu);
             keyTimeDelayer = keyTimeDelay;
         }
@@ -104,7 +102,7 @@ public class MainMenu : MonoBehaviour
         //Choice
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            selectSound.Play();
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
             if (pointedOptionMenu == 0)
             {
                 //Continue
@@ -216,9 +214,6 @@ public class MainMenu : MonoBehaviour
     {
         //Assing proper objects
         pointer = transform.Find("Pointer").gameObject;
-
-        changeSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_ChangeOption);
-        selectSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.UI_SelectOption);
 
         for (int i = 1; i < 6; i++)
         {

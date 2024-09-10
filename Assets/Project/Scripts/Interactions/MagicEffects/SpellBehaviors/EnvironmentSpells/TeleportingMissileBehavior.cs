@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,21 +13,22 @@ public class TeleportingMissileBehavior : SpellBehavior
 
     private GameObject instantiatedEffect;
 
-    private AudioSource spellRemaining;
-    private AudioSource spellBurst;
+    private EventInstance spellRemainingSFX;
 
     private void Start()
     {
-        spellRemaining = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_FireSpellRemaining, gameObject, minHearingDistance, maxHearingDistance);
-        spellRemaining.loop = true;
-        spellRemaining.Play();
+        spellRemainingSFX = GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_FireSpellRemaining, transform);
+    }
+
+    private void OnDestroy()
+    {
+        spellRemainingSFX.stop(STOP_MODE.ALLOWFADEOUT);
     }
 
     public override void OnImpact(GameObject impactTarget) //spawn explosion on impact
     {
         instantiatedEffect = Instantiate(specialEffectPrefab, transform.position, Quaternion.identity);
-        spellBurst = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MagicalTeleportation, instantiatedEffect, 8f, 30f);
-        spellBurst.Play();
+        GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_TeleportSpatialized, instantiatedEffect.transform);
 
         Vector3 tpDest = teleportationDestination;
         float tpRot = teleportationRotation;

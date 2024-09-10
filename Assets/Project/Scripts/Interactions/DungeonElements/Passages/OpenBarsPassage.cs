@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using System.Collections;
 using UnityEngine;
 
@@ -12,12 +13,12 @@ public class OpenBarsPassage : MonoBehaviour
     [Header("Opening speed")]
     public float barsSpeed = 0.05f;
 
-    private AudioSource chainSound;
+    private EventInstance chainSound;
 
     public void Interaction() //open or close passage on interaction
     {
         StopAllCoroutines();
-        if (chainSound != null) Destroy(chainSound);
+        if (chainSound.isValid()) chainSound.stop(STOP_MODE.IMMEDIATE);
 
         if (passageOpen) //if passege is open then close
         {
@@ -34,14 +35,13 @@ public class OpenBarsPassage : MonoBehaviour
 
     IEnumerator MoveBars(float barsDestination) //animating passage opening
     {
-        chainSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MovingMetalGate, bars, 8f, 30f);
-        chainSound.Play();
+        chainSound = GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_MovingMetalGate, bars.transform);
         while (bars.transform.localPosition.y != barsDestination)
         {
             yield return new WaitForFixedUpdate();
             bars.transform.localPosition = Vector3.MoveTowards(bars.transform.localPosition, new Vector3(0, barsDestination, 0), barsSpeed);
         }
-        Destroy(chainSound);
+        chainSound.stop(STOP_MODE.IMMEDIATE);
     }
 
     private void OnValidate()

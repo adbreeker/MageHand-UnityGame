@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -78,9 +79,7 @@ public class CursePlaceBind : MonoBehaviour
 
         if(PlayerParams.Controllers.handInteractions.inHand == gameObject) { PlayerParams.Controllers.handInteractions.inHand = null; }
 
-        AudioSource tpSound = GameParams.Managers.soundManager.CreateAudioSource(SoundManager.Sound.SFX_MagicalTeleportation);
-        tpSound.Play();
-        Destroy(tpSound, tpSound.clip.length);
+        RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_Teleport);
 
         GameObject tpEffect = GameParams.Holders.materialsAndEffectsHolder.GetEffect(MaterialsAndEffectsHolder.Effects.teleportationObject);
         Instantiate(tpEffect, transform.position, Quaternion.identity);

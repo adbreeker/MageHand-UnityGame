@@ -29,8 +29,389 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6412617696393458263}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3959301634249767828
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8007108488031039502}
+  - component: {fileID: 715939275938380750}
+  - component: {fileID: 8220826160358160083}
+  - component: {fileID: 2462799249398199258}
+  - component: {fileID: 983175014689374698}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8007108488031039502
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3959301634249767828}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6412617696393458263}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &715939275938380750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3959301634249767828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86fe8b656a5898b4398fb70c7645a099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backgroundMusic: {fileID: 0}
+  occlusionLayer:
+    serializedVersion: 2
+    m_Bits: 1
+--- !u!114 &8220826160358160083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3959301634249767828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 948dffe52763e754e8b661933c85791b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicRef:
+    Guid:
+      Data1: 472416487
+      Data2: 1293305639
+      Data3: -1457467494
+      Data4: -757529718
+    Path: event:/Music/MUSIC_DungeonMusic1
+--- !u!114 &2462799249398199258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3959301634249767828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45362506209594649a56a676e678d53b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &983175014689374698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3959301634249767828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b868dac6422b234798421e7abe50145, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <MUSIC_Dungeon1>k__BackingField:
+    Guid:
+      Data1: 472416487
+      Data2: 1293305639
+      Data3: -1457467494
+      Data4: -757529718
+    Path: event:/Music/MUSIC_DungeonMusic1
+  <MUSIC_MainTheme>k__BackingField:
+    Guid:
+      Data1: -1635084229
+      Data2: 1230726397
+      Data3: -678959739
+      Data4: -957125497
+    Path: event:/Music/MUSIC_MainTheme
+  <MUSIC_LoadingAmbient>k__BackingField:
+    Guid:
+      Data1: -408055031
+      Data2: 1092426019
+      Data3: 1408505256
+      Data4: -1886721990
+    Path: event:/Music/MUSIC_LoadingAmbient
+  <SFX_VoiceGuide>k__BackingField:
+    Guid:
+      Data1: -1714254614
+      Data2: 1120610628
+      Data3: 626906271
+      Data4: -888683382
+    Path: event:/SFX Voices/SFX_VoiceGuide
+  <SFX_VoiceAlandos>k__BackingField:
+    Guid:
+      Data1: -1276024797
+      Data2: 1166936194
+      Data3: -531282023
+      Data4: -1676151658
+    Path: event:/SFX Voices/SFX_VoiceAlandos
+  <SFX_ReadLight>k__BackingField:
+    Guid:
+      Data1: 1662503135
+      Data2: 1149934609
+      Data3: 1393435831
+      Data4: 57562635
+    Path: event:/SFX Reading/SFX_ReadLight
+  <SFX_ReadMark>k__BackingField:
+    Guid:
+      Data1: -1315277982
+      Data2: 1101872590
+      Data3: -433572936
+      Data4: -1419152957
+    Path: event:/SFX Reading/SFX_ReadMark
+  <SFX_ReadFire>k__BackingField:
+    Guid:
+      Data1: -1440316839
+      Data2: 1238932286
+      Data3: 340865420
+      Data4: -1168796793
+    Path: event:/SFX Reading/SFX_ReadFire
+  <SFX_ReadSpeak>k__BackingField:
+    Guid:
+      Data1: 298387754
+      Data2: 1231478132
+      Data3: 1621033402
+      Data4: -2003873834
+    Path: event:/SFX Reading/SFX_ReadSpeak
+  <SFX_CastingSpell>k__BackingField:
+    Guid:
+      Data1: 89581061
+      Data2: 1175163817
+      Data3: -1519286856
+      Data4: 442493902
+    Path: event:/SFX Spells/SFX_CastingSpell
+  <SFX_CastingSpellFailed>k__BackingField:
+    Guid:
+      Data1: -52201006
+      Data2: 1234843767
+      Data3: -1297651532
+      Data4: 1641656545
+    Path: event:/SFX Spells/SFX_CastingSpellFailed
+  <SFX_CastingSpellFinished>k__BackingField:
+    Guid:
+      Data1: -1326479780
+      Data2: 1278743660
+      Data3: 1131340445
+      Data4: -2077615876
+    Path: event:/SFX Spells/SFX_CastingSpellFinished
+  <SFX_LightSpellRemaining>k__BackingField:
+    Guid:
+      Data1: -2086759213
+      Data2: 1133833946
+      Data3: 1352984488
+      Data4: 714090290
+    Path: event:/SFX Spells/Spatialized/SFX_LightSpellRemaining
+  <SFX_LightSpellBurst>k__BackingField:
+    Guid:
+      Data1: -753664942
+      Data2: 1206889439
+      Data3: -1488094023
+      Data4: 1163155877
+    Path: event:/SFX Spells/Spatialized/SFX_LightSpellBurst
+  <SFX_FireSpellRemaining>k__BackingField:
+    Guid:
+      Data1: 1277012932
+      Data2: 1341038351
+      Data3: -1821247058
+      Data4: 1887167034
+    Path: event:/SFX Spells/Spatialized/SFX_FireSpellRemaining
+  <SFX_FireSpellBurst>k__BackingField:
+    Guid:
+      Data1: -741721968
+      Data2: 1327016931
+      Data3: -1362523002
+      Data4: 515659973
+    Path: event:/SFX Spells/Spatialized/SFX_FireSpellBurst
+  <SFX_PlayerSteps>k__BackingField:
+    Guid:
+      Data1: 1152064008
+      Data2: 1269229195
+      Data3: -1867235710
+      Data4: -266970469
+    Path: event:/SFX Regular/SFX_PlayerSteps
+  <SFX_OpenChest>k__BackingField:
+    Guid:
+      Data1: 365436827
+      Data2: 1193181011
+      Data3: 2125531026
+      Data4: -948240655
+    Path: event:/SFX Regular/Spatialized/SFX_OpenChest
+  <SFX_CloseChest>k__BackingField:
+    Guid:
+      Data1: 2032061871
+      Data2: 1280462926
+      Data3: 73517501
+      Data4: -1780137030
+    Path: event:/SFX Regular/Spatialized/SFX_CloseChest
+  <SFX_ButtonPress>k__BackingField:
+    Guid:
+      Data1: 278951276
+      Data2: 1138977574
+      Data3: 2095707299
+      Data4: 1625251649
+    Path: event:/SFX Regular/Spatialized/SFX_ButtonPress
+  <SFX_LeverToUp>k__BackingField:
+    Guid:
+      Data1: 1501214327
+      Data2: 1294530937
+      Data3: 1550499458
+      Data4: -1891166153
+    Path: event:/SFX Regular/Spatialized/SFX_LeverToUp
+  <SFX_LeverToDown>k__BackingField:
+    Guid:
+      Data1: -1066383246
+      Data2: 1255878554
+      Data3: 1466334903
+      Data4: 1824925773
+    Path: event:/SFX Regular/Spatialized/SFX_LeverToDown
+  <SFX_PickUpItem>k__BackingField:
+    Guid:
+      Data1: -664461224
+      Data2: 1296908466
+      Data3: -766805863
+      Data4: 550041562
+    Path: event:/SFX Regular/SFX_PickUpItem
+  <SFX_PutToInventory>k__BackingField:
+    Guid:
+      Data1: -2002437840
+      Data2: 1332909991
+      Data3: 1684553881
+      Data4: -222397073
+    Path: event:/SFX Regular/SFX_PutItemToInventory
+  <SFX_Drink>k__BackingField:
+    Guid:
+      Data1: -388826431
+      Data2: 1225011224
+      Data3: -2041815876
+      Data4: 802759203
+    Path: event:/SFX Regular/SFX_Drink
+  <SFX_UnlockOpenDoor>k__BackingField:
+    Guid:
+      Data1: -330851121
+      Data2: 1248906492
+      Data3: -552461126
+      Data4: -1351296095
+    Path: event:/SFX Regular/Spatialized/SFX_UnlockOpenDoor
+  <SFX_Collision>k__BackingField:
+    Guid:
+      Data1: -165843374
+      Data2: 1175015521
+      Data3: 1364672921
+      Data4: 877258061
+    Path: event:/SFX Regular/Spatialized/SFX_Collision
+  <SFX_MovingWall>k__BackingField:
+    Guid:
+      Data1: -1901383114
+      Data2: 1296447811
+      Data3: -1454530925
+      Data4: 2052936950
+    Path: event:/SFX Regular/Spatialized/SFX_MovingWall
+  <SFX_MovingMetalGate>k__BackingField:
+    Guid:
+      Data1: 833133119
+      Data2: 1141737080
+      Data3: -1577777016
+      Data4: -1423866688
+    Path: event:/SFX Regular/Spatialized/SFX_MovingMetalGate
+  <SFX_Earthquake>k__BackingField:
+    Guid:
+      Data1: -1687168931
+      Data2: 1088046211
+      Data3: 694535841
+      Data4: -2077101860
+    Path: event:/SFX Regular/SFX_Earthquake
+  <SFX_IllusionBreak>k__BackingField:
+    Guid:
+      Data1: -390030155
+      Data2: 1102540781
+      Data3: -452072277
+      Data4: 1445471716
+    Path: event:/SFX Regular/Spatialized/SFX_IllusionBreak
+  <SFX_Teleport>k__BackingField:
+    Guid:
+      Data1: 456865113
+      Data2: 1277513551
+      Data3: -897151559
+      Data4: 1936523772
+    Path: event:/SFX Regular/SFX_Teleport
+  <SFX_TeleportSpatialized>k__BackingField:
+    Guid:
+      Data1: 2110167885
+      Data2: 1306996902
+      Data3: -602473587
+      Data4: 129535435
+    Path: event:/SFX Regular/Spatialized/SFX_TeleportSpatialized
+  <SFX_SecretFound>k__BackingField:
+    Guid:
+      Data1: -420047044
+      Data2: 1333578117
+      Data3: 637097619
+      Data4: 1377211316
+    Path: event:/SFX Regular/SFX_SecretFound
+  <SFX_LevelInfo>k__BackingField:
+    Guid:
+      Data1: 1640957542
+      Data2: 1077506535
+      Data3: 297430714
+      Data4: -1222370462
+    Path: event:/SFX Regular/SFX_LevelInfo
+  <NP_UiChangeOption>k__BackingField:
+    Guid:
+      Data1: -1399690091
+      Data2: 1237873509
+      Data3: 1230045067
+      Data4: 994992132
+    Path: event:/Nonpausable/NP_UiChangeOption
+  <NP_UiSelectOption>k__BackingField:
+    Guid:
+      Data1: -1078412269
+      Data2: 1302414394
+      Data3: -576985410
+      Data4: -2011239481
+    Path: event:/Nonpausable/NP_UiSelectOption
+  <NP_UiClose>k__BackingField:
+    Guid:
+      Data1: 1961901652
+      Data2: 1123407451
+      Data3: -740861013
+      Data4: 364739258
+    Path: event:/Nonpausable/NP_UiClose
+  <NP_UiOpen>k__BackingField:
+    Guid:
+      Data1: -1632426489
+      Data2: 1284920902
+      Data3: 759089825
+      Data4: -2119938108
+    Path: event:/Nonpausable/NP_UiOpen
+  <NP_UiPopUp>k__BackingField:
+    Guid:
+      Data1: -35207014
+      Data2: 1308353826
+      Data3: -1514378609
+      Data4: 799292583
+    Path: event:/Nonpausable/NP_UiPopUp
+  <NP_BodyFall>k__BackingField:
+    Guid:
+      Data1: -1997117524
+      Data2: 1230249400
+      Data3: -1070974306
+      Data4: 598684524
+    Path: event:/Nonpausable/NP_BodyFall
 --- !u!1 &4871858993183020671
 GameObject:
   m_ObjectHideFlags: 0
@@ -46,10 +427,8 @@ GameObject:
   - component: {fileID: 533512372798388566}
   - component: {fileID: -1410173973553914173}
   - component: {fileID: 2920437737176594091}
-  - component: {fileID: 841446247083506204}
   - component: {fileID: 7457652193820638125}
   - component: {fileID: 3717581574826844733}
-  - component: {fileID: 3603493736633032789}
   - component: {fileID: 4949703760120786322}
   - component: {fileID: 8735214370669408620}
   m_Layer: 0
@@ -71,8 +450,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8007108488031039502}
   - {fileID: 5778102618765518651}
-  - {fileID: 2172408899549468536}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -93,7 +472,9 @@ MonoBehaviour:
   spellScrollsHolder: {fileID: 2920437737176594091}
   gameSettings: {fileID: 6146217192834656013}
   saveManager: {fileID: 6894981729460985595}
-  soundManager: {fileID: 3603493736633032789}
+  soundManager: {fileID: 2462799249398199258}
+  audioManager: {fileID: 715939275938380750}
+  fmodEvents: {fileID: 983175014689374698}
   fadeInOutManager: {fileID: 3717581574826844733}
   levelInfoManager: {fileID: 7457652193820638125}
 --- !u!114 &6146217192834656013
@@ -180,20 +561,6 @@ MonoBehaviour:
   scrollOfOpen: {fileID: 6034908185063653693, guid: 2df561926f6ed0c4094a5bf20e126aef, type: 3}
   scrollOfSpeak: {fileID: 654258173521633640, guid: 604d42777e6e53448a4e129405e29a80, type: 3}
   scrollOfSlow: {fileID: 8599321862362048398, guid: 0088e1737cb07db41bc4a6e03eaefb4a, type: 3}
---- !u!114 &841446247083506204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4871858993183020671}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 948dffe52763e754e8b661933c85791b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startMusic: 2
-  loopMusic: 3
 --- !u!114 &7457652193820638125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,6 +576,8 @@ MonoBehaviour:
   secretsOnLevel: 0
   foundSecretsOnLevel: 0
   displayPrefab: {fileID: 5474194404320366085, guid: c54cc4fa033da0749b28df763af6167a, type: 3}
+  timeToFadeOut: 2
+  timeOfFadingOut: 0.007
 --- !u!114 &3717581574826844733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,206 +594,6 @@ MonoBehaviour:
   blackoutPrefab: {fileID: 3169089212800689837, guid: d723fcbd9bf929443bebfa68a7950749, type: 3}
   fadeInSpeed: 0.025
   fadeOutSpeed: 0.025
---- !u!114 &3603493736633032789
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4871858993183020671}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45362506209594649a56a676e678d53b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  soundAudioClipArray:
-  - sound: 0
-    audioClip: {fileID: 8300000, guid: 061403ddead7cf5478fd7950b14a44bf, type: 3}
-    baseVolume: 1
-  - sound: 1
-    audioClip: {fileID: 8300000, guid: af307d57257cd2442bcbfc9026ac147b, type: 3}
-    baseVolume: 1
-  - sound: 2
-    audioClip: {fileID: 8300000, guid: 99954dcd91dcca347a155aae006dfa20, type: 3}
-    baseVolume: 0.3
-  - sound: 3
-    audioClip: {fileID: 8300000, guid: 99954dcd91dcca347a155aae006dfa20, type: 3}
-    baseVolume: 0.3
-  - sound: 4
-    audioClip: {fileID: 0}
-    baseVolume: 0
-  - sound: 5
-    audioClip: {fileID: 0}
-    baseVolume: 0
-  - sound: 6
-    audioClip: {fileID: 0}
-    baseVolume: 0
-  - sound: 7
-    audioClip: {fileID: 0}
-    baseVolume: 0
-  - sound: 8
-    audioClip: {fileID: 0}
-    baseVolume: 0
-  - sound: 9
-    audioClip: {fileID: 0}
-    baseVolume: 0
-  - sound: 10
-    audioClip: {fileID: 0}
-    baseVolume: 0
-  - sound: 11
-    audioClip: {fileID: 0}
-    baseVolume: 0
-  - sound: 12
-    audioClip: {fileID: 8300000, guid: f87c8b93b4539564da87ebc4a1bfed87, type: 3}
-    baseVolume: 0.4
-  - sound: 13
-    audioClip: {fileID: 8300000, guid: f87c8b93b4539564da87ebc4a1bfed87, type: 3}
-    baseVolume: 0.4
-  - sound: 14
-    audioClip: {fileID: 8300000, guid: 64dfc97f7ebfbd440a59eb0419fe5686, type: 3}
-    baseVolume: 0.3
-  - sound: 15
-    audioClip: {fileID: 8300000, guid: 64dfc97f7ebfbd440a59eb0419fe5686, type: 3}
-    baseVolume: 0.3
-  - sound: 16
-    audioClip: {fileID: 8300000, guid: 36bd8a050c9194b4c9a4795329747c19, type: 3}
-    baseVolume: 1
-  - sound: 17
-    audioClip: {fileID: 8300000, guid: 4a994139e0fb9e74bb43234ef0f6ab9f, type: 3}
-    baseVolume: 1
-  - sound: 18
-    audioClip: {fileID: 8300000, guid: eb31e4a8ecd34574897bc2b7af14c5d9, type: 3}
-    baseVolume: 1
-  - sound: 19
-    audioClip: {fileID: 8300000, guid: 0f37e65fcd39eb84586b844c632c6d26, type: 3}
-    baseVolume: 1
-  - sound: 20
-    audioClip: {fileID: 8300000, guid: 4d35e7d677ab00847916360e998f9712, type: 3}
-    baseVolume: 1
-  - sound: 21
-    audioClip: {fileID: 8300000, guid: beca0c5e413ffc04d91cf82ce8749ed9, type: 3}
-    baseVolume: 0.5
-  - sound: 22
-    audioClip: {fileID: 8300000, guid: 5c22fe0d083e0d0419f6a4b48a6efb23, type: 3}
-    baseVolume: 0.5
-  - sound: 23
-    audioClip: {fileID: 8300000, guid: b267bd15fd9b03f47baba4b7428cfd61, type: 3}
-    baseVolume: 0.7
-  - sound: 24
-    audioClip: {fileID: 8300000, guid: 489ba9c9450f9b24aa78d7159eef2f35, type: 3}
-    baseVolume: 0.7
-  - sound: 25
-    audioClip: {fileID: 8300000, guid: 89fadebd66478c2459915c43ba250e0a, type: 3}
-    baseVolume: 0.8
-  - sound: 26
-    audioClip: {fileID: 8300000, guid: f6261b3b6bf90e4439649764f8664406, type: 3}
-    baseVolume: 0.7
-  - sound: 27
-    audioClip: {fileID: 8300000, guid: 7fc777c37c0877b47bf4211f3c26da0d, type: 3}
-    baseVolume: 0.7
-  - sound: 28
-    audioClip: {fileID: 8300000, guid: 0bf098ed971b35c48be6d85ff3b427a2, type: 3}
-    baseVolume: 0.7
-  - sound: 29
-    audioClip: {fileID: 8300000, guid: 470d686871cf039408d30ed9b4395b87, type: 3}
-    baseVolume: 0.9
-  - sound: 30
-    audioClip: {fileID: 8300000, guid: 1b87a175eb8820042ab7277141c7ff34, type: 3}
-    baseVolume: 0.9
-  - sound: 31
-    audioClip: {fileID: 8300000, guid: 9fff810ab5dc5cd4ba8d5a415c27f763, type: 3}
-    baseVolume: 0.8
-  - sound: 32
-    audioClip: {fileID: 8300000, guid: 587416d4506db05458aab423580134ff, type: 3}
-    baseVolume: 0.8
-  - sound: 33
-    audioClip: {fileID: 8300000, guid: 05760124691c00c49a05e5042d50b4c1, type: 3}
-    baseVolume: 0.7
-  - sound: 34
-    audioClip: {fileID: 8300000, guid: 628399c1fc1a60444b697bb1a6f883e3, type: 3}
-    baseVolume: 0.7
-  - sound: 35
-    audioClip: {fileID: 8300000, guid: 17df2620721496e409de96eeac5ace2b, type: 3}
-    baseVolume: 0.7
-  - sound: 36
-    audioClip: {fileID: 8300000, guid: db4a32a57c06f0741b5c27eb46bff4f2, type: 3}
-    baseVolume: 0.7
-  - sound: 37
-    audioClip: {fileID: 8300000, guid: 340068cc4cf053a4eb5a8724ae69547c, type: 3}
-    baseVolume: 1
-  - sound: 38
-    audioClip: {fileID: 8300000, guid: bb084583172720346a5bc7e2f11a7ec7, type: 3}
-    baseVolume: 0.6
-  - sound: 39
-    audioClip: {fileID: 8300000, guid: 6098f1c682923bd4e872961d17a8fb0c, type: 3}
-    baseVolume: 1
-  - sound: 40
-    audioClip: {fileID: 8300000, guid: 0a050f72d7c86394ca74e8779ef96857, type: 3}
-    baseVolume: 1
-  - sound: 41
-    audioClip: {fileID: 8300000, guid: befd9cb02aebe914f87496eccbb8133f, type: 3}
-    baseVolume: 1
-  - sound: 42
-    audioClip: {fileID: 8300000, guid: 2e7bb49ddb2ffd940a13024988f72d8a, type: 3}
-    baseVolume: 1
-  - sound: 43
-    audioClip: {fileID: 8300000, guid: 610153101a7d3bf4797929c3303f8d14, type: 3}
-    baseVolume: 1
-  - sound: 44
-    audioClip: {fileID: 0}
-    baseVolume: 0
-  - sound: 45
-    audioClip: {fileID: 0}
-    baseVolume: 0
-  - sound: 46
-    audioClip: {fileID: 0}
-    baseVolume: 0
-  - sound: 47
-    audioClip: {fileID: 8300000, guid: bb83ed4fdbaf3a44c857f301208d9df5, type: 3}
-    baseVolume: 1
-  - sound: 48
-    audioClip: {fileID: 8300000, guid: 703f796319ef5ff4d825492fb02ca3d7, type: 3}
-    baseVolume: 0.6
-  - sound: 49
-    audioClip: {fileID: 8300000, guid: 7d04190b4c6b50d4886c52ed2b18aef0, type: 3}
-    baseVolume: 0.9
-  - sound: 50
-    audioClip: {fileID: 8300000, guid: 2bac09ee7e2416040b27547d41e6852d, type: 3}
-    baseVolume: 0.8
-  - sound: 51
-    audioClip: {fileID: 0}
-    baseVolume: 0
-  - sound: 52
-    audioClip: {fileID: 8300000, guid: 4e6477e7641557e48935436dc7150b20, type: 3}
-    baseVolume: 0.6
-  - sound: 53
-    audioClip: {fileID: 8300000, guid: cd70f70405753e5469bfa40c751e40a7, type: 3}
-    baseVolume: 1
-  - sound: 54
-    audioClip: {fileID: 0}
-    baseVolume: 0
-  - sound: 55
-    audioClip: {fileID: 0}
-    baseVolume: 0
-  - sound: 56
-    audioClip: {fileID: 0}
-    baseVolume: 0
-  - sound: 57
-    audioClip: {fileID: 8300000, guid: 7216f2d3b55557a429eeb31b166b9ec3, type: 3}
-    baseVolume: 1
-  - sound: 58
-    audioClip: {fileID: 8300000, guid: 45ad78169cf511b4eb553919f6efd946, type: 3}
-    baseVolume: 1
-  - sound: 59
-    audioClip: {fileID: 8300000, guid: a3a17ebe9e76c9a48a48c03b3f9644d0, type: 3}
-    baseVolume: 0.9
-  - sound: 60
-    audioClip: {fileID: 8300000, guid: 2e697a2b78a5e7d46892a0de75f6f8c6, type: 3}
-    baseVolume: 2
-  - sound: 61
-    audioClip: {fileID: 8300000, guid: b40128942ae86b34fa3dbec5de389e27, type: 3}
-    baseVolume: 2
-  SoundsParent: {fileID: 2172408899549468536}
 --- !u!114 &4949703760120786322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -451,35 +620,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   foundedComponents: []
-  typeToFind: 
---- !u!1 &6666853821655842875
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2172408899549468536}
-  m_Layer: 0
-  m_Name: Sounds
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2172408899549468536
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6666853821655842875}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6412617696393458263}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  typeComponent: 
+  typeGUID: 
