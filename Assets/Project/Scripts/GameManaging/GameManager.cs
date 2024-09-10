@@ -16,7 +16,6 @@ public static class GameParams
         public static GameManager gameManager;
         public static GameSettings gameSettings;
         public static ProgressSaving saveManager;
-        public static SoundManager soundManager;
         public static AudioManager audioManager;
         public static FmodEvents fmodEvents;
         public static FadeInFadeOut fadeInOutManager;
@@ -39,7 +38,6 @@ public class GameManager : MonoBehaviour
     [Header("Managers:")]
     public GameSettings gameSettings;
     public ProgressSaving saveManager;
-    public SoundManager soundManager;
     public AudioManager audioManager;
     public FmodEvents fmodEvents;
     public FadeInFadeOut fadeInOutManager;
@@ -54,7 +52,6 @@ public class GameManager : MonoBehaviour
         GameParams.Managers.gameManager = this;
         GameParams.Managers.gameSettings = gameSettings;
         GameParams.Managers.saveManager = saveManager;
-        GameParams.Managers.soundManager = soundManager;
         GameParams.Managers.audioManager = audioManager;
         GameParams.Managers.fmodEvents = fmodEvents;
         GameParams.Managers.fadeInOutManager = fadeInOutManager;
