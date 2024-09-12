@@ -25,40 +25,6 @@ public class AudioManager : MonoBehaviour
         FmodBuses.Music.setPaused(false);
         FmodBuses.SFX.setPaused(false);
     }
-    //------------------------------------------------------------------------------------------------------------------------------------------
-    private void Update()
-    {
-        DebugAudioDevices();
-        //ReinitializeFmodWhenNoDevices();
-    }
-
-    private void ReinitializeFmodWhenNoDevices()
-    {
-        RuntimeManager.CoreSystem.getDriverInfo(0, out string name, 256, out System.Guid guid, out int systemRate, out FMOD.SPEAKERMODE speakerMode, out int speakerModeChannels);
-
-        if(name == "NoSound Driver")
-        {
-            Debug.Log("Reinitializing Fmod");
-            RuntimeManager.StudioSystem.release();
-            RuntimeManager.CoreSystem.release();
-            RuntimeManager.StudioSystem.initialize(128, INITFLAGS.LOAD_FROM_UPDATE, FMOD.INITFLAGS.STREAM_FROM_UPDATE, IntPtr.Zero);
-            RuntimeManager.CoreSystem.init(128, FMOD.INITFLAGS.STREAM_FROM_UPDATE, IntPtr.Zero);
-        }
-    }
-
-    private void DebugAudioDevices()
-    {
-        int numDrivers;
-        RuntimeManager.CoreSystem.getNumDrivers(out numDrivers);
-        for (int i = 0; i < numDrivers; i++)
-        {
-            RuntimeManager.CoreSystem.getDriverInfo(i, out string name, 256, out System.Guid guid, out int systemRate, out FMOD.SPEAKERMODE speakerMode, out int speakerModeChannels);
-
-            Debug.Log($"Driver {i}: {name}, System Rate: {systemRate}, Speaker Mode: {speakerMode}, Channels: {speakerModeChannels}");
-        }
-    }
-
-    //------------------------------------------------------------------------------------------------------------------------------------------
     public EventInstance CreateSpatializedInstance(EventReference eventRef, Transform audioParent)
     {
         EventInstance eventInstance = RuntimeManager.CreateInstance(eventRef);
