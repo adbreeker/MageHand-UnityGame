@@ -29,7 +29,7 @@ public class AudioManager : MonoBehaviour
     private void Update()
     {
         DebugAudioDevices();
-        ReinitializeFmodWhenNoDevices();
+        //ReinitializeFmodWhenNoDevices();
     }
 
     private void ReinitializeFmodWhenNoDevices()
