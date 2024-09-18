@@ -1,7 +1,9 @@
 using FMOD.Studio;
 using FMODUnity;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using UnityEngine;
 
@@ -23,30 +25,6 @@ public class AudioManager : MonoBehaviour
         FmodBuses.Music.setPaused(false);
         FmodBuses.SFX.setPaused(false);
     }
-    //------------------------------------------------------------------------------------------------------------------------------------------
-    private void Update()
-    {
-        DebugDevices();
-    }
-    private void DebugDevices()
-    {
-        FMOD.System system = RuntimeManager.CoreSystem;
-        int numDrivers;
-        system.getNumDrivers(out numDrivers);
-
-        for (int i = 0; i < numDrivers; i++)
-        {
-            int namelen = 256;
-            int systemRate;
-            FMOD.SPEAKERMODE speakerMode;
-            int speakerModeChannels;
-
-            system.getDriverInfo(i, out string name, namelen, out System.Guid guid, out systemRate, out speakerMode, out speakerModeChannels);
-
-            Debug.Log($"Driver {i}: {name}, System Rate: {systemRate}, Speaker Mode: {speakerMode}, Channels: {speakerModeChannels}");
-        }
-    }
-    //------------------------------------------------------------------------------------------------------------------------------------------
     public EventInstance CreateSpatializedInstance(EventReference eventRef, Transform audioParent)
     {
         EventInstance eventInstance = RuntimeManager.CreateInstance(eventRef);

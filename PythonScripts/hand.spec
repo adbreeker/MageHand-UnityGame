@@ -2,11 +2,11 @@
 
 a = Analysis(
     ['hand.py'],
-    pathex=['C:\\Users\\versi\\MageHand-UnityGame\\PythonScripts'],
+    pathex=['D:\\Unity\\Mage Hand\\PythonScripts'],
     binaries=[],
     datas=[
-    ('C:\\Users\\versi\\anaconda3\\envs\\hand\\Lib\\site-packages\\mediapipe\\python\\solutions\\*.*', 'mediapipe\\python\\solutions'),
-    ('C:\\Users\\versi\\MageHand-UnityGame\\PythonScripts\\gesture_recognizer.task', '.')
+    ('C:\\Users\\win7\\AppData\\Local\\Programs\\Python\\Python310\\Lib\\site-packages*.*', 'mediapipe\\python\\solutions'),
+    ('D:\\Unity\\Mage Hand\\PythonScripts\\gesture_recognizer.task', '.')
     ],
     hiddenimports=[],
     hookspath=[],
