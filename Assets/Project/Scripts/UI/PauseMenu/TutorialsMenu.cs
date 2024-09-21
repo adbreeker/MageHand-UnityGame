@@ -113,7 +113,7 @@ public class TutorialsMenu : MonoBehaviour
 
         pointer = givenPointer;
 
-        for (int i = 1; i < 15; i++)
+        for (int i = 1; i < 16; i++)
         {
             string text = i.ToString();
             menuOptions.Add(transform.Find("Menu").Find("ScrollRect").Find("Content").Find(text).GetComponent<TextMeshProUGUI>());
