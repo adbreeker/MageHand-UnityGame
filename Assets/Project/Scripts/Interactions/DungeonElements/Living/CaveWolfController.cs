@@ -137,7 +137,7 @@ public class CaveWolfController : MonoBehaviour
             if (PlayerParams.Controllers.playerMovement.movementSpeed >= movementSpeed)
             {
                 //if adjusted wolf is 10% faster than player
-                movementSpeed = PlayerParams.Controllers.playerMovement.movementSpeed + 0.1f * PlayerParams.Controllers.playerMovement.movementSpeed;
+                movementSpeed = PlayerParams.Controllers.playerMovement.movementSpeed + 0.2f * PlayerParams.Controllers.playerMovement.movementSpeed;
                 rotationSpeed = movementSpeed * _rotationSpeedPerMS;
             }
         }
