@@ -28,7 +28,7 @@ public class TeleportingMissileBehavior : SpellBehavior
     public override void OnImpact(GameObject impactTarget) //spawn explosion on impact
     {
         instantiatedEffect = Instantiate(specialEffectPrefab, transform.position, Quaternion.identity);
-        GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_TeleportSpatialized, instantiatedEffect.transform);
+        GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_Teleport, instantiatedEffect.transform);
 
         Vector3 tpDest = teleportationDestination;
         float tpRot = teleportationRotation;

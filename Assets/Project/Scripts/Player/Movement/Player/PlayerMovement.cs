@@ -296,6 +296,8 @@ public class PlayerMovement : MonoBehaviour
     }
     public void TeleportTo(Vector3 tpDestination, float tpRotation, Color? tpEffectColor)
     {
+        RuntimeManager.PlayOneShotAttached(GameParams.Managers.fmodEvents.SFX_Teleport, PlayerParams.Objects.player);
+
         _destination = tpDestination;
         transform.position = tpDestination;
         isMoving = false;
@@ -308,8 +310,6 @@ public class PlayerMovement : MonoBehaviour
         _rotationInputQueue = 0;
 
         UpdateCurrentTile();
-
-        RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_Teleport);
 
         if (tpEffectColor != null) 
         {

@@ -53,8 +53,8 @@ public class FmodEvents : MonoBehaviour
     [field: SerializeField] public EventReference SFX_MovingMetalGate { get; private set; }
     [field: SerializeField] public EventReference SFX_Earthquake { get; private set; }
     [field: SerializeField] public EventReference SFX_IllusionBreak { get; private set; }
+    //[field: SerializeField] public EventReference SFX_TeleportNotSpatialized { get; private set; }
     [field: SerializeField] public EventReference SFX_Teleport { get; private set; }
-    [field: SerializeField] public EventReference SFX_TeleportSpatialized { get; private set; }
     [field: SerializeField] public EventReference SFX_SecretFound { get; private set; }
     [field: SerializeField] public EventReference SFX_LevelInfo { get; private set; }
     //[field: SerializeField] public EventReference SFX_FlyingMagicMissile { get; private set; }

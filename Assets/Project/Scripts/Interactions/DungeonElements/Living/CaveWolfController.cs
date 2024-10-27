@@ -257,10 +257,12 @@ public class CaveWolfController : MonoBehaviour
             _animator.SetBool("walk", false);
             _movementCoroutine = null;
         }
+
+        GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_Teleport, transform.position);
+        GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_Teleport, transform);
+
         transform.position = tpDestination;
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, tpRotation, transform.rotation.eulerAngles.z);
-
-        RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_Teleport);
 
         if (tpEffectColor != null)
         {

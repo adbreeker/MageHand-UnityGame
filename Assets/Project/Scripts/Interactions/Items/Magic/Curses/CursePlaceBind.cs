@@ -79,8 +79,6 @@ public class CursePlaceBind : MonoBehaviour
 
         if(PlayerParams.Controllers.handInteractions.inHand == gameObject) { PlayerParams.Controllers.handInteractions.inHand = null; }
 
-        RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_Teleport);
-
         GameObject tpEffect = GameParams.Holders.materialsAndEffectsHolder.GetEffect(MaterialsAndEffectsHolder.Effects.teleportationObject);
         Instantiate(tpEffect, transform.position, Quaternion.identity);
 

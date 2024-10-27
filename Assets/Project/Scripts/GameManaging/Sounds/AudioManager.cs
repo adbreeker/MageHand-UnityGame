@@ -73,6 +73,31 @@ public class AudioManager : MonoBehaviour
         return eventInstance;
     }
 
+    public EventInstance PlayOneShotOccluded(EventReference eventRef, Vector3 audioStaticPosition, float audioOcclusionWidening = 1f, float playerOcclusionWidening = 1f)
+    {
+        EventInstance eventInstance = RuntimeManager.CreateInstance(eventRef);
+
+        GameObject audioParent = new GameObject();
+        audioParent.transform.position = audioStaticPosition;
+        audioParent.name = "AudioPosition " + eventRef.Path;
+        eventInstance.getDescription(out EventDescription desc);
+        desc.getLength(out int length); //length is in ms
+        Destroy(audioParent, (length * 0.001f) + 1);
+
+        RuntimeManager.AttachInstanceToGameObject(eventInstance, audioParent.transform);
+
+        AudioOcclusion audioOcclusion = audioParent.gameObject.AddComponent<AudioOcclusion>();
+        audioOcclusion.audioEvent = eventInstance;
+        audioOcclusion.audioRef = eventRef;
+        audioOcclusion.occlusionLayer = occlusionLayer;
+        audioOcclusion.audioOcclusionWidening = audioOcclusionWidening;
+        audioOcclusion.playerOcclusionWidening = playerOcclusionWidening;
+
+        eventInstance.start();
+        eventInstance.release();
+        return eventInstance;
+    }
+
     public EventInstance PlayOneShotReturnInstance(EventReference eventRef)
     {
         EventInstance eventInstance = RuntimeManager.CreateInstance(eventRef);

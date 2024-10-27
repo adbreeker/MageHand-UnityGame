@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class CheckPython : MonoBehaviour
 {
-    public bool changeScene = true;
+    private bool changeScene = true;
     void Update()
     {
         if (SceneManager.GetActiveScene().name != "Opening") CheckIfPythonWorks();
@@ -17,13 +17,15 @@ public class CheckPython : MonoBehaviour
         {
             if ((current.Id == GameSettings.mediapipeHandProcess.Id) && current.HasExited)
             {
+                UnityEngine.Debug.Log("Python process has exited - crashed");
+                if(changeScene)
                 {
-                    UnityEngine.Debug.Log("Python process has exited - crashed");
-                    if(changeScene)
-                    {
-                        GameParams.Managers.fadeInOutManager.ChangeScene("Python_Crashed");
-                        changeScene = false;
-                    }
+                    UnityEngine.Debug.LogError("Python process has exited, crashed - in build version there will be scene changing now to the Python_Crashed");
+                    changeScene = false;
+#if UNITY_EDITOR
+                    return;
+#endif
+                    GameParams.Managers.fadeInOutManager.ChangeScene("Python_Crashed");
                 }
             }
         }
