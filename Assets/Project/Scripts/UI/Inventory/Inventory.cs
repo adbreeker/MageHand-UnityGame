@@ -220,7 +220,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public bool HasItem(string itemName) 
+    public bool HasItemType(string itemName) 
     {
         foreach(GameObject item in inventory)
         {

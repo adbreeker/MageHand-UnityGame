@@ -128,7 +128,7 @@ public class PlayerMovement : MonoBehaviour
             if (collider.gameObject.tag == "Wall" || collider.gameObject.tag == "Obstacle")
             {
                 //if obstacle near player then can't move
-                GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_Collision, transform);
+                RuntimeManager.PlayOneShotAttached(GameParams.Managers.fmodEvents.SFX_Collision, gameObject);
                 //Destroy(collisionSound.gameObject, collisionSound.clip.length);
 
                 return false;

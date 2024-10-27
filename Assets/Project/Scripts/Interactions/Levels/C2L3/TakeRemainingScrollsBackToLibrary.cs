@@ -81,9 +81,6 @@ public class TakeRemainingScrollsBackToLibrary : MonoBehaviour
             GameObject item = PlayerParams.Controllers.inventory.inventory[i];
             if (item.GetComponent<ReadableBehavior>() != null)
             {
-                PlayerParams.Controllers.inventory.inventory.RemoveAt(i);
-                item.SetActive(true);
-
                 item.transform.SetParent(null);
 
                 GameObject tpEffect = GameParams.Holders.materialsAndEffectsHolder.GetEffect(MaterialsAndEffectsHolder.Effects.teleportationObject);

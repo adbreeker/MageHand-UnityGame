@@ -2,12 +2,16 @@ using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class ItemBehavior : InteractableBehavior
 {
     [Header("Item parameters:")]
     public string itemName;
     public GameObject itemIcon;
+
+    private AudioManager AudioManager => GameParams.Managers.audioManager;
+    private FmodEvents FmodEvents => GameParams.Managers.fmodEvents;
 
     public virtual void OnPickUp()
     {
@@ -37,8 +41,17 @@ public class ItemBehavior : InteractableBehavior
     }
     public void TeleportTo(Vector3 tpDestination, float tpRotation, Color? tpEffectColor)
     {
-        GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_Teleport, transform.position);
-        GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_Teleport, transform);
+        if (PlayerParams.Controllers.inventory.inventory.Contains(gameObject))
+        {
+            gameObject.SetActive(true);
+            PlayerParams.Controllers.inventory.inventory.Remove(gameObject);
+            RuntimeManager.PlayOneShotAttached(FmodEvents.SFX_Teleport, PlayerParams.Objects.player);
+        }
+        else
+        {
+            AudioManager.PlayOneShotOccluded(FmodEvents.SFX_Teleport, transform.position);
+        }
+        AudioManager.PlayOneShotOccluded(FmodEvents.SFX_Teleport, transform);
 
         transform.position = tpDestination;
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, tpRotation, transform.rotation.eulerAngles.z);
@@ -60,7 +73,7 @@ public class ItemBehavior : InteractableBehavior
     {
         if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "Obstacle" || collision.gameObject.tag == "DungeonCube")
         {
-            GameParams.Managers.audioManager.PlayOneShotSpatialized(GameParams.Managers.fmodEvents.SFX_Collision, transform);
+            RuntimeManager.PlayOneShotAttached(FmodEvents.SFX_Collision, gameObject);
         }
     }
 }
