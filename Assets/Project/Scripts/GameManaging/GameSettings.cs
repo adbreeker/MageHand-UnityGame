@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class GameSettings : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class GameSettings : MonoBehaviour
     }
 
     public static float soundVolume = 0.3f;
+
+    public static float brightness = 0f;
 
     public static string microphoneName = null;
 
@@ -59,6 +62,9 @@ public class GameSettings : MonoBehaviour
         //set volume
         AudioManager.SetGameVolume(soundVolume);
 
+        //set brightness
+        UpdateBrightness();
+
         //set microphone
         UpdateMicrophone();
 
@@ -91,6 +97,7 @@ public class GameSettings : MonoBehaviour
     {
         //update soundVolume
         if (soundVolume != AudioManager.GetGameVolume()) AudioManager.SetGameVolume(soundVolume);
+        UpdateBrightness();
 
         //update webcam and microphone
         UpdateMicrophone();
@@ -147,6 +154,7 @@ public class GameSettings : MonoBehaviour
     void LoadGameSettings()
     {
         soundVolume = PlayerPrefs.GetFloat("soundVolume", 0.3f);
+        brightness = PlayerPrefs.GetFloat("brightness", 0f);
         microphoneName = PlayerPrefs.GetString("microphoneName", null);
         webCamName = PlayerPrefs.GetString("webCamName", null);
         fpsCap = PlayerPrefs.GetInt("fpsCap", 10);
@@ -239,6 +247,7 @@ public class GameSettings : MonoBehaviour
         else microphoneName = null;
     }
 
+
     //change webcam to chosen from settings if it is able to find it
     void UpdateWebCam()
     {
@@ -284,5 +293,15 @@ public class GameSettings : MonoBehaviour
         if (graphicsQuality == GraphicsQuality.Low) QualitySettings.SetQualityLevel(0);
         else if (graphicsQuality == GraphicsQuality.Medium) QualitySettings.SetQualityLevel(1);
         else if (graphicsQuality == GraphicsQuality.High) QualitySettings.SetQualityLevel(2);
+    }
+
+    void UpdateBrightness()
+    {
+        ColorAdjustments colorAdj;
+        GameParams.Managers.volume.profile.TryGet(out colorAdj);
+        if (colorAdj.postExposure.value != brightness)
+        {
+            colorAdj.postExposure.value = brightness;
+        }
     }
 }

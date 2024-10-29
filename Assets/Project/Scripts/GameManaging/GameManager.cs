@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public static class GameParams
 {
@@ -20,6 +21,7 @@ public static class GameParams
         public static FmodEvents fmodEvents;
         public static FadeInFadeOut fadeInOutManager;
         public static LevelInfoDisplay levelInfoManager;
+        public static Volume volume;
     }
 
     public static class Variables
@@ -42,6 +44,7 @@ public class GameManager : MonoBehaviour
     public FmodEvents fmodEvents;
     public FadeInFadeOut fadeInOutManager;
     public LevelInfoDisplay levelInfoManager;
+    public Volume volume;
 
     private void Awake()
     {
@@ -56,6 +59,7 @@ public class GameManager : MonoBehaviour
         GameParams.Managers.fmodEvents = fmodEvents;
         GameParams.Managers.fadeInOutManager = fadeInOutManager;
         GameParams.Managers.levelInfoManager = levelInfoManager;
+        GameParams.Managers.volume = volume;
 
         GameParams.Variables.currentTimeScale = 1.0f;
     }
