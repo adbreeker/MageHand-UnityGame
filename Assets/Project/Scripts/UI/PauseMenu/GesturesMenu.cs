@@ -13,26 +13,32 @@ public class GesturesMenu : MonoBehaviour
     private List<TextMeshProUGUI> menuOptions = new List<TextMeshProUGUI>();
 
     [Header("Click")]
+    [TextArea(2, 5)]
     public string gestureDescription1;
     public GameObject hand1;
 
     [Header("Grab")]
+    [TextArea(2, 5)]
     public string gestureDescription2;
     public GameObject hand2;
 
     [Header("Throw")]
+    [TextArea(2, 5)]
     public string gestureDescription3;
     public GameObject hand3;
 
     [Header("Cast")]
+    [TextArea(2, 5)]
     public string gestureDescription4;
     public GameObject hand4;
 
     [Header("Equip")]
+    [TextArea(2, 5)]
     public string gestureDescription5;
     public GameObject hand5;
 
     [Header("Drink")]
+    [TextArea(2, 5)]
     public string gestureDescription6;
     public GameObject hand6;
 

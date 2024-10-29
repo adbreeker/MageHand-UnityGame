@@ -636,6 +636,7 @@ GameObject:
   - component: {fileID: 916373164051049339}
   - component: {fileID: 3172057590969039860}
   - component: {fileID: 5490940860140244521}
+  - component: {fileID: 3000914132513520077}
   m_Layer: 5
   m_Name: SettingsMenu
   m_TagString: Untagged
@@ -739,8 +740,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2103885512c518044bc3ebc1b9ea3f3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  webcamVideoDisplay: {fileID: 8023769076955848017}
-  webcamVideoDisplayFrame: {fileID: 6589445080817185520}
+  webCamDisplay: {fileID: 3000914132513520077}
   volumeSlider: {fileID: 5214636346668701811}
   volumeValueText: {fileID: 2190897957983689118}
   fpsSlider: {fileID: 8143126661798257051}
@@ -765,6 +765,21 @@ MonoBehaviour:
     spells from the wheel instead. If there is no microphone connected, it stays
     turned off.
   - Displays the appropriate gesture icon for interacting and grabbing items.
+--- !u!114 &3000914132513520077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 361958599663213053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc36277137965c140a8c90d2caeca8fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  webcamVideoDisplay: {fileID: 8023769076955848017}
+  webcamVideoDisplayFrame: {fileID: 6589445080817185520}
+  displayAutomaticaly: 0
 --- !u!1 &423860913893693189
 GameObject:
   m_ObjectHideFlags: 0

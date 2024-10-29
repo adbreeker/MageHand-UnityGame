@@ -10,13 +10,15 @@ public class WebCamDisplay : MonoBehaviour
     [Header("Webcam display")]
     public RawImage webcamVideoDisplay;
     public RectTransform webcamVideoDisplayFrame;
+    [Space]
+    [SerializeField] private bool displayAutomaticaly = true; 
 
     void Update()
     {
-        ShowCamera();
+        if (displayAutomaticaly) ShowCamera();
     }
 
-    void ShowCamera()
+    public void ShowCamera()
     {
         webcamVideoDisplayFrame.gameObject.SetActive(true);
 

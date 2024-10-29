@@ -9,9 +9,8 @@ using FMODUnity;
 
 public class SettingsMenu : MonoBehaviour
 {
-    [Header("Webcam display")]
-    public RawImage webcamVideoDisplay;
-    public RectTransform webcamVideoDisplayFrame;
+    [Header("WebCam Display")]
+    public WebCamDisplay webCamDisplay;
     [Header("Volume slider")]
     public Slider volumeSlider;
     public TextMeshProUGUI volumeValueText;
@@ -53,7 +52,7 @@ public class SettingsMenu : MonoBehaviour
         volumeValueText.text = volumeSlider.value.ToString();
         DisplayFPSOrVSyncSlider();
 
-        if(!fromMainMenu) ShowCamera();
+        if(!fromMainMenu) webCamDisplay.ShowCamera();
     }
 
     void KeysListener()
@@ -655,42 +654,5 @@ public class SettingsMenu : MonoBehaviour
         else if (vSyncSlider.value == 3) vSyncValueText.text = ((int)(Screen.currentResolution.refreshRate / 2)).ToString();
         else if (vSyncSlider.value == 4) vSyncValueText.text = ((int)(Screen.currentResolution.refreshRate / 1)).ToString();
         else vSyncValueText.text = "Error";
-    }
-
-    void ShowCamera()
-    {
-        webcamVideoDisplayFrame.gameObject.SetActive(true);
-
-        try
-        {
-            using (MemoryMappedFile mmf = MemoryMappedFile.OpenExisting("magehand_video_unity"))
-            {
-                using (MemoryMappedViewStream stream = mmf.CreateViewStream())
-                {
-                    BinaryReader reader = new BinaryReader(stream);
-                    byte[] frameBuffer = reader.ReadBytes(480 * 640 * 3);
-
-                    int width = 640;
-                    int height = 480;
-
-                    Texture2D texture = new Texture2D(width, height, TextureFormat.RGB24, false);
-                    texture.LoadRawTextureData(frameBuffer);
-                    texture.Apply();
-
-                    float scale = (float)texture.height / (float)texture.width;
-                    webcamVideoDisplayFrame.sizeDelta = new Vector2(webcamVideoDisplayFrame.sizeDelta.x, webcamVideoDisplayFrame.sizeDelta.x * scale);
-
-                    webcamVideoDisplay.gameObject.SetActive(true);
-
-                    webcamVideoDisplay.texture = texture;
-
-                }
-            }
-        }
-        catch (FileNotFoundException)
-        {
-            webcamVideoDisplay.gameObject.SetActive(false);
-            Debug.LogWarning("video_unity doesn't exist");
-        }
     }
 }
