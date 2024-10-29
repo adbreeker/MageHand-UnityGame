@@ -19,6 +19,7 @@ public class TutorialsMenu : MonoBehaviour
     public List<GameObject> tutorialPrefabs = new List<GameObject>();
     private GameObject instantiatedTutorialPrefab;
     private Camera uiCamera;
+
     void Update()
     {
         KeysListener();
@@ -113,10 +114,17 @@ public class TutorialsMenu : MonoBehaviour
 
         pointer = givenPointer;
 
-        for (int i = 1; i < 16; i++)
+        try
         {
-            string text = i.ToString();
-            menuOptions.Add(transform.Find("Menu").Find("ScrollRect").Find("Content").Find(text).GetComponent<TextMeshProUGUI>());
+            for (int i = 1; i <= tutorialPrefabs.Count; i++)
+            {
+                string text = i.ToString();
+                menuOptions.Add(transform.Find("Menu").Find("ScrollRect").Find("Content").Find(text).GetComponent<TextMeshProUGUI>());
+            }
+        }
+        catch
+        {
+            Debug.LogError("Options buttons are missing in number of: " + (tutorialPrefabs.Count - menuOptions.Count));
         }
 
         scrollView = transform.Find("Menu").Find("ScrollRect").GetComponent<ScrollRect>();

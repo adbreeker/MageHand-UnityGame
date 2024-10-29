@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -283.0609, y: -288.58}
-  m_SizeDelta: {x: 566.1218, y: 160.4427}
+  m_AnchoredPosition: {x: -283.0609, y: -288.57996}
+  m_SizeDelta: {x: 566.1218, y: 350}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5074808285342132283
 CanvasRenderer:
@@ -66,8 +66,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Sometimes items that can be picked up will not immediately be within reach.
-    \n\nRemember to always try to get closer, if an object catches your attention."
+  m_text: "Some spells will appear in your hand after being cast. You can throw them
+    with the <color=#35E5E5>Throw</color> gesture. \n\nSome of these spells also
+    have a special effect called reactivation, which you can use with the <color=#35E5E5>Equip</color>
+    gesture."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb218ab571150b84c88ce3da9f3be483, type: 2}
   m_sharedMaterial: {fileID: 611106172734456367, guid: bb218ab571150b84c88ce3da9f3be483, type: 2}
@@ -102,7 +104,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -136,55 +138,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!1 &2544351750058714338
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8813874839754945494}
-  - component: {fileID: 6853648846776328677}
-  m_Layer: 5
-  m_Name: Panel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &8813874839754945494
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2544351750058714338}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5214573476064420092}
-  - {fileID: 3660831269088886399}
-  - {fileID: 9213854502184909543}
-  - {fileID: 1705187222802398595}
-  m_Father: {fileID: 5214573475288243263}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1330.6975, y: 688.6456}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &6853648846776328677
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2544351750058714338}
-  m_CullTransparentMesh: 1
 --- !u!1 &2717853695997683522
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,7 +169,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8694414513431071891}
-  m_Father: {fileID: 8813874839754945494}
+  m_Father: {fileID: 1713937276357073325}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -354,7 +307,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8813874839754945494}
+  m_Father: {fileID: 1713937276357073325}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -390,7 +343,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Coming closer
+  m_text: Spells in hand
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb218ab571150b84c88ce3da9f3be483, type: 2}
   m_sharedMaterial: {fileID: 611106172734456367, guid: bb218ab571150b84c88ce3da9f3be483, type: 2}
@@ -492,7 +445,7 @@ GameObject:
   - component: {fileID: 5214573475288244161}
   - component: {fileID: 5214573475288244160}
   m_Layer: 5
-  m_Name: 14ComingCloser
+  m_Name: 17HandSpells
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -511,7 +464,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5214573475853715220}
-  - {fileID: 8813874839754945494}
+  - {fileID: 1713937276357073325}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -684,13 +637,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8813874839754945494}
+  m_Father: {fileID: 1713937276357073325}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0.69750977, y: 0.6456299}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5214573476064420090
 CanvasRenderer:
@@ -730,6 +683,55 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &5244729604504237679
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1713937276357073325}
+  - component: {fileID: 4393249048710442244}
+  m_Layer: 5
+  m_Name: Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1713937276357073325
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5244729604504237679}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5214573476064420092}
+  - {fileID: 3660831269088886399}
+  - {fileID: 9213854502184909543}
+  - {fileID: 1705187222802398595}
+  m_Father: {fileID: 5214573475288243263}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1330.6975, y: 688.6456}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &4393249048710442244
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5244729604504237679}
+  m_CullTransparentMesh: 1
 --- !u!1 &5777780706348431263
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,7 +745,7 @@ GameObject:
   - component: {fileID: 790243217356815496}
   - component: {fileID: 2838295702167548166}
   m_Layer: 5
-  m_Name: PictureBeingCloserThatChaliceIsYellow
+  m_Name: PictureThrownLightSpells
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -797,7 +799,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 0f5c68e1fef7e04429911e931d5f2b5b, type: 3}
+  m_Texture: {fileID: 2800000, guid: 9289ab41c94be2e49ab6f9bc94564e24, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -852,7 +854,7 @@ RectTransform:
   m_Children:
   - {fileID: 1874518185519951670}
   - {fileID: 8861830076226360776}
-  m_Father: {fileID: 8813874839754945494}
+  m_Father: {fileID: 1713937276357073325}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
