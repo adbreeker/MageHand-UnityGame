@@ -690,7 +690,7 @@ public class SettingsMenu : MonoBehaviour
         catch (FileNotFoundException)
         {
             webcamVideoDisplay.gameObject.SetActive(false);
-            Debug.Log("video_unity doesn't exist");
+            Debug.LogWarning("video_unity doesn't exist");
         }
     }
 }

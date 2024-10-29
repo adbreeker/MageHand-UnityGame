@@ -15,6 +15,7 @@ public class PythonCrashed : MonoBehaviour
     [SerializeField] private RectTransform webcamVideoDisplayFrame;
 
     private bool isChosenOptionMenu = true;
+    private bool isSceneChanging = false;
 
     private void Start()
     {
@@ -23,7 +24,7 @@ public class PythonCrashed : MonoBehaviour
 
     private void Update()
     {
-        ManageInputs();
+        if (!isSceneChanging) ManageInputs();
         ShowCamera();
     }
 
@@ -43,6 +44,7 @@ public class PythonCrashed : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.NP_UiSelectOption);
+            isSceneChanging = true;
             if (isChosenOptionMenu)
                 GameParams.Managers.fadeInOutManager.ChangeScene("Menu");
             else
