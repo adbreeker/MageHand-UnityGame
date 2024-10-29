@@ -159,7 +159,7 @@ public class GameSettings : MonoBehaviour
         gestureHints = PlayerPrefs.GetInt("gestureHints", 1) != 0;
     }
 
-    void RunMediapipeExe()
+    public void RunMediapipeExe()
     {
         if(mediapipeHandProcess == null)
         {
