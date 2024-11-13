@@ -5,9 +5,19 @@ using UnityEngine;
 public class MagicBarrierBehavior : MonoBehaviour
 {
     [SerializeField] GameObject _impactEffectPrefab;
+
+    [Header("Ground barrier:")]
+    public bool groundBarrier = false;
+    [SerializeField] List<GameObject> _groundBarrierElements = new List<GameObject>();
     void Start()
     {
-        
+        if(groundBarrier)
+        {
+            foreach(GameObject element in _groundBarrierElements)
+            {
+                element.SetActive(true);
+            }
+        }
     }
 
     // Update is called once per frame
