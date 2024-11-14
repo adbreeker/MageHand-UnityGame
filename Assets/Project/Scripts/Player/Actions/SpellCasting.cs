@@ -59,7 +59,7 @@ public class SpellCasting : MonoBehaviour
         PlayerParams.Variables.startingManaRegen = manaRegen;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         RegenerateMana(); //regenerating mana every fixed update
     }
