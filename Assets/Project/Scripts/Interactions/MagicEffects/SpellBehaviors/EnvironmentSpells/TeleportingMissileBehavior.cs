@@ -1,6 +1,7 @@
 using FMOD.Studio;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class TeleportingMissileBehavior : SpellBehavior
@@ -38,7 +39,7 @@ public class TeleportingMissileBehavior : SpellBehavior
         //managing all teleportations
         if (impactTarget.layer == LayerMask.NameToLayer("Player")) //player
         {
-            PlayerParams.Controllers.playerMovement.TeleportTo(tpDest, tpRot, null);
+            ManageTeleportingPlayer(tpDest, tpRot);
         }
         else if(impactTarget.GetComponent<ItemBehavior>() != null)  //item
         {
@@ -50,6 +51,11 @@ public class TeleportingMissileBehavior : SpellBehavior
         }
 
         Destroy(gameObject);
+    }
+
+    void ManageTeleportingPlayer(Vector3 tpDestination, float tpRotation)
+    {
+        PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination, tpRotation, null);
     }
 
     void ManageTeleportingItem(GameObject item, Vector3 tpDestination, float tpRotation)
@@ -97,6 +103,6 @@ public class TeleportingMissileBehavior : SpellBehavior
 
     private void OnCollisionEnter(Collision collision)
     {
-        OnImpact(collision.gameObject);
+        OnImpact(collision.collider.gameObject);
     }
 }
