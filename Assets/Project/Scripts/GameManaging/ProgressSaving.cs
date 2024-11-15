@@ -92,6 +92,10 @@ public class ProgressSaving : MonoBehaviour
         {
             spellbook.AddSpell(spellScrollsHolder.GiveScroll("Slow"));
         }
+        if (saveData.spellsSave.dispel)
+        {
+            spellbook.AddSpell(spellScrollsHolder.GiveScroll("Dispel"));
+        }
 
         //loading journal contents
         Journal journal = PlayerParams.Controllers.journal;
@@ -142,6 +146,7 @@ public class ProgressSaving : MonoBehaviour
         saveData.spellsSave.speak = spells.Exists(s => string.Equals(s, "speak", StringComparison.OrdinalIgnoreCase));
         saveData.spellsSave.mark = spells.Exists(s => string.Equals(s, "mark", StringComparison.OrdinalIgnoreCase));
         saveData.spellsSave.slow = spells.Exists(s => string.Equals(s, "slow", StringComparison.OrdinalIgnoreCase));
+        saveData.spellsSave.dispel = spells.Exists(s => string.Equals(s, "dispel", StringComparison.OrdinalIgnoreCase));
     }
 
     public void SaveJournal(Dictionary<string, string> notesJournal, Dictionary<string, List<List<string>>> dialoguesJournal) //saving journal contents
@@ -289,6 +294,7 @@ public class ProgressSaving : MonoBehaviour
             public bool speak = false;
             public bool mark = false;
             public bool slow = false;
+            public bool dispel = false;
         }
 
         [System.Serializable]

@@ -40,6 +40,8 @@ public class SpellCasting : MonoBehaviour
     public GameObject collectEffectPrefab;
     public GameObject openEffectPrefab;
     public GameObject slowEffectPrefab;
+    public GameObject dispelEffectPrefab;
+    public GameObject dispelImpactPrefab;
 
     [Header("Casting effect prefab")]
     public GameObject castingEffectPrefab;
@@ -72,7 +74,7 @@ public class SpellCasting : MonoBehaviour
 
     //spells --------------------------------------------------------------------------------------- spells
 
-    public void LightSpell() //casting light spell
+    public void LightSpell() //casting light spell - basic source of light
     {
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Light");
         if(scroll != null)
@@ -89,7 +91,7 @@ public class SpellCasting : MonoBehaviour
         }
     }
 
-    public IEnumerator CollectSpell() //casting pick up spell
+    public IEnumerator CollectSpell() //casting pick up spell - not used after leaning implemented
     {
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Collect");
         if(scroll != null)
@@ -131,7 +133,7 @@ public class SpellCasting : MonoBehaviour
         }
     }
 
-    public void FireSpell() //casting fire spell
+    public void FireSpell() //casting fire spell - classic fireball
     {
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Fire");
         if (scroll != null)
@@ -148,7 +150,7 @@ public class SpellCasting : MonoBehaviour
         }
     }
 
-    public void SpeakSpell()
+    public void SpeakSpell() //allowing to speak with magic skull platforms
     {
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Speak");
         if (scroll != null && !PlayerParams.Controllers.playerMovement.isMoving)
@@ -199,7 +201,7 @@ public class SpellCasting : MonoBehaviour
         }
     }
 
-    public IEnumerator SlowSpell()
+    public IEnumerator SlowSpell() //slowing time around player but not himself
     {
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Slow");
         if (scroll != null)
@@ -225,7 +227,37 @@ public class SpellCasting : MonoBehaviour
         }
     }
 
-    public void OpenSpell() //casting break in spell - occurs in tutorial only
+    public void DispelSpell()
+    {
+        SpellScrollInfo scroll = spellbook.GetSpellInfo("Dispel");
+        if (scroll != null)
+        {
+            mana -= scroll.manaCost;
+
+            RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFinished);
+
+            Instantiate(dispelEffectPrefab, PlayerParams.Objects.playerCamera.transform).transform.localPosition = new Vector3(0, -1, 0);
+
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 6, LayerMask.GetMask("Spell"), QueryTriggerInteraction.Collide);
+            foreach (Collider collider in colliders)
+            {
+                if(collider.tag == "Wall") 
+                { 
+                    Instantiate(dispelImpactPrefab, 
+                        new Vector3(collider.transform.position.x, collider.transform.position.y + 2, collider.transform.position.z), 
+                        Quaternion.identity); 
+                }
+                else { Instantiate(dispelImpactPrefab, collider.transform.position, Quaternion.identity); }
+                Destroy(collider.gameObject);
+            }
+        }
+        else
+        {
+            RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFailed);
+        }
+    }
+
+    public void OpenSpell() //casting open spell - occurs in tutorial only
     {
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Open");
         if (scroll != null)
@@ -431,6 +463,10 @@ public class SpellCasting : MonoBehaviour
         else if (NormalizeTranscribedText(name) == "slow")
         {
             StartCoroutine(SlowSpell());
+        }
+        else if (NormalizeTranscribedText(name) == "dispel")
+        {
+            DispelSpell();
         }
         else if (NormalizeTranscribedText(name) == "open")
         {
