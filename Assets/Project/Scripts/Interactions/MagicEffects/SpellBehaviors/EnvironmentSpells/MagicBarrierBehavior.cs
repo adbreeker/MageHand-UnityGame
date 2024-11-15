@@ -9,6 +9,7 @@ public class MagicBarrierBehavior : MonoBehaviour
     [Header("Ground barrier:")]
     public bool groundBarrier = false;
     [SerializeField] List<GameObject> _groundBarrierElements = new List<GameObject>();
+
     void Start()
     {
         if(groundBarrier)

@@ -16,19 +16,20 @@ public class FreezeEffect : MonoBehaviour
         _duration = duration;
         _freezeEffectPrefab = freezeEffectPrefab;
 
-        if (GetComponent<PotionSpeedEffect>() != null) { GetComponent<PotionSpeedEffect>().StopPotionEffect(); }
+        if (GetComponent<PotionSpeedEffect>() != null) { GetComponent<PotionSpeedEffect>().DeactivatePotionEffect(); }
 
-        if (_freezeEffect != null) { StopFreezeEffect(); }
+        if (_freezeEffect != null) { DeactivateFreezeEffect(); }
 
         _freezeEffect = StartCoroutine(FreezeDuration());
     }
 
-    public void StopFreezeEffect()
+    public void DeactivateFreezeEffect()
     {
         StopCoroutine(_freezeEffect);
         PlayerParams.Controllers.playerMovement.movementSpeed = PlayerParams.Variables.playerStartingMovementSpeed;
         PlayerParams.Controllers.playerMovement.rotationSpeed = PlayerParams.Variables.playerStartingRotationSpeed;
         Destroy(_freezeOnPlayer);
+        Destroy(this);
     }
 
     IEnumerator FreezeDuration()

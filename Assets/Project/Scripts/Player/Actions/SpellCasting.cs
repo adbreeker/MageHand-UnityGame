@@ -22,8 +22,10 @@ public class SpellCasting : MonoBehaviour
 
     [Header("Current Spell")]
     public string currentSpell = "None";
+    Coroutine _slowCoroutine = null;
     public GameObject floatingLight;
     public GameObject magicMark;
+    public GameObject slowEffect;
 
     [Header("Spell Cast Position")]
     public Transform hand;
@@ -68,7 +70,7 @@ public class SpellCasting : MonoBehaviour
 
     void RegenerateMana() //regenerating mana with use of mana regen parameter
     {
-        mana += manaRegen * Time.deltaTime;
+        mana += manaRegen * Time.unscaledDeltaTime;
         mana = Mathf.Clamp(mana, 0.0f, 100.0f);
     }
 
@@ -204,12 +206,12 @@ public class SpellCasting : MonoBehaviour
     public IEnumerator SlowSpell() //slowing time around player but not himself
     {
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Slow");
-        if (scroll != null)
+        if (scroll != null && _slowCoroutine == null)
         {
             mana -= scroll.manaCost;
 
             RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFinished);
-            GameObject slowEffect = Instantiate(slowEffectPrefab, PlayerParams.Objects.player.transform);
+            slowEffect = Instantiate(slowEffectPrefab, PlayerParams.Objects.player.transform);
 
             float slowValue = 0.1f;
 
@@ -219,11 +221,23 @@ public class SpellCasting : MonoBehaviour
             yield return new WaitForSeconds(10f * slowValue);
             GameParams.Variables.currentTimeScale = 1.0f;
 
+            _slowCoroutine = null;
             Destroy(slowEffect);
         }
         else
         {
             RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFailed);
+        }
+    }
+
+    public void DeactivateSlowSpell()
+    {
+        if(_slowCoroutine != null)
+        {
+            GameParams.Variables.currentTimeScale = 1.0f;
+
+            _slowCoroutine = null;
+            Destroy(slowEffect);
         }
     }
 
@@ -237,6 +251,18 @@ public class SpellCasting : MonoBehaviour
             RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFinished);
 
             Instantiate(dispelEffectPrefab, PlayerParams.Objects.playerCamera.transform).transform.localPosition = new Vector3(0, -1, 0);
+
+            DeactivateSlowSpell();
+
+            if (PlayerParams.Objects.player.GetComponent<FreezeEffect>() != null)
+            {
+                PlayerParams.Objects.player.GetComponent<FreezeEffect>().DeactivateFreezeEffect();
+            }
+
+            foreach(PotionEffect effect in PlayerParams.Objects.player.GetComponents<PotionEffect>())
+            {
+                effect.DeactivatePotionEffect();
+            }
 
             Collider[] colliders = Physics.OverlapSphere(transform.position, 6, LayerMask.GetMask("Spell"), QueryTriggerInteraction.Collide);
             foreach (Collider collider in colliders)

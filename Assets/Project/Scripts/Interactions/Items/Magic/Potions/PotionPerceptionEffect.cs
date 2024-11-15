@@ -39,6 +39,12 @@ public class PotionPerceptionEffect : PotionEffect
         _potionEffect = StartCoroutine(PotionDuration());
     }
 
+    public override void DeactivatePotionEffect()
+    {
+        StopCoroutine(_potionEffect);
+        Destroy(this);
+    }
+
     IEnumerator PotionDuration() //count potion effect duration
     {
         while (duration > 0)
