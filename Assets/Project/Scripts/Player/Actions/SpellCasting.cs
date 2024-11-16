@@ -235,7 +235,7 @@ public class SpellCasting : MonoBehaviour
         if(_slowCoroutine != null)
         {
             GameParams.Variables.currentTimeScale = 1.0f;
-
+            StopCoroutine(_slowCoroutine);
             _slowCoroutine = null;
             Destroy(slowEffect);
         }
@@ -488,7 +488,7 @@ public class SpellCasting : MonoBehaviour
         }
         else if (NormalizeTranscribedText(name) == "slow")
         {
-            StartCoroutine(SlowSpell());
+            _slowCoroutine = StartCoroutine(SlowSpell());
         }
         else if (NormalizeTranscribedText(name) == "dispel")
         {
