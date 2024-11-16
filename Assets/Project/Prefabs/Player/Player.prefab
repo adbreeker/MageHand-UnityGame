@@ -250,7 +250,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 4
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &7212878339763585424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,7 +294,7 @@ MonoBehaviour:
   tilesLenght: 4
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 8193
+    m_Bits: 24577
   isMoving: 0
   rotationSpeed: 300
   rotationThreshold: 0.01
@@ -323,6 +323,7 @@ MonoBehaviour:
   currentSpell: None
   floatingLight: {fileID: 0}
   magicMark: {fileID: 0}
+  slowEffect: {fileID: 0}
   hand: {fileID: 5635713986415474186}
   popUpPrefab: {fileID: 8175451159203894732, guid: d754b09499f8ee142be40f76533abed6, type: 3}
   timeToFadeOutPopUp: 1
@@ -333,6 +334,8 @@ MonoBehaviour:
   collectEffectPrefab: {fileID: 7358468838148070894, guid: fe75476d64adeab43aa832efed60a963, type: 3}
   openEffectPrefab: {fileID: 1758473627833946668, guid: ef22352c709b19b4d94e98c2235ad0e0, type: 3}
   slowEffectPrefab: {fileID: 4932088507883938021, guid: 1936c34b93cac754e85e7cb778c10269, type: 3}
+  dispelEffectPrefab: {fileID: 4465546267404281039, guid: f945cfd96c507564f818494d5c1c121a, type: 3}
+  dispelImpactPrefab: {fileID: 5493431364815966850, guid: 3e813c22f0acdee488d976070f4ef0fd, type: 3}
   castingEffectPrefab: {fileID: 1725317912486240, guid: 56b67921c8146fd48a97b597977b3049, type: 3}
   openEasterEggPrefab: {fileID: 7349612059981369362, guid: 48d92c77554ae7a4ebffa20dc1c2b6c4, type: 3}
 --- !u!114 &8656529184073069794

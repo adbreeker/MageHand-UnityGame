@@ -53,6 +53,12 @@ public class MoonshinePotionEffect : PotionEffect
         }
     }
 
+    public override void DeactivatePotionEffect()
+    {
+        StopCoroutine(_potionEffect);
+        Destroy(this);
+    }
+
     IEnumerator PotionDuration() //count potion effect duration
     {
         while(duration > 0)

@@ -9,4 +9,5 @@ public abstract class PotionEffect : MonoBehaviour
     protected Coroutine _potionEffect;
     public abstract void Drink();
     public abstract void ActivatePotionEffect();
+    public abstract void DeactivatePotionEffect();
 }

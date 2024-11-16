@@ -36,6 +36,13 @@ public class PotionManaRegenEffect : PotionEffect
         _potionEffect = StartCoroutine(PotionDuration());
     }
 
+    public override void DeactivatePotionEffect()
+    {
+        StopCoroutine(_potionEffect);
+        PlayerParams.Controllers.spellCasting.manaRegen = PlayerParams.Variables.startingManaRegen;
+        Destroy(this);
+    }
+
     IEnumerator PotionDuration() //count potion effect duration
     {
         PlayerParams.Controllers.spellCasting.manaRegen = 5 * PlayerParams.Variables.startingManaRegen;

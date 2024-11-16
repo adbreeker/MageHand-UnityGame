@@ -8,15 +8,16 @@ public class SpellScrollsHolder : MonoBehaviour
     [Header("Scrolls")]
     public GameObject scrollOfLight;
     public GameObject scrollOfFire;
-    public GameObject scrollOfMarkAndReturn;
+    public GameObject scrollOfMark;
     public GameObject scrollOfCollect;
     public GameObject scrollOfOpen;
     public GameObject scrollOfSpeak;
     public GameObject scrollOfSlow;
+    public GameObject scrollOfDispel;
 
     public SpellScrollInfo GiveScroll(string spellName) //returning requested scroll
     {
-        if(spellName == "Light")
+        if (spellName == "Light")
         {
             return scrollOfLight.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
         }
@@ -26,26 +27,27 @@ public class SpellScrollsHolder : MonoBehaviour
         }
         if (spellName == "Mark")
         {
-            return scrollOfMarkAndReturn.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
+            return scrollOfMark.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
         }
-        if(spellName == "Collect")
+        if (spellName == "Collect")
         {
             return scrollOfCollect.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
         }
-
-        if((spellName == "Open"))
+        if (spellName == "Open")
         {
             return scrollOfOpen.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
         }
-
-        if ((spellName == "Speak"))
+        if (spellName == "Speak")
         {
             return scrollOfSpeak.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
         }
-
-        if ((spellName == "Slow"))
+        if (spellName == "Slow")
         {
             return scrollOfSlow.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
+        }
+        if (spellName == "Dispel")
+        {
+            return scrollOfDispel.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo();
         }
 
         return null;
@@ -56,11 +58,12 @@ public class SpellScrollsHolder : MonoBehaviour
         List<SpellScrollInfo> allScrolls = new List<SpellScrollInfo>();
         allScrolls.Add(scrollOfLight.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
         allScrolls.Add(scrollOfFire.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
-        allScrolls.Add(scrollOfMarkAndReturn.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
+        allScrolls.Add(scrollOfMark.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
         allScrolls.Add(scrollOfCollect.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
         allScrolls.Add(scrollOfOpen.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
         allScrolls.Add(scrollOfSpeak.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
         allScrolls.Add(scrollOfSlow.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
+        allScrolls.Add(scrollOfDispel.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
 
         return allScrolls;
     }

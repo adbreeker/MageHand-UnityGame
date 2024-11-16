@@ -35,19 +35,20 @@ public class PotionSpeedEffect : PotionEffect
 
     public override void ActivatePotionEffect() //activate potion speed effect on player
     {
-        if(GetComponent<FreezeEffect>() != null) { GetComponent<FreezeEffect>().StopFreezeEffect(); }
+        if(GetComponent<FreezeEffect>() != null) { GetComponent<FreezeEffect>().DeactivateFreezeEffect(); }
 
-        if (_potionEffect != null) { StopPotionEffect(); }
+        if (_potionEffect != null) { DeactivatePotionEffect(); }
 
         _potionEffect = StartCoroutine(PotionDuration());
     }
 
-    public void StopPotionEffect()
+    public override void DeactivatePotionEffect()
     {
         StopCoroutine(_potionEffect);
         PlayerParams.Controllers.playerMovement.movementSpeed = PlayerParams.Variables.playerStartingMovementSpeed;
         PlayerParams.Controllers.playerMovement.rotationSpeed = PlayerParams.Variables.playerStartingRotationSpeed;
         Destroy(auraOnPlayer);
+        Destroy(this);
     }
 
     IEnumerator PotionDuration() //count potion effect duration

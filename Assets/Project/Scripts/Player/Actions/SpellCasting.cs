@@ -22,8 +22,10 @@ public class SpellCasting : MonoBehaviour
 
     [Header("Current Spell")]
     public string currentSpell = "None";
+    Coroutine _slowCoroutine = null;
     public GameObject floatingLight;
     public GameObject magicMark;
+    public GameObject slowEffect;
 
     [Header("Spell Cast Position")]
     public Transform hand;
@@ -40,6 +42,8 @@ public class SpellCasting : MonoBehaviour
     public GameObject collectEffectPrefab;
     public GameObject openEffectPrefab;
     public GameObject slowEffectPrefab;
+    public GameObject dispelEffectPrefab;
+    public GameObject dispelImpactPrefab;
 
     [Header("Casting effect prefab")]
     public GameObject castingEffectPrefab;
@@ -59,20 +63,20 @@ public class SpellCasting : MonoBehaviour
         PlayerParams.Variables.startingManaRegen = manaRegen;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         RegenerateMana(); //regenerating mana every fixed update
     }
 
     void RegenerateMana() //regenerating mana with use of mana regen parameter
     {
-        mana += manaRegen * Time.deltaTime;
+        mana += manaRegen * Time.unscaledDeltaTime;
         mana = Mathf.Clamp(mana, 0.0f, 100.0f);
     }
 
     //spells --------------------------------------------------------------------------------------- spells
 
-    public void LightSpell() //casting light spell
+    public void LightSpell() //casting light spell - basic source of light
     {
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Light");
         if(scroll != null)
@@ -89,7 +93,7 @@ public class SpellCasting : MonoBehaviour
         }
     }
 
-    public IEnumerator CollectSpell() //casting pick up spell
+    public IEnumerator CollectSpell() //casting pick up spell - not used after leaning implemented
     {
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Collect");
         if(scroll != null)
@@ -131,7 +135,7 @@ public class SpellCasting : MonoBehaviour
         }
     }
 
-    public void FireSpell() //casting fire spell
+    public void FireSpell() //casting fire spell - classic fireball
     {
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Fire");
         if (scroll != null)
@@ -148,7 +152,7 @@ public class SpellCasting : MonoBehaviour
         }
     }
 
-    public void SpeakSpell()
+    public void SpeakSpell() //allowing to speak with magic skull platforms
     {
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Speak");
         if (scroll != null && !PlayerParams.Controllers.playerMovement.isMoving)
@@ -199,15 +203,15 @@ public class SpellCasting : MonoBehaviour
         }
     }
 
-    public IEnumerator SlowSpell()
+    public IEnumerator SlowSpell() //slowing time around player but not himself
     {
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Slow");
-        if (scroll != null)
+        if (scroll != null && _slowCoroutine == null)
         {
             mana -= scroll.manaCost;
 
             RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFinished);
-            GameObject slowEffect = Instantiate(slowEffectPrefab, PlayerParams.Objects.player.transform);
+            slowEffect = Instantiate(slowEffectPrefab, PlayerParams.Objects.player.transform);
 
             float slowValue = 0.1f;
 
@@ -217,6 +221,7 @@ public class SpellCasting : MonoBehaviour
             yield return new WaitForSeconds(10f * slowValue);
             GameParams.Variables.currentTimeScale = 1.0f;
 
+            _slowCoroutine = null;
             Destroy(slowEffect);
         }
         else
@@ -225,7 +230,60 @@ public class SpellCasting : MonoBehaviour
         }
     }
 
-    public void OpenSpell() //casting break in spell - occurs in tutorial only
+    public void DeactivateSlowSpell()
+    {
+        if(_slowCoroutine != null)
+        {
+            GameParams.Variables.currentTimeScale = 1.0f;
+            StopCoroutine(_slowCoroutine);
+            _slowCoroutine = null;
+            Destroy(slowEffect);
+        }
+    }
+
+    public void DispelSpell()
+    {
+        SpellScrollInfo scroll = spellbook.GetSpellInfo("Dispel");
+        if (scroll != null)
+        {
+            mana -= scroll.manaCost;
+
+            RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFinished);
+
+            Instantiate(dispelEffectPrefab, PlayerParams.Objects.playerCamera.transform).transform.localPosition = new Vector3(0, -1, 0);
+
+            DeactivateSlowSpell();
+
+            if (PlayerParams.Objects.player.GetComponent<FreezeEffect>() != null)
+            {
+                PlayerParams.Objects.player.GetComponent<FreezeEffect>().DeactivateFreezeEffect();
+            }
+
+            foreach(PotionEffect effect in PlayerParams.Objects.player.GetComponents<PotionEffect>())
+            {
+                effect.DeactivatePotionEffect();
+            }
+
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 6, LayerMask.GetMask("Spell"), QueryTriggerInteraction.Collide);
+            foreach (Collider collider in colliders)
+            {
+                if(collider.tag == "Wall") 
+                { 
+                    Instantiate(dispelImpactPrefab, 
+                        new Vector3(collider.transform.position.x, collider.transform.position.y + 2, collider.transform.position.z), 
+                        Quaternion.identity); 
+                }
+                else { Instantiate(dispelImpactPrefab, collider.transform.position, Quaternion.identity); }
+                Destroy(collider.gameObject);
+            }
+        }
+        else
+        {
+            RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFailed);
+        }
+    }
+
+    public void OpenSpell() //casting open spell - occurs in tutorial only
     {
         SpellScrollInfo scroll = spellbook.GetSpellInfo("Open");
         if (scroll != null)
@@ -430,7 +488,11 @@ public class SpellCasting : MonoBehaviour
         }
         else if (NormalizeTranscribedText(name) == "slow")
         {
-            StartCoroutine(SlowSpell());
+            _slowCoroutine = StartCoroutine(SlowSpell());
+        }
+        else if (NormalizeTranscribedText(name) == "dispel")
+        {
+            DispelSpell();
         }
         else if (NormalizeTranscribedText(name) == "open")
         {
