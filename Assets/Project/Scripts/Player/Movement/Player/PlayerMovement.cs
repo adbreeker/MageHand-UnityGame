@@ -99,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
         if (isMoving)
         {
             //stepTiming += Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, _destination, movementSpeed * Time.unscaledDeltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, _destination, movementSpeed * Time.unscaledDeltaTime * (PlayerParams.Controllers.pauseMenu.freezeTime ? 0 : 1));
             if (transform.position == _destination)
             {
                 //Debug.Log(stepTiming);
@@ -188,7 +188,7 @@ public class PlayerMovement : MonoBehaviour
         //rotate towards target rotation
         if (isRotating)
         {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, _targetRotation, rotationSpeed * Time.unscaledDeltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, _targetRotation, rotationSpeed * Time.unscaledDeltaTime * (PlayerParams.Controllers.pauseMenu.freezeTime ? 0 : 1));
             if (Quaternion.Angle(transform.rotation, _targetRotation) < rotationThreshold)
             {
                 isRotating = false;
