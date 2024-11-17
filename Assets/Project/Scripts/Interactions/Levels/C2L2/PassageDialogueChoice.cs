@@ -29,7 +29,7 @@ public class PassageDialogueChoice : MonoBehaviour
     {
         if (check)
         {
-            if (inventory.HasItem(keyItemName) && dialogueWithChoice.playerChoice == dialogueWithChoice.option2Text)
+            if (inventory.HasItemType(keyItemName) && dialogueWithChoice.playerChoice == dialogueWithChoice.option2Text)
             {
                 //Player has the key and chose that they has it
                 //They found it and doesn't lie
@@ -37,14 +37,14 @@ public class PassageDialogueChoice : MonoBehaviour
                 check = false;
                 Destroy(this);
             }
-            else if (!inventory.HasItem(keyItemName) && dialogueWithChoice.playerChoice == dialogueWithChoice.option2Text)
+            else if (!inventory.HasItemType(keyItemName) && dialogueWithChoice.playerChoice == dialogueWithChoice.option2Text)
             {
                 //Player doesn't have the key, but chose that they has it
                 //They are lying
                 PlayerParams.Controllers.pointsManager.plotPoints += -2;
                 StartCoroutine(SpawnDialogue(dialogueLie));
             }
-            else if (inventory.HasItem(keyItemName) && dialogueWithChoice.playerChoice == dialogueWithChoice.option1Text)
+            else if (inventory.HasItemType(keyItemName) && dialogueWithChoice.playerChoice == dialogueWithChoice.option1Text)
             {
                 //Player has the key, but chose that they doesn't have it
                 //They forgot about it?

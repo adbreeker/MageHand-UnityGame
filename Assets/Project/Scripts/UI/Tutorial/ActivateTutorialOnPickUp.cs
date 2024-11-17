@@ -8,6 +8,9 @@ public class ActivateTutorialOnPickUp : MonoBehaviour
 
     public void OnPickUp()
     {
-        tutorialEntryToActivate.SetActive(true);
+        if (tutorialEntryToActivate != null)
+            tutorialEntryToActivate.SetActive(true);
+        else
+            Debug.LogWarning("No tutorial added");
     }
 }

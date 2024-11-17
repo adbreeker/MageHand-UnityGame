@@ -46,12 +46,6 @@ public class CursePlaceBind : MonoBehaviour
             yield return new WaitForFixedUpdate();
             if (transform.position != _startingPos && !_bindBounds.bounds.Contains(PlayerParams.Objects.player.transform.position))
             {
-                if(PlayerParams.Controllers.inventory.inventory.Contains(gameObject))
-                {
-                    PlayerParams.Controllers.inventory.inventory.Remove(gameObject);
-                    gameObject.SetActive(true);
-                }
-
                 TeleportBackToLocation();
             }
         }
@@ -78,8 +72,6 @@ public class CursePlaceBind : MonoBehaviour
         }
 
         if(PlayerParams.Controllers.handInteractions.inHand == gameObject) { PlayerParams.Controllers.handInteractions.inHand = null; }
-
-        RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_Teleport);
 
         GameObject tpEffect = GameParams.Holders.materialsAndEffectsHolder.GetEffect(MaterialsAndEffectsHolder.Effects.teleportationObject);
         Instantiate(tpEffect, transform.position, Quaternion.identity);

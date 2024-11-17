@@ -65,8 +65,6 @@ public class TakeRemainingScrollsBackToLibrary : MonoBehaviour
             item.transform.SetParent(null);
             PlayerParams.Controllers.handInteractions.inHand = null;
 
-            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_Teleport);
-
             GameObject tpEffect = GameParams.Holders.materialsAndEffectsHolder.GetEffect(MaterialsAndEffectsHolder.Effects.teleportationObject);
             Instantiate(tpEffect, transform.position, Quaternion.identity);
 
@@ -83,12 +81,7 @@ public class TakeRemainingScrollsBackToLibrary : MonoBehaviour
             GameObject item = PlayerParams.Controllers.inventory.inventory[i];
             if (item.GetComponent<ReadableBehavior>() != null)
             {
-                PlayerParams.Controllers.inventory.inventory.RemoveAt(i);
-                item.SetActive(true);
-
                 item.transform.SetParent(null);
-
-                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_Teleport);
 
                 GameObject tpEffect = GameParams.Holders.materialsAndEffectsHolder.GetEffect(MaterialsAndEffectsHolder.Effects.teleportationObject);
                 Instantiate(tpEffect, transform.position, Quaternion.identity);

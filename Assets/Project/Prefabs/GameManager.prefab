@@ -331,18 +331,11 @@ MonoBehaviour:
     Path: event:/SFX Regular/Spatialized/SFX_IllusionBreak
   <SFX_Teleport>k__BackingField:
     Guid:
-      Data1: 456865113
-      Data2: 1277513551
-      Data3: -897151559
-      Data4: 1936523772
-    Path: event:/SFX Regular/SFX_Teleport
-  <SFX_TeleportSpatialized>k__BackingField:
-    Guid:
       Data1: 2110167885
       Data2: 1306996902
       Data3: -602473587
       Data4: 129535435
-    Path: event:/SFX Regular/Spatialized/SFX_TeleportSpatialized
+    Path: event:/SFX Regular/Spatialized/SFX_Teleport
   <SFX_SecretFound>k__BackingField:
     Guid:
       Data1: -420047044
@@ -418,6 +411,7 @@ GameObject:
   - component: {fileID: 3717581574826844733}
   - component: {fileID: 4949703760120786322}
   - component: {fileID: 8735214370669408620}
+  - component: {fileID: 3899338813746167771}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -463,6 +457,7 @@ MonoBehaviour:
   fmodEvents: {fileID: 983175014689374698}
   fadeInOutManager: {fileID: 3717581574826844733}
   levelInfoManager: {fileID: 7457652193820638125}
+  volume: {fileID: 3899338813746167771}
 --- !u!114 &6146217192834656013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -593,7 +588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 124a3c2a5fe79c54d89a48c633c77a6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeScene: 1
+  dontChangeSceneInEditor: 1
 --- !u!114 &8735214370669408620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -609,3 +604,20 @@ MonoBehaviour:
   foundedComponents: []
   typeComponent: 
   typeGUID: 
+--- !u!114 &3899338813746167771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4871858993183020671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 98d2d49331a7aeb4bacc5609e79cba67, type: 2}

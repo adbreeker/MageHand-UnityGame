@@ -4,36 +4,36 @@ using UnityEngine;
 using TMPro;
 using FMODUnity;
 using FMOD.Studio;
-using UnityEngine.Rendering;
 
 public class Dialogue : MonoBehaviour
 {
     [Header("Content text")]
     public string nameText;
     public bool guideVoiceline = true;
-    [TextArea(3, 10)]
+    [TextArea(4, 4)]
     public string contentText;
-
-    [Header("Options text")]
-    [TextArea(1, 2)]
+    [Space(20)]
+    [Header("Option 1")]
+    [TextArea(2, 2)]
     public string option1Text;
-    public int option1Points = 0;
-    [TextArea(1, 2)]
-    public string option2Text;
-    public int option2Points = 0;
-    [TextArea(1, 2)]
-    public string option3Text;
-    public int option3Points = 0;
-    [TextArea(1, 2)]
-    public string option4Text;
-    public int option4Points = 0;
-
-    [Header("Choices canvases")]
     public Canvas option1Choice;
+    public int option1Points = 0;
+    [Header("Option 2")]
+    [TextArea(2, 2)]
+    public string option2Text;
     public Canvas option2Choice;
+    public int option2Points = 0;
+    [Header("Option 3")]
+    [TextArea(2, 2)]
+    public string option3Text;
     public Canvas option3Choice;
+    public int option3Points = 0;
+    [Header("Option 4")]
+    [TextArea(2, 2)]
+    public string option4Text;
     public Canvas option4Choice;
-    [Space]
+    public int option4Points = 0;
+    [Space(20)]
     [Header("Player choice")]
     public string playerChoice = "";
 
