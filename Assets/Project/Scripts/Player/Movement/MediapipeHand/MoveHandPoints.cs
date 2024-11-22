@@ -23,12 +23,12 @@ public class MoveHandPoints : MonoBehaviour //move points of hand generated with
     private Vector3 maxPoint;
     private float z;
 
-    private void Start()
+    protected virtual void Start()
     {
         CalculateNearPlaneBounds();
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         //Vector3 newPos = RotateAroundPoint(handPosition, PlayerParams.Objects.playerCamera.transform.position, PlayerParams.Objects.playerCamera.transform.eulerAngles.y);
         MemoryMappedFile mmf_points;
