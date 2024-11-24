@@ -8,7 +8,16 @@ public class CheckPython : MonoBehaviour
 
     void Update()
     {
-        CheckIfPythonWorks();
+        if(!IsDevHandActive())
+        {
+            CheckIfPythonWorks();
+        }
+    }
+
+    bool IsDevHandActive()
+    {
+        if (PlayerPrefs.HasKey("devhand") && PlayerPrefs.GetInt("devhand") == 1) { return true; }
+        else return false;
     }
 
     void CheckIfPythonWorks()

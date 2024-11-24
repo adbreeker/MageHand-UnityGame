@@ -96,7 +96,7 @@ public class MoveHandPoints : MonoBehaviour //move points of hand generated with
 
     }
 
-    public static Vector3 RotateAroundPoint(Vector3 point, Vector3 pivot, float angle)
+    Vector3 RotateAroundPoint(Vector3 point, Vector3 pivot, float angle)
     {
         if (angle == 0.0f)
         {
@@ -115,7 +115,7 @@ public class MoveHandPoints : MonoBehaviour //move points of hand generated with
     }
 
 
-    public Vector3[] StringToVector3(string sVector)
+    Vector3[] StringToVector3(string sVector)
     {
         string[] vectors = sVector.Split(';');
 
