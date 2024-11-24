@@ -58,6 +58,11 @@ public class FmodEvents : MonoBehaviour
     [field: SerializeField] public EventReference SFX_SecretFound { get; private set; }
     [field: SerializeField] public EventReference SFX_LevelInfo { get; private set; }
     //[field: SerializeField] public EventReference SFX_FlyingMagicMissile { get; private set; }
+    [field: SerializeField] public EventReference SFX_PlayerCollision { get; private set; }
+    [field: SerializeField] public EventReference SFX_PlayerLean { get; private set; }
+    [field: SerializeField] public EventReference SFX_PlayerGetUp { get; private set; }
+    [field: SerializeField] public EventReference SFX_PlayerRotateLeft { get; private set; }
+    [field: SerializeField] public EventReference SFX_PlayerRotateRight { get; private set; }
     [field: Header("------------------------------------------------------------------")]
     [field: Header("Nonpausable")]
     [field: SerializeField] public EventReference NP_UiChangeOption { get; private set; }

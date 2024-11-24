@@ -2,9 +2,6 @@ using FMOD.Studio;
 using FMODUnity;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
@@ -104,6 +101,14 @@ public class AudioManager : MonoBehaviour
         eventInstance.start();
         eventInstance.release();
         return eventInstance;
+    }
+
+    public bool IsPlaying(EventInstance instance)
+    {
+        if (!instance.isValid()) return false;
+
+        instance.getPlaybackState(out PLAYBACK_STATE state);
+        return state != PLAYBACK_STATE.STOPPED;
     }
 
     public void SetGameVolume(float givenVolume)

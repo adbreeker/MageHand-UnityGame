@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
 
@@ -38,6 +39,11 @@ public class PlayerMovement : MonoBehaviour
     //enqueuing input
     private Vector3 _movementInputQueue = Vector3.zero;
     private float _rotationInputQueue = 0;
+
+    private EventInstance _leanSound;
+    private EventInstance _getUpSound;
+
+    private AudioManager AudioManager => GameParams.Managers.audioManager;
 
     private void Awake()
     {
@@ -128,7 +134,7 @@ public class PlayerMovement : MonoBehaviour
             if (collider.gameObject.tag == "Wall" || collider.gameObject.tag == "Obstacle")
             {
                 //if obstacle near player then can't move
-                RuntimeManager.PlayOneShotAttached(GameParams.Managers.fmodEvents.SFX_Collision, gameObject);
+                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerCollision);
                 //Destroy(collisionSound.gameObject, collisionSound.clip.length);
 
                 return false;
@@ -170,6 +176,10 @@ public class PlayerMovement : MonoBehaviour
         if(rotationQueue != 0 && !isRotating)
         {
             isRotating = true;
+
+            if (rotationQueue == 90) RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerRotateRight);
+            else if (rotationQueue == -90) RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerRotateLeft);
+
             _targetRotation = transform.rotation * Quaternion.Euler(0, rotationQueue, 0);
         }
 
@@ -177,11 +187,13 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E) && !isRotating && !MovementInterfering())
         {
             isRotating = true;
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerRotateRight);
             _targetRotation = transform.rotation * Quaternion.Euler(0, 90, 0);
         }
         if (Input.GetKeyDown(KeyCode.Q) && !isRotating && !MovementInterfering())
         {
             isRotating = true;
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerRotateLeft);
             _targetRotation = transform.rotation * Quaternion.Euler(0, -90, 0);
         }
 
@@ -202,12 +214,20 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetKey(KeyCode.LeftControl) && !MovementInterfering())
         {
             isLeaning = true;
+
+            if (AudioManager.IsPlaying(_getUpSound)) _getUpSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            _leanSound = AudioManager.PlayOneShotReturnInstance(GameParams.Managers.fmodEvents.SFX_PlayerLean);
+
             Transform cam = PlayerParams.Objects.playerCamera.transform;
             cam.localRotation = Quaternion.RotateTowards(cam.localRotation, Quaternion.Euler(leanAngle, 0, 0), leanSpeed * Time.unscaledDeltaTime);
         }
         else if(isLeaning)
         {
             Transform cam = PlayerParams.Objects.playerCamera.transform;
+
+            if (AudioManager.IsPlaying(_leanSound)) _leanSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            _getUpSound = AudioManager.PlayOneShotReturnInstance(GameParams.Managers.fmodEvents.SFX_PlayerGetUp);
+
             cam.localRotation = Quaternion.RotateTowards(cam.localRotation, Quaternion.Euler(0, 0, 0), leanSpeed * Time.unscaledDeltaTime);
             if(cam.localRotation.eulerAngles == Vector3.zero)
             {
