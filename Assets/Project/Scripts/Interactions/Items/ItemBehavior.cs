@@ -73,7 +73,7 @@ public class ItemBehavior : InteractableBehavior
 
     protected virtual void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "Obstacle" || collision.gameObject.tag == "DungeonCube")
+        if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "Obstacle" || collision.gameObject.tag == "DungeonCube" || collision.gameObject.tag == "TunnelCube")
         {
             AudioManager.PlayOneShotOccluded(collisionSound, transform);
         }

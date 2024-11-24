@@ -38,7 +38,8 @@ public class FmodEvents : MonoBehaviour
     //[field: SerializeField] public EventReference SFX_SpeakSpellRemaining { get; private set; }
 
     [field: Header("SFX Regular")]
-    [field: SerializeField] public EventReference SFX_PlayerSteps { get; private set; }
+    [field: SerializeField] public EventReference SFX_PlayerStepsDungeon { get; private set; }
+    [field: SerializeField] public EventReference SFX_PlayerStepsTunnel { get; private set; }
     [field: SerializeField] public EventReference SFX_OpenChest { get; private set; }
     [field: SerializeField] public EventReference SFX_CloseChest { get; private set; }
     [field: SerializeField] public EventReference SFX_ButtonPress { get; private set; }

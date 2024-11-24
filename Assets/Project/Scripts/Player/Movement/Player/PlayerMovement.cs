@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public Transform currentTile;
     /// <summary> Position of player on current tile  </summary>
     public Vector3 currentOnTilePos;
+    public string currentTileTag;
 
     [Header("Movement")]
     public float movementSpeed = 7f;
@@ -40,9 +41,11 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _movementInputQueue = Vector3.zero;
     private float _rotationInputQueue = 0;
 
+    private string _dungeonCubeTag = "DungeonCube";
+    private string _tunnelCubeTag = "TunnelCube";
+
     private EventInstance _leanSound;
     private EventInstance _getUpSound;
-
     private AudioManager AudioManager => GameParams.Managers.audioManager;
 
     private void Awake()
@@ -65,8 +68,9 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit[] potentialTile = Physics.RaycastAll(transform.position, Vector3.down, 4.0f);
         foreach (RaycastHit hit in potentialTile)
         {
-            if(hit.transform.tag == "DungeonCube")
+            if(hit.transform.tag == _dungeonCubeTag || hit.transform.tag == _tunnelCubeTag)
             {
+                currentTileTag = hit.transform.tag;
                 currentTile = hit.transform;
                 break;
             }
@@ -97,7 +101,10 @@ public class PlayerMovement : MonoBehaviour
             if (CanMove())
             {
                 isMoving = true;
-                RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerSteps);
+                if (currentTileTag == _dungeonCubeTag)
+                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerStepsDungeon);
+                else if (currentTileTag == _tunnelCubeTag)
+                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerStepsTunnel);
             }
         }
 
