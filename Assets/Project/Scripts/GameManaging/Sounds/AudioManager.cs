@@ -76,7 +76,7 @@ public class AudioManager : MonoBehaviour
 
         GameObject audioParent = new GameObject();
         audioParent.transform.position = audioStaticPosition;
-        audioParent.name = "AudioPosition " + eventRef.Path;
+        audioParent.name = "AudioPosition";
         eventInstance.getDescription(out EventDescription desc);
         desc.getLength(out int length); //length is in ms
         Destroy(audioParent, (length * 0.001f) + 1);

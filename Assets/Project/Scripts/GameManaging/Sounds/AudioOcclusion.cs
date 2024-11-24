@@ -7,7 +7,7 @@ using UnityEngine;
 public class AudioOcclusion : MonoBehaviour
 {
     [HideInInspector] public EventInstance audioEvent;
-    [HideInInspector] public EventReference audioRef;
+    public EventReference audioRef;
     [HideInInspector] public LayerMask occlusionLayer;
     [HideInInspector] public float audioOcclusionWidening = 1f;
     [HideInInspector] public float playerOcclusionWidening = 1f;
