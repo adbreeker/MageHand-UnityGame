@@ -35,7 +35,7 @@ public class GetObjectsNearHand : MonoBehaviour
 
             if (PlayerParams.Variables.uiActive)
             {
-                CheckObjectsUI(0.2f);
+                CheckObjectsUI(1f, 0.1f);
             }
             else
             {
@@ -114,9 +114,17 @@ public class GetObjectsNearHand : MonoBehaviour
         }
     }
 
-    void CheckObjectsUI(float radius)
+    void CheckObjectsUI(float distance,float radius)
     {
-        Collider[] colliders = Physics.OverlapSphere(_middlePoint, radius, uiMask);
+        Ray ray = PlayerParams.Objects.playerCamera.ViewportPointToRay(PlayerParams.Objects.playerCamera.WorldToViewportPoint(_middlePoint));
+
+        Vector3 startPoint = ray.origin;
+        Vector3 endPoint = ray.origin + ray.direction * distance;
+
+        Collider[] colliders = Physics.OverlapCapsule(startPoint, endPoint, radius, uiMask, QueryTriggerInteraction.Collide);
+#if UNITY_EDITOR
+        DrawDebugCylinder(startPoint, endPoint, radius);
+#endif
 
         if (colliders.Length > 0) //first found object becomes currently pointed
         {

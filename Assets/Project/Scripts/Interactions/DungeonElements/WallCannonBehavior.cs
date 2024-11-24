@@ -108,6 +108,7 @@ public class WallCannonBehavior : MonoBehaviour
     }
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(WallCannonBehavior))]
 public class WallCannonBehaviorEditor : Editor
 {
@@ -158,3 +159,4 @@ public class WallCannonBehaviorEditor : Editor
         }
     }
 }
+#endif

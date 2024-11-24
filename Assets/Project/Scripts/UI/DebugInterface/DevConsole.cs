@@ -9,10 +9,14 @@ using UnityEngine.SceneManagement;
 
 public class DevConsole : MonoBehaviour
 {
-    [Header("Objects of DebugCanvas")]
+    [Header("Objects of DebugCanvas:")]
     public TMP_InputField console;
     public GameObject fpsCounter;
     public GameObject webCamera;
+
+    [Header("Hands for devhand:")]
+    public GameObject handObject;
+    public GameObject devHandObject;
 
     //commands history
     private List<string> previousCommands = new List<string>();
@@ -20,9 +24,22 @@ public class DevConsole : MonoBehaviour
 
     //currently active commands
     bool ghostmode = false;
+    bool devhand = false;
     bool fps = false;
     bool webcam = false;
 
+    private void Start()
+    {
+        if (!PlayerPrefs.HasKey("ghostmode")) { PlayerPrefs.SetInt("ghostmode", 0); }
+        if (!PlayerPrefs.HasKey("devhand")) { PlayerPrefs.SetInt("devhand", 0); }
+        if (!PlayerPrefs.HasKey("fps")) { PlayerPrefs.SetInt("fps", 0); }
+        if (!PlayerPrefs.HasKey("camera")) { PlayerPrefs.SetInt("camera", 0); }
+
+        if (PlayerPrefs.GetInt("ghostmode") == 1) { GhostMode(); }
+        if (PlayerPrefs.GetInt("devhand") == 1) { DevHand(); }
+        if (PlayerPrefs.GetInt("fps") == 1) { Fps(); }
+        if (PlayerPrefs.GetInt("camera") == 1) { Camera(); }
+    }
 
     void Update()
     {
@@ -127,6 +144,11 @@ public class DevConsole : MonoBehaviour
             GhostMode();
             return;
         }
+        if (command[0] == "devhand" && command.Length == 1)
+        {
+            DevHand();
+            return;
+        }
 
         //parameters commands
         if(command[0] == "fps" && command.Length == 1)
@@ -186,7 +208,31 @@ public class DevConsole : MonoBehaviour
     void GhostMode() //making player able to move through objects
     {
         ghostmode = !ghostmode;
+        PlayerPrefs.SetInt("ghostmode", ghostmode ? 1 : 0);
         PlayerParams.Controllers.playerMovement.ghostmodeActive = ghostmode;
+    }
+
+    void DevHand()
+    {
+        devhand = !devhand;
+        PlayerPrefs.SetInt("devhand", devhand ? 1 : 0);
+
+        if(devhand && devHandObject != null) 
+        {
+            devHandObject.SetActive(true);
+            handObject.SetActive(false);
+
+            PlayerParams.Controllers.handInteractions = devHandObject.GetComponent<HandInteractions>();
+            PlayerParams.Objects.hand = devHandObject;
+        }
+        if(!devhand && handObject != null)
+        {
+            devHandObject.SetActive(false);
+            handObject.SetActive(true);
+
+            PlayerParams.Controllers.handInteractions = handObject.GetComponent<HandInteractions>();
+            PlayerParams.Objects.hand = handObject;
+        }
     }
 
 
@@ -194,12 +240,14 @@ public class DevConsole : MonoBehaviour
     void Fps() //turning on/off fps display
     {
         fps = !fps;
+        PlayerPrefs.SetInt("fps", fps ? 1 : 0);
         fpsCounter.SetActive(fps);
     }
 
     void Camera()
     {
         webcam = !webcam;
+        PlayerPrefs.SetInt("camera", webcam ? 1 : 0);
         webCamera.SetActive(webcam);
     }
 
