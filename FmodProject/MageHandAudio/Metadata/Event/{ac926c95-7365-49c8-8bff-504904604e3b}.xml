@@ -5,7 +5,7 @@
 			<value>NP_UiChangeOption</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{11827713-53ad-4241-830f-4f9e6f47abfa}</destination>
@@ -72,6 +72,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{e97106d7-4667-46f1-b2d4-f776b8c72fe3}">
+		<property name="volume">
+			<value>-6</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{60c148bc-207c-48d0-b288-006cb435eb82}</destination>
 		</relationship>
@@ -84,7 +87,7 @@
 	</object>
 	<object class="MultiSound" id="{43f5fb61-6c87-4498-ac06-2f8f6fdd4037}">
 		<relationship name="sounds">
-			<destination>{5baa1c02-bd86-43cb-960f-6179155d08aa}</destination>
+			<destination>{fbc7e19a-edb4-408b-872d-7981ee22ec63}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{308d4b35-edaf-4f0f-96ca-dea1cdc5fe02}">
@@ -99,9 +102,12 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{c2ee2e85-88fe-4b1f-9f71-6356bc4b1e10}" />
-	<object class="SingleSound" id="{5baa1c02-bd86-43cb-960f-6179155d08aa}">
+	<object class="SingleSound" id="{fbc7e19a-edb4-408b-872d-7981ee22ec63}">
+		<property name="volume">
+			<value>-9</value>
+		</property>
 		<relationship name="audioFile">
-			<destination>{fa97d61a-2a2e-4d94-a07d-3542ce78a805}</destination>
+			<destination>{74c0b102-7a13-451a-aab4-73c0923f18a4}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{7f358ceb-24cf-4a77-9fa2-0aa288951d78}" />
