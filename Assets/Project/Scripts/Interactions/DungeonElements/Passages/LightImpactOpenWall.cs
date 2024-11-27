@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class LightImpactOpenWall : MonoBehaviour
+public class LightImpactOpenWall : MagicImpactTarget
 {
     [SerializeField] OpenWallPassage _openWallPassage;
     [SerializeField] GameObject _particles;
@@ -39,9 +39,13 @@ public class LightImpactOpenWall : MonoBehaviour
         }
     }
 
-    public void LightSpellInteract()
+    public override void ImpactInteraction(GameObject impactingSpell)
     {
-        _openWallPassage.Interaction();
-        Destroy(this);
+        if (impactingSpell.GetComponent<LightSpellBehavior>() != null)
+        {
+            _openWallPassage.Interaction();
+            _particles.SetActive(false);
+            Destroy(this);
+        }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class Destroyable : MonoBehaviour
+public class Destroyable : MagicImpactTarget
 {
     bool _isSkinned;
     Renderer _renderer;
@@ -32,6 +32,14 @@ public class Destroyable : MonoBehaviour
         {
             Debug.Log("Destroyable object have no renderer");
             this.enabled = false;
+        }
+    }
+
+    public override void ImpactInteraction(GameObject impactingSpell)
+    {
+        if(impactingSpell.GetComponent<FireSpellBehavior>() != null)
+        {
+            Destroy();
         }
     }
 

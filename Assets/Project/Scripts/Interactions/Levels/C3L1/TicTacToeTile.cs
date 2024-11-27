@@ -18,7 +18,6 @@ public class TicTacToeTile : MagicImpactTarget
 
     public override void ImpactInteraction(GameObject impactingSpell)
     {
-        Debug.Log("trafiony");
         if(impactingSpell.GetComponent<MarkSpellBehavior>() != null)
         {
             if(impactingSpell.transform.position.y < transform.position.y + 0.5f)

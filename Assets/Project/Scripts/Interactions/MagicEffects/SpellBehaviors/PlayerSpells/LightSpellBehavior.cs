@@ -30,14 +30,7 @@ public class LightSpellBehavior : SpellBehavior
         instantiatedEffect = Instantiate(specialEffectPrefab, transform.position, Quaternion.identity);
         GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_LightSpellBurst, instantiatedEffect.transform);
 
-        if(impactTarget != null) 
-        {
-            LightImpactOpenWall lightImpactOpenWall = impactTarget.GetComponent<LightImpactOpenWall>();
-            if (lightImpactOpenWall != null)
-            {
-                lightImpactOpenWall.LightSpellInteract();
-            }
-        }
+        base.OnImpact(impactTarget);
 
         Destroy(gameObject);
     }
