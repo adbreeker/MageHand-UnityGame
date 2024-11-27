@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,8 @@ public class TicTacToeTile : MagicImpactTarget
     public bool tileMarked = false;
 
     GameObject _mark;
+
+    public event Action<TicTacToeTile> OnPlayerMarkedTile;
 
     public void MarkTile(GameObject markPrefab)
     {
@@ -22,9 +25,17 @@ public class TicTacToeTile : MagicImpactTarget
         {
             if(impactingSpell.transform.position.y < transform.position.y + 0.5f)
             {
-                tileMarked = true;
-                PlayerParams.Controllers.spellCasting.magicMark = null;
-                _mark = impactingSpell;
+                if (!tileMarked)
+                {
+                    tileMarked = true;
+                    PlayerParams.Controllers.spellCasting.magicMark = null;
+                    _mark = impactingSpell;
+                    OnPlayerMarkedTile?.Invoke(this);
+                }
+                else
+                {
+                    Destroy(impactingSpell);
+                }
             }
         }
     }
