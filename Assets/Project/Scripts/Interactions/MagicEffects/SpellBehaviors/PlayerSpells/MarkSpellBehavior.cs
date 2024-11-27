@@ -14,6 +14,7 @@ public class MarkSpellBehavior : SpellBehavior
         _trailForThrow.Play();
     }
 
+
     public override void OnImpact(GameObject impactTarget)
     {
         if (PlayerParams.Controllers.spellCasting.magicMark != null)
@@ -23,7 +24,7 @@ public class MarkSpellBehavior : SpellBehavior
         }
         PlayerParams.Controllers.spellCasting.magicMark = gameObject;
 
-        foreach(GameObject gameObject in _particlesToTurnOff) 
+        foreach (GameObject gameObject in _particlesToTurnOff)
         {
             gameObject.SetActive(false);
         }
@@ -35,6 +36,8 @@ public class MarkSpellBehavior : SpellBehavior
 
         Instantiate(specialEffectPrefab, transform.position, Quaternion.identity);
         StartCoroutine(IncreaseSize());
+
+        base.OnImpact(impactTarget);
     }
 
     public override void Reactivation()
@@ -43,40 +46,26 @@ public class MarkSpellBehavior : SpellBehavior
         PlayerParams.Controllers.spellCasting.currentSpell = "None";
 
         OnThrow();
-        Vector3 destination = PlayerParams.Objects.player.transform.position;
+        Vector3 destination = PlayerParams.Controllers.playerMovement.currentOnTilePos;
         destination.y = 0.01f;
 
         transform.SetParent(null);
 
         transform.rotation = Quaternion.LookRotation(destination - gameObject.transform.position);
-        StartCoroutine(MoveTowardsGround(destination));
+        StartCoroutine(MoveTowardsDestination(destination, PlayerParams.Controllers.playerMovement.currentTile.gameObject));
     }
 
-    IEnumerator MoveTowardsGround(Vector3 destinaion)
+    protected IEnumerator MoveTowardsDestination(Vector3 destination, GameObject target)
     {
-        while(transform.position != destinaion)
+        while (transform.position != destination)
         {
             yield return new WaitForFixedUpdate();
-            gameObject.transform.position = Vector3.MoveTowards(transform.position, destinaion, 0.1f);
+            gameObject.transform.position = Vector3.MoveTowards(transform.position, destination, 0.1f);
         }
-
-        if (PlayerParams.Controllers.spellCasting.magicMark != null)
-        {
-            Destroy(PlayerParams.Controllers.spellCasting.magicMark);
-        }
-        PlayerParams.Controllers.spellCasting.magicMark = gameObject;
-
-        foreach (GameObject gameObject in _particlesToTurnOff)
-        {
-            gameObject.SetActive(false);
-        }
-        _trailForThrow.gameObject.SetActive(false);
 
         transform.rotation = Quaternion.Euler(90, 0, 0);
-        GetComponent<Collider>().enabled = false;
 
-        Instantiate(specialEffectPrefab, transform.position, Quaternion.Euler(90,0,0));
-        StartCoroutine(IncreaseSize());
+        OnImpact(target);
     }
 
     IEnumerator IncreaseSize()
