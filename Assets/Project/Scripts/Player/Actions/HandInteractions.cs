@@ -164,7 +164,7 @@ public class HandInteractions : MonoBehaviour
             //set proper layer
             ChangeLayer(inHand, inHandPreviousLayer);
 
-            inHand.AddComponent<ThrowSpell>().Initialize(player);
+            inHand.AddComponent<ThrowSpell>().Initialize(PlayerParams.Objects.playerCamera.transform.forward);
 
             inHand = null;
             PlayerParams.Controllers.spellCasting.currentSpell = "None";

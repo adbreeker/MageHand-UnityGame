@@ -42,30 +42,10 @@ public class MarkSpellBehavior : SpellBehavior
 
     public override void Reactivation()
     {
+        Instantiate(specialEffectPrefab, transform.position, Quaternion.identity);
+        Destroy(gameObject);
         PlayerParams.Controllers.handInteractions.inHand = null;
         PlayerParams.Controllers.spellCasting.currentSpell = "None";
-
-        OnThrow();
-        Vector3 destination = PlayerParams.Controllers.playerMovement.currentOnTilePos;
-        destination.y = 0.01f;
-
-        transform.SetParent(null);
-
-        transform.rotation = Quaternion.LookRotation(destination - gameObject.transform.position);
-        StartCoroutine(MoveTowardsDestination(destination, PlayerParams.Controllers.playerMovement.currentTile.gameObject));
-    }
-
-    protected IEnumerator MoveTowardsDestination(Vector3 destination, GameObject target)
-    {
-        while (transform.position != destination)
-        {
-            yield return new WaitForFixedUpdate();
-            gameObject.transform.position = Vector3.MoveTowards(transform.position, destination, 0.1f);
-        }
-
-        transform.rotation = Quaternion.Euler(90, 0, 0);
-
-        OnImpact(target);
     }
 
     IEnumerator IncreaseSize()
@@ -77,5 +57,10 @@ public class MarkSpellBehavior : SpellBehavior
             yield return new WaitForFixedUpdate();
             transform.localScale = Vector3.MoveTowards(transform.localScale, sizeToReach, 0.01f);
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        transform.rotation = Quaternion.LookRotation(collision.contacts[0].point - gameObject.transform.position);
     }
 }
