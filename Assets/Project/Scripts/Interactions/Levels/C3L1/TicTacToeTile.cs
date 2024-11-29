@@ -6,15 +6,14 @@ using UnityEngine;
 public class TicTacToeTile : MagicImpactTarget
 {
     public bool tileMarked = false;
-
-    GameObject _mark;
+    public GameObject mark;
 
     public event Action<TicTacToeTile> OnPlayerMarkedTile;
 
     public void MarkTile(GameObject markPrefab)
     {
         tileMarked = true;
-        _mark = Instantiate(markPrefab, 
+        mark = Instantiate(markPrefab, 
             new Vector3(transform.position.x, transform.position.y + 0.1f, transform.position.z), 
             Quaternion.Euler(90f,0f,0f));
     }
@@ -29,7 +28,7 @@ public class TicTacToeTile : MagicImpactTarget
                 {
                     tileMarked = true;
                     PlayerParams.Controllers.spellCasting.magicMark = null;
-                    _mark = impactingSpell;
+                    mark = impactingSpell;
                     OnPlayerMarkedTile?.Invoke(this);
                 }
                 else
