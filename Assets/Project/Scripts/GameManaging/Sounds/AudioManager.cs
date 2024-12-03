@@ -2,9 +2,6 @@ using FMOD.Studio;
 using FMODUnity;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
@@ -79,7 +76,7 @@ public class AudioManager : MonoBehaviour
 
         GameObject audioParent = new GameObject();
         audioParent.transform.position = audioStaticPosition;
-        audioParent.name = "AudioPosition " + eventRef.Path;
+        audioParent.name = "AudioPosition";
         eventInstance.getDescription(out EventDescription desc);
         desc.getLength(out int length); //length is in ms
         Destroy(audioParent, (length * 0.001f) + 1);
@@ -104,6 +101,14 @@ public class AudioManager : MonoBehaviour
         eventInstance.start();
         eventInstance.release();
         return eventInstance;
+    }
+
+    public bool IsPlaying(EventInstance instance)
+    {
+        if (!instance.isValid()) return false;
+
+        instance.getPlaybackState(out PLAYBACK_STATE state);
+        return state != PLAYBACK_STATE.STOPPED;
     }
 
     public void SetGameVolume(float givenVolume)

@@ -1,4 +1,5 @@
 using FMODUnity;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class ItemBehavior : InteractableBehavior
     [Header("Item parameters:")]
     public string itemName;
     public GameObject itemIcon;
+    [SerializeField] private EventReference collisionSound;
 
     private AudioManager AudioManager => GameParams.Managers.audioManager;
     private FmodEvents FmodEvents => GameParams.Managers.fmodEvents;
@@ -70,9 +72,9 @@ public class ItemBehavior : InteractableBehavior
 
     protected virtual void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "Obstacle" || collision.gameObject.tag == "DungeonCube")
+        if (collision.gameObject.tag == "Wall" || collision.gameObject.tag == "Obstacle" || collision.gameObject.tag == "DungeonCube" || collision.gameObject.tag == "TunnelCube")
         {
-            RuntimeManager.PlayOneShotAttached(FmodEvents.SFX_Collision, gameObject);
+            AudioManager.PlayOneShotOccluded(collisionSound, transform);
         }
     }
 }
