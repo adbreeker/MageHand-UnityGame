@@ -10,7 +10,6 @@ public class PlayerMovement : MonoBehaviour
     public Transform currentTile;
     /// <summary> Position of player on current tile  </summary>
     public Vector3 currentOnTilePos;
-    public string currentTileTag;
 
     [Header("Movement")]
     public float movementSpeed = 7f;
@@ -41,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _movementInputQueue = Vector3.zero;
     private float _rotationInputQueue = 0;
 
+    //sound
     private string _dungeonCubeTag = "DungeonCube";
     private string _tunnelCubeTag = "TunnelCube";
 
@@ -70,7 +70,6 @@ public class PlayerMovement : MonoBehaviour
         {
             if(hit.transform.tag == _dungeonCubeTag || hit.transform.tag == _tunnelCubeTag)
             {
-                currentTileTag = hit.transform.tag;
                 currentTile = hit.transform;
                 break;
             }
@@ -101,9 +100,9 @@ public class PlayerMovement : MonoBehaviour
             if (CanMove())
             {
                 isMoving = true;
-                if (currentTileTag == _dungeonCubeTag)
+                if (currentTile.tag == _dungeonCubeTag)
                     RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerStepsDungeon);
-                else if (currentTileTag == _tunnelCubeTag)
+                else if (currentTile.tag == _tunnelCubeTag)
                     RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerStepsTunnel);
             }
         }
