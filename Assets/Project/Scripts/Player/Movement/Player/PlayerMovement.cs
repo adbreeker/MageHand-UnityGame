@@ -219,20 +219,27 @@ public class PlayerMovement : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.LeftControl) && !MovementInterfering())
         {
-            isLeaning = true;
 
-            if (AudioManager.IsPlaying(_getUpSound)) _getUpSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            _leanSound = AudioManager.PlayOneShotReturnInstance(GameParams.Managers.fmodEvents.SFX_PlayerLean);
+            if (Input.GetKeyDown(KeyCode.LeftControl))
+            {
+                if (AudioManager.IsPlaying(_getUpSound)) _getUpSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                _leanSound = AudioManager.PlayOneShotReturnInstance(GameParams.Managers.fmodEvents.SFX_PlayerLean);
+            }
+
+            isLeaning = true;
 
             Transform cam = PlayerParams.Objects.playerCamera.transform;
             cam.localRotation = Quaternion.RotateTowards(cam.localRotation, Quaternion.Euler(leanAngle, 0, 0), leanSpeed * Time.unscaledDeltaTime);
         }
         else if(isLeaning)
         {
-            Transform cam = PlayerParams.Objects.playerCamera.transform;
+            if (Input.GetKeyUp(KeyCode.LeftControl))
+            {
+                if (AudioManager.IsPlaying(_leanSound)) _leanSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                _getUpSound = AudioManager.PlayOneShotReturnInstance(GameParams.Managers.fmodEvents.SFX_PlayerGetUp);
+            }
 
-            if (AudioManager.IsPlaying(_leanSound)) _leanSound.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            _getUpSound = AudioManager.PlayOneShotReturnInstance(GameParams.Managers.fmodEvents.SFX_PlayerGetUp);
+            Transform cam = PlayerParams.Objects.playerCamera.transform;
 
             cam.localRotation = Quaternion.RotateTowards(cam.localRotation, Quaternion.Euler(0, 0, 0), leanSpeed * Time.unscaledDeltaTime);
             if(cam.localRotation.eulerAngles == Vector3.zero)
