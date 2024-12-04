@@ -61,7 +61,14 @@ public class OpenLockedDoorsPassage : MonoBehaviour
     {
         if (doorsOpen)
         {
-            doors.transform.localRotation = Quaternion.Euler(0, -90, 0);
+            if(rotateOutside)
+            {
+                doors.transform.localRotation = Quaternion.Euler(0, -90, 0);
+            }
+            else
+            {
+                doors.transform.localRotation = Quaternion.Euler(0, 90, 0);
+            }
         }
         else
         {
