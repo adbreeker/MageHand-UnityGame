@@ -121,7 +121,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{6a478997-3f6c-42ef-b768-bc7cd70e016d}">
 		<property name="volume">
-			<value>-8.5</value>
+			<value>-12</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{f57e5fce-1f25-4870-bcc4-23a88900707d}</destination>
@@ -332,7 +332,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{b467b0ef-c08c-4a6f-9626-8e4fc388d5c9}">
 		<property name="volume">
-			<value>3.5</value>
+			<value>2.5</value>
 		</property>
 		<property name="name">
 			<value>low</value>
@@ -369,11 +369,7 @@
 			<destination>{b165aaf0-4373-4c74-9982-8332a74ce2da}</destination>
 		</relationship>
 	</object>
-	<object class="MixerBusPanner" id="{17e6c837-287a-47ef-b514-3b556fbfb025}">
-		<property name="stereoPan">
-			<value>10</value>
-		</property>
-	</object>
+	<object class="MixerBusPanner" id="{17e6c837-287a-47ef-b514-3b556fbfb025}" />
 	<object class="MixerBusFader" id="{c142061a-1335-4a9a-a8a6-3c31d3fa97fb}" />
 	<object class="RandomizerModulator" id="{f70c2984-ea2a-4c0c-a833-5395e1261761}">
 		<property name="nameOfPropertyBeingModulated">
@@ -643,15 +639,21 @@
 	<object class="MixerBusFader" id="{64e4b034-926a-42f8-a2aa-74dd561884f0}" />
 	<object class="PannerEffect" id="{0f133ff8-1376-4c16-8047-92ed32bd8f3f}">
 		<property name="stereoPan">
-			<value>30</value>
+			<value>20</value>
 		</property>
 		<property name="overridingOutputFormat">
 			<value>1</value>
 		</property>
 	</object>
 	<object class="ThreeEQEffect" id="{b165aaf0-4373-4c74-9982-8332a74ce2da}">
+		<property name="lowGain">
+			<value>2.5</value>
+		</property>
+		<property name="midGain">
+			<value>3</value>
+		</property>
 		<property name="highGain">
-			<value>-2</value>
+			<value>-8</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{36257d34-0d34-42a2-aa54-6edd0046f5a6}">
