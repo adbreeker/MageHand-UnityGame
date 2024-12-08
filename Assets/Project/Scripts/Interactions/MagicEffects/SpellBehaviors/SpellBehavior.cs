@@ -15,7 +15,8 @@ public class SpellBehavior : MonoBehaviour
 
     public virtual void OnImpact(GameObject impactTarget) //spawn explosion on impact
     {
-
+        MagicImpactTarget mit = impactTarget.GetComponent<MagicImpactTarget>();
+        if (mit != null) { mit.ImpactInteraction(gameObject); }
     }
 
     public virtual void Reactivation()

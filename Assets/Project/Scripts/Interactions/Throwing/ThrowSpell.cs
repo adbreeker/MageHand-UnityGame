@@ -9,7 +9,7 @@ public class ThrowSpell : MonoBehaviour //script added to spell on throw
 
     SpellBehavior sb;
 
-    public void Initialize(GameObject player) //initializing throw
+    public void Initialize(Vector3 throwDirection) //initializing throw
     {
         sb = GetComponent<SpellBehavior>();
         sb.OnThrow();
@@ -24,7 +24,7 @@ public class ThrowSpell : MonoBehaviour //script added to spell on throw
         rb = gameObject.AddComponent<Rigidbody>();
         rb.useGravity = false;
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-        rb.AddForce(player.transform.forward * 10, ForceMode.Impulse);
+        rb.AddForce(throwDirection * 10, ForceMode.Impulse);
     }
 
     private void OnCollisionEnter(Collision collision)

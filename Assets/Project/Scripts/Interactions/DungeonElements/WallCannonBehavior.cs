@@ -114,6 +114,12 @@ public class WallCannonBehaviorEditor : Editor
 {
     public override void OnInspectorGUI()
     {
+        serializedObject.Update();
+
+        GUI.enabled = false;
+        EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((MonoBehaviour)target), typeof(MonoScript), false);
+        GUI.enabled = true;
+
         // Reference to the target script
         WallCannonBehavior wallCannon = (WallCannonBehavior)target;
 
@@ -156,6 +162,7 @@ public class WallCannonBehaviorEditor : Editor
         if (GUI.changed)
         {
             EditorUtility.SetDirty(wallCannon);
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }

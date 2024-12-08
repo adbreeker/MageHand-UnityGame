@@ -32,11 +32,7 @@ public class FireSpellBehavior : SpellBehavior
         Collider[] colliders = Physics.OverlapSphere(transform.position, 0.5f);
         foreach (Collider collider in colliders) 
         {
-            Destroyable destroyable = collider.GetComponent<Destroyable>();
-            if(destroyable != null)
-            {
-                destroyable.Destroy();
-            }
+            base.OnImpact(collider.gameObject);
         }
 
         Destroy(gameObject);
