@@ -1,5 +1,6 @@
 using FMOD.Studio;
 using FMODUnity;
+using System.Collections;
 using UnityEngine;
 
 
@@ -17,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask obstacleMask;
     [HideInInspector] public bool isMoving = false;
     Vector3 _destination;
+    float _distancePassed = 0;
 
     [Header("Rotation")]
     public float rotationSpeed = 300f;
@@ -50,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        UpdateCurrentTile();
+        currentTile = RaycastCurrentTile();
     }
 
     void Update() //listen to movement inputs
@@ -62,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
         LeanKeyListener();
     }
 
-    void UpdateCurrentTile()
+    Transform RaycastCurrentTile()
     {
         currentOnTilePos = transform.position;
         RaycastHit[] potentialTile = Physics.RaycastAll(transform.position, Vector3.down, 4.0f);
@@ -70,10 +72,11 @@ public class PlayerMovement : MonoBehaviour
         {
             if(hit.transform.tag == _dungeonCubeTag || hit.transform.tag == _tunnelCubeTag)
             {
-                currentTile = hit.transform;
-                break;
+                return hit.transform;
             }
         }
+
+        return null;
     }
 
     void MovementKeysListener(float horizontalInputQueue, float verticalInputQueue)
@@ -96,27 +99,31 @@ public class PlayerMovement : MonoBehaviour
             Vector3 direction = SingleDirectionNormalization(transform.right * horizontalInput + transform.forward * verticalInput);
             _destination = transform.position + direction * tilesLenght;
             _destination.y = transform.position.y;
-            //_previousTile = transform.position;
+
             if (CanMove())
             {
+                _distancePassed = 0;
                 isMoving = true;
-                if (currentTile.tag == _dungeonCubeTag)
-                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerStepsDungeon);
-                else if (currentTile.tag == _tunnelCubeTag)
-                    RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerStepsTunnel);
             }
         }
 
         //move the player towards the destination
         if (isMoving)
         {
-            //stepTiming += Time.deltaTime;
+            Vector3 prePos = transform.position;
             transform.position = Vector3.MoveTowards(transform.position, _destination, movementSpeed * Time.unscaledDeltaTime * (PlayerParams.Controllers.pauseMenu.freezeTime ? 0 : 1));
+            _distancePassed += Vector3.Distance(prePos, transform.position);
+            if(_distancePassed > 0.5f * tilesLenght) 
+            { 
+                WalkSound(); 
+                _distancePassed = 0; 
+            }
+
             if (transform.position == _destination)
             {
                 //Debug.Log(stepTiming);
                 isMoving = false; //stop moving when the destination is reached
-                UpdateCurrentTile();
+                currentTile = RaycastCurrentTile();
             }
             if (!CanMove())
             {
@@ -174,6 +181,14 @@ public class PlayerMovement : MonoBehaviour
             direction.z = 1 * zsign;
         }
         return direction;
+    }
+
+    void WalkSound()
+    {
+        if (RaycastCurrentTile().tag == _dungeonCubeTag)
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerStepsDungeon);
+        else if (RaycastCurrentTile().tag == _tunnelCubeTag)
+            RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerStepsTunnel);
     }
 
     void RotationKeyListener(float rotationQueue)
@@ -325,7 +340,7 @@ public class PlayerMovement : MonoBehaviour
         _movementInputQueue = Vector3.zero;
         _rotationInputQueue = 0;
 
-        UpdateCurrentTile();
+        currentTile = RaycastCurrentTile();
     }
     public void TeleportTo(Vector3 tpDestination, float tpRotation, Color? tpEffectColor)
     {
@@ -342,7 +357,7 @@ public class PlayerMovement : MonoBehaviour
         _movementInputQueue = Vector3.zero;
         _rotationInputQueue = 0;
 
-        UpdateCurrentTile();
+        currentTile = RaycastCurrentTile();
 
         if (tpEffectColor != null) 
         {
