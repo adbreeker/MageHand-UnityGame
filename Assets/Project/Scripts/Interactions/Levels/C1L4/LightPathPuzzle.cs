@@ -7,8 +7,6 @@ public class LightPathPuzzle : MonoBehaviour
     [SerializeField] Transform _enterRoomPos;
     [SerializeField] Transform _exitRoomPos;
     [SerializeField] List<Transform> _lightPath = new List<Transform>();
-
-    [SerializeField] GameObject _teleportationEffectPrefab;
     
     int _tileIndex = 0;
     bool _isOnPath = false;
@@ -74,5 +72,51 @@ public class LightPathPuzzle : MonoBehaviour
         Vector3 tpDest = _enterRoomPos.position;
         tpDest.y = PlayerParams.Objects.player.transform.position.y;
         PlayerParams.Controllers.playerMovement.TeleportTo(tpDest, 180f, null);
+    }
+
+    public void LeadLightThroughPath(LightSpellBehavior light)
+    {
+        List<Transform> path = new List<Transform>();
+        Debug.Log(_isOnPath + " " + _tileIndex);
+
+        if (!_isOnPath)
+        {
+            if(PlayerParams.Controllers.playerMovement.currentTile == _enterRoomPos)
+            {
+                path.Add(_lightPath[_tileIndex]);
+            }
+            else
+            {
+                path.Add(_lightPath[_lightPath.Count - 1]);
+                light.StartCoroutine(LeadLightCoroutine(light, path));
+                return;
+            }
+        }
+
+        for(int i = _tileIndex + 1; i< _lightPath.Count; i++)
+        {
+            path.Add(_lightPath[i]);
+        }
+        light.StartCoroutine(LeadLightCoroutine(light, path));
+    }
+
+    IEnumerator LeadLightCoroutine(LightSpellBehavior light, List<Transform> path)
+    {
+        Rigidbody rb = light.GetComponent<Rigidbody>();
+        float speed = (rb.velocity.magnitude * Time.fixedDeltaTime) * 0.7f;
+        Destroy(rb);
+
+        foreach(Transform tile in path)
+        {
+            Vector3 destination = tile.position;
+            destination.y = light.transform.position.y;
+            while(light.transform.position != destination)
+            {
+                yield return new WaitForFixedUpdate();
+                light.transform.position = Vector3.MoveTowards(light.transform.position, destination, speed);
+            }
+        }
+
+        light.OnImpact(null);
     }
 }
