@@ -174,7 +174,14 @@ public class HandInteractions : MonoBehaviour
             //set proper layer
             ChangeLayer(inHand, inHandPreviousLayer);
 
-            inHand.AddComponent<ThrowObject>().Initialize(player);
+            if(PlayerParams.Controllers.playerMovement.isMoving && !IsThrowingVisible())
+            {
+                inHand.transform.localPosition = new Vector3(
+                    transform.localPosition.x, 
+                    transform.localPosition.y, 
+                    (-PlayerParams.Objects.hand.transform.localPosition.z + 0.4f) / inHand.transform.parent.lossyScale.z);
+            }
+            inHand.AddComponent<ThrowObject>().Initialize(PlayerParams.Objects.playerCamera.transform.forward);
 
             inHand = null;
         }
@@ -268,5 +275,65 @@ public class HandInteractions : MonoBehaviour
                 ChangeLayer(child.gameObject, layer);
             }
         }
+    }
+
+    bool IsThrowingVisible()
+    {
+        Camera cam = PlayerParams.Objects.playerCamera;
+        MeshRenderer objectRenderer = inHand.GetComponentInChildren<MeshRenderer>();
+
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(PlayerParams.Objects.playerCamera);
+        if (!GeometryUtility.TestPlanesAABB(planes, objectRenderer.bounds))
+        {
+            return false;
+        }
+
+        // Perform detailed visibility check using raycasts
+        Bounds bounds = objectRenderer.bounds;
+        Vector3 centerPoint = bounds.center;
+
+        // Calculate adjusted corner points
+        Vector3[] checkPoints = new Vector3[17];
+        checkPoints[0] = centerPoint;
+
+        Vector3[] corners = new Vector3[8]
+        {
+            bounds.min,
+            new Vector3(bounds.min.x, bounds.min.y, bounds.max.z),
+            new Vector3(bounds.min.x, bounds.max.y, bounds.min.z),
+            new Vector3(bounds.min.x, bounds.max.y, bounds.max.z),
+            new Vector3(bounds.max.x, bounds.min.y, bounds.min.z),
+            new Vector3(bounds.max.x, bounds.min.y, bounds.max.z),
+            new Vector3(bounds.max.x, bounds.max.y, bounds.min.z),
+            bounds.max
+        };
+
+        for (int i = 0; i < corners.Length; i++)
+        {
+            Vector3 direction = (corners[i] - centerPoint).normalized;
+            checkPoints[i + 1] = centerPoint + direction * (bounds.extents.magnitude * 0.5f);
+        }
+        for (int i = 0; i < corners.Length; i++)
+        {
+            Vector3 direction = (corners[i] - centerPoint).normalized;
+            checkPoints[i + 9] = centerPoint + direction * (bounds.extents.magnitude * 0.9f);
+        }
+
+        foreach (Vector3 point in checkPoints)
+        {
+            Vector3 screenPoint = cam.WorldToViewportPoint(point);
+            Ray ray = cam.ViewportPointToRay(screenPoint);
+
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 4.0f, LayerMask.GetMask("UI", "Default"), QueryTriggerInteraction.Ignore))
+            {
+                if (hit.collider.gameObject != inHand)
+                {
+                    //Debug.DrawRay(ray.origin, ray.direction * 4.0f, Color.green);
+                    return false; // At least one point is not visible
+                }
+            }
+        }
+        return true; // All of the points are visible
     }
 }
