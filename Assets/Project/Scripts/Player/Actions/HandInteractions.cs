@@ -164,6 +164,11 @@ public class HandInteractions : MonoBehaviour
             //set proper layer
             ChangeLayer(inHand, inHandPreviousLayer);
 
+            if (PlayerParams.Controllers.playerMovement.isMoving)
+            {
+                Vector3? obstacle = GetThrowingObstacle();
+                if (obstacle.HasValue) { inHand.transform.position = obstacle.Value; }
+            }
             inHand.AddComponent<ThrowSpell>().Initialize(PlayerParams.Objects.playerCamera.transform.forward);
 
             inHand = null;
@@ -174,12 +179,10 @@ public class HandInteractions : MonoBehaviour
             //set proper layer
             ChangeLayer(inHand, inHandPreviousLayer);
 
-            if(PlayerParams.Controllers.playerMovement.isMoving && !IsThrowingVisible())
+            if (PlayerParams.Controllers.playerMovement.isMoving)
             {
-                inHand.transform.localPosition = new Vector3(
-                    transform.localPosition.x, 
-                    transform.localPosition.y, 
-                    (-PlayerParams.Objects.hand.transform.localPosition.z + 0.4f) / inHand.transform.parent.lossyScale.z);
+                Vector3? obstacle = GetThrowingObstacle();
+                if (obstacle.HasValue) { inHand.transform.position = obstacle.Value; }
             }
             inHand.AddComponent<ThrowObject>().Initialize(PlayerParams.Objects.playerCamera.transform.forward);
 
@@ -277,63 +280,27 @@ public class HandInteractions : MonoBehaviour
         }
     }
 
-    bool IsThrowingVisible()
+    Vector3? GetThrowingObstacle()
     {
-        Camera cam = PlayerParams.Objects.playerCamera;
-        MeshRenderer objectRenderer = inHand.GetComponentInChildren<MeshRenderer>();
+        Vector3 rayOrigin = holdingPoint.transform.TransformPoint(
+            new Vector3(
+                holdingPoint.localPosition.x, 
+                holdingPoint.localPosition.y, 
+                holdingPoint.localPosition.z - 1/holdingPoint.lossyScale.z
+            )
+        );
+        Ray ray = new Ray(rayOrigin, (holdingPoint.position - rayOrigin));
+        //Debug.DrawRay(ray.origin, ray.direction * 1.1f, Color.red);
 
-        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(PlayerParams.Objects.playerCamera);
-        if (!GeometryUtility.TestPlanesAABB(planes, objectRenderer.bounds))
+        RaycastHit[] hits = Physics.RaycastAll(ray, 1.1f, LayerMask.GetMask("Default", "Interaction", "Spell"), QueryTriggerInteraction.Ignore);
+        foreach(RaycastHit hit in hits)
         {
-            return false;
-        }
-
-        // Perform detailed visibility check using raycasts
-        Bounds bounds = objectRenderer.bounds;
-        Vector3 centerPoint = bounds.center;
-
-        // Calculate adjusted corner points
-        Vector3[] checkPoints = new Vector3[17];
-        checkPoints[0] = centerPoint;
-
-        Vector3[] corners = new Vector3[8]
-        {
-            bounds.min,
-            new Vector3(bounds.min.x, bounds.min.y, bounds.max.z),
-            new Vector3(bounds.min.x, bounds.max.y, bounds.min.z),
-            new Vector3(bounds.min.x, bounds.max.y, bounds.max.z),
-            new Vector3(bounds.max.x, bounds.min.y, bounds.min.z),
-            new Vector3(bounds.max.x, bounds.min.y, bounds.max.z),
-            new Vector3(bounds.max.x, bounds.max.y, bounds.min.z),
-            bounds.max
-        };
-
-        for (int i = 0; i < corners.Length; i++)
-        {
-            Vector3 direction = (corners[i] - centerPoint).normalized;
-            checkPoints[i + 1] = centerPoint + direction * (bounds.extents.magnitude * 0.5f);
-        }
-        for (int i = 0; i < corners.Length; i++)
-        {
-            Vector3 direction = (corners[i] - centerPoint).normalized;
-            checkPoints[i + 9] = centerPoint + direction * (bounds.extents.magnitude * 0.9f);
-        }
-
-        foreach (Vector3 point in checkPoints)
-        {
-            Vector3 screenPoint = cam.WorldToViewportPoint(point);
-            Ray ray = cam.ViewportPointToRay(screenPoint);
-
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 4.0f, LayerMask.GetMask("UI", "Default"), QueryTriggerInteraction.Ignore))
+            if (hit.collider.tag == "Obstacle" || hit.collider.tag == "Wall")
             {
-                if (hit.collider.gameObject != inHand)
-                {
-                    //Debug.DrawRay(ray.origin, ray.direction * 4.0f, Color.green);
-                    return false; // At least one point is not visible
-                }
+                return hit.point + Vector3.Scale(ray.direction, -0.1f * Vector3.one);
             }
         }
-        return true; // All of the points are visible
+
+        return null;
     }
 }
