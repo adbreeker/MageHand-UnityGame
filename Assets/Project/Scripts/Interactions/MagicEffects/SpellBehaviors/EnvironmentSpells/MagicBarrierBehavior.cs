@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class MagicBarrierBehavior : MonoBehaviour
 {
@@ -10,21 +11,50 @@ public class MagicBarrierBehavior : MonoBehaviour
     public bool groundBarrier = false;
     [SerializeField] List<GameObject> _groundBarrierElements = new List<GameObject>();
 
+    float _barrierRadius;
+
     void Start()
     {
-        if(groundBarrier)
-        {
-            foreach(GameObject element in _groundBarrierElements)
-            {
-                element.SetActive(true);
-            }
-        }
+        _barrierRadius = GetComponent<SphereCollider>().radius * transform.lossyScale.x;
+        SpawnGroundEffects();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    void SpawnGroundEffects()
+    {
+        List<Ray> rays = new List<Ray> 
+        { 
+            new Ray(transform.position, transform.up) ,
+            new Ray(transform.position, -transform.up) ,
+            new Ray(transform.position, transform.forward) ,
+            new Ray(transform.position, -transform.forward) ,
+            new Ray(transform.position, transform.right) ,
+            new Ray(transform.position, -transform.right)
+        };
+
+        foreach (Ray ray in rays) 
+        {
+            RaycastHit[] hits = Physics.RaycastAll(ray, _barrierRadius);
+            foreach (RaycastHit hit in hits) 
+            {
+                if(hit.collider.CompareTag("Wall") || hit.collider.CompareTag("DungeonCube") || hit.collider.CompareTag("TunnelCube"))
+                {
+                    foreach(GameObject groundPrefab in _groundBarrierElements)
+                    {
+                        GameObject newGroundElement = Instantiate(groundPrefab, hit.point, Quaternion.LookRotation(-ray.direction) * Quaternion.Euler(90, 0, 0));
+                        newGroundElement.transform.parent = transform;
+                        newGroundElement.transform.localScale = (Vector3.one / transform.lossyScale.x) * Mathf.Sqrt(Mathf.Abs(_barrierRadius * _barrierRadius - Vector3.Distance(hit.point, transform.position) * Vector3.Distance(hit.point, transform.position)));
+                        newGroundElement.SetActive(true);
+                    }
+                    break;
+                }
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
