@@ -53,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         currentTile = RaycastCurrentTile();
+        currentOnTilePos = transform.position;
     }
 
     void Update() //listen to movement inputs
@@ -66,7 +67,6 @@ public class PlayerMovement : MonoBehaviour
 
     Transform RaycastCurrentTile()
     {
-        currentOnTilePos = transform.position;
         RaycastHit[] potentialTile = Physics.RaycastAll(transform.position, Vector3.down, 4.0f);
         foreach (RaycastHit hit in potentialTile)
         {
@@ -121,9 +121,9 @@ public class PlayerMovement : MonoBehaviour
 
             if (transform.position == _destination)
             {
-                //Debug.Log(stepTiming);
                 isMoving = false; //stop moving when the destination is reached
                 currentTile = RaycastCurrentTile();
+                currentOnTilePos = transform.position;
             }
             if (!CanMove())
             {
@@ -341,6 +341,7 @@ public class PlayerMovement : MonoBehaviour
         _rotationInputQueue = 0;
 
         currentTile = RaycastCurrentTile();
+        currentOnTilePos = transform.position;
     }
     public void TeleportTo(Vector3 tpDestination, float tpRotation, Color? tpEffectColor)
     {
@@ -358,6 +359,7 @@ public class PlayerMovement : MonoBehaviour
         _rotationInputQueue = 0;
 
         currentTile = RaycastCurrentTile();
+        currentOnTilePos = transform.position;
 
         if (tpEffectColor != null) 
         {
