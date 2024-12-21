@@ -164,6 +164,11 @@ public class HandInteractions : MonoBehaviour
             //set proper layer
             ChangeLayer(inHand, inHandPreviousLayer);
 
+            if (PlayerParams.Controllers.playerMovement.isMoving)
+            {
+                Vector3? obstacle = GetThrowingObstacle();
+                if (obstacle.HasValue) { inHand.transform.position = obstacle.Value; }
+            }
             inHand.AddComponent<ThrowSpell>().Initialize(PlayerParams.Objects.playerCamera.transform.forward);
 
             inHand = null;
@@ -174,7 +179,12 @@ public class HandInteractions : MonoBehaviour
             //set proper layer
             ChangeLayer(inHand, inHandPreviousLayer);
 
-            inHand.AddComponent<ThrowObject>().Initialize(player);
+            if (PlayerParams.Controllers.playerMovement.isMoving)
+            {
+                Vector3? obstacle = GetThrowingObstacle();
+                if (obstacle.HasValue) { inHand.transform.position = obstacle.Value; }
+            }
+            inHand.AddComponent<ThrowObject>().Initialize(PlayerParams.Objects.playerCamera.transform.forward);
 
             inHand = null;
         }
@@ -268,5 +278,29 @@ public class HandInteractions : MonoBehaviour
                 ChangeLayer(child.gameObject, layer);
             }
         }
+    }
+
+    Vector3? GetThrowingObstacle()
+    {
+        Vector3 rayOrigin = holdingPoint.transform.TransformPoint(
+            new Vector3(
+                holdingPoint.localPosition.x, 
+                holdingPoint.localPosition.y, 
+                holdingPoint.localPosition.z - 1/holdingPoint.lossyScale.z
+            )
+        );
+        Ray ray = new Ray(rayOrigin, (holdingPoint.position - rayOrigin));
+        //Debug.DrawRay(ray.origin, ray.direction * 1.1f, Color.red);
+
+        RaycastHit[] hits = Physics.RaycastAll(ray, 1.1f, LayerMask.GetMask("Default", "Interaction", "Spell"), QueryTriggerInteraction.Ignore);
+        foreach(RaycastHit hit in hits)
+        {
+            if (hit.collider.tag == "Obstacle" || hit.collider.tag == "Wall")
+            {
+                return hit.point + Vector3.Scale(ray.direction, -0.1f * Vector3.one);
+            }
+        }
+
+        return null;
     }
 }

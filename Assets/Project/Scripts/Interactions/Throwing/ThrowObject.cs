@@ -6,7 +6,7 @@ public class ThrowObject : MonoBehaviour //script added to object on throw
 {
     Rigidbody rb;
     
-    public void Initialize(GameObject player) //initializing throw
+    public void Initialize(Vector3 throwDirection) //initializing throw
     {
         //clear object parent and get first previous position
         gameObject.transform.SetParent(null);
@@ -15,7 +15,7 @@ public class ThrowObject : MonoBehaviour //script added to object on throw
         rb = gameObject.AddComponent<Rigidbody>();
         rb.useGravity = true;
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-        rb.AddForce(player.transform.forward * 15, ForceMode.Impulse);
+        rb.AddForce(throwDirection * 15, ForceMode.Impulse);
 
         gameObject.SendMessage("OnThrow");
     }

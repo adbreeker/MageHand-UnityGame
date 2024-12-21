@@ -20,9 +20,8 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Rotation")]
     public float rotationSpeed = 300f;
-    public float rotationThreshold = 0.01f;
     [HideInInspector] public bool isRotating = false;
-    Quaternion _targetRotation;
+    float _remainingRotation;
 
     [Header("Lean over")]
     public float leanSpeed = 200f;
@@ -80,8 +79,6 @@ public class PlayerMovement : MonoBehaviour
     {
         float horizontalInput = horizontalInputQueue;
         float verticalInput = verticalInputQueue;
-
-        
 
         //check if no movement is enqueued
         if (horizontalInputQueue == 0 && verticalInputQueue ==0 && !MovementInterfering())
@@ -186,7 +183,7 @@ public class PlayerMovement : MonoBehaviour
             if (rotationQueue == 90) RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerRotateRight);
             else if (rotationQueue == -90) RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerRotateLeft);
 
-            _targetRotation = transform.rotation * Quaternion.Euler(0, rotationQueue, 0);
+            _remainingRotation = rotationQueue;
         }
 
         //get target rotation
@@ -194,23 +191,28 @@ public class PlayerMovement : MonoBehaviour
         {
             isRotating = true;
             RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerRotateRight);
-            _targetRotation = transform.rotation * Quaternion.Euler(0, 90, 0);
+            _remainingRotation = 90;
         }
         if (Input.GetKeyDown(KeyCode.Q) && !isRotating && !MovementInterfering())
         {
             isRotating = true;
             RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerRotateLeft);
-            _targetRotation = transform.rotation * Quaternion.Euler(0, -90, 0);
+            _remainingRotation = -90;
         }
 
         //rotate towards target rotation
         if (isRotating)
         {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, _targetRotation, rotationSpeed * Time.unscaledDeltaTime * (PlayerParams.Controllers.pauseMenu.freezeTime ? 0 : 1));
-            if (Quaternion.Angle(transform.rotation, _targetRotation) < rotationThreshold)
+            float rotationStep = rotationSpeed * Time.unscaledDeltaTime * (PlayerParams.Controllers.pauseMenu.freezeTime ? 0 : 1);
+            if(Mathf.Abs(_remainingRotation) < rotationStep) { rotationStep = _remainingRotation; }
+            else { rotationStep *= Mathf.Sign(_remainingRotation); }
+
+            _remainingRotation -= rotationStep;
+            transform.Rotate(0f, rotationStep, 0f);
+
+            if (_remainingRotation == 0)
             {
                 isRotating = false;
-                transform.rotation = _targetRotation;
             }
         }
     }
@@ -317,7 +319,7 @@ public class PlayerMovement : MonoBehaviour
         transform.position = tpDestination;
         isMoving = false;
 
-        _targetRotation = Quaternion.Euler(0f, tpRotation, 0f);
+        _remainingRotation = 0f;
         transform.rotation = Quaternion.Euler(0f, tpRotation, 0f);
         isRotating = false;
 
@@ -335,7 +337,7 @@ public class PlayerMovement : MonoBehaviour
         transform.position = tpDestination;
         isMoving = false;
 
-        _targetRotation = Quaternion.Euler(0f, tpRotation, 0f);
+        _remainingRotation = 0f;
         transform.rotation = Quaternion.Euler(0f, tpRotation, 0f);
         isRotating = false;
 
