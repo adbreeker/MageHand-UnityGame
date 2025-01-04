@@ -6,7 +6,7 @@ public class ReadableBehavior : ItemBehavior
 {
     [Header("Note content")]
     public string title;
-    [TextArea(3, 10)]
+    [TextArea(3, 20)]
     public string content;
 
     [Header("Destroy on pick up")]
