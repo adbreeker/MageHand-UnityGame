@@ -57,9 +57,8 @@ public class PotionMagneticBodyEffect : PotionEffect
             {
                 if(collider.GetComponent<InteractableBehavior>().isInteractable && !affectedItems.Contains(collider.gameObject))
                 {
-                    Ray ray = new Ray(PlayerParams.Objects.player.transform.position, collider.gameObject.transform.position - PlayerParams.Objects.player.transform.position);
-                    if (collider.gameObject.GetComponent<ThrowObject>() != null
-                        || Physics.Raycast(ray, Vector3.Distance(PlayerParams.Objects.player.transform.position, collider.gameObject.transform.position), LayerMask.GetMask("Default", "Spell", "Interaction"), QueryTriggerInteraction.Ignore) == false)
+                    if (collider.gameObject.GetComponent<ThrowObject>() != null || 
+                        IsObjectNotBlocked(collider, LayerMask.GetMask("Default", "Spell", "Interaction", "Item")))
                     {
                         affectedItems.Add(collider.gameObject);
                         GameObject magneticFlyEffect = Instantiate(magneticFlyPrefab, collider.gameObject.transform);
@@ -72,5 +71,70 @@ public class PotionMagneticBodyEffect : PotionEffect
             duration -= 0.1f;
         }
         Destroy(this);
+    }
+
+    bool IsObjectNotBlocked(Collider collider, LayerMask blockingMask)
+    {
+        MeshRenderer objectRenderer = collider.GetComponentInChildren<MeshRenderer>();
+
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(PlayerParams.Objects.playerCamera);
+        if (!GeometryUtility.TestPlanesAABB(planes, objectRenderer.bounds))
+        {
+            return false;
+        }
+
+        // Perform detailed visibility check using raycasts
+        Bounds bounds = objectRenderer.bounds;
+        Vector3 centerPoint = bounds.center;
+
+        // Calculate adjusted corner points
+        Vector3[] checkPoints = new Vector3[17];
+        checkPoints[0] = centerPoint;
+
+        Vector3[] corners = new Vector3[8]
+        {
+            bounds.min,
+            new Vector3(bounds.min.x, bounds.min.y, bounds.max.z),
+            new Vector3(bounds.min.x, bounds.max.y, bounds.min.z),
+            new Vector3(bounds.min.x, bounds.max.y, bounds.max.z),
+            new Vector3(bounds.max.x, bounds.min.y, bounds.min.z),
+            new Vector3(bounds.max.x, bounds.min.y, bounds.max.z),
+            new Vector3(bounds.max.x, bounds.max.y, bounds.min.z),
+            bounds.max
+        };
+
+        for (int i = 0; i < corners.Length; i++)
+        {
+            Vector3 direction = (corners[i] - centerPoint).normalized;
+            checkPoints[i + 1] = centerPoint + direction * (bounds.extents.magnitude * 0.5f);
+        }
+        for (int i = 0; i < corners.Length; i++)
+        {
+            Vector3 direction = (corners[i] - centerPoint).normalized;
+            checkPoints[i + 9] = centerPoint + direction * (bounds.extents.magnitude * 0.9f);
+        }
+
+        //foreach (Vector3 point in checkPoints)
+        //{
+        //    Ray ray = new(PlayerParams.Objects.playerCamera.transform.position, point - PlayerParams.Objects.playerCamera.transform.position);
+        //    Debug.DrawRay(ray.origin, ray.direction * 5.5f, Color.red);
+        //}
+
+        foreach (Vector3 point in checkPoints)
+        {
+            Ray ray = new(PlayerParams.Objects.playerCamera.transform.position, point - PlayerParams.Objects.playerCamera.transform.position);
+
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, Vector3.Distance(ray.origin, point), blockingMask, QueryTriggerInteraction.Ignore))
+            {
+                if (hit.collider.gameObject == collider.gameObject)
+                {
+                    //Debug.DrawRay(ray.origin, ray.direction * 5.5f, Color.green);
+                    return true; // At least one point is visible
+                }
+            }
+        }
+
+        return false; // None of the points are visible
     }
 }
