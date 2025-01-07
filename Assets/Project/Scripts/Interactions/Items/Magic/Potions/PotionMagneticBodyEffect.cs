@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class PotionMagneticBodyEffect : PotionEffect
 {
+    [Header("Magnetic attraction range")]
+    public float attractionRange;
+
     [Space(20f), Header("Magnetic fly pefab")]
     public GameObject magneticFlyPrefab;
+
+    ParticleSystemForceField _attractionForceField;
 
     public override void Drink() //add potion component to player, activate potion effect and destroy this object
     {
@@ -14,13 +19,12 @@ public class PotionMagneticBodyEffect : PotionEffect
         if (PlayerParams.Objects.player.GetComponent<PotionMagneticBodyEffect>() != null)
         {
             pmbe = PlayerParams.Objects.player.GetComponent<PotionMagneticBodyEffect>();
-        }
-        else
-        {
-            pmbe = PlayerParams.Objects.player.AddComponent<PotionMagneticBodyEffect>();
-            pmbe.magneticFlyPrefab = magneticFlyPrefab;
+            pmbe.DeactivatePotionEffect();
         }
 
+        pmbe = PlayerParams.Objects.player.AddComponent<PotionMagneticBodyEffect>();
+        pmbe.attractionRange = attractionRange;
+        pmbe.magneticFlyPrefab = magneticFlyPrefab;
         pmbe.duration = duration;
 
         //active potion effect on player
@@ -35,33 +39,45 @@ public class PotionMagneticBodyEffect : PotionEffect
         if (_potionEffect != null)
         {
             StopCoroutine(_potionEffect);
-            PlayerParams.Controllers.spellCasting.manaRegen = PlayerParams.Variables.startingManaRegen;
         }
+        if(_attractionForceField != null)
+        {
+            Debug.Log("Destroying");
+            DestroyImmediate(_attractionForceField);
+        }
+        _attractionForceField = PlayerParams.Objects.player.AddComponent<ParticleSystemForceField>();
+        _attractionForceField.endRange = attractionRange;
         _potionEffect = StartCoroutine(PotionDuration());
     }
 
     public override void DeactivatePotionEffect()
     {
-        StopCoroutine(_potionEffect);
-        PlayerParams.Controllers.spellCasting.manaRegen = PlayerParams.Variables.startingManaRegen;
+        if (_potionEffect != null)
+        {
+            StopCoroutine(_potionEffect);
+        }
+        if (_attractionForceField != null)
+        {
+            DestroyImmediate(_attractionForceField);
+        }
         Destroy(this);
     }
 
     IEnumerator PotionDuration() //count potion effect duration
     {
-        List<GameObject> affectedItems = new List<GameObject>();
+        List<GameObject> magneticFlyEffects = new List<GameObject>();
         while (duration > 0)
         {
-
-            foreach (Collider collider in Physics.OverlapSphere(PlayerParams.Objects.player.transform.position, 5f, LayerMask.GetMask("Item")))
+            foreach (Collider collider in Physics.OverlapSphere(PlayerParams.Objects.player.transform.position, attractionRange, LayerMask.GetMask("Item")))
             {
-                if(collider.GetComponent<InteractableBehavior>().isInteractable && !affectedItems.Contains(collider.gameObject))
+                if(collider.GetComponent<InteractableBehavior>().isInteractable && collider.gameObject.GetComponent<MagneticAttraction>() == null)
                 {
                     if (collider.gameObject.GetComponent<ThrowObject>() != null || 
                         IsObjectNotBlocked(collider, LayerMask.GetMask("Default", "Spell", "Interaction", "Item")))
                     {
-                        affectedItems.Add(collider.gameObject);
                         GameObject magneticFlyEffect = Instantiate(magneticFlyPrefab, collider.gameObject.transform);
+                        magneticFlyEffect.GetComponent<MagneticFlyParticles>().Initialize(PlayerParams.Objects.player.transform);
+                        magneticFlyEffects.Add(magneticFlyEffect);
                         collider.gameObject.AddComponent<MagneticAttraction>().Initialize(PlayerParams.Objects.player, magneticFlyEffect);
                     }
                 }
@@ -70,7 +86,23 @@ public class PotionMagneticBodyEffect : PotionEffect
             yield return new WaitForSeconds(0.1f);
             duration -= 0.1f;
         }
-        Destroy(this);
+
+        bool anyMagnecticFlyEffectExist = true;
+        while (anyMagnecticFlyEffectExist)
+        {
+            yield return null;
+            anyMagnecticFlyEffectExist = false;
+            foreach(GameObject mfe in magneticFlyEffects)
+            {
+                if(mfe != null) 
+                { 
+                    anyMagnecticFlyEffectExist = true; 
+                    break; 
+                }
+            }
+        }
+        
+        DeactivatePotionEffect();
     }
 
     bool IsObjectNotBlocked(Collider collider, LayerMask blockingMask)
