@@ -64,6 +64,11 @@ public class MagneticAttraction : MonoBehaviour
 
     public void OnPickUp()
     {
+        StopMagneticAttraction();   
+    }
+
+    public void StopMagneticAttraction()
+    {
         StopCoroutine(_flyingCoroutine);
         Destroy(_magneticFlyEffect);
         Destroy(this);

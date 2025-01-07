@@ -35,10 +35,16 @@ public class ItemBehavior : InteractableBehavior
         GetComponent<Rigidbody>().AddTorque(transform.right * 100);
     }
 
-    public void TeleportTo(Vector3 tpDestination, float tpRotation) //teleport to destination and stop movement enqued before teleportation
+    public void TeleportTo(Vector3 tpDestination, float tpRotation)
     {
         transform.position = tpDestination;
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, tpRotation, transform.rotation.eulerAngles.z);
+
+        if(GetComponent<MagneticAttraction>() != null) 
+        {
+            GetComponent<MagneticAttraction>().StopMagneticAttraction();
+            gameObject.AddComponent<Rigidbody>();
+        }
     }
     public void TeleportTo(Vector3 tpDestination, float tpRotation, Color? tpEffectColor)
     {
@@ -56,6 +62,12 @@ public class ItemBehavior : InteractableBehavior
 
         transform.position = tpDestination;
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, tpRotation, transform.rotation.eulerAngles.z);
+
+        if (GetComponent<MagneticAttraction>() != null)
+        {
+            GetComponent<MagneticAttraction>().StopMagneticAttraction();
+            gameObject.AddComponent<Rigidbody>();
+        }
 
         GameObject tpEffect = GameParams.Holders.materialsAndEffectsHolder.GetEffect(MaterialsAndEffectsHolder.Effects.teleportationObject);
 
