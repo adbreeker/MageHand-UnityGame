@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CursePlaceBind : MonoBehaviour
+public class AlteredBinding : MonoBehaviour
 {
     Vector3 _startingPos;
     Quaternion _startingRot;
