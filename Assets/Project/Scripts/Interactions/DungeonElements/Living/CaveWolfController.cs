@@ -176,7 +176,7 @@ public class CaveWolfController : MonoBehaviour
 
             if (hittedBy.layer == LayerMask.NameToLayer("Item"))
             {
-                if (hittedBy.GetComponent<KnifeBehavior>() != null)
+                if (hittedBy.GetComponent<KnifeBehavior>() != null || hittedBy.GetComponent<FmsBehavior>() != null)
                 {
 
                     _animator.SetTrigger("dead");
