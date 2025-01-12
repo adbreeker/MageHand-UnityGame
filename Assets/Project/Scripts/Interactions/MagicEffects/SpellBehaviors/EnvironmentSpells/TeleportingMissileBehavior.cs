@@ -59,25 +59,25 @@ public class TeleportingMissileBehavior : SpellBehavior
 
     void ManageTeleportingItem(GameObject item, Vector3 tpDestination, float tpRotation)
     {
-        if (item.transform.parent == null)
+        if (item.tag == "Shield")
         {
-            item.GetComponent<ItemBehavior>().TeleportTo(tpDestination, tpRotation, null);
-        }
-        else if (PlayerParams.Controllers.handInteractions.inHand == item)
-        {
-            if (item.tag == "Shield")
-            {
-                // shield is protecting from magic missiles
-            }
-            else
-            {
-                PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination, tpRotation, null);
-            }
+            // shield is protecting from magic missiles
         }
         else
         {
-            item.transform.parent = null;
-            item.GetComponent<ItemBehavior>().TeleportTo(tpDestination, tpRotation, null);
+            if (item.transform.parent == null)
+            {
+                item.GetComponent<ItemBehavior>().TeleportTo(tpDestination, tpRotation, null);
+            }
+            else if (PlayerParams.Controllers.handInteractions.inHand == item)
+            {
+                ManageTeleportingPlayer(tpDestination, tpRotation);
+            }
+            else
+            {
+                item.transform.parent = null;
+                item.GetComponent<ItemBehavior>().TeleportTo(tpDestination, tpRotation, null);
+            }
         }
     }
 

@@ -37,49 +37,42 @@ public class FreezingMissileBehavior : SpellBehavior
 
     void ManageFreezingPlayer()
     {
-        FreezeEffect fe;
-        if (PlayerParams.Objects.player.GetComponent<FreezeEffect>() != null)
+        if(PlayerParams.Objects.player.GetComponent<PotionSpeedEffect>() == null) 
         {
-            fe = PlayerParams.Objects.player.GetComponent<FreezeEffect>();
-        }
-        else
-        {
-            fe = PlayerParams.Objects.player.AddComponent<FreezeEffect>();
-        }
+            FreezeEffect fe;
+            if (PlayerParams.Objects.player.GetComponent<FreezeEffect>() != null)
+            {
+                fe = PlayerParams.Objects.player.GetComponent<FreezeEffect>();
+            }
+            else
+            {
+                fe = PlayerParams.Objects.player.AddComponent<FreezeEffect>();
+            }
 
-        fe.ActivateFreezeEffect(freezeDuration, freezeEffectPrefab);
+            fe.ActivateFreezeEffect(freezeDuration, freezeEffectPrefab);
+        }
     }
 
     void ManageFreezingItem(GameObject item)
     {
-        if (item.transform.parent == null)
+        if (item.tag == "Shield")
         {
-            
-        }
-        else if (PlayerParams.Controllers.handInteractions.inHand == item)
-        {
-            if (item.tag == "Shield")
-            {
-                //shield is protecting from magic missiles
-            }
-            else
-            {
-                FreezeEffect fe;
-                if (PlayerParams.Objects.player.GetComponent<FreezeEffect>() != null)
-                {
-                    fe = PlayerParams.Objects.player.GetComponent<FreezeEffect>();
-                }
-                else
-                {
-                    fe = PlayerParams.Objects.player.AddComponent<FreezeEffect>();
-                }
-
-                fe.ActivateFreezeEffect(freezeDuration, freezeEffectPrefab);
-            }
+            //shield is protecting from magic missiles
         }
         else
         {
+            if (item.transform.parent == null)
+            {
 
+            }
+            else if (PlayerParams.Controllers.handInteractions.inHand == item)
+            {
+                ManageFreezingPlayer();
+            }
+            else
+            {
+
+            }
         }
     }
 
