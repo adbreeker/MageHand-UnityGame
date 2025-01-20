@@ -77,7 +77,6 @@ public class LightPathPuzzle : MonoBehaviour
     public void LeadLightThroughPath(LightSpellBehavior light)
     {
         List<Transform> path = new List<Transform>();
-        Debug.Log(_isOnPath + " " + _tileIndex);
 
         if (!_isOnPath)
         {
