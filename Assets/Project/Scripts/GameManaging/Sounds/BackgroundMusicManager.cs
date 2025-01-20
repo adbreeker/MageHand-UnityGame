@@ -8,7 +8,7 @@ public class BackgroundMusicManager : MonoBehaviour
     [SerializeField] private EventReference musicRef;
     void Awake()
     {
-        BackgroundMusic backgroundMusic = FindObjectOfType<BackgroundMusic>();
+        BackgroundMusic backgroundMusic = FindAnyObjectByType<BackgroundMusic>();
         if (backgroundMusic == null)
         {
             GameObject backgroundMusicGameObject = new GameObject("BackgroundMusic");

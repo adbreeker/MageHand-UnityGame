@@ -19,7 +19,7 @@ public class EditorFindComponents : MonoBehaviour
 
             if(componentType != null ) 
             {
-                foundedComponents = FindObjectsOfType(componentType);
+                foundedComponents = FindObjectsByType(componentType, FindObjectsSortMode.None);
             }
         }
         if(typeGUID != "")

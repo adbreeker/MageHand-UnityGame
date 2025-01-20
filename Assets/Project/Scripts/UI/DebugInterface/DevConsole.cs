@@ -359,7 +359,7 @@ public class DevConsole : MonoBehaviour
     {
         Inventory inventory = PlayerParams.Controllers.inventory;
 
-        foreach (ItemBehavior item in FindObjectsOfType<ItemBehavior>())
+        foreach (ItemBehavior item in FindObjectsByType<ItemBehavior>(FindObjectsSortMode.None))
         {
             item.isInteractable = true;
             if (item.GetComponent<ReadableBehavior>() is ReadableBehavior readableBehavior && !readableBehavior.destroy

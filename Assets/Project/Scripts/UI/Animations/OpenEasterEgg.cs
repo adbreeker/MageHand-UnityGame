@@ -40,7 +40,7 @@ public class OpenEasterEgg : MonoBehaviour
     IEnumerator EasterEgg()
     {
         //deactivate other dialogues
-        foreach(OpenDialogue openDialogue in FindObjectsOfType<OpenDialogue>())
+        foreach(OpenDialogue openDialogue in FindObjectsByType<OpenDialogue>(FindObjectsSortMode.None))
         {
             openDialogue.gameObject.SetActive(false);
         }
