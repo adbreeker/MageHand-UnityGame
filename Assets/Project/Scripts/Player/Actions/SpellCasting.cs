@@ -85,7 +85,7 @@ public class SpellCasting : MonoBehaviour
 
             RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFinished);
             currentSpell = "Light";
-            PlayerParams.Controllers.handInteractions.AddToHand(Instantiate(lightPrefab), true, true);
+            PlayerParams.Controllers.handInteractions.AddToHand(Instantiate(lightPrefab));
         }
         else
         {
@@ -113,7 +113,6 @@ public class SpellCasting : MonoBehaviour
                         nearestItem = item.gameObject;
                     }
                 }
-                PlayerParams.Controllers.handInteractions.AddToHand(nearestItem, false, false);
                 yield return new WaitForEndOfFrame();
                 if(nearestItem != null) 
                 {
@@ -124,7 +123,7 @@ public class SpellCasting : MonoBehaviour
                         yield return new WaitForFixedUpdate();
                     }
                     nearestItem.layer = LayerMask.NameToLayer("Item");
-                    PlayerParams.Controllers.handInteractions.AddToHand(nearestItem, true, false);
+                    PlayerParams.Controllers.handInteractions.AddToHand(nearestItem);
                     Destroy(collectEffect);
                 }
             }
@@ -144,7 +143,7 @@ public class SpellCasting : MonoBehaviour
 
             RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFinished);
             currentSpell = "Fire";
-            PlayerParams.Controllers.handInteractions.AddToHand(Instantiate(firePrefab), true, true);
+            PlayerParams.Controllers.handInteractions.AddToHand(Instantiate(firePrefab));
         }
         else
         {
@@ -195,7 +194,7 @@ public class SpellCasting : MonoBehaviour
 
             RuntimeManager.PlayOneShot(FmodEvents.SFX_CastingSpellFinished);
             currentSpell = "Mark";
-            PlayerParams.Controllers.handInteractions.AddToHand(Instantiate(markPrefab), true, true);
+            PlayerParams.Controllers.handInteractions.AddToHand(Instantiate(markPrefab));
         }
         else
         {
