@@ -13,7 +13,7 @@ public class ActivateTutorialOnNoteEnd : MonoBehaviour
         if (activatePanel && note == null && !PlayerParams.Variables.uiActive)
         {
             tutorialEntryToActivate.SetActive(true);
-            foreach (ActivateTutorialOnNoteEnd activator in FindObjectsOfType<ActivateTutorialOnNoteEnd>())
+            foreach (ActivateTutorialOnNoteEnd activator in FindObjectsByType<ActivateTutorialOnNoteEnd>(FindObjectsSortMode.None))
             {
                 activator.activatePanel = false;
             }

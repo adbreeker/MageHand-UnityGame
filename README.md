@@ -1,6 +1,6 @@
 # Mage Hand
 ## Specification
-Unity version: 2021.3.33f1 </br>
+Unity version: 6000.0.34f1 </br>
 Renderer pipeline: URP
 
 Hand recognition - mediapipe/python </br>

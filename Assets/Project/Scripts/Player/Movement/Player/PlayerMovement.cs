@@ -110,10 +110,11 @@ public class PlayerMovement : MonoBehaviour
             Vector3 prePos = transform.position;
             transform.position = Vector3.MoveTowards(transform.position, _destination, movementSpeed * Time.unscaledDeltaTime * (PlayerParams.Controllers.pauseMenu.freezeTime ? 0 : 1));
             _distancePassed += Vector3.Distance(prePos, transform.position);
+
             if(_distancePassed > 0.5f * tilesLenght) 
-            { 
+            {
+                _distancePassed = 0;
                 WalkSound(); 
-                _distancePassed = 0; 
             }
 
             if (transform.position == _destination)
@@ -124,6 +125,7 @@ public class PlayerMovement : MonoBehaviour
             }
             if (!CanMove())
             {
+                _distancePassed = 0;
                 _destination = currentOnTilePos; //back to previous tile if collide with something
             }
         }
@@ -182,9 +184,12 @@ public class PlayerMovement : MonoBehaviour
 
     void WalkSound()
     {
-        if (RaycastCurrentTile().tag == _dungeonCubeTag)
+        Transform tileForSound = RaycastCurrentTile();
+        if (tileForSound == null) { return; }
+
+        if (tileForSound.tag == _dungeonCubeTag)
             RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerStepsDungeon);
-        else if (RaycastCurrentTile().tag == _tunnelCubeTag)
+        else if (tileForSound.tag == _tunnelCubeTag)
             RuntimeManager.PlayOneShot(GameParams.Managers.fmodEvents.SFX_PlayerStepsTunnel);
     }
 

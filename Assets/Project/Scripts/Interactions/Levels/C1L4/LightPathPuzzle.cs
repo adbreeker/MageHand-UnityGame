@@ -77,7 +77,6 @@ public class LightPathPuzzle : MonoBehaviour
     public void LeadLightThroughPath(LightSpellBehavior light)
     {
         List<Transform> path = new List<Transform>();
-        Debug.Log(_isOnPath + " " + _tileIndex);
 
         if (!_isOnPath)
         {
@@ -103,7 +102,7 @@ public class LightPathPuzzle : MonoBehaviour
     IEnumerator LeadLightCoroutine(LightSpellBehavior light, List<Transform> path)
     {
         Rigidbody rb = light.GetComponent<Rigidbody>();
-        float speed = (rb.velocity.magnitude * Time.fixedDeltaTime) * 0.7f;
+        float speed = (rb.linearVelocity.magnitude * Time.fixedDeltaTime) * 0.7f;
         Destroy(rb);
 
         foreach(Transform tile in path)

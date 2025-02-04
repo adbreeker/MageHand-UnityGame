@@ -710,10 +710,10 @@ public class SettingsMenu : MonoBehaviour
 
     void DisplayVSyncText()
     {
-        if (vSyncSlider.value == 1) vSyncValueText.text = ((int)(Screen.currentResolution.refreshRate / 4)).ToString();
-        else if (vSyncSlider.value == 2) vSyncValueText.text = ((int)(Screen.currentResolution.refreshRate / 3)).ToString();
-        else if (vSyncSlider.value == 3) vSyncValueText.text = ((int)(Screen.currentResolution.refreshRate / 2)).ToString();
-        else if (vSyncSlider.value == 4) vSyncValueText.text = ((int)(Screen.currentResolution.refreshRate / 1)).ToString();
+        if (vSyncSlider.value == 1) vSyncValueText.text = ((int)(Screen.currentResolution.refreshRateRatio.numerator / 4)).ToString();
+        else if (vSyncSlider.value == 2) vSyncValueText.text = ((int)(Screen.currentResolution.refreshRateRatio.numerator / 3)).ToString();
+        else if (vSyncSlider.value == 3) vSyncValueText.text = ((int)(Screen.currentResolution.refreshRateRatio.numerator / 2)).ToString();
+        else if (vSyncSlider.value == 4) vSyncValueText.text = ((int)(Screen.currentResolution.refreshRateRatio.numerator / 1)).ToString();
         else vSyncValueText.text = "Error";
     }
 }

@@ -28,7 +28,7 @@ public class AudioOcclusion : MonoBehaviour
         audioDes = RuntimeManager.GetEventDescription(audioRef);
         audioDes.getMinMaxDistance(out float minDistance, out maxDistance);
 
-        listener = FindObjectOfType<StudioListener>();
+        listener = FindAnyObjectByType<StudioListener>();
     }
 
     private void FixedUpdate()

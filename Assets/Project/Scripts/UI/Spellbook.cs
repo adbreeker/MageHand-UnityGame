@@ -281,7 +281,7 @@ public class Spellbook : MonoBehaviour
 
     public void AddSpell(SpellScrollInfo spellToAdd)
     {
-        if(spellToAdd != null)
+        if(spellToAdd != null && !spells.Contains(spellToAdd))
         {
             spells.Add(spellToAdd);
         }

@@ -78,7 +78,7 @@ public class LabirynthTraps : MonoBehaviour
 
     void CheckCage2() 
     {
-        if (PlayerParams.Controllers.playerMovement.currentTile == _cage1 && !_onCage2Trigger)
+        if (PlayerParams.Controllers.playerMovement.currentTile == _cage2 && !_onCage2Trigger)
         {
             _onCage2Trigger = true;
             if (_bars2.passageOpen)
@@ -95,7 +95,7 @@ public class LabirynthTraps : MonoBehaviour
 
     void CheckCage3()
     {
-        if (PlayerParams.Controllers.playerMovement.currentTile == _cage1 && !_onCage3Trigger)
+        if (PlayerParams.Controllers.playerMovement.currentTile == _cage3 && !_onCage3Trigger)
         {
             _onCage3Trigger = true;
             if (_bars3.passageOpen)

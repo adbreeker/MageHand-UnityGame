@@ -4,6 +4,7 @@ using System.IO.MemoryMappedFiles;
 using System.IO;
 using UnityEngine;
 using FMODUnity;
+using System;
 
 public class HandInteractions : MonoBehaviour
 {
@@ -32,12 +33,17 @@ public class HandInteractions : MonoBehaviour
     public float timeToFadeOutPopUp = 1;
     public float timeOfFadingOutPopUp = 0.007f;
 
+    //events
+    public static Action<GameObject> OnItemPickUp;
     FmodEvents FmodEvents => GameParams.Managers.fmodEvents;
 
     private void Awake() //get necessary components
     {
         gestureHandler = GetComponent<MoveHandPoints>();
         pointer = GetComponent<GetObjectsNearHand>();
+
+        //clearing events
+        OnItemPickUp = null;
     }
 
     void Update()
@@ -128,7 +134,7 @@ public class HandInteractions : MonoBehaviour
             CooldownPickUp = true;
             if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("Item")) //picking item from scene
             {
-                AddToHand(pointer.currentlyPointing, true, false);
+                AddToHand(pointer.currentlyPointing);
             }
             if (pointer.currentlyPointing.layer == LayerMask.NameToLayer("UI") 
                 && PlayerParams.Controllers.inventory.inventoryOpened) //picking item from inventory
@@ -148,7 +154,7 @@ public class HandInteractions : MonoBehaviour
                 PlayerParams.Controllers.inventory.CloseInventory();
 
                 //adding item to hand after closing inventory (when it is readable, it needs to turn off movement after turning it on by closing inventory)
-                AddToHand(itemFromInventory, true, false);
+                AddToHand(itemFromInventory);
             }
         }
     }
@@ -239,22 +245,22 @@ public class HandInteractions : MonoBehaviour
     //----------------------------------------------------------------------------------------------------------------------------------------
     //additional interactions methods
 
-    public void AddToHand(GameObject toHand, bool withPositionChange, bool isSpell)
+    public void AddToHand(GameObject toHand)
     {
-        if (toHand.GetComponent<ReadableBehavior>() == null && toHand.GetComponent<PopUpActivateOnPickUp>() == null && withPositionChange && !isSpell)
+        bool isSpell = toHand.layer == LayerMask.NameToLayer("Spell");
+
+        if (toHand.GetComponent<ReadableBehavior>() == null && toHand.GetComponent<PopUpActivateOnPickUp>() == null && !isSpell)
         {
             RuntimeManager.PlayOneShot(FmodEvents.SFX_PickUpItem);
         }
 
         inHand = toHand;
+        OnItemPickUp?.Invoke(toHand);
 
         //making item a child of hand so it will move when hand is moving
         inHand.transform.SetParent(holdingPoint);
-        if (withPositionChange) 
-        {
-            if(isSpell) { inHand.transform.localPosition = new Vector3(0, 0, 5); }
-            else { inHand.transform.localPosition = new Vector3(0, 0, 10); }
-        }
+        if (isSpell) { inHand.transform.localPosition = new Vector3(0, 0, 5); }
+        else { inHand.transform.localPosition = new Vector3(0, 0, 10); }
 
         inHand.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
 

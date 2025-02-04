@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class TwistingHallway : MonoBehaviour
 {
+    [SerializeField] GameObject _scroll;
+    [SerializeField] OpenBarsPassage _bars;
     [SerializeField] Transform _rotationCube;
 
     bool rotated = false;
+
+    private void Start()
+    {
+        HandInteractions.OnItemPickUp += OpenPassageAfterPickingScroll;
+    }
 
     // Update is called once per frame
     void Update()
@@ -19,6 +26,15 @@ public class TwistingHallway : MonoBehaviour
         if(rotated && PlayerParams.Controllers.playerMovement.currentTile != _rotationCube)
         {
             rotated = false;
+        }
+    }
+
+    void OpenPassageAfterPickingScroll(GameObject scroll)
+    {
+        if(scroll == _scroll)
+        {
+            HandInteractions.OnItemPickUp -= OpenPassageAfterPickingScroll;
+            _bars.Interaction();
         }
     }
 }

@@ -5,29 +5,22 @@ using UnityEngine;
 public class PickUpScrollPassage : MonoBehaviour
 {
     [Header("Scroll")]
-    public GameObject scroll;
+    [SerializeField] GameObject _scroll;
 
     [Header("Bars passage")]
-    public GameObject bars;
+    [SerializeField] OpenBarsPassage _bars;
 
-    Vector3 prevPos;
-
-    private void Start() //get knife possition
+    private void Start() 
     {
-        prevPos = scroll.transform.position;
+        HandInteractions.OnItemPickUp += OpenPassageAfterPickingScroll;
     }
 
-    void Update() //if knife position changes (player picked it up) then open passage
+    void OpenPassageAfterPickingScroll(GameObject scroll)
     {
-        if(scroll == null)
+        if (scroll == _scroll)
         {
-            bars.SendMessage("Interaction");
-            Destroy(this);
-        }
-        else if(scroll.transform.position != prevPos)
-        {
-            bars.SendMessage("Interaction");
-            Destroy(this);
+            HandInteractions.OnItemPickUp -= OpenPassageAfterPickingScroll;
+            _bars.Interaction();
         }
     }
 }

@@ -27,7 +27,7 @@ public class TutorialPanel : MonoBehaviour
     {
         if (other.gameObject == PlayerParams.Objects.player && activatePanelOnEntry)
         {
-            foreach (TutorialPanel panel in FindObjectsOfType<TutorialPanel>())
+            foreach (TutorialPanel panel in FindObjectsByType<TutorialPanel>(FindObjectsSortMode.None))
             {
                 if (panel.wasLatelyOpened)
                 {
