@@ -80,17 +80,16 @@ public class FreezingMissileBehavior : SpellBehavior
     {
         if (PlayerParams.Controllers.handInteractions.inHand == spell )
         {
-            FreezeEffect fe;
-            if (PlayerParams.Objects.player.GetComponent<FreezeEffect>() != null)
+            if(spell.GetComponent<FireSpellBehavior>() != null)
             {
-                fe = PlayerParams.Objects.player.GetComponent<FreezeEffect>();
+                Destroy(spell);
+                PlayerParams.Controllers.handInteractions.inHand = null;
+                PlayerParams.Controllers.spellCasting.currentSpell = "None";
             }
             else
             {
-                fe = PlayerParams.Objects.player.AddComponent<FreezeEffect>();
+                ManageFreezingPlayer();
             }
-
-            fe.ActivateFreezeEffect(freezeDuration, freezeEffectPrefab);
         }
     }
 
