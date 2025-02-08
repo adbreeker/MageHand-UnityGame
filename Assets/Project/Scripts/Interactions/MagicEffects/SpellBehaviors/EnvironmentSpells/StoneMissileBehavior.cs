@@ -4,8 +4,6 @@ public class StoneMissileBehavior : SpellBehavior
 {
     public float pushForce;
 
-    GameObject _instantiatedEffect;
-
     void Start()
     {
 
@@ -13,8 +11,7 @@ public class StoneMissileBehavior : SpellBehavior
 
     public override void OnImpact(GameObject impactTarget)
     {
-        _instantiatedEffect = Instantiate(specialEffectPrefab, transform.position, Quaternion.identity);
-
+        Instantiate(specialEffectPrefab, transform.position, Quaternion.identity);
 
         //managing all pushing
         if (impactTarget.layer == LayerMask.NameToLayer("Player")) //player
@@ -39,10 +36,44 @@ public class StoneMissileBehavior : SpellBehavior
 
     void ManagePushingPlayer()
     {
-        if (PlayerParams.Objects.player.GetComponent<PotionSpeedEffect>() == null)
+        if (PlayerParams.Objects.player.GetComponent<PushPlayerEffect>() == null)
         {
+            PushPlayerEffect ppe = PlayerParams.Objects.player.AddComponent<PushPlayerEffect>();
 
+            Vector3 pushDirection = GetComponent<Rigidbody>().linearVelocity;
+            pushDirection.y = 0;
+            pushDirection = SingleDirectionNormalization(pushDirection);
+
+            Vector3 pushDestination = PlayerParams.Controllers.playerMovement.currentOnTilePos + pushDirection * PlayerParams.Controllers.playerMovement.tilesLenght;
+
+            ppe.Initialize(pushDestination, pushForce);
         }
+    }
+
+    Vector3 SingleDirectionNormalization(Vector3 direction)
+    {
+        direction = direction.normalized; //direction normalization
+        int xsign, zsign;
+
+        //geting sign of x and z variable
+        if (direction.x >= 0) { xsign = 1; }
+        else { xsign = -1; }
+
+        if (direction.z >= 0) { zsign = 1; }
+        else { zsign = -1; }
+
+        //single directioning (dominant is direction we are closer to)
+        if (Mathf.Abs(direction.x) >= Mathf.Abs(direction.z))
+        {
+            direction.x = 1 * xsign;
+            direction.z = 0;
+        }
+        else
+        {
+            direction.x = 0;
+            direction.z = 1 * zsign;
+        }
+        return direction;
     }
 
     void ManagePushingItem(GameObject item)
