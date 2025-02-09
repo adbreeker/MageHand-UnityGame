@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,8 @@ public class ButtonBehavior : InteractableBehavior
 
     bool buttonChanging = false;
 
+    public Action<GameObject> OnButtonClickedEvents;
+
     public void OnClick() //on click invoke interaction on connected object and increase click counter
     {
         if (!buttonChanging)
@@ -24,6 +27,7 @@ public class ButtonBehavior : InteractableBehavior
             {
                 switchInteraction.Interact();
             }
+            OnButtonClickedEvents?.Invoke(gameObject);
         }
     }
 

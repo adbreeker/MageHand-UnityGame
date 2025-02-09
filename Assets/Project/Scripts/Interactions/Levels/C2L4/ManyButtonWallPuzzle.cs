@@ -5,8 +5,18 @@ using UnityEngine;
 public class ManyButtonWallPuzzle : MonoBehaviour
 {
     [SerializeField] OpenBarsPassage _bars;
+    [SerializeField] List<ButtonBehavior> _allButtons = new List<ButtonBehavior>();
     [SerializeField] List<GameObject> _buttonsCodeOrder = new List<GameObject>();
     Queue<GameObject> _currentCode = new Queue<GameObject>();
+
+
+    private void Start()
+    {
+        foreach (ButtonBehavior button in _allButtons) 
+        {
+            button.OnButtonClickedEvents += AddButtonToCode;
+        }
+    }
 
     private void Update()
     {
