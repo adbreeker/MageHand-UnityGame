@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class ManyButtonWallPuzzle : MonoBehaviour
 {
+    [Header("Bars to open")]
     [SerializeField] OpenBarsPassage _bars;
+    [Header("All buttons:")]
     [SerializeField] List<ButtonBehavior> _allButtons = new List<ButtonBehavior>();
+    [Header("Code order:")]
     [SerializeField] List<GameObject> _buttonsCodeOrder = new List<GameObject>();
+
     Queue<GameObject> _currentCode = new Queue<GameObject>();
 
 

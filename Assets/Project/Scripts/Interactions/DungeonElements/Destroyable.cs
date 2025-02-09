@@ -207,7 +207,7 @@ public class Destroyable : MagicImpactTarget
 
             splitObject.AddComponent<BoxCollider>();
             splitObject.AddComponent<Rigidbody>();
-            splitObject.AddComponent<VanishDestroyed>().Initialize();
+            Destroy(splitObject, Random.Range(1.5f, 3f));
         }
 
         // Destroy the original mesh if desired
@@ -297,16 +297,3 @@ public class DestroyableEditor : Editor
     }
 }
 #endif
-
-public class VanishDestroyed : MonoBehaviour
-{
-    public void Initialize()
-    {
-        StartCoroutine(Vanish());
-    }
-    IEnumerator Vanish()
-    {
-        yield return new WaitForSeconds(Random.Range(1.5f, 3f));
-        Destroy(gameObject);
-    }
-}
