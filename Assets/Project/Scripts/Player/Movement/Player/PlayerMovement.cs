@@ -108,7 +108,10 @@ public class PlayerMovement : MonoBehaviour
         if (isMoving)
         {
             Vector3 prePos = transform.position;
-            transform.position = Vector3.MoveTowards(transform.position, _destination, Mathf.Clamp(movementSpeed * Time.unscaledDeltaTime, 0f, tilesLenght/2) * (PlayerParams.Controllers.pauseMenu.freezeTime ? 0 : 1));
+            transform.position = Vector3.MoveTowards(
+                transform.position, 
+                _destination, 
+                Mathf.Clamp(movementSpeed * Time.unscaledDeltaTime, 0f, tilesLenght/4) * (PlayerParams.Controllers.pauseMenu.freezeTime ? 0 : 1));
             _distancePassed += Vector3.Distance(prePos, transform.position);
 
             if(_distancePassed > 0.5f * tilesLenght) 
