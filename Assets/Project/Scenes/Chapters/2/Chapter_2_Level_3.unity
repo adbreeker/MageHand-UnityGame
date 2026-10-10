@@ -1792,6 +1792,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1402027034}
     m_Modifications:
     - target: {fileID: -4707443443751234328, guid: 85b92875a1345cb4baa279baa82bd5fd, type: 3}
+      propertyPath: toTeleport.m_Bits
+      value: 20736
+      objectReference: {fileID: 0}
+    - target: {fileID: -4707443443751234328, guid: 85b92875a1345cb4baa279baa82bd5fd, type: 3}
       propertyPath: teleportationRotation
       value: 180
       objectReference: {fileID: 0}
@@ -1801,6 +1805,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4707443443751234328, guid: 85b92875a1345cb4baa279baa82bd5fd, type: 3}
       propertyPath: teleportationDestination.z
+      value: -44
+      objectReference: {fileID: 0}
+    - target: {fileID: -4707443443751234328, guid: 85b92875a1345cb4baa279baa82bd5fd, type: 3}
+      propertyPath: teleportationSetup.rotationType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4707443443751234328, guid: 85b92875a1345cb4baa279baa82bd5fd, type: 3}
+      propertyPath: teleportationSetup.destination2D.x
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: -4707443443751234328, guid: 85b92875a1345cb4baa279baa82bd5fd, type: 3}
+      propertyPath: teleportationSetup.destination2D.y
       value: -44
       objectReference: {fileID: 0}
     - target: {fileID: -4143547442607567461, guid: 85b92875a1345cb4baa279baa82bd5fd, type: 3}
@@ -2575,46 +2591,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 225217406421193584, guid: 8746a23ef3622e04288b9c6427810782, type: 3}
   m_PrefabInstance: {fileID: 82581462}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &83607561
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 260, g: 30, b: 30, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1001 &83912083
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4190,6 +4166,46 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 987540868175800653, guid: ae5ab0f82fbc98447b69af9e717edb95, type: 3}
   m_PrefabInstance: {fileID: 111381048}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &112739390
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 250, g: 20, b: 20, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1001 &112963638
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21296,6 +21312,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1402027034}
     m_Modifications:
     - target: {fileID: 3088054518334516336, guid: d6deb46c765aaa748a38497e402567cd, type: 3}
+      propertyPath: toTeleport.m_Bits
+      value: 20736
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088054518334516336, guid: d6deb46c765aaa748a38497e402567cd, type: 3}
       propertyPath: teleportationRotation
       value: 180
       objectReference: {fileID: 0}
@@ -21305,6 +21325,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3088054518334516336, guid: d6deb46c765aaa748a38497e402567cd, type: 3}
       propertyPath: teleportationDestination.z
+      value: -32
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088054518334516336, guid: d6deb46c765aaa748a38497e402567cd, type: 3}
+      propertyPath: teleportationSetup.rotationType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088054518334516336, guid: d6deb46c765aaa748a38497e402567cd, type: 3}
+      propertyPath: teleportationSetup.destination2D.x
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088054518334516336, guid: d6deb46c765aaa748a38497e402567cd, type: 3}
+      propertyPath: teleportationSetup.destination2D.y
       value: -32
       objectReference: {fileID: 0}
     - target: {fileID: 4659087304275547816, guid: d6deb46c765aaa748a38497e402567cd, type: 3}
@@ -24878,46 +24910,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4173946367042293096, guid: 9ce918bd722a3a944935c1735530b878, type: 3}
   m_PrefabInstance: {fileID: 767606451}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &767881484
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 250, g: 20, b: 20, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1001 &768442953
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26283,46 +26275,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2886514586258465214, guid: 56e9eca9383a24741b364696e23d76e2, type: 3}
   m_PrefabInstance: {fileID: 810615075}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &810973746
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: UI/RoundedCorners/RoundedCorners
-  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _WidthHeightRadius: {r: 250, g: 20, b: 20, a: 0}
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1001 &813373543
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32038,7 +31990,19 @@ PrefabInstance:
     m_TransformParent: {fileID: 1072964317}
     m_Modifications:
     - target: {fileID: -4707443443751234328, guid: 85b92875a1345cb4baa279baa82bd5fd, type: 3}
+      propertyPath: toTeleport.m_Bits
+      value: 20736
+      objectReference: {fileID: 0}
+    - target: {fileID: -4707443443751234328, guid: 85b92875a1345cb4baa279baa82bd5fd, type: 3}
       propertyPath: teleportationDestination.z
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: -4707443443751234328, guid: 85b92875a1345cb4baa279baa82bd5fd, type: 3}
+      propertyPath: teleportationSetup.rotationType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4707443443751234328, guid: 85b92875a1345cb4baa279baa82bd5fd, type: 3}
+      propertyPath: teleportationSetup.destination2D.y
       value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 4617036660772024948, guid: 85b92875a1345cb4baa279baa82bd5fd, type: 3}
@@ -39926,11 +39890,27 @@ PrefabInstance:
     m_TransformParent: {fileID: 1915052705}
     m_Modifications:
     - target: {fileID: 3088054518334516336, guid: d6deb46c765aaa748a38497e402567cd, type: 3}
+      propertyPath: toTeleport.m_Bits
+      value: 20736
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088054518334516336, guid: d6deb46c765aaa748a38497e402567cd, type: 3}
       propertyPath: teleportationDestination.x
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3088054518334516336, guid: d6deb46c765aaa748a38497e402567cd, type: 3}
       propertyPath: teleportationDestination.z
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088054518334516336, guid: d6deb46c765aaa748a38497e402567cd, type: 3}
+      propertyPath: teleportationSetup.rotationType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088054518334516336, guid: d6deb46c765aaa748a38497e402567cd, type: 3}
+      propertyPath: teleportationSetup.destination2D.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088054518334516336, guid: d6deb46c765aaa748a38497e402567cd, type: 3}
+      propertyPath: teleportationSetup.destination2D.y
       value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 4659087304275547816, guid: d6deb46c765aaa748a38497e402567cd, type: 3}
@@ -45191,6 +45171,46 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 225217406421193584, guid: c94713da80dded64fba2bdff35bbd9ff, type: 3}
   m_PrefabInstance: {fileID: 1368782243}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &1370101774
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 260, g: 30, b: 30, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1001 &1372092336
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -52625,6 +52645,46 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8715936695225009656, guid: 8acf257661b35dd4d8ff5cc9935d5bf1, type: 3}
   m_PrefabInstance: {fileID: 1547797183}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &1548774839
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _WidthHeightRadius: {r: 250, g: 20, b: 20, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1001 &1548995451
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -62686,6 +62746,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1717460988}
     m_Modifications:
     - target: {fileID: -4707443443751234328, guid: 85b92875a1345cb4baa279baa82bd5fd, type: 3}
+      propertyPath: toTeleport.m_Bits
+      value: 20736
+      objectReference: {fileID: 0}
+    - target: {fileID: -4707443443751234328, guid: 85b92875a1345cb4baa279baa82bd5fd, type: 3}
       propertyPath: teleportationRotation
       value: 180
       objectReference: {fileID: 0}
@@ -62695,6 +62759,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4707443443751234328, guid: 85b92875a1345cb4baa279baa82bd5fd, type: 3}
       propertyPath: teleportationDestination.z
+      value: -44
+      objectReference: {fileID: 0}
+    - target: {fileID: -4707443443751234328, guid: 85b92875a1345cb4baa279baa82bd5fd, type: 3}
+      propertyPath: teleportationSetup.rotationType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4707443443751234328, guid: 85b92875a1345cb4baa279baa82bd5fd, type: 3}
+      propertyPath: teleportationSetup.destination2D.x
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: -4707443443751234328, guid: 85b92875a1345cb4baa279baa82bd5fd, type: 3}
+      propertyPath: teleportationSetup.destination2D.y
       value: -44
       objectReference: {fileID: 0}
     - target: {fileID: 4617036660772024948, guid: 85b92875a1345cb4baa279baa82bd5fd, type: 3}

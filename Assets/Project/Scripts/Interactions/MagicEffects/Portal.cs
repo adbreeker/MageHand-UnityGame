@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Portal : MonoBehaviour
 {
+    [Header("Teleportation setup:")]
+    public TeleportationSetup teleportationSetup;
+
     [Header("Teleportation destination:")]
     public Vector3 teleportationDestination;
     public bool teleportOnCurrentHeight = true;

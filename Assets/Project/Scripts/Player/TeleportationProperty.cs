@@ -5,7 +5,15 @@ using UnityEngine;
 public class TeleportationSetup
 {
     public enum HeightOption { Current, Custom }
-    public enum RotationOption { Current, North, East, South, West, Custom }
+    public enum RotationOption
+    {
+        Current,
+        [InspectorName("North (0f)")] North,
+        [InspectorName("East (90f)")] East,
+        [InspectorName("South (180f)")] South,
+        [InspectorName("West (270f)")] West,
+        Custom
+    }
 
     public HeightOption heightType;
 
@@ -84,7 +92,12 @@ public class TeleportationSetupDrawer : PropertyDrawer
             if ((TeleportationSetup.HeightOption)heightProp.enumValueIndex == TeleportationSetup.HeightOption.Current)
             {
                 SerializedProperty dest2D = property.FindPropertyRelative("destination2D");
-                dest2D.vector2Value = EditorGUI.Vector2Field(fieldPosition, new GUIContent("Destination"), dest2D.vector2Value);
+                Vector2 destination = dest2D.vector2Value;
+                float[] values = { destination.x, destination.y };
+                GUIContent[] axisLabels = { new GUIContent("X"), new GUIContent("Z") };
+
+                EditorGUI.MultiFloatField(fieldPosition, new GUIContent("Destination"), axisLabels, values);
+                dest2D.vector2Value = new Vector2(values[0], values[1]);
             }
             else
             {
