@@ -64,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
         LeanKeyListener();
     }
 
-    Transform RaycastCurrentTile()
+    public Transform RaycastCurrentTile()
     {
         RaycastHit[] potentialTile = Physics.RaycastAll(transform.position, Vector3.down, 4.0f);
         foreach (RaycastHit hit in potentialTile)
@@ -84,13 +84,13 @@ public class PlayerMovement : MonoBehaviour
         float verticalInput = verticalInputQueue;
 
         //check if no movement is enqueued
-        if (horizontalInputQueue == 0 && verticalInputQueue ==0 && !MovementInterfering())
+        if (horizontalInputQueue == 0 && verticalInputQueue == 0)
         {
             horizontalInput = Input.GetAxisRaw("Horizontal");
             verticalInput = Input.GetAxisRaw("Vertical");
         }
 
-        if ((horizontalInput != 0 || verticalInput != 0) && !isMoving)
+        if ((horizontalInput != 0 || verticalInput != 0) && !isMoving && !MovementInterfering())
         {
             //calculate the position of the tile the player is moving towards
             Vector3 direction = SingleDirectionNormalization(transform.right * horizontalInput + transform.forward * verticalInput);
@@ -108,7 +108,10 @@ public class PlayerMovement : MonoBehaviour
         if (isMoving)
         {
             Vector3 prePos = transform.position;
-            transform.position = Vector3.MoveTowards(transform.position, _destination, movementSpeed * Time.unscaledDeltaTime * (PlayerParams.Controllers.pauseMenu.freezeTime ? 0 : 1));
+            transform.position = Vector3.MoveTowards(
+                transform.position, 
+                _destination, 
+                Mathf.Clamp(movementSpeed * Time.unscaledDeltaTime, 0f, tilesLenght/4) * (PlayerParams.Controllers.pauseMenu.freezeTime ? 0 : 1));
             _distancePassed += Vector3.Distance(prePos, transform.position);
 
             if(_distancePassed > 0.5f * tilesLenght) 
@@ -123,7 +126,7 @@ public class PlayerMovement : MonoBehaviour
                 currentTile = RaycastCurrentTile();
                 currentOnTilePos = transform.position;
             }
-            if (!CanMove())
+            else if (!CanMove())
             {
                 _distancePassed = 0;
                 _destination = currentOnTilePos; //back to previous tile if collide with something
@@ -331,21 +334,29 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void StopCurrentMovement()
+    {
+        _destination = transform.position;
+        isMoving = false;
+        _movementInputQueue = Vector3.zero;
+    }
+
+    public void StopCurrentRotation()
+    {
+        _remainingRotation = 0f;
+        isRotating = false;
+        _rotationInputQueue = 0;
+    }
+
     //teleportation methods
 
     public void TeleportTo(Vector3 tpDestination, float tpRotation) //teleport to destination and stop movement enqued before teleportation
     {
-        _destination = tpDestination;
+        StopCurrentMovement();
         transform.position = tpDestination;
-        isMoving = false;
 
-        _remainingRotation = 0f;
+        StopCurrentRotation();
         transform.rotation = Quaternion.Euler(0f, tpRotation, 0f);
-        isRotating = false;
-
-
-        _movementInputQueue = Vector3.zero;
-        _rotationInputQueue = 0;
 
         currentTile = RaycastCurrentTile();
         currentOnTilePos = transform.position;
@@ -354,16 +365,11 @@ public class PlayerMovement : MonoBehaviour
     {
         RuntimeManager.PlayOneShotAttached(GameParams.Managers.fmodEvents.SFX_Teleport, PlayerParams.Objects.player);
 
-        _destination = tpDestination;
+        StopCurrentMovement();
         transform.position = tpDestination;
-        isMoving = false;
 
-        _remainingRotation = 0f;
+        StopCurrentRotation();
         transform.rotation = Quaternion.Euler(0f, tpRotation, 0f);
-        isRotating = false;
-
-        _movementInputQueue = Vector3.zero;
-        _rotationInputQueue = 0;
 
         currentTile = RaycastCurrentTile();
         currentOnTilePos = transform.position;

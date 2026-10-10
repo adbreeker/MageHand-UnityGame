@@ -13,6 +13,7 @@ public class WolfMedallionBehavior : ItemBehavior
         base.OnPickUp();
         transform.localRotation = Quaternion.Euler(0f, 180f, 0f);
         _secretTriggers = FindObjectsByType<SecretPlace>(FindObjectsSortMode.None).Select(sp => sp.gameObject).ToList();
+        _secretTriggers.AddRange(FindObjectsByType<SecretPickUp>(FindObjectsSortMode.None).Select(sp => sp.gameObject).ToList());
     }
 
     private void Update()

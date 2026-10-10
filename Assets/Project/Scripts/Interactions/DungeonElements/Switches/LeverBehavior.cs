@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,9 @@ public class LeverBehavior : InteractableBehavior
 
     bool leverChanging = false;
 
+    public Action<GameObject> OnLeverPulledDownEvents;
+    public Action<GameObject> OnLeverPulledUpEvents;
+
     public void OnClick() //on lever click invoke interaction on connected object
     {
         if(singleUse)
@@ -32,6 +36,9 @@ public class LeverBehavior : InteractableBehavior
             {
                 switchInteraction.Interact();
             }
+
+            if(leverON) { OnLeverPulledUpEvents?.Invoke(gameObject); }
+            else { OnLeverPulledDownEvents?.Invoke(gameObject); }
         }
     }
 

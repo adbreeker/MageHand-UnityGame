@@ -21,9 +21,24 @@ public class SkullPlatformBehavior : MonoBehaviour
     //[Header("Platform outcomes:")]
     public event Action DialogueFinished;
 
+    public void SetPlatformActive(bool active)
+    {
+        if(active) 
+        {
+            platformActive = true;
+            _renderer.material = _platformActiveMat;
+            _dialogue.gameObject.SetActive(true);
+        }
+        else
+        {
+            platformActive = false;
+            _renderer.material = _platformInactiveMat;
+        }
+    }
+
     public void UsePlatform()
     {
-        platformActive = false;
+        SetPlatformActive(false);
         StartCoroutine(PlatformEffect());
         PlayerParams.Controllers.playerMovement.stopMovement = true;
     }
@@ -31,7 +46,6 @@ public class SkullPlatformBehavior : MonoBehaviour
     IEnumerator PlatformEffect()
     {
         GameObject effect = Instantiate(_platformEffectPrefab, transform);
-        _renderer.material = _platformInactiveMat;
 
         Vector3 startingScale = effect.transform.localScale;
 

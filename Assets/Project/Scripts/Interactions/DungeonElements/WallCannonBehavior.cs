@@ -9,7 +9,8 @@ public class WallCannonBehavior : MonoBehaviour
     public enum MissileType
     {
         teleportingMissile,
-        freezingMissile
+        freezingMissile,
+        stoneMissile
     }
 
     [Header("Launching settings:")]
@@ -27,6 +28,9 @@ public class WallCannonBehavior : MonoBehaviour
 
     [Header("Freezing missile")]
     public float freezeDuration;
+
+    [Header("Stone missile")]
+    public float stoneForce;
 
     Vector3 _launchingPos;
 
@@ -75,6 +79,9 @@ public class WallCannonBehavior : MonoBehaviour
             case MissileType.freezingMissile:
                 LaunchFreezingMissile();
                 break;
+            case MissileType.stoneMissile:
+                LaunchStoneMissile();
+                break;
         }
     }
 
@@ -102,6 +109,18 @@ public class WallCannonBehavior : MonoBehaviour
 
         FreezingMissileBehavior missileBehavior = missile.GetComponent<FreezingMissileBehavior>();
         missileBehavior.freezeDuration = freezeDuration;
+
+        Rigidbody rb = missile.GetComponent<Rigidbody>();
+        rb.AddForce(gameObject.transform.up * 10, ForceMode.Impulse);
+    }
+
+    public void LaunchStoneMissile()
+    {
+        Quaternion _launchingRot = transform.rotation * Quaternion.Euler(180.0f, 0, 0);
+        GameObject missile = Instantiate(missilesPrefabs[(int)missileType], _launchingPos, _launchingRot);
+
+        StoneMissileBehavior missileBehavior = missile.GetComponent<StoneMissileBehavior>();
+        missileBehavior.pushForce = stoneForce;
 
         Rigidbody rb = missile.GetComponent<Rigidbody>();
         rb.AddForce(gameObject.transform.up * 10, ForceMode.Impulse);
@@ -156,6 +175,11 @@ public class WallCannonBehaviorEditor : Editor
         {
             EditorGUILayout.LabelField("Freezing missile", EditorStyles.boldLabel);
             wallCannon.freezeDuration = EditorGUILayout.FloatField("Freeze Duration", wallCannon.freezeDuration);
+        }
+        else if (wallCannon.missileType == WallCannonBehavior.MissileType.stoneMissile)
+        {
+            EditorGUILayout.LabelField("Stone missile", EditorStyles.boldLabel);
+            wallCannon.stoneForce = EditorGUILayout.FloatField("Stone Force", wallCannon.stoneForce);
         }
 
         // Apply any changes made in the Inspector

@@ -14,7 +14,7 @@ public class ThrowObject : MonoBehaviour //script added to object on throw
         //add rigidbody and set it values
         rb = gameObject.AddComponent<Rigidbody>();
         rb.useGravity = true;
-        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         rb.AddForce(throwDirection * 15, ForceMode.Impulse);
 
         gameObject.SendMessage("OnThrow");

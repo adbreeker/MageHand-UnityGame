@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using FMODUnity;
 using FMOD.Studio;
+using UnityEngine.Events;
 
 public class Dialogue : MonoBehaviour
 {
@@ -18,21 +19,25 @@ public class Dialogue : MonoBehaviour
     public string option1Text;
     public Canvas option1Choice;
     public int option1Points = 0;
+    public UnityEvent option1Action;
     [Header("Option 2")]
     [TextArea(2, 2)]
     public string option2Text;
     public Canvas option2Choice;
     public int option2Points = 0;
+    public UnityEvent option2Action;
     [Header("Option 3")]
     [TextArea(2, 2)]
     public string option3Text;
     public Canvas option3Choice;
     public int option3Points = 0;
+    public UnityEvent option3Action;
     [Header("Option 4")]
     [TextArea(2, 2)]
     public string option4Text;
     public Canvas option4Choice;
     public int option4Points = 0;
+    public UnityEvent option4Action;
     [Space(20)]
     [Header("Player choice")]
     public string playerChoice = "";
@@ -45,6 +50,7 @@ public class Dialogue : MonoBehaviour
     private Dictionary<int, Canvas> optionsChoices;
     private Dictionary<int, string> optionsTexts;
     private Dictionary<int, int> optionsPoints;
+    private Dictionary<int, UnityEvent> optionsActions;
 
     private bool listen = false;
     private bool skip = false;
@@ -106,6 +112,11 @@ public class Dialogue : MonoBehaviour
         optionsPoints.Add(2, option2Points);
         optionsPoints.Add(3, option3Points);
         optionsPoints.Add(4, option4Points);
+        optionsActions = new Dictionary<int, UnityEvent>();
+        optionsActions.Add(1, option1Action);
+        optionsActions.Add(2, option2Action);
+        optionsActions.Add(3, option3Action);
+        optionsActions.Add(4, option4Action);
 
         //Type text
         choice = 1;
@@ -258,6 +269,7 @@ public class Dialogue : MonoBehaviour
 
             playerChoice = optionsTexts[choice];
             PlayerParams.Controllers.pointsManager.plotPoints += optionsPoints[choice];
+            optionsActions[choice]?.Invoke();
             gameObject.SetActive(false);
             if (optionsChoices[choice] == null)
             {
