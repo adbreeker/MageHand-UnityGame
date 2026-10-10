@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SI_Teleportation : SwitchInteraction
 {
+    [Header("Teleportation Setup")]
+    public TeleportationSetup teleportationSetup;
+
     [Header("Destination")]
     public Vector3 tpDestination;
     public bool teleportOnCurrentHeight = true;

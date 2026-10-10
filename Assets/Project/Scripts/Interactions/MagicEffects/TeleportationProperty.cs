@@ -39,25 +39,25 @@ public class TeleportationSetup
         }
     }
 
-    public Quaternion GetTpRotation(GameObject teleported)
+    public float GetTpRotation(GameObject teleported)
     {
         switch (rotationType) 
         {
             case RotationOption.Current:
-                return Quaternion.identity;
+                return Mathf.Round(teleported.transform.rotation.eulerAngles.y / 90f) * 90f;
             case RotationOption.North:
-                return Quaternion.Euler(teleported.transform.rotation.eulerAngles.x, 0f, teleported.transform.rotation.eulerAngles.z);
+                return 0f;
             case RotationOption.East:
-                return Quaternion.Euler(teleported.transform.rotation.eulerAngles.x, 90f, teleported.transform.rotation.eulerAngles.z);
+                return 90f;
             case RotationOption.South:
-                return Quaternion.Euler(teleported.transform.rotation.eulerAngles.x, 180f, teleported.transform.rotation.eulerAngles.z);
+                return 180f;
             case RotationOption.West:
-                return Quaternion.Euler(teleported.transform.rotation.eulerAngles.x, 270f, teleported.transform.rotation.eulerAngles.z);
+                return 270f;
             case RotationOption.Custom:
-                return Quaternion.Euler(teleported.transform.rotation.eulerAngles.x, customRotation, teleported.transform.rotation.eulerAngles.z);
+                return customRotation;
             default:
                 Debug.LogWarning("Teleportation used default rotation");
-                return Quaternion.identity;
+                return 0f;
         }
     }
 }

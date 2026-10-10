@@ -5,11 +5,8 @@ using UnityEngine;
 
 public class TeleportingMissileBehavior : SpellBehavior
 {
-    public Vector3 teleportationDestination;
-    public bool teleportOnCurrentHeight = true;
-
-    public float teleportationRotation;
-    public bool teleportOnCurrentRotation = true;
+    [Header("Teleportation Setup")]
+    public TeleportationSetup teleportationSetup;
 
     private GameObject instantiatedEffect;
 
@@ -30,10 +27,8 @@ public class TeleportingMissileBehavior : SpellBehavior
         instantiatedEffect = Instantiate(specialEffectPrefab, transform.position, Quaternion.identity);
         GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_Teleport, instantiatedEffect.transform);
 
-        Vector3 tpDest = teleportationDestination;
-        float tpRot = teleportationRotation;
-        if(teleportOnCurrentHeight) { tpDest.y = impactTarget.transform.position.y; }
-        if(teleportOnCurrentRotation) { tpRot = impactTarget.transform.rotation.eulerAngles.y; }
+        Vector3 tpDest = teleportationSetup.GetTpDestination(impactTarget);
+        float tpRot = teleportationSetup.GetTpRotation(impactTarget);
 
         //managing all teleportations
         if (impactTarget.layer == LayerMask.NameToLayer("Player")) //player
