@@ -1,4 +1,3 @@
-
 using System.IO;
 using System.IO.MemoryMappedFiles;
 using UnityEngine;
@@ -6,119 +5,107 @@ using UnityEngine.UI;
 
 public class DisplayCamera : MonoBehaviour
 {
-    private const int Width = 640;
-    private const int Height = 480;
-    private const int FrameBytes = Width * Height * 3;
-    private const string MapName = "magehand_video_unity";
+    const int Width = 640, Height = 480;
+    const int FrameBytes = Width * Height * 3;
+    const string MapName = "magehand_video_unity";
 
-    private RawImage camTexture;
-    private Texture2D videoTexture;
-    private byte[] frameBuffer;
-    private bool missingLogged;
+    RawImage image;
+    Texture2D texture;
+    byte[] buffer;
 
-    private void Awake()
+    MemoryMappedFile map;
+    MemoryMappedViewStream stream;
+
+    float nextFrame, nextConnect;
+
+    void Awake()
     {
-        camTexture = GetComponent<RawImage>();
-
-        if (camTexture == null)
+        image = GetComponent<RawImage>();
+        if (image == null)
         {
-            Debug.LogError("DisplayCamera requires a RawImage.", this);
             enabled = false;
             return;
         }
 
-        // Allocate the frame buffer only once.
-        frameBuffer = new byte[FrameBytes];
+        buffer = new byte[FrameBytes];
+        texture = new Texture2D(Width, Height, TextureFormat.RGB24, false);
+        texture.name = "DisplayCamera_Webcam";
 
-        // Create exactly one texture and reuse it for every frame.
-        videoTexture = new Texture2D(
-            Width,
-            Height,
-            TextureFormat.RGB24,
-            false
-        );
-
-        videoTexture.name = "DisplayCamera_Webcam";
-        camTexture.texture = videoTexture;
+        image.texture = texture;
+        image.color = Color.black;
     }
 
-    private void Update()
+    void Update()
     {
+        float now = Time.unscaledTime;
+        if (now < nextFrame) return;
+        nextFrame = now + 1f / 30f;
+
+        if (stream == null)
+        {
+            if (now < nextConnect) return;
+            nextConnect = now + 1f;
+
+            try
+            {
+                map = MemoryMappedFile.OpenExisting(MapName);
+                stream = map.CreateViewStream(
+                    0, FrameBytes, MemoryMappedFileAccess.Read);
+            }
+            catch (IOException)
+            {
+                CloseMap();
+                return;
+            }
+        }
+
         try
         {
-            using (MemoryMappedFile mmf =
-                   MemoryMappedFile.OpenExisting(MapName))
-            using (MemoryMappedViewStream stream =
-                   mmf.CreateViewStream(
-                       0,
-                       FrameBytes,
-                       MemoryMappedFileAccess.Read))
+            stream.Position = 0;
+
+            int offset = 0;
+            while (offset < FrameBytes)
             {
-                // Read into the existing buffer instead of allocating
-                // a new byte[] every frame.
-                if (!ReadFrame(stream, frameBuffer))
+                int count = stream.Read(
+                    buffer, offset, FrameBytes - offset);
+
+                if (count == 0)
+                {
+                    CloseMap();
                     return;
+                }
+
+                offset += count;
             }
 
-            // Update the existing Texture2D.
-            videoTexture.LoadRawTextureData(frameBuffer);
-            videoTexture.Apply(false, false);
-
-            if (camTexture.color != Color.white)
-                camTexture.color = Color.white;
-
-            missingLogged = false;
+            texture.LoadRawTextureData(buffer);
+            texture.Apply(false, false);
+            image.color = Color.white;
         }
-        catch (FileNotFoundException)
+        catch (IOException)
         {
-            camTexture.color = Color.black;
-
-            // Avoid logging the same error on every frame.
-            if (!missingLogged)
-            {
-                Debug.LogWarning(
-                    "Shared memory 'magehand_video_unity' does not exist."
-                );
-                missingLogged = true;
-            }
+            CloseMap();
+            nextConnect = now + 1f;
         }
     }
 
-    private static bool ReadFrame(
-        Stream stream,
-        byte[] buffer)
+    void CloseMap()
     {
-        int offset = 0;
+        stream?.Dispose();
+        stream = null;
 
-        while (offset < buffer.Length)
-        {
-            int count = stream.Read(
-                buffer,
-                offset,
-                buffer.Length - offset
-            );
-
-            if (count <= 0)
-                return false;
-
-            offset += count;
-        }
-
-        return true;
+        map?.Dispose();
+        map = null;
     }
 
-    private void OnDestroy()
+    void OnDestroy()
     {
-        if (camTexture != null &&
-            camTexture.texture == videoTexture)
-        {
-            camTexture.texture = null;
-        }
+        CloseMap();
 
-        if (videoTexture != null)
-        {
-            Destroy(videoTexture);
-            videoTexture = null;
-        }
+        if (image != null && image.texture == texture)
+            image.texture = null;
+
+        if (texture != null)
+            Destroy(texture);
     }
 }

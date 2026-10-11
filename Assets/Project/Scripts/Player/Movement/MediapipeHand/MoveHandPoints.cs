@@ -9,9 +9,21 @@ using System.IO.MemoryMappedFiles;
 
 public class MoveHandPoints : MonoBehaviour //move points of hand generated with mediapipe
 {
+    private const int PointsBufferSize = 700;
+    private const int GestureBufferSize = 12;
+    private const float ReconnectInterval = 1f;
+
     //position of hand, and on all points in hand
     Vector3[] vec;
     Vector3 handPosition;
+
+    private MemoryMappedFile pointsMapping;
+    private MemoryMappedViewStream pointsStream;
+    private MemoryMappedFile gestureMapping;
+    private MemoryMappedViewStream gestureStream;
+    private readonly byte[] pointsBuffer = new byte[PointsBufferSize];
+    private readonly byte[] gestureBuffer = new byte[GestureBufferSize];
+    private float nextConnectionAttemptTime;
 
     [Header("All hand points objects")]
     public GameObject[] handPoints;
@@ -31,29 +43,126 @@ public class MoveHandPoints : MonoBehaviour //move points of hand generated with
     protected virtual void Update()
     {
         //Vector3 newPos = RotateAroundPoint(handPosition, PlayerParams.Objects.playerCamera.transform.position, PlayerParams.Objects.playerCamera.transform.eulerAngles.y);
-        MemoryMappedFile mmf_points;
-        try
-        {
-            mmf_points = MemoryMappedFile.OpenExisting("magehand_points");
-        }
-        catch
+        if (!EnsureMemoryMappedStreams())
         {
             return;
         }
-        
-        MemoryMappedViewStream stream_points = mmf_points.CreateViewStream();
-        BinaryReader reader_points = new BinaryReader(stream_points);
-        byte[] framePoints = reader_points.ReadBytes(700);
-        string data = System.Text.Encoding.UTF8.GetString(framePoints, 0, 700);
+
+        if (!TryReadFrame(pointsStream, pointsBuffer) || !TryReadFrame(gestureStream, gestureBuffer))
+        {
+            ReleaseMemoryMappedStreams();
+            nextConnectionAttemptTime = Time.unscaledTime + ReconnectInterval;
+            return;
+        }
+
+        string data = Encoding.UTF8.GetString(pointsBuffer, 0, PointsBufferSize);
+        gesture = Encoding.UTF8.GetString(gestureBuffer, 0, GestureBufferSize).Split(';')[0];
         vec = StringToVector3(data);
 
-        if (vec != null)
+        if (handPoints == null || vec == null || vec.Length != handPoints.Length)
         {
-            for (int i = 0; i < vec.Length; i++)
-            {
-                handPoints[i].transform.localPosition = vec[i];
-            }
+            return;
         }
+
+        for (int i = 0; i < vec.Length; i++)
+        {
+            handPoints[i].transform.localPosition = vec[i];
+        }
+    }
+
+    protected virtual void OnDisable()
+    {
+        ReleaseMemoryMappedStreams();
+    }
+
+    private bool EnsureMemoryMappedStreams()
+    {
+        if (pointsStream != null && gestureStream != null)
+        {
+            return true;
+        }
+
+        if (Time.unscaledTime < nextConnectionAttemptTime)
+        {
+            return false;
+        }
+
+        nextConnectionAttemptTime = Time.unscaledTime + ReconnectInterval;
+
+        if (pointsStream == null)
+        {
+            TryOpenStream("magehand_points", out pointsMapping, out pointsStream);
+        }
+
+        if (gestureStream == null)
+        {
+            TryOpenStream("magehand_gestures", out gestureMapping, out gestureStream);
+        }
+
+        return pointsStream != null && gestureStream != null;
+    }
+
+    private static bool TryOpenStream(string name, out MemoryMappedFile mapping, out MemoryMappedViewStream stream)
+    {
+        mapping = null;
+        stream = null;
+
+        try
+        {
+            mapping = MemoryMappedFile.OpenExisting(name);
+            stream = mapping.CreateViewStream();
+            return true;
+        }
+        catch
+        {
+            stream?.Dispose();
+            mapping?.Dispose();
+            mapping = null;
+            stream = null;
+            return false;
+        }
+    }
+
+    private static bool TryReadFrame(MemoryMappedViewStream stream, byte[] buffer)
+    {
+        try
+        {
+            stream.Position = 0;
+            int bytesRead = 0;
+            while (bytesRead < buffer.Length)
+            {
+                int count = stream.Read(buffer, bytesRead, buffer.Length - bytesRead);
+                if (count == 0)
+                {
+                    return false;
+                }
+
+                bytesRead += count;
+            }
+
+            return true;
+        }
+        catch (IOException)
+        {
+            return false;
+        }
+        catch (ObjectDisposedException)
+        {
+            return false;
+        }
+    }
+
+    private void ReleaseMemoryMappedStreams()
+    {
+        pointsStream?.Dispose();
+        pointsMapping?.Dispose();
+        gestureStream?.Dispose();
+        gestureMapping?.Dispose();
+
+        pointsStream = null;
+        pointsMapping = null;
+        gestureStream = null;
+        gestureMapping = null;
     }
 
     private void CalculateNearPlaneBounds()
@@ -121,12 +230,6 @@ public class MoveHandPoints : MonoBehaviour //move points of hand generated with
 
         // Labels of gestures:
         // None, Closed_Fist, Open_Palm, Pointing_Up, Thumb_Down, Thumb_Up, Victory, ILoveYou
-        MemoryMappedFile mmf_gesture = MemoryMappedFile.OpenExisting("magehand_gestures");
-        MemoryMappedViewStream stream_gesture = mmf_gesture.CreateViewStream();
-        BinaryReader reader_gesture = new BinaryReader(stream_gesture);
-        byte[] frameGesture = reader_gesture.ReadBytes(12);
-        gesture = System.Text.Encoding.UTF8.GetString(frameGesture, 0, 12).Split(';')[0];
-
         Vector3[] temp = new Vector3[vectors.Length - 1];
 
         for (int i = 0; i < vectors.Length - 1; i++)
@@ -137,8 +240,14 @@ public class MoveHandPoints : MonoBehaviour //move points of hand generated with
             if (coordinates.Length == 3)
             {
 
-                float x = (maxPoint.x - (Math.Abs(maxPoint.x - minPoint.x)) * float.Parse(coordinates[0], CultureInfo.InvariantCulture)) * 2;
-                float y = (maxPoint.y - (Math.Abs(maxPoint.y - minPoint.y)) * float.Parse(coordinates[1], CultureInfo.InvariantCulture)) * 2;
+                if (!float.TryParse(coordinates[0], NumberStyles.Float, CultureInfo.InvariantCulture, out float normalizedX) ||
+                    !float.TryParse(coordinates[1], NumberStyles.Float, CultureInfo.InvariantCulture, out float normalizedY))
+                {
+                    return null;
+                }
+
+                float x = (maxPoint.x - (Math.Abs(maxPoint.x - minPoint.x)) * normalizedX) * 2;
+                float y = (maxPoint.y - (Math.Abs(maxPoint.y - minPoint.y)) * normalizedY) * 2;
                 float zAxis = z; //- 5.0f*float.Parse(coordinates[2], CultureInfo.InvariantCulture); //zAxis is for some reason moved 1 forward
 
                 Vector3 position = new Vector3(x, y, zAxis);
