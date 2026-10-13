@@ -139,7 +139,7 @@ public class DevConsole : MonoBehaviour
         }
 
         //player and movement commands
-        if(command[0] == "ghostmode" && command.Length == 1)
+        if((command[0] == "ghostmode" || command[0] == "ghost") && command.Length == 1)
         {
             GhostMode();
             return;
@@ -150,10 +150,10 @@ public class DevConsole : MonoBehaviour
             return;
         }
 
-        //parameters commands
-        if(command[0] == "fps" && command.Length == 1)
+        //debug display
+        if(command[0] == "perfo" && command.Length == 1)
         {
-            Fps();
+            Perfo();
             return;
         }
         if (command[0] == "camera" && command.Length == 1)
@@ -168,13 +168,11 @@ public class DevConsole : MonoBehaviour
             SaveState();
             return;
         }
-
         if (command[0] == "resetstate" && command.Length == 1)
         {
             ResetState();
             return;
         }
-
         if (command[0] == "loadscene" && command.Length == 2)
         {
             LoadScene(command[1]);
@@ -187,7 +185,6 @@ public class DevConsole : MonoBehaviour
             AllItems();
             return;
         }
-
         if (command[0] == "collectallitems" && command.Length == 1)
         {
             CollectAllItems();
@@ -237,7 +234,7 @@ public class DevConsole : MonoBehaviour
 
 
     //parameters commands ----------------------------------------------------------------------------------------- parameters commands
-    void Fps() //turning on/off fps display
+    void Perfo() //turning on/off perfo display
     {
         fps = !fps;
         PlayerPrefs.SetInt("fps", fps ? 1 : 0);
