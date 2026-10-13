@@ -25,20 +25,23 @@ public class DevConsole : MonoBehaviour
     //currently active commands
     bool ghostmode = false;
     bool devhand = false;
-    bool fps = false;
+    bool perfo = false;
     bool webcam = false;
+    bool narrative = false;
 
     private void Start()
     {
         if (!PlayerPrefs.HasKey("ghostmode")) { PlayerPrefs.SetInt("ghostmode", 0); }
         if (!PlayerPrefs.HasKey("devhand")) { PlayerPrefs.SetInt("devhand", 0); }
-        if (!PlayerPrefs.HasKey("fps")) { PlayerPrefs.SetInt("fps", 0); }
+        if (!PlayerPrefs.HasKey("perfo")) { PlayerPrefs.SetInt("perfo", 0); }
         if (!PlayerPrefs.HasKey("camera")) { PlayerPrefs.SetInt("camera", 0); }
+        if (!PlayerPrefs.HasKey("narrative")) { PlayerPrefs.SetInt("narrative", 0); }
 
-        if (PlayerPrefs.GetInt("ghostmode") == 1) { GhostMode(); }
-        if (PlayerPrefs.GetInt("devhand") == 1) { DevHand(); }
-        if (PlayerPrefs.GetInt("fps") == 1) { Fps(); }
-        if (PlayerPrefs.GetInt("camera") == 1) { Camera(); }
+        if (PlayerPrefs.GetInt("ghostmode") == 1) { Command_GhostMode(); }
+        if (PlayerPrefs.GetInt("devhand") == 1) { Command_DevHand(); }
+        if (PlayerPrefs.GetInt("perfo") == 1) { Command_Perfo(); }
+        if (PlayerPrefs.GetInt("camera") == 1) { Command_Camera(); }
+        if (PlayerPrefs.GetInt("narrative") == 1) { Command_Narrative(); }
     }
 
     void Update()
@@ -141,60 +144,65 @@ public class DevConsole : MonoBehaviour
         //player and movement commands
         if((command[0] == "ghostmode" || command[0] == "ghost") && command.Length == 1)
         {
-            GhostMode();
+            Command_GhostMode();
             return;
         }
         if (command[0] == "devhand" && command.Length == 1)
         {
-            DevHand();
+            Command_DevHand();
             return;
         }
 
         //debug display
         if(command[0] == "perfo" && command.Length == 1)
         {
-            Perfo();
+            Command_Perfo();
             return;
         }
         if (command[0] == "camera" && command.Length == 1)
         {
-            Camera();
+            Command_Camera();
+            return;
+        }
+        if (command[0] == "narrative" && command.Length == 1)
+        {
+            Command_Narrative();
             return;
         }
 
         //game saves commands
         if (command[0] == "savestate" && command.Length == 1)
         {
-            SaveState();
+            Command_SaveState();
             return;
         }
         if (command[0] == "resetstate" && command.Length == 1)
         {
-            ResetState();
+            Command_ResetState();
             return;
         }
         if (command[0] == "loadscene" && command.Length == 2)
         {
-            LoadScene(command[1]);
+            Command_LoadScene(command[1]);
             return;
         }
 
         //inventory commands
         if (command[0] == "allitems" && command.Length == 1)
         {
-            AllItems();
+            Command_AllItems();
             return;
         }
         if (command[0] == "collectallitems" && command.Length == 1)
         {
-            CollectAllItems();
+            Command_CollectAllItems();
             return;
         }
 
         //spellbook commands
         if (command[0] == "allspells" && command.Length == 1)
         {
-            AllSpells();
+            Command_AllSpells();
             return;
         }
 
@@ -202,14 +210,14 @@ public class DevConsole : MonoBehaviour
     }
 
     //player and movement commands ----------------------------------------------------------------------------------------- player and movement commands
-    void GhostMode() //making player able to move through objects
+    void Command_GhostMode() //making player able to move through objects
     {
         ghostmode = !ghostmode;
         PlayerPrefs.SetInt("ghostmode", ghostmode ? 1 : 0);
         PlayerParams.Controllers.playerMovement.ghostmodeActive = ghostmode;
     }
 
-    void DevHand()
+    void Command_DevHand()
     {
         devhand = !devhand;
         PlayerPrefs.SetInt("devhand", devhand ? 1 : 0);
@@ -233,24 +241,30 @@ public class DevConsole : MonoBehaviour
     }
 
 
-    //parameters commands ----------------------------------------------------------------------------------------- parameters commands
-    void Perfo() //turning on/off perfo display
+
+    //debug display commands ----------------------------------------------------------------------------------------- debug display commands
+    void Command_Perfo() //turning on/off perfo display
     {
-        fps = !fps;
-        PlayerPrefs.SetInt("fps", fps ? 1 : 0);
-        fpsCounter.SetActive(fps);
+        perfo = !perfo;
+        PlayerPrefs.SetInt("perfo", perfo ? 1 : 0);
+        fpsCounter.SetActive(perfo);
     }
 
-    void Camera()
+    void Command_Camera()
     {
         webcam = !webcam;
         PlayerPrefs.SetInt("camera", webcam ? 1 : 0);
         webCamera.SetActive(webcam);
     }
 
+    void Command_Narrative()
+    {
+
+    }
+
 
     //game saves commands ----------------------------------------------------------------------------------------- game saves commands
-    void SaveState()
+    void Command_SaveState()
     {
         ProgressSaving saveManager;
 
@@ -296,7 +310,7 @@ public class DevConsole : MonoBehaviour
         saveManager.SaveProgressToFile();
     }
 
-    void ResetState()
+    void Command_ResetState()
     {
         ProgressSaving saveManager;
 
@@ -331,14 +345,14 @@ public class DevConsole : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    void LoadScene(string sceneName)
+    void Command_LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
 
 
     //inventory commands ----------------------------------------------------------------------------------------- inventory commands
-    void AllItems() //adding all existings items to inventory
+    void Command_AllItems() //adding all existings items to inventory
     {
         ItemHolder itemHolder = GameParams.Holders.itemHolder;
 
@@ -352,7 +366,7 @@ public class DevConsole : MonoBehaviour
         }
     }
 
-    void CollectAllItems() //adding all existings items to inventory
+    void Command_CollectAllItems() //adding all existings items to inventory
     {
         Inventory inventory = PlayerParams.Controllers.inventory;
 
@@ -370,7 +384,7 @@ public class DevConsole : MonoBehaviour
 
 
     //spellbook commands ----------------------------------------------------------------------------------------- spellbook commands
-    void AllSpells() //adding all existings spells to spellbook
+    void Command_AllSpells() //adding all existings spells to spellbook
     {
         SpellScrollsHolder spellScrollsHolder = GameParams.Holders.spellScrollsHolder;
 
