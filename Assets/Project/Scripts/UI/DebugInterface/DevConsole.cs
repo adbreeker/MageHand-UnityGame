@@ -11,8 +11,9 @@ public class DevConsole : MonoBehaviour
 {
     [Header("Objects of DebugCanvas:")]
     public TMP_InputField console;
-    public GameObject fpsCounter;
+    public GameObject perfoOverlay;
     public GameObject webCamera;
+    public GameObject narrativeOverlay;
 
     [Header("Hands for devhand:")]
     public GameObject handObject;
@@ -247,7 +248,7 @@ public class DevConsole : MonoBehaviour
     {
         perfo = !perfo;
         PlayerPrefs.SetInt("perfo", perfo ? 1 : 0);
-        fpsCounter.SetActive(perfo);
+        perfoOverlay.SetActive(perfo);
     }
 
     void Command_Camera()
@@ -259,7 +260,9 @@ public class DevConsole : MonoBehaviour
 
     void Command_Narrative()
     {
-
+        narrative = !narrative;
+        PlayerPrefs.SetInt("narrative", narrative ? 1 : 0);
+        narrativeOverlay.SetActive(narrative);
     }
 
 
