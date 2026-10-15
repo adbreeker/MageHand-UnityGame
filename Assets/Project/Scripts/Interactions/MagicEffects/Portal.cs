@@ -17,7 +17,6 @@ public class Portal : MonoBehaviour
 
         if (toTeleport.gameObject.tag == "Player") //if player add player teleportation effect
         {
-
             toTeleport.GetComponent<PlayerMovement>().TeleportTo(tpDest, tpRot, gameObject.GetComponent<ParticleSystem>().main.startColor.color);
         }
         else
