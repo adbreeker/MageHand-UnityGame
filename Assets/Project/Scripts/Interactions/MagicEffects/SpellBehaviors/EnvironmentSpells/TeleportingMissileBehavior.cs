@@ -5,11 +5,8 @@ using UnityEngine;
 
 public class TeleportingMissileBehavior : SpellBehavior
 {
-    public Vector3 teleportationDestination;
-    public bool teleportOnCurrentHeight = true;
-
-    public float teleportationRotation;
-    public bool teleportOnCurrentRotation = true;
+    [Header("Teleportation Setup")]
+    public TeleportationSetup teleportationSetup;
 
     private GameObject instantiatedEffect;
 
@@ -30,35 +27,36 @@ public class TeleportingMissileBehavior : SpellBehavior
         instantiatedEffect = Instantiate(specialEffectPrefab, transform.position, Quaternion.identity);
         GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_Teleport, instantiatedEffect.transform);
 
-        Vector3 tpDest = teleportationDestination;
-        float tpRot = teleportationRotation;
-        if(teleportOnCurrentHeight) { tpDest.y = impactTarget.transform.position.y; }
-        if(teleportOnCurrentRotation) { tpRot = impactTarget.transform.rotation.eulerAngles.y; }
-
+        
         //managing all teleportations
         if (impactTarget.layer == LayerMask.NameToLayer("Player")) //player
         {
-            ManageTeleportingPlayer(tpDest, tpRot);
+            ManageTeleportingPlayer();
         }
         else if(impactTarget.GetComponent<ItemBehavior>() != null)  //item
         {
-            ManageTeleportingItem(impactTarget, tpDest, tpRot);
+            ManageTeleportingItem(impactTarget);
         }
         else if(impactTarget.GetComponent<SpellBehavior>() != null) //spell
         {
-            ManageTeleportingSpell(impactTarget, tpDest, tpRot);
+            ManageTeleportingSpell(impactTarget);
         }
 
         Destroy(gameObject);
     }
 
-    void ManageTeleportingPlayer(Vector3 tpDestination, float tpRotation)
+    void ManageTeleportingPlayer()
     {
+        Vector3 tpDestination = teleportationSetup.GetTpDestination(PlayerParams.Objects.player);
+        float tpRotation = teleportationSetup.GetTpRotation(PlayerParams.Objects.player);
         PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination, tpRotation, null);
     }
 
-    void ManageTeleportingItem(GameObject item, Vector3 tpDestination, float tpRotation)
+    void ManageTeleportingItem(GameObject item)
     {
+        Vector3 tpDestination = teleportationSetup.GetTpDestination(item);
+        float tpRotation = teleportationSetup.GetTpRotation(item);
+
         if (item.tag == "Shield")
         {
             // shield is protecting from magic missiles
@@ -71,25 +69,29 @@ public class TeleportingMissileBehavior : SpellBehavior
             }
             else if (PlayerParams.Controllers.handInteractions.inHand == item)
             {
-                ManageTeleportingPlayer(tpDestination, tpRotation);
+                ManageTeleportingPlayer();
             }
             else
             {
+                Debug.Log("Teleporting very strange item object");
                 item.transform.parent = null;
                 item.GetComponent<ItemBehavior>().TeleportTo(tpDestination, tpRotation, null);
             }
         }
     }
 
-    void ManageTeleportingSpell(GameObject spell, Vector3 tpDestination, float tpRotation)
+    void ManageTeleportingSpell(GameObject spell)
     {
+        Vector3 tpDestination = teleportationSetup.GetTpDestination(spell);
+        float tpRotation = teleportationSetup.GetTpRotation(spell);
+
         if (spell.transform.parent == null)
         {
             spell.GetComponent<SpellBehavior>().TeleportTo(tpDestination, tpRotation, null);
         }
         else if (PlayerParams.Controllers.handInteractions.inHand == spell)
         {
-            PlayerParams.Controllers.playerMovement.TeleportTo(tpDestination, tpRotation, null);
+            ManageTeleportingPlayer();
         }
         else
         {

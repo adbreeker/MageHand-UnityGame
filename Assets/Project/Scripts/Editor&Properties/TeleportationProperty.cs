@@ -5,7 +5,15 @@ using UnityEngine;
 public class TeleportationSetup
 {
     public enum HeightOption { Current, Custom }
-    public enum RotationOption { Current, North, East, South, West, Custom }
+    public enum RotationOption
+    {
+        Current,
+        [InspectorName("North (0f)")] North,
+        [InspectorName("East (90f)")] East,
+        [InspectorName("South (180f)")] South,
+        [InspectorName("West (270f)")] West,
+        Custom
+    }
 
     public HeightOption heightType;
 
@@ -31,25 +39,25 @@ public class TeleportationSetup
         }
     }
 
-    public Quaternion GetTpRotation(GameObject teleported)
+    public float GetTpRotation(GameObject teleported)
     {
         switch (rotationType) 
         {
             case RotationOption.Current:
-                return Quaternion.identity;
+                return Mathf.Round(teleported.transform.rotation.eulerAngles.y / 90f) * 90f;
             case RotationOption.North:
-                return Quaternion.Euler(teleported.transform.rotation.eulerAngles.x, 0f, teleported.transform.rotation.eulerAngles.z);
+                return 0f;
             case RotationOption.East:
-                return Quaternion.Euler(teleported.transform.rotation.eulerAngles.x, 90f, teleported.transform.rotation.eulerAngles.z);
+                return 90f;
             case RotationOption.South:
-                return Quaternion.Euler(teleported.transform.rotation.eulerAngles.x, 180f, teleported.transform.rotation.eulerAngles.z);
+                return 180f;
             case RotationOption.West:
-                return Quaternion.Euler(teleported.transform.rotation.eulerAngles.x, 270f, teleported.transform.rotation.eulerAngles.z);
+                return 270f;
             case RotationOption.Custom:
-                return Quaternion.Euler(teleported.transform.rotation.eulerAngles.x, customRotation, teleported.transform.rotation.eulerAngles.z);
+                return customRotation;
             default:
                 Debug.LogWarning("Teleportation used default rotation");
-                return Quaternion.identity;
+                return 0f;
         }
     }
 }
@@ -84,7 +92,12 @@ public class TeleportationSetupDrawer : PropertyDrawer
             if ((TeleportationSetup.HeightOption)heightProp.enumValueIndex == TeleportationSetup.HeightOption.Current)
             {
                 SerializedProperty dest2D = property.FindPropertyRelative("destination2D");
-                dest2D.vector2Value = EditorGUI.Vector2Field(fieldPosition, new GUIContent("Destination"), dest2D.vector2Value);
+                Vector2 destination = dest2D.vector2Value;
+                float[] values = { destination.x, destination.y };
+                GUIContent[] axisLabels = { new GUIContent("X"), new GUIContent("Z") };
+
+                EditorGUI.MultiFloatField(fieldPosition, new GUIContent("Destination"), axisLabels, values);
+                dest2D.vector2Value = new Vector2(values[0], values[1]);
             }
             else
             {

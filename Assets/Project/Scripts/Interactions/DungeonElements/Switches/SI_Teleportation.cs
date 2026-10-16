@@ -4,13 +4,8 @@ using UnityEngine;
 
 public class SI_Teleportation : SwitchInteraction
 {
-    [Header("Destination")]
-    public Vector3 tpDestination;
-    public bool teleportOnCurrentHeight = true;
-
-    [Header("Rotation")]
-    public float tpRotation;
-    public bool teleportWithCurrentRotation = true;
+    [Header("Teleportation Setup")]
+    public TeleportationSetup teleportationSetup;
 
     public override void Interact()
     {
@@ -18,10 +13,8 @@ public class SI_Teleportation : SwitchInteraction
         {
             if (interactedObject.tag == "Player")
             {
-                Vector3 tpDest = tpDestination;
-                float tpRot = tpRotation;
-                if (teleportOnCurrentHeight) { tpDest.y = PlayerParams.Objects.player.transform.position.y; }
-                if (teleportWithCurrentRotation) { tpRot = PlayerParams.Objects.player.transform.rotation.eulerAngles.y; }
+                Vector3 tpDest = teleportationSetup.GetTpDestination(PlayerParams.Objects.player);
+                float tpRot = teleportationSetup.GetTpRotation(PlayerParams.Objects.player);
 
                 PlayerParams.Controllers.playerMovement.TeleportTo(tpDest, tpRot, null);
             }

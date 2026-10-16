@@ -11,6 +11,8 @@ public class MagicMirrorBehavior : MonoBehaviour
 
     //image showing
     Texture2D _defaultTexture;
+    Texture2D _playerTexture;
+    byte[] _frameBuffer;
     bool _showPlayer = false;
     float _minTransparency = 0.05f;
     float _maxTransparency = 0.96f;
@@ -18,6 +20,8 @@ public class MagicMirrorBehavior : MonoBehaviour
     private void Start()
     {
         _defaultTexture = (Texture2D)_mirrorImage.texture;
+        _playerTexture = new Texture2D(640, 480, TextureFormat.RGB24, false);
+        _frameBuffer = new byte[640 * 480 * 3];
     }
 
     private void FixedUpdate()
@@ -30,21 +34,26 @@ public class MagicMirrorBehavior : MonoBehaviour
                 {
                     using (MemoryMappedViewStream stream = mmf.CreateViewStream())
                     {
-                        BinaryReader reader = new BinaryReader(stream);
-                        byte[] frameBuffer = reader.ReadBytes(480 * 640 * 3);
+                        int offset = 0;
+                        while (offset < _frameBuffer.Length)
+                        {
+                            int count = stream.Read(_frameBuffer, offset, _frameBuffer.Length - offset);
+                            if (count == 0)
+                            {
+                                _mirrorImage.texture = _defaultTexture;
+                                return;
+                            }
 
-                        int width = 640;
-                        int height = 480;
+                            offset += count;
+                        }
 
-                        Texture2D texture = new Texture2D(width, height, TextureFormat.RGB24, false);
-                        texture.LoadRawTextureData(frameBuffer);
-                        texture.Apply();
-
-                        _mirrorImage.texture = texture;
+                        _playerTexture.LoadRawTextureData(_frameBuffer);
+                        _playerTexture.Apply(false, false);
+                        _mirrorImage.texture = _playerTexture;
                     }
                 }
             }
-            catch (FileNotFoundException)
+            catch (IOException)
             {
                 _mirrorImage.texture = _defaultTexture;
             }
@@ -89,5 +98,14 @@ public class MagicMirrorBehavior : MonoBehaviour
             _mirrorImage.color = newColor;
             yield return deley;
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (_mirrorImage != null && _mirrorImage.texture == _playerTexture)
+            _mirrorImage.texture = _defaultTexture;
+
+        if (_playerTexture != null)
+            Destroy(_playerTexture);
     }
 }

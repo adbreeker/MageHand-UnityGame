@@ -22,6 +22,7 @@ public class WallCannonBehavior : MonoBehaviour
     [Header("Additional launch settings:")]
 
     [Header("Teleporting missile")]
+    public TeleportationSetup teleportationSetup;
     public Vector3 tpDestination;
     public float tpRotation;
     public bool tpOnCurrentRotation = true;
@@ -91,12 +92,7 @@ public class WallCannonBehavior : MonoBehaviour
         GameObject missile = Instantiate(missilesPrefabs[(int)missileType], _launchingPos, _launchingRot);
 
         TeleportingMissileBehavior missileBehavior = missile.GetComponent<TeleportingMissileBehavior>();
-        missileBehavior.teleportationDestination = tpDestination;
-        if(!tpOnCurrentRotation)
-        {
-            missileBehavior.teleportOnCurrentRotation = false;
-            missileBehavior.teleportationRotation = tpRotation;
-        }
+        missileBehavior.teleportationSetup = teleportationSetup;
 
         Rigidbody rb = missile.GetComponent<Rigidbody>();
         rb.AddForce(gameObject.transform.up * 10, ForceMode.Impulse);
@@ -167,6 +163,8 @@ public class WallCannonBehaviorEditor : Editor
         if (wallCannon.missileType == WallCannonBehavior.MissileType.teleportingMissile)
         {
             EditorGUILayout.LabelField("Teleporting missile", EditorStyles.boldLabel);
+            SerializedProperty teleportationSetupProp = serializedObject.FindProperty("teleportationSetup");
+            EditorGUILayout.PropertyField(teleportationSetupProp, new GUIContent("Teleportation Setup"), true);
             wallCannon.tpDestination = EditorGUILayout.Vector3Field("TP Destination", wallCannon.tpDestination);
             wallCannon.tpRotation = EditorGUILayout.FloatField("TP Rotation", wallCannon.tpRotation);
             wallCannon.tpOnCurrentRotation = EditorGUILayout.Toggle("TP On Current Rotation", wallCannon.tpOnCurrentRotation);

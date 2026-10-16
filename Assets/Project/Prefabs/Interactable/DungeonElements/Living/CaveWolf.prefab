@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6315551374106646357}
   m_Layer: 0
   m_Name: AnimationBody
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -64,9 +64,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9013392489110550439}
+  - component: {fileID: 3167851102363399802}
+  - component: {fileID: 3650361861950041004}
   m_Layer: 0
   m_Name: Bip02
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -87,6 +89,48 @@ Transform:
   - {fileID: 6761193896301110420}
   m_Father: {fileID: 1232555769032878907}
   m_LocalEulerAnglesHint: {x: -30, y: 0, z: 90}
+--- !u!135 &3167851102363399802
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392582512542840507}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2.5
+  m_Center: {x: -1.44, y: 0, z: 0}
+--- !u!135 &3650361861950041004
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392582512542840507}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2.5
+  m_Center: {x: 0.68, y: 0, z: -5.32}
 --- !u!1 &885290506245823632
 GameObject:
   m_ObjectHideFlags: 0
@@ -98,7 +142,7 @@ GameObject:
   - component: {fileID: 1606710845062888786}
   m_Layer: 0
   m_Name: Bip02 L Toe0
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -130,7 +174,7 @@ GameObject:
   - component: {fileID: 4504969755130778986}
   m_Layer: 0
   m_Name: Bip02 R Finger0
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -162,7 +206,7 @@ GameObject:
   - component: {fileID: 296351549758066927}
   m_Layer: 0
   m_Name: Bip02 Tail1
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -194,7 +238,7 @@ GameObject:
   - component: {fileID: 2768755355451432842}
   m_Layer: 0
   m_Name: Bip02 Neck1
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -226,7 +270,7 @@ GameObject:
   - component: {fileID: 2469166269661414002}
   m_Layer: 0
   m_Name: Bip02 L UpperArm
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -256,9 +300,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4439908286537808358}
+  - component: {fileID: 6006116974342206166}
   m_Layer: 0
   m_Name: Bip02 Head
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -280,6 +325,27 @@ Transform:
   - {fileID: 4793426355195024287}
   m_Father: {fileID: 2768755355451432842}
   m_LocalEulerAnglesHint: {x: 0.000031719886, y: -0.00009526498, z: 36.83196}
+--- !u!135 &6006116974342206166
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2450757001067694253}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 2
+  m_Center: {x: 0.15, y: 0.71, z: 0}
 --- !u!1 &2639007508981221984
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,7 +357,7 @@ GameObject:
   - component: {fileID: 3020919458370003043}
   m_Layer: 0
   m_Name: Bip02 Spine1
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -323,7 +389,7 @@ GameObject:
   - component: {fileID: 6203262376404792556}
   m_Layer: 0
   m_Name: Bip02 R Clavicle
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -356,7 +422,7 @@ GameObject:
   - component: {fileID: 3934190133960112167}
   m_Layer: 0
   m_Name: Bip02 Ponytail1
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -409,7 +475,7 @@ GameObject:
   - component: {fileID: 4922489860450320443}
   m_Layer: 0
   m_Name: Bip02 Spine
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -441,7 +507,7 @@ GameObject:
   - component: {fileID: 5843972747655390356}
   m_Layer: 0
   m_Name: Bip02 HeadNub_end
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -472,7 +538,7 @@ GameObject:
   - component: {fileID: 982458140146844962}
   m_Layer: 0
   m_Name: Bip02 HeadNub
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -504,7 +570,7 @@ GameObject:
   - component: {fileID: 8838245736007311230}
   m_Layer: 0
   m_Name: Bip02 L Hand
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -536,7 +602,7 @@ GameObject:
   - component: {fileID: 6761193896301110420}
   m_Layer: 0
   m_Name: Bip02 Pelvis
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -571,7 +637,7 @@ GameObject:
   - component: {fileID: 591021287358438060}
   m_Layer: 0
   m_Name: Bip02 L Thigh
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -603,7 +669,7 @@ GameObject:
   - component: {fileID: 2845548513210872965}
   m_Layer: 0
   m_Name: Bip02 L Clavicle
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -635,7 +701,7 @@ GameObject:
   - component: {fileID: 4970773766491286051}
   m_Layer: 0
   m_Name: Bip02 Spine2
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -667,7 +733,7 @@ GameObject:
   - component: {fileID: 5386534029224567000}
   m_Layer: 0
   m_Name: Bip02 R Toe0
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -699,7 +765,7 @@ GameObject:
   - component: {fileID: 2038518245435095793}
   m_Layer: 0
   m_Name: Bip02 R Toe0Nub_end
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -730,7 +796,7 @@ GameObject:
   - component: {fileID: 2364359352039257324}
   m_Layer: 0
   m_Name: Bip02 R UpperArm
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -762,7 +828,7 @@ GameObject:
   - component: {fileID: 8123013413144354423}
   m_Layer: 0
   m_Name: Bip02 L Finger0Nub
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -794,7 +860,7 @@ GameObject:
   - component: {fileID: 6448879097175239387}
   m_Layer: 0
   m_Name: Bip02 TailNub_end
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -825,7 +891,7 @@ GameObject:
   - component: {fileID: 6734327216343855906}
   m_Layer: 0
   m_Name: Bip02 L Forearm
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -857,7 +923,7 @@ GameObject:
   - component: {fileID: 2814400640047356193}
   m_Layer: 0
   m_Name: Bip02 R Forearm
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -889,7 +955,7 @@ GameObject:
   - component: {fileID: 5253548956458444407}
   m_Layer: 0
   m_Name: Bip02 R Foot
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -921,7 +987,7 @@ GameObject:
   - component: {fileID: 1519117747594475577}
   m_Layer: 0
   m_Name: Bip02 L Finger0
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -953,7 +1019,7 @@ GameObject:
   - component: {fileID: 3515188505879420452}
   m_Layer: 0
   m_Name: Bip02 R Calf
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -985,7 +1051,7 @@ GameObject:
   - component: {fileID: 7456531962904044235}
   m_Layer: 0
   m_Name: Bip02 Ponytail1Nub
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1017,7 +1083,7 @@ GameObject:
   - component: {fileID: 5692474171160292936}
   m_Layer: 0
   m_Name: Bip02 Tail3
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1049,7 +1115,7 @@ GameObject:
   - component: {fileID: 1470507641363355924}
   m_Layer: 0
   m_Name: Bip02 Ponytail1Nub_end
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1080,7 +1146,7 @@ GameObject:
   - component: {fileID: 1999886304873628385}
   m_Layer: 0
   m_Name: Bip02 TailNub
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1112,7 +1178,7 @@ GameObject:
   - component: {fileID: 8337584440299654399}
   m_Layer: 0
   m_Name: Bip02 L Calf
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1144,7 +1210,7 @@ GameObject:
   - component: {fileID: 2069714894106502699}
   m_Layer: 0
   m_Name: Bip02 R Finger0Nub_end
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1175,7 +1241,7 @@ GameObject:
   - component: {fileID: 4797256724952580665}
   m_Layer: 0
   m_Name: Bip02 R Toe0Nub
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1207,7 +1273,7 @@ GameObject:
   - component: {fileID: 8670393680359997176}
   m_Layer: 0
   m_Name: Bip02 R Finger0Nub
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1239,7 +1305,7 @@ GameObject:
   - component: {fileID: 5503871508210640544}
   m_Layer: 0
   m_Name: Bip02 Tail
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1271,7 +1337,7 @@ GameObject:
   - component: {fileID: 1116942870486096510}
   m_Layer: 0
   m_Name: Bip02 L Finger0Nub_end
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1301,8 +1367,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8028908474354460793}
   - component: {fileID: 336657355243797533}
-  - component: {fileID: 4217719598384731940}
   - component: {fileID: 243616440703554905}
+  - component: {fileID: 3911880910937125736}
   m_Layer: 0
   m_Name: CaveWolf
   m_TagString: Obstacle
@@ -1419,28 +1485,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -3, y: 0, z: -1.5}
     m_Extent: {x: 7.5, y: 2.5, z: 10}
   m_DirtyAABB: 0
---- !u!64 &4217719598384731940
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8028908474354170969}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
 --- !u!114 &243616440703554905
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1458,6 +1502,33 @@ MonoBehaviour:
   attackRange: 3
   attackCooldown: 1
   _teleportationEffect: {fileID: 7053385775836331393, guid: c6f0c2695443e0f48b3cfb2e2472df73, type: 3}
+--- !u!54 &3911880910937125736
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8028908474354170969}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8356635415926273928
 GameObject:
   m_ObjectHideFlags: 0
@@ -1469,7 +1540,7 @@ GameObject:
   - component: {fileID: 5266015693367534778}
   m_Layer: 0
   m_Name: Bip02 Tail2
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1501,7 +1572,7 @@ GameObject:
   - component: {fileID: 4077832342448682571}
   m_Layer: 0
   m_Name: Bip02 R Hand
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1533,7 +1604,7 @@ GameObject:
   - component: {fileID: 3416756039511835891}
   m_Layer: 0
   m_Name: Bip02 R Thigh
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1565,7 +1636,7 @@ GameObject:
   - component: {fileID: 1059360236968768322}
   m_Layer: 0
   m_Name: Bip02 Neck
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1599,7 +1670,7 @@ GameObject:
   - component: {fileID: 1508973850571163837}
   m_Layer: 0
   m_Name: Bip02 L Toe0Nub_end
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1630,7 +1701,7 @@ GameObject:
   - component: {fileID: 8498293463780028372}
   m_Layer: 0
   m_Name: Bip02 L Foot
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1662,7 +1733,7 @@ GameObject:
   - component: {fileID: 2285008469850817169}
   m_Layer: 0
   m_Name: Bip02 L Toe0Nub
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
