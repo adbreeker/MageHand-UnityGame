@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
-using static ProgressSaving.SaveData.JournalSave.DialoguesDict;
-using static ProgressSaving;
 
 public class ProgressSaving : MonoBehaviour
 {
