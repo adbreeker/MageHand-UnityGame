@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SkullPlatformBehavior : MonoBehaviour
 {
@@ -18,8 +19,8 @@ public class SkullPlatformBehavior : MonoBehaviour
     [Header("Platform effect")]
     [SerializeField] GameObject _platformEffectPrefab;
 
-    //[Header("Platform outcomes:")]
-    public event Action DialogueFinished;
+    [Header("Platform outcomes:")]
+    public UnityEvent DialogueFinished;
 
     public void SetPlatformActive(bool active)
     {
