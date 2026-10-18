@@ -6,7 +6,7 @@ public class StaringContestSecret : MonoBehaviour
 {
     public float staringContestTime = 30.0f;
     [SerializeField] Transform _staringContestCube;
-    [SerializeField] GameObject _dialogue;
+    [SerializeField] SkullPlatformBehavior _skullPlatform;
 
     [Header("After win:")]
     [SerializeField] OpenWallPassage _wallPassage;
@@ -19,6 +19,7 @@ public class StaringContestSecret : MonoBehaviour
     private void Awake()
     {
         GameParams.Managers.levelInfoManager.AddSecretOnLevel();
+        _skullPlatform.OnDialogueFinished.AddListener(StartContest);
     }
 
     void Update()
@@ -57,6 +58,7 @@ public class StaringContestSecret : MonoBehaviour
 
     public void StartContest()
     {
+        Debug.Log("Staring contest started");
         contestStarted = true;
     }
 
