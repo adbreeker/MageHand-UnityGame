@@ -55,15 +55,17 @@ public class SpellScrollsHolder : MonoBehaviour
 
     public List<SpellScrollInfo> GiveAllScrolls() //returning all scrolls
     {
-        List<SpellScrollInfo> allScrolls = new List<SpellScrollInfo>();
-        allScrolls.Add(scrollOfLight.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
-        allScrolls.Add(scrollOfFire.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
-        allScrolls.Add(scrollOfMark.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
-        allScrolls.Add(scrollOfCollect.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
-        allScrolls.Add(scrollOfOpen.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
-        allScrolls.Add(scrollOfSpeak.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
-        allScrolls.Add(scrollOfSlow.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
-        allScrolls.Add(scrollOfDispel.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo());
+        List<SpellScrollInfo> allScrolls = new List<SpellScrollInfo>()
+        {
+            scrollOfLight.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo(),
+            scrollOfFire.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo(),
+            scrollOfMark.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo(),
+            scrollOfCollect.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo(),
+            scrollOfOpen.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo(),
+            scrollOfSpeak.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo(),
+            scrollOfSlow.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo(),
+            scrollOfDispel.GetComponent<SpellScrollBehavior>().GetSpellScrollInfo()
+        };
 
         return allScrolls;
     }
