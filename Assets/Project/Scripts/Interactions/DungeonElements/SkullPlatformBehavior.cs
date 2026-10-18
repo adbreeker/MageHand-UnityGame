@@ -20,7 +20,7 @@ public class SkullPlatformBehavior : MonoBehaviour
     [SerializeField] GameObject _platformEffectPrefab;
 
     [Header("Platform outcomes:")]
-    public UnityEvent DialogueFinished;
+    public UnityEvent OnDialogueFinished;
 
     public void SetPlatformActive(bool active)
     {
@@ -65,7 +65,7 @@ public class SkullPlatformBehavior : MonoBehaviour
         while(_dialogue.gameObject.activeSelf) { yield return null; }
         PlayerParams.Controllers.playerMovement.stopMovement = false;
         PlayerParams.Controllers.spellCasting.currentSpell = "None";
-        DialogueFinished?.Invoke();
+        OnDialogueFinished?.Invoke();
 
         while (effect.transform.localScale.y > startingScale.y)
         {

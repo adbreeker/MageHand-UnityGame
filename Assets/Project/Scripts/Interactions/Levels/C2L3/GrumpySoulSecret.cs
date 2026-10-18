@@ -11,14 +11,14 @@ public class GrumpySoulSecret : MonoBehaviour
 
     private void Start()
     {
-        _helpingPlatform.DialogueFinished.AddListener(ChangePlatforms);
+        _helpingPlatform.OnDialogueFinished.AddListener(ChangePlatforms);
     }
 
     void ChangePlatforms()
     {
         _platformNotTalking.SetActive(false);
         _platformTalking.SetActive(true);
-        _helpingPlatform.DialogueFinished.RemoveListener(ChangePlatforms);
+        _helpingPlatform.OnDialogueFinished.RemoveListener(ChangePlatforms);
         Destroy(this);
     }
 }

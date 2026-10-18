@@ -9,13 +9,13 @@ public class ScrollKeeperDialogueFinish : MonoBehaviour
 
     private void Start()
     {
-        _skullPlatformBehavior.DialogueFinished.AddListener(OpenWall);
+        _skullPlatformBehavior.OnDialogueFinished.AddListener(OpenWall);
     }
 
     void OpenWall()
     {
         _wall.Interaction();
-        _skullPlatformBehavior.DialogueFinished.RemoveListener(OpenWall);
+        _skullPlatformBehavior.OnDialogueFinished.RemoveListener(OpenWall);
         Destroy(this);
     }
 }
