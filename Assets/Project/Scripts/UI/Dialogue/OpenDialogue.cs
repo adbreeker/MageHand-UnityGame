@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 public class OpenDialogue : MonoBehaviour
@@ -18,7 +19,9 @@ public class OpenDialogue : MonoBehaviour
     [Tooltip("Shouldn't be long")]
     public string dialogueSaveName;
 
-    public event Action DialogueStarted;
+    [Header("Events:")]
+    public UnityEvent OnDialogueStarted;
+    public UnityEvent OnDialogueFinished;
 
     private void OnTriggerStay(Collider other)
     {
@@ -26,7 +29,7 @@ public class OpenDialogue : MonoBehaviour
         {
             allowToActivate = false;
 
-            DialogueStarted?.Invoke();
+            OnDialogueStarted?.Invoke();
 
             if (saveDialogue)
             {
@@ -36,7 +39,10 @@ public class OpenDialogue : MonoBehaviour
                 }
             }
 
+            Dialogue dialogue = dialogueCanvas.GetComponent<Dialogue>();
+            dialogue.PrepareForDialogue();
             dialogueCanvas.gameObject.SetActive(true);
+            dialogue.BeginDialogue();
         }
     }
 

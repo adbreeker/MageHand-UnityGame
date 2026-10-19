@@ -13,7 +13,8 @@ public class JudgementPuzzle : MonoBehaviour
     [Header("Judge skull platform")]
     [SerializeField] SkullPlatformBehavior _judgePlatform;
 
-    List<int> judgementsUsed = new List<int>();
+    List<int> _judgementsUsed = new List<int>();
+    bool goodJudgementUsed = false;
 
     private void Start()
     {
@@ -30,14 +31,19 @@ public class JudgementPuzzle : MonoBehaviour
 
     public void BadJudgement(int optionIndex)
     {
-        if(!judgementsUsed.Contains(optionIndex))
+        if(!_judgementsUsed.Contains(optionIndex))
         {
-            judgementsUsed.Add(optionIndex);
+            _judgementsUsed.Add(optionIndex);
             PlayerParams.Controllers.pointsManager.plotPoints -= 1;
 
             _skull.SetActive(false);
         }
 
         PlayerParams.Controllers.playerMovement.TeleportTo(_failTpDestination, 0f,  null);
+    }
+
+    public void JudgePlatformReactivation()
+    {
+        if (!goodJudgementUsed) { _judgePlatform.SetPlatformActive(true); }
     }
 }

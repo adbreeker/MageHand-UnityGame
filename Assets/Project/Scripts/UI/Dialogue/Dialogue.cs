@@ -65,10 +65,98 @@ public class Dialogue : MonoBehaviour
 
     private FmodEvents FmodEvents => GameParams.Managers.fmodEvents;
     private AudioManager AudioManager => GameParams.Managers.audioManager;
-    void Start()
+
+    private void Awake()
     {
         textSpeed = transform.parent.GetComponent<OpenDialogue>().textSpeed;
 
+        pointer = transform.Find("Options").Find("Pointer").gameObject;
+        nameTextObject = transform.Find("Text").Find("Name").GetComponent<TextMeshProUGUI>();
+        contentTextObject = transform.Find("Text").Find("Content").GetComponent<TextMeshProUGUI>();
+
+        voiceRef = guideVoiceline ? FmodEvents.SFX_VoiceGuide : FmodEvents.SFX_VoiceAlandos;
+
+        options = new Dictionary<int, TextMeshProUGUI>
+        {
+            { 1, transform.Find("Options").Find("1").GetComponent<TextMeshProUGUI>() },
+            { 2, transform.Find("Options").Find("2").GetComponent<TextMeshProUGUI>() },
+            { 3, transform.Find("Options").Find("3").GetComponent<TextMeshProUGUI>() },
+            { 4, transform.Find("Options").Find("4").GetComponent<TextMeshProUGUI>() }
+        };
+
+        optionsChoices = new Dictionary<int, Canvas>
+        {
+            { 1, option1Choice }, 
+            { 2, option2Choice },
+            { 3, option3Choice }, 
+            { 4, option4Choice }
+        };
+
+        optionsTexts = new Dictionary<int, string>
+        {
+            { 1, option1Text }, 
+            { 2, option2Text },
+            { 3, option3Text }, 
+            { 4, option4Text }
+        };
+
+        optionsPoints = new Dictionary<int, int>
+        {
+            { 1, option1Points }, 
+            { 2, option2Points },
+            { 3, option3Points }, 
+            { 4, option4Points }
+        };
+
+        optionsActions = new Dictionary<int, UnityEvent>
+        {
+            { 1, option1Action }, 
+            { 2, option2Action },
+            { 3, option3Action }, 
+            { 4, option4Action }
+        };
+    }
+
+    public void BeginDialogue()
+    {
+        StopAllCoroutines();
+
+        listen = false;
+        skip = false;
+        choice = 1;
+        keyTimeDelayer = 0f;
+
+        nameTextObject.text = string.Empty;
+        nameTextObject.gameObject.SetActive(!string.IsNullOrWhiteSpace(nameText));
+        contentTextObject.text = string.Empty;
+        pointer.SetActive(false);
+
+        foreach (int key in options.Keys)
+        {
+            options[key].text = string.Empty;
+            options[key].color = new Color(0.2666f, 0.2666f, 0.2666f);
+            options[key].gameObject.SetActive(false);
+        }
+
+        StartCoroutine(TypeText());
+    }
+
+    void Update()
+    {
+        //Listen if typing text is done
+        if (listen) KeysListener();
+        else KeysListenerSkip();
+
+        if (keyTimeDelayer > 0) keyTimeDelayer -= 75 * Time.unscaledDeltaTime;
+    }
+
+    private void OnDisable()
+    {
+        if (voiceInstance.isValid()) voiceInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+    }
+
+    public void PrepareForDialogue()
+    {
         //Disable other controls (close first, because it activates movement and enable other ui)
         PlayerParams.Controllers.inventory.CloseInventory();
         PlayerParams.Controllers.spellbook.CloseSpellbook();
@@ -83,57 +171,6 @@ public class Dialogue : MonoBehaviour
         PlayerParams.Controllers.journal.ableToInteract = false;
         PlayerParams.Variables.uiActive = true;
         PlayerParams.Objects.hand.SetActive(false);
-
-        pointer = transform.Find("Options").Find("Pointer").gameObject;
-        nameTextObject = transform.Find("Text").Find("Name").GetComponent<TextMeshProUGUI>();
-        contentTextObject = transform.Find("Text").Find("Content").GetComponent<TextMeshProUGUI>();
-
-        if (guideVoiceline) voiceRef = FmodEvents.SFX_VoiceGuide;
-        else voiceRef = FmodEvents.SFX_VoiceAlandos;
-
-        //Create dicts of options, choices when options are chosen and text of options (indexed 1-4)
-        options = new Dictionary<int, TextMeshProUGUI>();
-        options.Add(1, transform.Find("Options").Find("1").GetComponent<TextMeshProUGUI>());
-        options.Add(2, transform.Find("Options").Find("2").GetComponent<TextMeshProUGUI>());
-        options.Add(3, transform.Find("Options").Find("3").GetComponent<TextMeshProUGUI>());
-        options.Add(4, transform.Find("Options").Find("4").GetComponent<TextMeshProUGUI>());
-        optionsChoices = new Dictionary<int, Canvas>();
-        optionsChoices.Add(1, option1Choice);
-        optionsChoices.Add(2, option2Choice);
-        optionsChoices.Add(3, option3Choice);
-        optionsChoices.Add(4, option4Choice);
-        optionsTexts = new Dictionary<int, string>();
-        optionsTexts.Add(1, option1Text);
-        optionsTexts.Add(2, option2Text);
-        optionsTexts.Add(3, option3Text);
-        optionsTexts.Add(4, option4Text);
-        optionsPoints = new Dictionary<int, int>();
-        optionsPoints.Add(1, option1Points);
-        optionsPoints.Add(2, option2Points);
-        optionsPoints.Add(3, option3Points);
-        optionsPoints.Add(4, option4Points);
-        optionsActions = new Dictionary<int, UnityEvent>();
-        optionsActions.Add(1, option1Action);
-        optionsActions.Add(2, option2Action);
-        optionsActions.Add(3, option3Action);
-        optionsActions.Add(4, option4Action);
-
-        //Type text
-        choice = 1;
-        StartCoroutine(TypeText());
-    }
-    void Update()
-    {
-        //Listen if typing text is done
-        if (listen) KeysListener();
-        else KeysListenerSkip();
-
-        if (keyTimeDelayer > 0) keyTimeDelayer -= 75 * Time.unscaledDeltaTime;
-    }
-
-    private void OnDisable()
-    {
-        if (voiceInstance.isValid()) voiceInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
     }
 
     void PointOption(TextMeshProUGUI option)
@@ -271,7 +308,7 @@ public class Dialogue : MonoBehaviour
             PlayerParams.Controllers.pointsManager.plotPoints += optionsPoints[choice];
             optionsActions[choice]?.Invoke();
             gameObject.SetActive(false);
-            if (optionsChoices[choice] == null)
+            if (optionsChoices[choice] == null) // dialogue is over, no next canvas to show
             {
                 //Enable other controls
                 PlayerParams.Variables.uiActive = false;
@@ -282,10 +319,13 @@ public class Dialogue : MonoBehaviour
                 PlayerParams.Controllers.spellsMenu.ableToInteract = true;
                 PlayerParams.Controllers.journal.ableToInteract = true;
                 transform.parent.gameObject.SetActive(false);
+                transform.parent.GetComponent<OpenDialogue>().OnDialogueFinished?.Invoke();
             }
-            else
+            else // dialogue is not over, show next canvas
             {
-                optionsChoices[choice].gameObject.SetActive(true);
+                Canvas nextCanvas = optionsChoices[choice];
+                nextCanvas.gameObject.SetActive(true);
+                nextCanvas.GetComponent<Dialogue>().BeginDialogue();
             }
         }
     }
