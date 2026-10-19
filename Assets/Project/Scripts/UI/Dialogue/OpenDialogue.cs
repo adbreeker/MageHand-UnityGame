@@ -19,6 +19,7 @@ public class OpenDialogue : MonoBehaviour
     [Tooltip("Shouldn't be long")]
     public string dialogueSaveName;
 
+    [Header("Events:")]
     public UnityEvent OnDialogueStarted;
     public UnityEvent OnDialogueFinished;
 

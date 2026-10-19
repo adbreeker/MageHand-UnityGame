@@ -18,6 +18,8 @@ public class SkullPlatformBehavior : MonoBehaviour
 
     [Header("Platform effect")]
     [SerializeField] GameObject _platformEffectPrefab;
+    GameObject _platformEffect;
+    Vector3 _effectStartingScale;
 
     [Header("Platform outcomes:")]
     public UnityEvent OnDialogueFinished;
@@ -40,42 +42,51 @@ public class SkullPlatformBehavior : MonoBehaviour
     public void UsePlatform()
     {
         SetPlatformActive(false);
-        StartCoroutine(PlatformEffect());
+        StartCoroutine(PlatformEffectStart());
         PlayerParams.Controllers.playerMovement.stopMovement = true;
+        _dialogue.OnDialogueFinished.AddListener(DisablePlatform);
     }
 
-    IEnumerator PlatformEffect()
+    IEnumerator PlatformEffectStart()
     {
-        GameObject effect = Instantiate(_platformEffectPrefab, transform);
+        _platformEffect = Instantiate(_platformEffectPrefab, transform);
 
-        Vector3 startingScale = effect.transform.localScale;
+        _effectStartingScale = _platformEffect.transform.localScale;
 
-        while(effect.transform.localScale.y != startingScale.y*6.0f)
+        while(_platformEffect.transform.localScale.y != _effectStartingScale.y*6.0f)
         {
             yield return new WaitForFixedUpdate();
-            effect.transform.localScale = Vector3.MoveTowards(
-                effect.transform.localScale,
-                new Vector3(effect.transform.localScale.x, startingScale.y*6.0f, effect.transform.localScale.z), 0.05f);
+            _platformEffect.transform.localScale = Vector3.MoveTowards(
+                _platformEffect.transform.localScale,
+                new Vector3(_platformEffect.transform.localScale.x, _effectStartingScale.y*6.0f, _platformEffect.transform.localScale.z), 0.05f);
         }
 
         yield return new WaitForSeconds(1);
 
         _dialogue.allowToActivate = true;
+    }
 
-        while(_dialogue.gameObject.activeSelf) { yield return null; }
+    IEnumerator PlatformEffectEnd()
+    {
         PlayerParams.Controllers.playerMovement.stopMovement = false;
         PlayerParams.Controllers.spellCasting.currentSpell = "None";
         OnDialogueFinished?.Invoke();
 
-        while (effect.transform.localScale.y > startingScale.y)
+        while ( _platformEffect.transform.localScale.y > _effectStartingScale.y)
         {
             yield return new WaitForFixedUpdate();
-            effect.transform.localScale = Vector3.MoveTowards(
-                effect.transform.localScale,
-                new Vector3(effect.transform.localScale.x, startingScale.y, effect.transform.localScale.z), 0.05f);
+            _platformEffect.transform.localScale = Vector3.MoveTowards(
+                _platformEffect.transform.localScale,
+                new Vector3(_platformEffect.transform.localScale.x, _effectStartingScale.y, _platformEffect.transform.localScale.z), 0.05f);
         }
 
-        Destroy(effect);
+        Destroy(_platformEffect);
+    }
+
+    public void DisablePlatform()
+    {
+        _dialogue.OnDialogueFinished.RemoveListener(DisablePlatform);
+        StartCoroutine(PlatformEffectEnd());
     }
 
     private void OnValidate()
