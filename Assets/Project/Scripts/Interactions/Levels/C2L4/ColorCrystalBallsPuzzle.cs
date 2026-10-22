@@ -27,7 +27,13 @@ public class ColorCrystalBallsPuzzle : MonoBehaviour
             }
         }
 
-        if(allBalls && !_wall.passageOpen) { _wall.Interaction(); }
-        if(!allBalls && _wall.passageOpen) { _wall.Interaction(); }
+        if(allBalls && !_wall.passageOpen) 
+        { 
+            foreach(ItemDetecting detector in _ballsDetectors)
+            {
+                detector.itemToDetect.GetComponent<ItemBehavior>().isInteractable = false;
+            }
+            _wall.Interaction(); 
+        }
     }
 }
