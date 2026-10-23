@@ -51,15 +51,15 @@ public class Destroyable : MagicImpactTarget
 
         if(GameSettings.graphicsQuality == GameSettings.GraphicsQuality.High)
         {
-            groupSizes = Mathf.Max(1, groupingBy, Mathf.RoundToInt(triangleCount / 1000.0f));
+            groupSizes = Mathf.Max(2, groupingBy, Mathf.RoundToInt(triangleCount / 500.0f));
         }
         else if (GameSettings.graphicsQuality == GameSettings.GraphicsQuality.Medium)
         {
-            groupSizes = Mathf.Max(2, groupingBy, Mathf.RoundToInt(triangleCount / 500.0f));
+            groupSizes = Mathf.Max(4, groupingBy, Mathf.RoundToInt(triangleCount / 250.0f));
         }
         else if (GameSettings.graphicsQuality == GameSettings.GraphicsQuality.Low)
         {
-            groupSizes = Mathf.Max(4, groupingBy, Mathf.RoundToInt(triangleCount / 250.0f));
+            groupSizes = Mathf.Max(8, groupingBy, Mathf.RoundToInt(triangleCount / 125.0f));
         }
         Debug.Log("Destroyable group size: " + groupSizes);
         Mesh[] fragments = CreateFragmentMeshes(_originalMesh, triangles, groupSizes);
