@@ -6,6 +6,7 @@ using UnityEngine;
 public class Destroyable : MagicImpactTarget
 {
     bool _isSkinned;
+    bool _isDestroying;
     Renderer _renderer;
     Mesh _originalMesh;
 
@@ -15,6 +16,11 @@ public class Destroyable : MagicImpactTarget
     [Tooltip("Maximum of splited meshes in every merged group")]
     [Min(1)]
     public int groupingBy = 1;
+
+    [Header("Fragment spawn")]
+    [Tooltip("How many fragment objects are spawned per frame")]
+    [Min(1)]
+    public int fragmentsPerFrame = 20;
 
     private void Awake()
     {
@@ -45,6 +51,10 @@ public class Destroyable : MagicImpactTarget
 
     public void Destroy()
     {
+        if (_isDestroying)
+            return;
+
+        _isDestroying = true;
         int[] triangles = _originalMesh.triangles;
         int triangleCount = triangles.Length / 3;
         int groupSizes = groupingBy;
@@ -61,7 +71,7 @@ public class Destroyable : MagicImpactTarget
         {
             groupSizes = Mathf.Max(8, groupingBy, Mathf.RoundToInt(triangleCount / 125.0f));
         }
-        Debug.Log("Destroyable group size: " + groupSizes);
+
         Mesh[] fragments = CreateFragmentMeshes(_originalMesh, triangles, groupSizes);
         ReplaceOriginalWithFragments(fragments);
     }
@@ -69,8 +79,8 @@ public class Destroyable : MagicImpactTarget
     Mesh[] CreateFragmentMeshes(Mesh originalMesh, int[] triangles, int groupSize)
     {
         Vector3[] vertices = originalMesh.vertices;
-        Vector3[] normals = originalMesh.normals;
         Vector2[] uv = originalMesh.uv;
+        bool hasUv = uv != null && uv.Length == vertices.Length;
         List<Mesh> combinedMeshes = new List<Mesh>();
         bool[] used = new bool[triangles.Length / 3];
 
@@ -81,12 +91,11 @@ public class Destroyable : MagicImpactTarget
 
             List<Vector3> fragmentVertices = new List<Vector3>();
             List<int> fragmentTriangles = new List<int>();
-            List<Vector3> fragmentNormals = new List<Vector3>();
-            List<Vector2> fragmentUv = new List<Vector2>();
+            List<Vector2> fragmentUv = hasUv ? new List<Vector2>() : null;
             HashSet<Vector3> adjacentVertices = new HashSet<Vector3>();
             used[i] = true;
             int combinedCount = 1;
-            AddTriangleToFragment(i, vertices, triangles, normals, uv, fragmentVertices, fragmentTriangles, fragmentNormals, fragmentUv, adjacentVertices);
+            AddTriangleToFragment(i, vertices, triangles, uv, fragmentVertices, fragmentTriangles, fragmentUv, adjacentVertices);
 
             for (int j = i + 1; j < used.Length && combinedCount < groupSize; j++)
             {
@@ -100,7 +109,7 @@ public class Destroyable : MagicImpactTarget
                 {
                     used[j] = true;
                     combinedCount++;
-                    AddTriangleToFragment(j, vertices, triangles, normals, uv, fragmentVertices, fragmentTriangles, fragmentNormals, fragmentUv, adjacentVertices);
+                    AddTriangleToFragment(j, vertices, triangles, uv, fragmentVertices, fragmentTriangles, fragmentUv, adjacentVertices);
                 }
             }
 
@@ -108,11 +117,13 @@ public class Destroyable : MagicImpactTarget
             {
                 name = "DestroyableFragment",
                 vertices = fragmentVertices.ToArray(),
-                triangles = fragmentTriangles.ToArray(),
-                normals = fragmentNormals.ToArray(),
-                uv = fragmentUv.ToArray()
+                triangles = fragmentTriangles.ToArray()
             };
 
+            if (fragmentUv != null)
+                combinedMesh.uv = fragmentUv.ToArray();
+
+            combinedMesh.RecalculateNormals();
             combinedMesh.RecalculateBounds();
             combinedMeshes.Add(combinedMesh);
         }
@@ -120,7 +131,7 @@ public class Destroyable : MagicImpactTarget
         return combinedMeshes.ToArray();
     }
 
-    void AddTriangleToFragment(int triangleNumber, Vector3[] sourceVertices, int[] sourceTriangles, Vector3[] sourceNormals, Vector2[] sourceUv, List<Vector3> vertices, List<int> triangles, List<Vector3> normals, List<Vector2> uv, HashSet<Vector3> adjacentVertices)
+    void AddTriangleToFragment(int triangleNumber, Vector3[] sourceVertices, int[] sourceTriangles, Vector2[] sourceUv, List<Vector3> vertices, List<int> triangles, List<Vector2> uv, HashSet<Vector3> adjacentVertices)
     {
         int sourceIndex = triangleNumber * 3;
         int vertexOffset = vertices.Count;
@@ -131,8 +142,8 @@ public class Destroyable : MagicImpactTarget
             Vector3 vertex = sourceVertices[vertexIndex];
             vertices.Add(vertex);
             triangles.Add(vertexOffset + i);
-            normals.Add(sourceNormals[vertexIndex]);
-            uv.Add(sourceUv[vertexIndex]);
+            if (uv != null)
+                uv.Add(sourceUv[vertexIndex]);
             adjacentVertices.Add(vertex);
         }
     }
@@ -156,16 +167,23 @@ public class Destroyable : MagicImpactTarget
         }
 
         Material[] materials = _renderer.sharedMaterials;
+        _renderer.enabled = false;
+        StartCoroutine(SpawnFragmentsOverFrames(originalFragments, materials, replacePosition, replaceRotation, replaceScale));
+    }
+
+    IEnumerator SpawnFragmentsOverFrames(Mesh[] originalFragments, Material[] materials, Vector3 replacePosition, Quaternion replaceRotation, Vector3 replaceScale)
+    {
+        int spawnedThisFrame = 0;
+        int spawnBudget = Mathf.Max(1, fragmentsPerFrame);
+
         for (int i = 0; i < originalFragments.Length; i++)
         {
             GameObject splitObject = new GameObject("SplitObject_" + i);
             MeshFilter splitMeshFilter = splitObject.AddComponent<MeshFilter>();
             MeshRenderer splitMeshRenderer = splitObject.AddComponent<MeshRenderer>();
             splitMeshFilter.sharedMesh = originalFragments[i];
-            // Set appropriate materials, shaders, etc., for the split objects
 
             splitMeshRenderer.sharedMaterials = materials;
-            // You can position and parent the split objects however you like
             splitObject.transform.position = replacePosition;
             splitObject.transform.rotation = replaceRotation;
             splitObject.transform.localScale = replaceScale;
@@ -175,9 +193,15 @@ public class Destroyable : MagicImpactTarget
             float lifetime = Random.Range(1.5f, 3f);
             Destroy(originalFragments[i], lifetime);
             Destroy(splitObject, lifetime);
+
+            spawnedThisFrame++;
+            if (spawnedThisFrame >= spawnBudget)
+            {
+                spawnedThisFrame = 0;
+                yield return null;
+            }
         }
 
-        // Destroy the original mesh if desired
         Destroy(gameObject);
     }
 
