@@ -45,124 +45,72 @@ public class Destroyable : MagicImpactTarget
 
     public void Destroy()
     {
-        Mesh[] splitMeshes = SplitMesh(_originalMesh);
+        int[] triangles = _originalMesh.triangles;
+        int triangleCount = triangles.Length / 3;
         int groupSizes = groupingBy;
 
         if(GameSettings.graphicsQuality == GameSettings.GraphicsQuality.High)
         {
-            groupSizes = Mathf.Max(1, groupingBy, Mathf.RoundToInt(splitMeshes.Length / 1000.0f));
+            groupSizes = Mathf.Max(1, groupingBy, Mathf.RoundToInt(triangleCount / 1000.0f));
         }
         else if (GameSettings.graphicsQuality == GameSettings.GraphicsQuality.Medium)
         {
-            groupSizes = Mathf.Max(2, groupingBy, Mathf.RoundToInt(splitMeshes.Length / 500.0f));
+            groupSizes = Mathf.Max(2, groupingBy, Mathf.RoundToInt(triangleCount / 500.0f));
         }
         else if (GameSettings.graphicsQuality == GameSettings.GraphicsQuality.Low)
         {
-            groupSizes = Mathf.Max(4, groupingBy, Mathf.RoundToInt(splitMeshes.Length / 250.0f));
+            groupSizes = Mathf.Max(4, groupingBy, Mathf.RoundToInt(triangleCount / 250.0f));
         }
         Debug.Log("Destroyable group size: " + groupSizes);
-        splitMeshes = CombineAdjacentMeshes(splitMeshes, groupSizes);
-        ReplaceOriginalWithFragments(splitMeshes);
+        Mesh[] fragments = CreateFragmentMeshes(_originalMesh, triangles, groupSizes);
+        ReplaceOriginalWithFragments(fragments);
     }
 
-    Mesh[] SplitMesh(Mesh originalMesh)
+    Mesh[] CreateFragmentMeshes(Mesh originalMesh, int[] triangles, int groupSize)
     {
-        // Get the vertices, triangles, and other data from the original mesh
         Vector3[] vertices = originalMesh.vertices;
-        int[] triangles = originalMesh.triangles;
         Vector3[] normals = originalMesh.normals;
         Vector2[] uv = originalMesh.uv;
-
-        // Create an array to hold the split meshes
-        Mesh[] splitMeshes = new Mesh[triangles.Length / 3];
-
-        // Split the mesh into smaller meshes
-        for (int i = 0; i < splitMeshes.Length; i++)
-        {
-            splitMeshes[i] = new Mesh();
-            splitMeshes[i].name = "SplitMesh_" + i;
-
-            int triangleIndex = i * 3;
-
-            // Assign vertices, triangles, normals, and UVs to the split mesh
-            splitMeshes[i].vertices = new Vector3[]
-            {
-                vertices[triangles[triangleIndex]],
-                vertices[triangles[triangleIndex + 1]],
-                vertices[triangles[triangleIndex + 2]]
-            };
-
-            splitMeshes[i].triangles = new int[] { 0, 1, 2 };
-            splitMeshes[i].normals = new Vector3[] { normals[triangles[triangleIndex]], normals[triangles[triangleIndex + 1]], normals[triangles[triangleIndex + 2]] };
-            splitMeshes[i].uv = new Vector2[] { uv[triangles[triangleIndex]], uv[triangles[triangleIndex + 1]], uv[triangles[triangleIndex + 2]] };
-
-            // You can perform any additional modifications to the split mesh here (e.g., scaling, rotating, etc.)
-
-            splitMeshes[i].RecalculateBounds();
-        }
-        return splitMeshes;
-    }
-
-
-
-    Mesh[] CombineAdjacentMeshes(Mesh[] splitMeshes, int groupSize)
-    {
         List<Mesh> combinedMeshes = new List<Mesh>();
-        bool[] used = new bool[splitMeshes.Length];
+        bool[] used = new bool[triangles.Length / 3];
 
-        for (int i = 0; i < splitMeshes.Length; i++)
+        for (int i = 0; i < used.Length; i++)
         {
             if (used[i])
                 continue;
 
-            List<Vector3> vertices = new List<Vector3>(splitMeshes[i].vertices);
-            List<int> triangles = new List<int>(splitMeshes[i].triangles);
-            List<Vector3> normals = new List<Vector3>(splitMeshes[i].normals);
-            List<Vector2> uv = new List<Vector2>(splitMeshes[i].uv);
-
+            List<Vector3> fragmentVertices = new List<Vector3>();
+            List<int> fragmentTriangles = new List<int>();
+            List<Vector3> fragmentNormals = new List<Vector3>();
+            List<Vector2> fragmentUv = new List<Vector2>();
+            HashSet<Vector3> adjacentVertices = new HashSet<Vector3>();
             used[i] = true;
             int combinedCount = 1;
+            AddTriangleToFragment(i, vertices, triangles, normals, uv, fragmentVertices, fragmentTriangles, fragmentNormals, fragmentUv, adjacentVertices);
 
-            for (int j = i + 1; j < splitMeshes.Length && combinedCount < groupSize; j++)
+            for (int j = i + 1; j < used.Length && combinedCount < groupSize; j++)
             {
                 if (used[j])
                     continue;
 
-                // Check if splitMeshes[j] shares any vertices with the current combined mesh
-                bool areAdjacent = false;
-                for (int k = 0; k < splitMeshes[j].vertices.Length; k++)
+                int triangleIndex = j * 3;
+                if (adjacentVertices.Contains(vertices[triangles[triangleIndex]]) ||
+                    adjacentVertices.Contains(vertices[triangles[triangleIndex + 1]]) ||
+                    adjacentVertices.Contains(vertices[triangles[triangleIndex + 2]]))
                 {
-                    if (vertices.Contains(splitMeshes[j].vertices[k]))
-                    {
-                        areAdjacent = true;
-                        break;
-                    }
-                }
-
-                if (areAdjacent)
-                {
-                    int offset = vertices.Count;
-
-                    vertices.AddRange(splitMeshes[j].vertices);
-                    for (int t = 0; t < splitMeshes[j].triangles.Length; t++)
-                    {
-                        triangles.Add(splitMeshes[j].triangles[t] + offset);
-                    }
-
-                    normals.AddRange(splitMeshes[j].normals);
-                    uv.AddRange(splitMeshes[j].uv);
-
                     used[j] = true;
                     combinedCount++;
+                    AddTriangleToFragment(j, vertices, triangles, normals, uv, fragmentVertices, fragmentTriangles, fragmentNormals, fragmentUv, adjacentVertices);
                 }
             }
 
             Mesh combinedMesh = new Mesh
             {
-                vertices = vertices.ToArray(),
-                triangles = triangles.ToArray(),
-                normals = normals.ToArray(),
-                uv = uv.ToArray()
+                name = "DestroyableFragment",
+                vertices = fragmentVertices.ToArray(),
+                triangles = fragmentTriangles.ToArray(),
+                normals = fragmentNormals.ToArray(),
+                uv = fragmentUv.ToArray()
             };
 
             combinedMesh.RecalculateBounds();
@@ -170,6 +118,23 @@ public class Destroyable : MagicImpactTarget
         }
 
         return combinedMeshes.ToArray();
+    }
+
+    void AddTriangleToFragment(int triangleNumber, Vector3[] sourceVertices, int[] sourceTriangles, Vector3[] sourceNormals, Vector2[] sourceUv, List<Vector3> vertices, List<int> triangles, List<Vector3> normals, List<Vector2> uv, HashSet<Vector3> adjacentVertices)
+    {
+        int sourceIndex = triangleNumber * 3;
+        int vertexOffset = vertices.Count;
+
+        for (int i = 0; i < 3; i++)
+        {
+            int vertexIndex = sourceTriangles[sourceIndex + i];
+            Vector3 vertex = sourceVertices[vertexIndex];
+            vertices.Add(vertex);
+            triangles.Add(vertexOffset + i);
+            normals.Add(sourceNormals[vertexIndex]);
+            uv.Add(sourceUv[vertexIndex]);
+            adjacentVertices.Add(vertex);
+        }
     }
 
     void ReplaceOriginalWithFragments(Mesh[] originalFragments)
@@ -190,16 +155,16 @@ public class Destroyable : MagicImpactTarget
             replaceScale = transform.localScale;
         }
 
-        Material[] materials = _renderer.materials;
+        Material[] materials = _renderer.sharedMaterials;
         for (int i = 0; i < originalFragments.Length; i++)
         {
             GameObject splitObject = new GameObject("SplitObject_" + i);
             MeshFilter splitMeshFilter = splitObject.AddComponent<MeshFilter>();
             MeshRenderer splitMeshRenderer = splitObject.AddComponent<MeshRenderer>();
-            splitMeshFilter.mesh = originalFragments[i];
+            splitMeshFilter.sharedMesh = originalFragments[i];
             // Set appropriate materials, shaders, etc., for the split objects
 
-            splitMeshRenderer.materials = materials;
+            splitMeshRenderer.sharedMaterials = materials;
             // You can position and parent the split objects however you like
             splitObject.transform.position = replacePosition;
             splitObject.transform.rotation = replaceRotation;
@@ -207,7 +172,9 @@ public class Destroyable : MagicImpactTarget
 
             splitObject.AddComponent<BoxCollider>();
             splitObject.AddComponent<Rigidbody>();
-            Destroy(splitObject, Random.Range(1.5f, 3f));
+            float lifetime = Random.Range(1.5f, 3f);
+            Destroy(originalFragments[i], lifetime);
+            Destroy(splitObject, lifetime);
         }
 
         // Destroy the original mesh if desired
