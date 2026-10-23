@@ -181,41 +181,6 @@ public class Destroyable : MagicImpactTarget
         Destroy(gameObject);
     }
 
-    Mesh JoinMeshes(Mesh mesh1, Mesh mesh2)
-    {
-        // Combine vertices, triangles, normals, and UVs
-        Vector3[] combinedVertices = CombineArrays(mesh1.vertices, mesh2.vertices);
-        int[] combinedTriangles = CombineArrays(mesh1.triangles, mesh2.triangles);
-        Vector3[] combinedNormals = CombineArrays(mesh1.normals, mesh2.normals);
-        Vector2[] combinedUVs = CombineArrays(mesh1.uv, mesh2.uv);
-
-        // Create a new mesh and assign the combined data
-        Mesh combinedMesh = new Mesh()
-        {
-            name = "CombinedMesh",
-            vertices = combinedVertices,
-            triangles = combinedTriangles,
-            normals = combinedNormals,
-            uv = combinedUVs
-        };
-
-        combinedMesh.RecalculateBounds();
-
-        // Assign the combined mesh to the MeshFilter component
-        mesh1 = combinedMesh;
-        Destroy(mesh2);
-        // Optionally, you can destroy the second mesh if desired
-        return mesh1;
-    }
-
-    private T[] CombineArrays<T>(T[] array1, T[] array2)
-    {
-        T[] combinedArray = new T[array1.Length + array2.Length];
-        array1.CopyTo(combinedArray, 0);
-        array2.CopyTo(combinedArray, array1.Length);
-        return combinedArray;
-    }
-
 #if UNITY_EDITOR
     private void Reset()
     {
