@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -169,57 +170,75 @@ public class GameSettings : MonoBehaviour
 
     public void RunMediapipeExe()
     {
-        if(mediapipeHandProcess == null)
+        if (mediapipeHandProcess == null)
         {
-            UnityEngine.Debug.Log("Running mediapipe");
+            UnityEngine.Debug.Log("Running Mediapipe");
             string handPath = Path.Combine(Application.streamingAssetsPath, "Mediapipe", "hand.exe");
 
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = handPath;
-            startInfo.CreateNoWindow = true;
-            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = handPath,
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
 
-            mediapipeHandProcess = new Process();
-            mediapipeHandProcess.StartInfo = startInfo;
+            mediapipeHandProcess = new Process { StartInfo = startInfo };
             mediapipeHandProcess.Start();
         }
     }
 
     void CloseMediapipeExeOnQuit()
     {
-        if (mediapipeHandProcess != null && !mediapipeHandProcess.HasExited) 
-        {
-            UnityEngine.Debug.Log("Killing mediapipe");
-            mediapipeHandProcess.Kill();
-            mediapipeHandProcess.Dispose();
-        }
+        CloseProcess(ref mediapipeHandProcess, "Mediapipe");
     }
 
     void RunWhisperExe()
     {
         if (whisperProcess == null)
         {
-            UnityEngine.Debug.Log("Running whisper");
-            string handPath = Path.Combine(Application.streamingAssetsPath, "Whisper", "stream.exe");
+            UnityEngine.Debug.Log("Running Whisper");
+            string whisperPath = Path.Combine(Application.streamingAssetsPath, "Whisper", "stream.exe");
 
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = handPath;
-            startInfo.CreateNoWindow = true;
-            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = whisperPath,
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
 
-            whisperProcess = new Process();
-            whisperProcess.StartInfo = startInfo;
+            whisperProcess = new Process { StartInfo = startInfo };
             whisperProcess.Start();
         }
     }
 
     void CloseWhisperExeOnQuit()
     {
-        if (whisperProcess != null && !whisperProcess.HasExited)
+        CloseProcess(ref whisperProcess, "Whisper");
+    }
+
+    private static void CloseProcess(ref Process process, string processName)
+    {
+        Process processToClose = process;
+        process = null;
+
+        if (processToClose == null)
+            return;
+
+        try
         {
-            UnityEngine.Debug.Log("Killing whisper");
-            whisperProcess.Kill();
-            whisperProcess.Dispose();
+            if (!processToClose.HasExited)
+            {
+                UnityEngine.Debug.Log($"Killing {processName}");
+                processToClose.Kill();
+            }
+        }
+        catch (InvalidOperationException)
+        {
+            // The process was never started, or its Process object is no longer associated.
+        }
+        finally
+        {
+            processToClose.Dispose();
         }
     }
 

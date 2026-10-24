@@ -7,9 +7,15 @@ public class ThreePillarsPuzzle : MonoBehaviour
     [SerializeField] OpenWallPassage _wallToOpen;
     [SerializeField] List<Transform> _pillarsPuzzlePath = new List<Transform>();
 
+    [Header("Sound triggers")]
     [SerializeField] Transform _firstSoundPlace;
     [SerializeField] Transform _secondSoundPlace;
     [SerializeField] Transform _thirdSoundPlace;
+
+    [Header("Sound spawn positions")]
+    [SerializeField] Transform _firstSoundSpawn;
+    [SerializeField] Transform _secondSoundSpawn;
+    [SerializeField] Transform _thirdSoundSpawn;
 
     int _tileIndex = 0;
     bool _isOnPath = false;
@@ -56,14 +62,28 @@ public class ThreePillarsPuzzle : MonoBehaviour
             }
 
             //making sound when on specific tiles while following path
-            if (playerPos == _firstSoundPlace
-                || playerPos == _secondSoundPlace
-                || playerPos == _thirdSoundPlace)
+            if(playerPos == _firstSoundPlace)
             {
-                if (!_soundMade)
+                if(!_soundMade)
                 {
                     _soundMade = true;
-                    GameParams.Managers.audioManager.PlayOneShotSpatialized(GameParams.Managers.fmodEvents.SFX_ButtonPress, _wallToOpen.transform);
+                    GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_ButtonPress, _firstSoundSpawn);
+                }
+            }
+            else if (playerPos == _secondSoundPlace)
+            {
+                if(!_soundMade)
+                {
+                    _soundMade = true;
+                    GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_ButtonPress, _secondSoundSpawn);
+                }
+            }
+            else if (playerPos == _thirdSoundPlace)
+            {
+                if(!_soundMade)
+                {
+                    _soundMade = true;
+                    GameParams.Managers.audioManager.PlayOneShotOccluded(GameParams.Managers.fmodEvents.SFX_ButtonPress, _thirdSoundSpawn);
                 }
             }
             else { _soundMade = false; }

@@ -32,7 +32,7 @@ public class MarkSpellBehavior : SpellBehavior
 
         transform.SetParent(gameObject.transform);
         Destroy(GetComponent<Rigidbody>());
-        GetComponent<Collider>().enabled = false;
+        GetComponent<Collider>().isTrigger = true;
 
         Instantiate(specialEffectPrefab, transform.position, Quaternion.identity);
         StartCoroutine(IncreaseSize());

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
-using static ProgressSaving.SaveData.JournalSave.DialoguesDict;
-using static ProgressSaving;
 
 public class ProgressSaving : MonoBehaviour
 {
@@ -63,38 +61,13 @@ public class ProgressSaving : MonoBehaviour
 
         //loading spellbook and spells
         Spellbook spellbook = PlayerParams.Controllers.spellbook;
-        if(saveData.spellsSave.spellBook)
+        if(saveData.spellsSave.spellBook) { spellbook.bookOwned = true; }
+        if (saveData.spellsSave.spells != null)
         {
-            spellbook.bookOwned = true;
-        }
-
-        if(saveData.spellsSave.light)
-        {
-            spellbook.AddSpell(spellScrollsHolder.GiveScroll("Light"));
-        }
-        if (saveData.spellsSave.collect)
-        {
-            spellbook.AddSpell(spellScrollsHolder.GiveScroll("Collect"));
-        }
-        if (saveData.spellsSave.fire)
-        {
-            spellbook.AddSpell(spellScrollsHolder.GiveScroll("Fire"));
-        }
-        if (saveData.spellsSave.speak)
-        {
-            spellbook.AddSpell(spellScrollsHolder.GiveScroll("Speak"));
-        }
-        if (saveData.spellsSave.mark)
-        {
-            spellbook.AddSpell(spellScrollsHolder.GiveScroll("Mark"));
-        }
-        if (saveData.spellsSave.slow)
-        {
-            spellbook.AddSpell(spellScrollsHolder.GiveScroll("Slow"));
-        }
-        if (saveData.spellsSave.dispel)
-        {
-            spellbook.AddSpell(spellScrollsHolder.GiveScroll("Dispel"));
+            foreach (string spellName in saveData.spellsSave.spells)
+            {
+                spellbook.AddSpell(spellScrollsHolder.GiveScroll(spellName));
+            }
         }
 
         //loading journal contents
@@ -139,14 +112,22 @@ public class ProgressSaving : MonoBehaviour
     public void SaveSpells(bool spellBook, List<string> spells) //saving spellbook state, and all "spells"
     {
         saveData.spellsSave.spellBook = spellBook;
+        saveData.spellsSave.spells = new List<string>();
 
-        saveData.spellsSave.light = spells.Exists(s => string.Equals(s, "light", StringComparison.OrdinalIgnoreCase));
-        saveData.spellsSave.collect = spells.Exists(s => string.Equals(s, "collect", StringComparison.OrdinalIgnoreCase));
-        saveData.spellsSave.fire = spells.Exists(s => string.Equals(s, "fire", StringComparison.OrdinalIgnoreCase));
-        saveData.spellsSave.speak = spells.Exists(s => string.Equals(s, "speak", StringComparison.OrdinalIgnoreCase));
-        saveData.spellsSave.mark = spells.Exists(s => string.Equals(s, "mark", StringComparison.OrdinalIgnoreCase));
-        saveData.spellsSave.slow = spells.Exists(s => string.Equals(s, "slow", StringComparison.OrdinalIgnoreCase));
-        saveData.spellsSave.dispel = spells.Exists(s => string.Equals(s, "dispel", StringComparison.OrdinalIgnoreCase));
+        HashSet<string> uniqueSpellNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (string spellName in spells)
+        {
+            if (!string.IsNullOrWhiteSpace(spellName))
+            {
+                string trimmedName = spellName.Trim();
+
+                if (uniqueSpellNames.Add(trimmedName))
+                {
+                    saveData.spellsSave.spells.Add(trimmedName);
+                }
+            }
+        }
     }
 
     public void SaveJournal(Dictionary<string, string> notesJournal, Dictionary<string, List<List<string>>> dialoguesJournal) //saving journal contents
@@ -288,13 +269,7 @@ public class ProgressSaving : MonoBehaviour
         public class SpellsSave //for saving if spellbook was picked up, and all spells from spellbook 
         {
             public bool spellBook = false;
-            public bool light = false;
-            public bool collect = false;
-            public bool fire = false;
-            public bool speak = false;
-            public bool mark = false;
-            public bool slow = false;
-            public bool dispel = false;
+            public List<string> spells = new List<string>();
         }
 
         [System.Serializable]

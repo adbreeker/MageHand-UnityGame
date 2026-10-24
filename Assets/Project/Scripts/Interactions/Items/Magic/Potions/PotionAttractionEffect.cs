@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PotionMagneticBodyEffect : PotionEffect
+public class PotionAttractionEffect : PotionEffect
 {
     [Header("Magnetic attraction range")]
     public float attractionRange;
@@ -15,14 +15,14 @@ public class PotionMagneticBodyEffect : PotionEffect
     public override void Drink() //add potion component to player, activate potion effect and destroy this object
     {
         //find player and add this component
-        PotionMagneticBodyEffect pmbe;
-        if (PlayerParams.Objects.player.GetComponent<PotionMagneticBodyEffect>() != null)
+        PotionAttractionEffect pmbe;
+        if (PlayerParams.Objects.player.GetComponent<PotionAttractionEffect>() != null)
         {
-            pmbe = PlayerParams.Objects.player.GetComponent<PotionMagneticBodyEffect>();
+            pmbe = PlayerParams.Objects.player.GetComponent<PotionAttractionEffect>();
             pmbe.DeactivatePotionEffect();
         }
 
-        pmbe = PlayerParams.Objects.player.AddComponent<PotionMagneticBodyEffect>();
+        pmbe = PlayerParams.Objects.player.AddComponent<PotionAttractionEffect>();
         pmbe.attractionRange = attractionRange;
         pmbe.magneticFlyPrefab = magneticFlyPrefab;
         pmbe.duration = duration;

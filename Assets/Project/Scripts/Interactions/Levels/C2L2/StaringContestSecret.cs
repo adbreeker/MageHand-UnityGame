@@ -6,7 +6,7 @@ public class StaringContestSecret : MonoBehaviour
 {
     public float staringContestTime = 30.0f;
     [SerializeField] Transform _staringContestCube;
-    [SerializeField] GameObject _dialogue;
+    [SerializeField] SkullPlatformBehavior _skullPlatform;
 
     [Header("After win:")]
     [SerializeField] OpenWallPassage _wallPassage;
@@ -14,39 +14,41 @@ public class StaringContestSecret : MonoBehaviour
 
     Coroutine staringContestCoroutine;
 
-    bool dialogueStarted = false;
+    bool contestStarted = false;
 
     private void Awake()
     {
         GameParams.Managers.levelInfoManager.AddSecretOnLevel();
+        _skullPlatform.OnDialogueFinished.AddListener(StartContest);
     }
 
     void Update()
     {
-        if(!dialogueStarted) CheckDialogue();
+        if(contestStarted)
 
-        if (IsStaring() && dialogueStarted && !PlayerParams.Variables.uiActive)
-        {
-            if(staringContestCoroutine == null) 
+            if (IsStaring() && !PlayerParams.Variables.uiActive)
             {
-                staringContestCoroutine = StartCoroutine(StaringContest());
+                if (staringContestCoroutine == null)
+                {
+                    staringContestCoroutine = StartCoroutine(StaringContest());
+                }
             }
-        }
-        else
-        {
-            if (staringContestCoroutine != null) 
+            else
             {
-                StopCoroutine(staringContestCoroutine);
-                staringContestCoroutine = null;
+                if (staringContestCoroutine != null)
+                {
+                    StopCoroutine(staringContestCoroutine);
+                    staringContestCoroutine = null;
+                }
             }
-        }
+        { }
     }
 
     bool IsStaring()
     {
         if(PlayerParams.Controllers.playerMovement.currentTile == _staringContestCube.transform)
         {
-            if(PlayerParams.Objects.player.transform.rotation.eulerAngles == Vector3.zero)
+            if (Quaternion.Angle(PlayerParams.Objects.player.transform.rotation, Quaternion.identity) < 1.0f)
             {
                 return true;
             }
@@ -54,9 +56,10 @@ public class StaringContestSecret : MonoBehaviour
             return false;
     }
 
-    void CheckDialogue()
+    public void StartContest()
     {
-        if (_dialogue.activeSelf) dialogueStarted = true;
+        Debug.Log("Staring contest started");
+        contestStarted = true;
     }
 
     IEnumerator StaringContest()
