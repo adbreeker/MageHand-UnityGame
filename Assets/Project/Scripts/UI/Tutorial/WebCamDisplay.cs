@@ -7,11 +7,43 @@ using UnityEngine.UI;
 
 public class WebCamDisplay : MonoBehaviour
 {
+    const int Width = 640;
+    const int Height = 480;
+    const int FrameBytes = Width * Height * 3;
+    const string MapName = "magehand_video_unity";
+
     [Header("Webcam display")]
     public RawImage webcamVideoDisplay;
     public RectTransform webcamVideoDisplayFrame;
     [Space]
-    [SerializeField] private bool displayAutomaticaly = true; 
+    [SerializeField] private bool displayAutomaticaly = true;
+
+    Texture2D texture;
+    byte[] buffer;
+    MemoryMappedFile map;
+    MemoryMappedViewStream stream;
+    float nextFrame;
+
+    void Awake()
+    {
+        if (webcamVideoDisplay == null)
+            webcamVideoDisplay = GetComponent<RawImage>();
+        if (webcamVideoDisplay == null)
+        {
+            enabled = false;
+            return;
+        }
+
+        if (webcamVideoDisplayFrame == null)
+            webcamVideoDisplayFrame = webcamVideoDisplay.rectTransform;
+
+        buffer = new byte[FrameBytes];
+        texture = new Texture2D(Width, Height, TextureFormat.RGB24, false);
+        texture.name = "WebCamDisplay_Webcam";
+
+        webcamVideoDisplay.texture = texture;
+        webcamVideoDisplay.color = Color.black;
+    }
 
     void Update()
     {
@@ -20,38 +52,80 @@ public class WebCamDisplay : MonoBehaviour
 
     public void ShowCamera()
     {
-        webcamVideoDisplayFrame.gameObject.SetActive(true);
+        if (webcamVideoDisplay == null || webcamVideoDisplayFrame == null)
+            return;
+
+        float now = Time.unscaledTime;
+        if (now < nextFrame) return;
+        nextFrame = now + 1f / 30f;
+
+        if (stream == null)
+        {
+            try
+            {
+                map = MemoryMappedFile.OpenExisting(MapName);
+                stream = map.CreateViewStream(0, FrameBytes, MemoryMappedFileAccess.Read);
+            }
+            catch (IOException)
+            {
+                CloseMap();
+                webcamVideoDisplay.gameObject.SetActive(false);
+                return;
+            }
+        }
 
         try
         {
-            using (MemoryMappedFile mmf = MemoryMappedFile.OpenExisting("magehand_video_unity"))
+            stream.Position = 0;
+
+            int offset = 0;
+            while (offset < FrameBytes)
             {
-                using (MemoryMappedViewStream stream = mmf.CreateViewStream())
+                int count = stream.Read(buffer, offset, FrameBytes - offset);
+                if (count == 0)
                 {
-                    BinaryReader reader = new BinaryReader(stream);
-                    byte[] frameBuffer = reader.ReadBytes(480 * 640 * 3);
-
-                    int width = 640;
-                    int height = 480;
-
-                    Texture2D texture = new Texture2D(width, height, TextureFormat.RGB24, false);
-                    texture.LoadRawTextureData(frameBuffer);
-                    texture.Apply();
-
-                    float scale = (float)texture.height / (float)texture.width;
-                    webcamVideoDisplayFrame.sizeDelta = new Vector2(webcamVideoDisplayFrame.sizeDelta.x, webcamVideoDisplayFrame.sizeDelta.x * scale);
-
-                    webcamVideoDisplay.gameObject.SetActive(true);
-
-                    webcamVideoDisplay.texture = texture;
-
+                    CloseMap();
+                    webcamVideoDisplay.gameObject.SetActive(false);
+                    return;
                 }
+
+                offset += count;
             }
+
+            texture.LoadRawTextureData(buffer);
+            texture.Apply(false, false);
+
+            float scale = (float)Height / (float)Width;
+            webcamVideoDisplayFrame.sizeDelta = new Vector2(webcamVideoDisplayFrame.sizeDelta.x, webcamVideoDisplayFrame.sizeDelta.x * scale);
+
+            webcamVideoDisplayFrame.gameObject.SetActive(true);
+            webcamVideoDisplay.gameObject.SetActive(true);
+            webcamVideoDisplay.color = Color.white;
         }
-        catch (FileNotFoundException)
+        catch (IOException)
         {
+            CloseMap();
             webcamVideoDisplay.gameObject.SetActive(false);
-            Debug.Log("video_unity doesn't exist");
         }
     }
-}
+
+    void CloseMap()
+    {
+        stream?.Dispose();
+        stream = null;
+
+        map?.Dispose();
+        map = null;
+    }
+
+    void OnDestroy()
+    {
+        CloseMap();
+
+        if (webcamVideoDisplay != null && webcamVideoDisplay.texture == texture)
+            webcamVideoDisplay.texture = null;
+
+        if (texture != null)
+            Destroy(texture);
+    }
+} 
