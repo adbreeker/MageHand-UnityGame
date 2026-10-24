@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.IO.MemoryMappedFiles;
 using System.IO;
+using System.IO.MemoryMappedFiles;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,9 +18,12 @@ public class WebCamDisplay : MonoBehaviour
 
     Texture2D texture;
     byte[] buffer;
+
     MemoryMappedFile map;
     MemoryMappedViewStream stream;
+
     float nextFrame;
+    float nextConnect;
 
     void Awake()
     {
@@ -61,6 +62,9 @@ public class WebCamDisplay : MonoBehaviour
 
         if (stream == null)
         {
+            if (now < nextConnect) return;
+            nextConnect = now + 1f;
+
             try
             {
                 map = MemoryMappedFile.OpenExisting(MapName);
@@ -95,7 +99,7 @@ public class WebCamDisplay : MonoBehaviour
             texture.LoadRawTextureData(buffer);
             texture.Apply(false, false);
 
-            float scale = (float)Height / (float)Width;
+            float scale = (float)Height / Width;
             webcamVideoDisplayFrame.sizeDelta = new Vector2(webcamVideoDisplayFrame.sizeDelta.x, webcamVideoDisplayFrame.sizeDelta.x * scale);
 
             webcamVideoDisplayFrame.gameObject.SetActive(true);
@@ -106,6 +110,7 @@ public class WebCamDisplay : MonoBehaviour
         {
             CloseMap();
             webcamVideoDisplay.gameObject.SetActive(false);
+            nextConnect = now + 1f;
         }
     }
 
@@ -118,6 +123,16 @@ public class WebCamDisplay : MonoBehaviour
         map = null;
     }
 
+    void OnDisable()
+    {
+        CloseMap();
+    }
+
+    void OnApplicationQuit()
+    {
+        CloseMap();
+    }
+
     void OnDestroy()
     {
         CloseMap();
@@ -128,4 +143,4 @@ public class WebCamDisplay : MonoBehaviour
         if (texture != null)
             Destroy(texture);
     }
-} 
+}

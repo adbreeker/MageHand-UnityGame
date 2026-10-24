@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using System;
@@ -75,6 +73,16 @@ public class MoveHandPoints : MonoBehaviour //move points of hand generated with
         ReleaseMemoryMappedStreams();
     }
 
+    protected virtual void OnApplicationQuit()
+    {
+        ReleaseMemoryMappedStreams();
+    }
+
+    protected virtual void OnDestroy()
+    {
+        ReleaseMemoryMappedStreams();
+    }
+
     private bool EnsureMemoryMappedStreams()
     {
         if (pointsStream != null && gestureStream != null)
@@ -113,7 +121,15 @@ public class MoveHandPoints : MonoBehaviour //move points of hand generated with
             stream = mapping.CreateViewStream();
             return true;
         }
-        catch
+        catch (IOException)
+        {
+            stream?.Dispose();
+            mapping?.Dispose();
+            mapping = null;
+            stream = null;
+            return false;
+        }
+        catch (UnauthorizedAccessException)
         {
             stream?.Dispose();
             mapping?.Dispose();
