@@ -6,6 +6,11 @@ using System.Collections;
 
 public class MagicMirrorBehavior : MonoBehaviour
 {
+    const int Width = 640;
+    const int Height = 480;
+    const int FrameBytes = Width * Height * 3;
+    const string MapName = "magehand_video_unity";
+
     [SerializeField] RawImage _mirrorImage;
     [SerializeField] GameObject _transitionEffect;
 
@@ -13,6 +18,9 @@ public class MagicMirrorBehavior : MonoBehaviour
     Texture2D _defaultTexture;
     Texture2D _playerTexture;
     byte[] _frameBuffer;
+    MemoryMappedFile _map;
+    MemoryMappedViewStream _stream;
+    GameObject _transitionInstance;
     bool _showPlayer = false;
     float _minTransparency = 0.05f;
     float _maxTransparency = 0.96f;
@@ -20,41 +28,53 @@ public class MagicMirrorBehavior : MonoBehaviour
     private void Start()
     {
         _defaultTexture = (Texture2D)_mirrorImage.texture;
-        _playerTexture = new Texture2D(640, 480, TextureFormat.RGB24, false);
-        _frameBuffer = new byte[640 * 480 * 3];
+        _playerTexture = new Texture2D(Width, Height, TextureFormat.RGB24, false);
+        _frameBuffer = new byte[FrameBytes];
     }
 
     private void FixedUpdate()
     {
         if(_showPlayer)
         {
+            if (_stream == null)
+            {
+                try
+                {
+                    _map = MemoryMappedFile.OpenExisting(MapName);
+                    _stream = _map.CreateViewStream(0, FrameBytes, MemoryMappedFileAccess.Read);
+                }
+                catch (IOException)
+                {
+                    CloseMap();
+                    _mirrorImage.texture = _defaultTexture;
+                    return;
+                }
+            }
+
             try
             {
-                using (MemoryMappedFile mmf = MemoryMappedFile.OpenExisting("magehand_video_unity"))
+                _stream.Position = 0;
+                int offset = 0;
+                while (offset < _frameBuffer.Length)
                 {
-                    using (MemoryMappedViewStream stream = mmf.CreateViewStream())
+                    int count = _stream.Read(_frameBuffer, offset, _frameBuffer.Length - offset);
+                    if (count == 0)
                     {
-                        int offset = 0;
-                        while (offset < _frameBuffer.Length)
-                        {
-                            int count = stream.Read(_frameBuffer, offset, _frameBuffer.Length - offset);
-                            if (count == 0)
-                            {
-                                _mirrorImage.texture = _defaultTexture;
-                                return;
-                            }
-
-                            offset += count;
-                        }
-
-                        _playerTexture.LoadRawTextureData(_frameBuffer);
-                        _playerTexture.Apply(false, false);
-                        _mirrorImage.texture = _playerTexture;
+                        CloseMap();
+                        _mirrorImage.texture = _defaultTexture;
+                        return;
                     }
+
+                    offset += count;
                 }
+
+                _playerTexture.LoadRawTextureData(_frameBuffer);
+                _playerTexture.Apply(false, false);
+                _mirrorImage.texture = _playerTexture;
             }
             catch (IOException)
             {
+                CloseMap();
                 _mirrorImage.texture = _defaultTexture;
             }
         }
@@ -69,7 +89,7 @@ public class MagicMirrorBehavior : MonoBehaviour
     {
         Color newColor = _mirrorImage.color;
         WaitForFixedUpdate deley = new WaitForFixedUpdate();
-        Instantiate(_transitionEffect, transform);
+        _transitionInstance = Instantiate(_transitionEffect, transform);
 
         while(newColor.a > _minTransparency)
         {
@@ -98,10 +118,33 @@ public class MagicMirrorBehavior : MonoBehaviour
             _mirrorImage.color = newColor;
             yield return deley;
         }
+
+        if (_transitionInstance != null)
+        {
+            Destroy(_transitionInstance);
+            _transitionInstance = null;
+        }
+    }
+
+    void CloseMap()
+    {
+        _stream?.Dispose();
+        _stream = null;
+
+        _map?.Dispose();
+        _map = null;
     }
 
     private void OnDestroy()
     {
+        CloseMap();
+
+        if (_transitionInstance != null)
+        {
+            Destroy(_transitionInstance);
+            _transitionInstance = null;
+        }
+
         if (_mirrorImage != null && _mirrorImage.texture == _playerTexture)
             _mirrorImage.texture = _defaultTexture;
 
