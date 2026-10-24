@@ -20,6 +20,7 @@ public class MagicMirrorBehavior : MonoBehaviour
     byte[] _frameBuffer;
     MemoryMappedFile _map;
     MemoryMappedViewStream _stream;
+    GameObject _transitionInstance;
     bool _showPlayer = false;
     float _minTransparency = 0.05f;
     float _maxTransparency = 0.96f;
@@ -88,7 +89,7 @@ public class MagicMirrorBehavior : MonoBehaviour
     {
         Color newColor = _mirrorImage.color;
         WaitForFixedUpdate deley = new WaitForFixedUpdate();
-        Instantiate(_transitionEffect, transform);
+        _transitionInstance = Instantiate(_transitionEffect, transform);
 
         while(newColor.a > _minTransparency)
         {
@@ -117,6 +118,12 @@ public class MagicMirrorBehavior : MonoBehaviour
             _mirrorImage.color = newColor;
             yield return deley;
         }
+
+        if (_transitionInstance != null)
+        {
+            Destroy(_transitionInstance);
+            _transitionInstance = null;
+        }
     }
 
     void CloseMap()
@@ -131,6 +138,12 @@ public class MagicMirrorBehavior : MonoBehaviour
     private void OnDestroy()
     {
         CloseMap();
+
+        if (_transitionInstance != null)
+        {
+            Destroy(_transitionInstance);
+            _transitionInstance = null;
+        }
 
         if (_mirrorImage != null && _mirrorImage.texture == _playerTexture)
             _mirrorImage.texture = _defaultTexture;

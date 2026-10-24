@@ -343,12 +343,15 @@ public class SpellCasting : MonoBehaviour
         Microphone.End(GameSettings.microphoneName);
 
         byte[] audioData = ConvertAudioClipToByteArray(recordedClip);
+        if (recordedClip != null)
+            Destroy(recordedClip);
 
-        MemoryMappedFile mmf_audio = MemoryMappedFile.OpenExisting("magehand_whisper_audio");
-        MemoryMappedViewStream stream_audio = mmf_audio.CreateViewStream();
-        BinaryWriter write_audio = new BinaryWriter(stream_audio);
-
-        write_audio.Write(audioData, 0, audioData.Length);
+        using (MemoryMappedFile mmf_audio = MemoryMappedFile.OpenExisting("magehand_whisper_audio"))
+        using (MemoryMappedViewStream stream_audio = mmf_audio.CreateViewStream())
+        using (BinaryWriter write_audio = new BinaryWriter(stream_audio))
+        {
+            write_audio.Write(audioData, 0, audioData.Length);
+        }
 
         PlayerParams.Controllers.spellCasting.WriteToMemoryMappedFile("magehand_whisper_run", "ok");
 
