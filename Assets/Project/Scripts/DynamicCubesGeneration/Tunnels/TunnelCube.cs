@@ -25,7 +25,7 @@ public class TunnelCube : MonoBehaviour
 
     private void OnValidate() //changing walls dynamically in editor
     {
-        if (PrefabUtility.IsPartOfPrefabAsset(this))
+        if (!PrefabCheckUtility.IsSceneInstance(this))
         {
             return;
         }
@@ -48,7 +48,7 @@ public class TunnelCube : MonoBehaviour
     {
         isRebuildScheduled = false;
 
-        if (this == null || gameObject == null || PrefabUtility.IsPartOfPrefabAsset(this))
+        if (!PrefabCheckUtility.IsSceneInstance(this))
         {
             return;
         }
@@ -147,7 +147,7 @@ public class TunnelCube : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (PrefabUtility.IsPartOfPrefabAsset(this))
+        if (!PrefabCheckUtility.IsSceneInstance(this))
         {
             return;
         }

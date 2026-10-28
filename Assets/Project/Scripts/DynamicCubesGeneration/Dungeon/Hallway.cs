@@ -23,7 +23,7 @@ public class Hallway : MonoBehaviour
 
     private void OnValidate() //changing walls dynamically in editor
     {
-        if (PrefabUtility.IsPartOfPrefabAsset(this))
+        if (!PrefabCheckUtility.IsSceneInstance(this))
         {
             return;
         }
@@ -46,7 +46,7 @@ public class Hallway : MonoBehaviour
     {
         isRebuildScheduled = false;
 
-        if (this == null || gameObject == null || PrefabUtility.IsPartOfPrefabAsset(this))
+        if (!PrefabCheckUtility.IsSceneInstance(this))
         {
             return;
         }
@@ -129,7 +129,7 @@ public class Hallway : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (PrefabUtility.IsPartOfPrefabAsset(this))
+        if (!PrefabCheckUtility.IsSceneInstance(this))
         {
             return;
         }
