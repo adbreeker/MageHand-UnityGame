@@ -255,12 +255,12 @@ public class Room3x3 : MonoBehaviour
 
         style.normal.textColor = Color.red;
         Handles.Label(transform.position + transform.forward * 5.5f - transform.right * 4f, "1", style);
-        Handles.Label(transform.position + transform.forward * 5.5f, "3", style);
+        Handles.Label(transform.position + transform.forward * 5.5f, "2", style);
         Handles.Label(transform.position + transform.forward * 5.5f + transform.right * 4f, "3", style);
 
         style.normal.textColor = Color.cyan;
         Handles.Label(transform.position + transform.right * 5.5f + transform.forward * 4f, "1", style);
-        Handles.Label(transform.position + transform.right * 5.5f, "4", style);
+        Handles.Label(transform.position + transform.right * 5.5f, "2", style);
         Handles.Label(transform.position + transform.right * 5.5f - transform.forward * 4f, "3", style);
     }
 }
