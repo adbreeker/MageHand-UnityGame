@@ -12,9 +12,7 @@ public class ChestBehavior : InteractableBehavior
     [Header("Point to look inside chest")]
     public Transform inChestCameraTransform;
 
-    [Header("Is chest currently open")]
-    public bool chestOpen = false;
-
+    bool isChestOpen = false;
     GameObject mainCamera;
     PlayerMovement playerMovement;
     PauseMenu pauseMenu;
@@ -22,7 +20,7 @@ public class ChestBehavior : InteractableBehavior
     EventInstance openingChestSound;
     EventInstance closingChestSound;
 
-    private void Start() //get necessary components on awake
+    private void Start() //get necessary components on start
     {
         mainCamera = PlayerParams.Objects.playerCamera.gameObject;
         playerMovement = PlayerParams.Controllers.playerMovement;
@@ -31,7 +29,7 @@ public class ChestBehavior : InteractableBehavior
 
     private void Update() //listen to chest close input if chest is open
     {
-        if (chestOpen)
+        if (isChestOpen)
         {
             pauseMenu.ableToInteract = false;
             if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.S)) && !PlayerParams.Variables.uiActive)
@@ -52,7 +50,7 @@ public class ChestBehavior : InteractableBehavior
 
     IEnumerator ChestAnimation() //animating chest
     {
-        if(chestOpen) //if chest is open then close lid
+        if(isChestOpen) //if chest is open then close lid
         {
             if (!closingChestSound.isValid())
             {
@@ -63,7 +61,7 @@ public class ChestBehavior : InteractableBehavior
                 yield return new WaitForFixedUpdate();
                 chestLid.transform.localRotation = Quaternion.RotateTowards(chestLid.transform.localRotation, Quaternion.Euler(0, 0, 0), 5);
             }
-            chestOpen = false;
+            isChestOpen = false;
             pauseMenu.ableToInteract = true;
         }
         else //else open lid
@@ -77,14 +75,14 @@ public class ChestBehavior : InteractableBehavior
                 yield return new WaitForFixedUpdate();
                 chestLid.transform.localRotation = Quaternion.RotateTowards(chestLid.transform.localRotation, Quaternion.Euler(-135, 0, 0), 5);
             }
-            chestOpen = true;
+            isChestOpen = true;
             pauseMenu.ableToInteract = false;
         }
     }
 
     IEnumerator MoveCamera() //move camera to chest or to player
     {
-        if(chestOpen) //if chest is open then move camera to player 
+        if(isChestOpen) //if chest is open then move camera to player 
         {
             while (mainCamera.transform.localPosition != PlayerParams.Variables.cameraStartingPosition || mainCamera.transform.localRotation != Quaternion.Euler(0,0,0))
             {
@@ -103,7 +101,6 @@ public class ChestBehavior : InteractableBehavior
                 mainCamera.transform.position = Vector3.MoveTowards(mainCamera.transform.position, inChestCameraTransform.position, 0.2f);
                 mainCamera.transform.localRotation = Quaternion.RotateTowards(mainCamera.transform.localRotation, inChestCameraTransform.localRotation, 4);
             }
-
         }
     }
 }
