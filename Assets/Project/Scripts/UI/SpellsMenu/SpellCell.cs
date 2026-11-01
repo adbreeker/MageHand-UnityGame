@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SpellCell : MonoBehaviour
+public class SpellCell : InteractableBehavior
 {
     public GameObject highlight;
     public TextMeshProUGUI spellNameTMP;
