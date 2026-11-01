@@ -15,6 +15,11 @@ public class InteractableBehavior : MonoBehaviour
         }
     }
 
+    public bool IsTheSameObject(GameObject otherObject)
+    {
+        return _materialOwners.Contains(otherObject);
+    }
+
     public void EnlightItem(int enlighteningTime, GameObject gestureIconPrefab, Texture iconGrab)
     {
         //enlight

@@ -237,8 +237,7 @@ public class GetObjectsNearHand : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, 4.0f, visibleMask, QueryTriggerInteraction.Ignore))
             {
-                if (hit.collider.gameObject == collider.gameObject 
-                    || (collider.tag == "Chest" && hit.transform.parent.gameObject == collider.gameObject))
+                if (collider.gameObject.GetComponent<InteractableBehavior>().IsTheSameObject(hit.collider.gameObject))
                 {
                     //Debug.DrawRay(ray.origin, ray.direction * 4.0f, Color.green);
                     return true; // At least one point is visible
