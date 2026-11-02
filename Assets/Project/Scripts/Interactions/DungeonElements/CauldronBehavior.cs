@@ -8,8 +8,13 @@ public class CauldronBehavior : InteractableBehavior
 {
     [Header("Point to look inside cauldron")]
     [SerializeField] Transform _inCauldronCameraTransform;
+
+    [Header("Interaction colliders")]
     [SerializeField] List<Collider> _cauldronInteractionColliders;
-    
+
+    [Header("Fluid")]
+    [SerializeField] FluidSplashTrigger _fluid;
+
     bool _isCauldronZoomed = false;
     GameObject mainCamera;
     PlayerMovement playerMovement;
@@ -64,7 +69,7 @@ public class CauldronBehavior : InteractableBehavior
             playerMovement.stopMovement = true;
             foreach (Collider col in _cauldronInteractionColliders) { col.enabled = false; }
 
-            Vector3 pivot = _inCauldronCameraTransform.parent.position; // lokalne (0,0,0)
+            Vector3 pivot = _inCauldronCameraTransform.parent.position; // local (0,0,0)
             Vector3 from = Vector3.ProjectOnPlane(_inCauldronCameraTransform.position - pivot, Vector3.up);
             Vector3 to = Vector3.ProjectOnPlane(mainCamera.transform.position - pivot, Vector3.up);
             float angle = Mathf.Round(Vector3.SignedAngle(from, to, Vector3.up) / 90f) * 90f;
