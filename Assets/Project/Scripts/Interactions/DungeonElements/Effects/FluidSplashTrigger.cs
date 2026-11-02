@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Events;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -67,6 +69,9 @@ public class FluidSplashTrigger : MonoBehaviour
     private static readonly int TrailingFalloffID = Shader.PropertyToID("_TrailingFalloff");
     private static readonly int WaveSpeedID = Shader.PropertyToID("_WaveSpeed");
     private static readonly int TimeDecayID = Shader.PropertyToID("_TimeDecay");
+
+    // on splash event
+    public UnityEvent OnSplashTriggered;
 
     private void Awake()
     {
@@ -142,6 +147,8 @@ public class FluidSplashTrigger : MonoBehaviour
         _waterMaterial.SetVector(HitPositionID, worldHitPoint);
         _waterMaterial.SetFloat(HitTimeID, Time.time);
         _waterMaterial.SetFloat(WaveAmplitudeID, amplitude);
+
+        OnSplashTriggered?.Invoke();
     }
 
     public List<GameObject> GetSubmergedItems()
@@ -252,6 +259,11 @@ public class WaterSplashTriggerEditor : Editor
             EditorGUILayout.PropertyField(serializedObject.FindProperty("impactClamp"));
             EditorGUI.indentLevel--;
         }
+
+        // 5. OnSplashTriggered event
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("On Splash:", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("OnSplashTriggered"));
 
         serializedObject.ApplyModifiedProperties();
     }

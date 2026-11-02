@@ -15,6 +15,10 @@ public class CauldronBehavior : InteractableBehavior
     [Header("Fluid")]
     [SerializeField] FluidSplashTrigger _fluid;
 
+    [Header("Brewing:")]
+    [SerializeField] List<GameObject> _brewingIngredients = new();
+    [SerializeField] List<GameObject> _brewingResults = new();
+
     bool _isCauldronZoomed = false;
     GameObject mainCamera;
     PlayerMovement playerMovement;
@@ -25,6 +29,8 @@ public class CauldronBehavior : InteractableBehavior
         mainCamera = PlayerParams.Objects.playerCamera.gameObject;
         playerMovement = PlayerParams.Controllers.playerMovement;
         pauseMenu = PlayerParams.Controllers.pauseMenu;
+
+        _fluid.OnSplashTriggered.AddListener(Brewing);
     }
 
     private void Update() //listen to chest close input if chest is open
@@ -84,5 +90,20 @@ public class CauldronBehavior : InteractableBehavior
 
             _isCauldronZoomed = true;
         }
+    }
+
+    void Brewing()
+    {
+        List<GameObject> submergedItems = _fluid.GetSubmergedItems();
+
+        foreach (GameObject ingredient in _brewingIngredients)
+        {
+            if (!submergedItems.Contains(ingredient))
+            {
+                return;
+            }
+        }
+
+        Debug.Log("All ingredients are submerged! Brewing...");
     }
 }
