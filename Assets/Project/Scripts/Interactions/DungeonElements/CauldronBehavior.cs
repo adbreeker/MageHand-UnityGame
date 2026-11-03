@@ -20,7 +20,7 @@ public class CauldronBehavior : InteractableBehavior
     [SerializeField] List<Collider> _cauldronInteractionColliders;
 
     [Header("Fluid")]
-    [SerializeField] FluidSplashTrigger _fluid;
+    [SerializeField] CauldronFluid _fluid;
 
     [Header("Brewing:")]
     [SerializeField] List<BrewingRecipe> _brewingRecipes;
@@ -120,15 +120,25 @@ public class CauldronBehavior : InteractableBehavior
                 {
                     OnClick(); //close cauldron zoom if brewing is successful
                 }
+                isInteractable = false; //disable cauldron interaction until brewing is finished
+                StartCoroutine(BrewingSuccessRoutine(recipe.result));
 
                 foreach (GameObject ingredient in recipe.ingredients)
                 {
                     Destroy(ingredient);
                 }
 
-                Instantiate(recipe.result, _fluid.transform.position, Quaternion.identity);
                 break;
             }
         }
+    }
+
+    IEnumerator BrewingSuccessRoutine(GameObject brewingResult)
+    {
+        yield return null;
+        //_fluid
+
+
+        isInteractable = true; //re-enable cauldron interaction
     }
 }

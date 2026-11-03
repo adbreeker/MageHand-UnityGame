@@ -262,7 +262,7 @@ GameObject:
   - component: {fileID: 5615149029097217233}
   - component: {fileID: 2940036527729595932}
   - component: {fileID: 4076970139824821226}
-  - component: {fileID: 1185056348914008156}
+  - component: {fileID: 3079346757953038712}
   - component: {fileID: 7001980581446810289}
   - component: {fileID: 2337690403800958203}
   m_Layer: 13
@@ -340,7 +340,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1185056348914008156
+--- !u!114 &3079346757953038712
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -349,7 +349,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7948227808658308718}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28bfcb7ccc291314fb20f89ab698b884, type: 3}
+  m_Script: {fileID: 11500000, guid: ac1c172cdfe82874b937d7a409f4130f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   splashPreset: 1
@@ -363,6 +363,10 @@ MonoBehaviour:
   scaleWithVelocity: 0
   velocityMultiplier: 0.2
   impactClamp: {x: 0.4, y: 2.5}
+  OnSplashTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  test: 0
 --- !u!64 &7001980581446810289
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -505,4 +509,5 @@ MonoBehaviour:
   _cauldronInteractionColliders:
   - {fileID: 621791829785359018}
   - {fileID: 1285533445412964912}
-  _fluid: {fileID: 1185056348914008156}
+  _fluid: {fileID: 3079346757953038712}
+  _brewingRecipes: []
