@@ -256,13 +256,41 @@ public class GetObjectsNearHand : MonoBehaviour
             if (pointingAt.layer == LayerMask.NameToLayer("Item") 
                 || (pointingAt.layer == LayerMask.NameToLayer("UI") && pointingAt.tag != "SpellCell"))
             {
-                pointingAt.GetComponent<InteractableBehavior>().EnlightItem(enlighteningTime, gestureIconPrefab, iconGrab);
+                pointingAt.GetComponent<InteractableBehavior>().EnlightItem(enlighteningTime);
+
+                //show gesture hint icon
+                if (GameSettings.gestureHints)
+                {
+                    if (PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>() != null)
+                    {
+                        PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().iconTime = enlighteningTime;
+                    }
+                    else
+                    {
+                        PlayerParams.Objects.hand.AddComponent<ShowGestureIcon>().gestureIconPrefab = gestureIconPrefab;
+                    }
+                    PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().icon = iconGrab;
+                }
             }
 
             if( (pointingAt.layer == LayerMask.NameToLayer("Interaction") && pointingAt.tag!="Chest")
                 || (pointingAt.layer == LayerMask.NameToLayer("UI") && pointingAt.tag == "SpellCell"))
             {
-                pointingAt.GetComponent<InteractableBehavior>().EnlightInteraction(enlighteningTime, gestureIconPrefab, iconInteract);
+                pointingAt.GetComponent<InteractableBehavior>().EnlightInteraction(enlighteningTime);
+
+                //show gesture hint icon
+                if (GameSettings.gestureHints)
+                {
+                    if (PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>() != null)
+                    {
+                        PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().iconTime = enlighteningTime;
+                    }
+                    else
+                    {
+                        PlayerParams.Objects.hand.AddComponent<ShowGestureIcon>().gestureIconPrefab = gestureIconPrefab;
+                    }
+                    PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().icon = iconInteract;
+                }
             }
         }
     }

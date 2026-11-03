@@ -20,9 +20,8 @@ public class InteractableBehavior : MonoBehaviour
         return _materialOwners.Contains(otherObject);
     }
 
-    public void EnlightItem(int enlighteningTime, GameObject gestureIconPrefab, Texture iconGrab)
+    public void EnlightItem(int enlighteningTime) //yellow englight - items
     {
-        //enlight
         foreach(GameObject materialOwner in _materialOwners)
         {
             if (materialOwner.GetComponent<EnlightObject>() != null)
@@ -34,25 +33,10 @@ public class InteractableBehavior : MonoBehaviour
                 materialOwner.AddComponent<EnlightObject>().materialType = MaterialsAndEffectsHolder.Materials.enlightenItem;
             }
         }
-
-        //show icon
-        if (GameSettings.gestureHints)
-        {
-            if (PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>() != null)
-            {
-                PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().iconTime = enlighteningTime;
-            }
-            else
-            {
-                PlayerParams.Objects.hand.AddComponent<ShowGestureIcon>().gestureIconPrefab = gestureIconPrefab;
-            }
-            PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().icon = iconGrab;
-        }
     }
 
-    public void EnlightInteraction(int enlighteningTime, GameObject gestureIconPrefab, Texture iconInteract)
+    public void EnlightInteraction(int enlighteningTime) //orange enlight - interactions
     {
-        //enlight
         foreach(GameObject materialOwner in _materialOwners)
         {
             if (materialOwner.GetComponent<EnlightObject>() != null)
@@ -63,20 +47,6 @@ public class InteractableBehavior : MonoBehaviour
             {
                 materialOwner.AddComponent<EnlightObject>().materialType = MaterialsAndEffectsHolder.Materials.enlightenInteraction;
             }
-        }
-
-        //show icon
-        if (GameSettings.gestureHints)
-        {
-            if (PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>() != null)
-            {
-                PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().iconTime = enlighteningTime;
-            }
-            else
-            {
-                PlayerParams.Objects.hand.AddComponent<ShowGestureIcon>().gestureIconPrefab = gestureIconPrefab;
-            }
-            PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().icon = iconInteract;
         }
     }
 }
