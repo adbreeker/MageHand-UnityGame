@@ -1,8 +1,15 @@
 using FMOD.Studio;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
+
+[Serializable]
+public class BrewingRecipe
+{
+    public List<GameObject> ingredients;
+    public GameObject result;
+}
 
 public class CauldronBehavior : InteractableBehavior
 {
@@ -16,8 +23,7 @@ public class CauldronBehavior : InteractableBehavior
     [SerializeField] FluidSplashTrigger _fluid;
 
     [Header("Brewing:")]
-    [SerializeField] List<GameObject> _brewingIngredients = new();
-    [SerializeField] List<GameObject> _brewingResults = new();
+    [SerializeField] List<BrewingRecipe> _brewingRecipes;
 
     bool _isCauldronZoomed = false;
     GameObject mainCamera;
@@ -96,14 +102,33 @@ public class CauldronBehavior : InteractableBehavior
     {
         List<GameObject> submergedItems = _fluid.GetSubmergedItems();
 
-        foreach (GameObject ingredient in _brewingIngredients)
+        foreach (BrewingRecipe recipe in _brewingRecipes)
         {
-            if (!submergedItems.Contains(ingredient))
+            bool allIngredientsPresent = true;
+            foreach (GameObject ingredient in recipe.ingredients)
             {
-                return;
+                if(!submergedItems.Contains(ingredient))
+                {
+                    allIngredientsPresent = false;
+                    break;
+                }
+            }
+
+            if(allIngredientsPresent && submergedItems.Count == recipe.ingredients.Count)
+            {
+                if(_isCauldronZoomed)
+                {
+                    OnClick(); //close cauldron zoom if brewing is successful
+                }
+
+                foreach (GameObject ingredient in recipe.ingredients)
+                {
+                    Destroy(ingredient);
+                }
+
+                Instantiate(recipe.result, _fluid.transform.position, Quaternion.identity);
+                break;
             }
         }
-
-        Debug.Log("All ingredients are submerged! Brewing...");
     }
 }
