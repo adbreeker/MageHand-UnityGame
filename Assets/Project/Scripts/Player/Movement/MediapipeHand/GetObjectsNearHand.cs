@@ -254,7 +254,7 @@ public class GetObjectsNearHand : MonoBehaviour
         {
             //if pointing on item, switch or UI then enlightening only this item and showing proper icon
             if (pointingAt.layer == LayerMask.NameToLayer("Item") 
-                || (pointingAt.layer == LayerMask.NameToLayer("UI") && pointingAt.tag != "SpellCell"))
+                || (pointingAt.layer == LayerMask.NameToLayer("UI") && pointingAt.tag == "UI_ItemCell"))
             {
                 pointingAt.GetComponent<InteractableBehavior>().EnlightItem(enlighteningTime);
 
@@ -273,8 +273,8 @@ public class GetObjectsNearHand : MonoBehaviour
                 }
             }
 
-            if( (pointingAt.layer == LayerMask.NameToLayer("Interaction") && pointingAt.tag!="Chest")
-                || (pointingAt.layer == LayerMask.NameToLayer("UI") && pointingAt.tag == "SpellCell"))
+            if (pointingAt.layer == LayerMask.NameToLayer("Interaction")
+                || (pointingAt.layer == LayerMask.NameToLayer("UI") && pointingAt.tag == "UI_SpellCell"))
             {
                 pointingAt.GetComponent<InteractableBehavior>().EnlightInteraction(enlighteningTime);
 
