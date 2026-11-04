@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class ParticlesColor : MonoBehaviour
 {
-    [Header("All particles in teleportation effect")]
+    [Header("All particles in effect")]
     public List<ParticleSystem> particles;
 
-    public void ChangeColorOfEffect(Color color) //change color of teleportation effect
+    public void ChangeColorOfEffect(Color color) //change color of effect
     {
         foreach(ParticleSystem particle in particles)
         {

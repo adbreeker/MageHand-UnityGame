@@ -237,8 +237,7 @@ public class GetObjectsNearHand : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, 4.0f, visibleMask, QueryTriggerInteraction.Ignore))
             {
-                if (hit.collider.gameObject == collider.gameObject 
-                    || (collider.tag == "Chest" && hit.transform.parent.gameObject == collider.gameObject))
+                if (collider.gameObject.GetComponent<InteractableBehavior>().IsTheSameObject(hit.collider.gameObject))
                 {
                     //Debug.DrawRay(ray.origin, ray.direction * 4.0f, Color.green);
                     return true; // At least one point is visible
@@ -255,19 +254,11 @@ public class GetObjectsNearHand : MonoBehaviour
         {
             //if pointing on item, switch or UI then enlightening only this item and showing proper icon
             if (pointingAt.layer == LayerMask.NameToLayer("Item") 
-                || (pointingAt.layer == LayerMask.NameToLayer("UI") && pointingAt.tag != "SpellCell"))
+                || (pointingAt.layer == LayerMask.NameToLayer("UI") && pointingAt.tag == "UI_ItemCell"))
             {
-                //enlight
-                if (pointingAt.GetComponent<EnlightObject>() != null)
-                {
-                    pointingAt.GetComponent<EnlightObject>().enlightenTime = enlighteningTime;
-                }
-                else
-                {
-                    pointingAt.AddComponent<EnlightObject>().materialType = MaterialsAndEffectsHolder.Materials.enlightenItem;
-                }
+                pointingAt.GetComponent<InteractableBehavior>().EnlightItem(enlighteningTime);
 
-                //show icon
+                //show gesture hint icon
                 if (GameSettings.gestureHints)
                 {
                     if (PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>() != null)
@@ -278,63 +269,16 @@ public class GetObjectsNearHand : MonoBehaviour
                     {
                         PlayerParams.Objects.hand.AddComponent<ShowGestureIcon>().gestureIconPrefab = gestureIconPrefab;
                     }
-                    if (pointingAt.GetComponent<SpellIcon>() != null) PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().icon = iconInteract;
-                    else PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().icon = iconGrab;
+                    PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().icon = iconGrab;
                 }
             }
 
-            if( (pointingAt.layer == LayerMask.NameToLayer("Interaction") && pointingAt.tag!="Chest")
-                || (pointingAt.layer == LayerMask.NameToLayer("UI") && pointingAt.tag == "SpellCell"))
+            if (pointingAt.layer == LayerMask.NameToLayer("Interaction")
+                || (pointingAt.layer == LayerMask.NameToLayer("UI") && pointingAt.tag == "UI_SpellCell"))
             {
-                //enlight
-                if (pointingAt.GetComponent<EnlightObject>() != null)
-                {
-                    pointingAt.GetComponent<EnlightObject>().enlightenTime = enlighteningTime;
-                }
-                else
-                {
-                    pointingAt.AddComponent<EnlightObject>().materialType = MaterialsAndEffectsHolder.Materials.enlightenInteraction;
-                }
+                pointingAt.GetComponent<InteractableBehavior>().EnlightInteraction(enlighteningTime);
 
-                //show icon
-                if (GameSettings.gestureHints)
-                {
-                    if (PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>() != null)
-                    {
-                        PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().iconTime = enlighteningTime;
-                    }
-                    else
-                    {
-                        PlayerParams.Objects.hand.AddComponent<ShowGestureIcon>().gestureIconPrefab = gestureIconPrefab;
-                    }
-                    PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>().icon = iconInteract;
-                }
-            }
-
-            //if pointing on chest then enlightening all child objects
-            if(pointingAt.layer == LayerMask.NameToLayer("Interaction") && pointingAt.tag == "Chest")
-            {
-                //enlight core
-                if(pointingAt.GetComponent<ChestBehavior>().chestCore.GetComponent<EnlightObject>() != null)
-                {
-                    pointingAt.GetComponent<ChestBehavior>().chestCore.GetComponent<EnlightObject>().enlightenTime = enlighteningTime;
-                }
-                else
-                {
-                    pointingAt.GetComponent<ChestBehavior>().chestCore.AddComponent<EnlightObject>().materialType = MaterialsAndEffectsHolder.Materials.enlightenInteraction;
-                }
-
-                //enlight lid
-                if (pointingAt.GetComponent<ChestBehavior>().chestLid.GetComponent<EnlightObject>() != null)
-                {
-                    pointingAt.GetComponent<ChestBehavior>().chestLid.GetComponent<EnlightObject>().enlightenTime = enlighteningTime;
-                }
-                else
-                {
-                    pointingAt.GetComponent<ChestBehavior>().chestLid.AddComponent<EnlightObject>().materialType = MaterialsAndEffectsHolder.Materials.enlightenInteraction;
-                }
-
-                //show icon
+                //show gesture hint icon
                 if (GameSettings.gestureHints)
                 {
                     if (PlayerParams.Objects.hand.GetComponent<ShowGestureIcon>() != null)
