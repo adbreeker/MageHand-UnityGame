@@ -1,9 +1,43 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CauldronFluid : FluidSplashTrigger
 {
-    public bool test;
+    Color _baseColor;
+    Renderer _renderer;
+
+    public void Start()
+    {
+        _renderer = GetComponent<Renderer>();
+        _baseColor = _renderer.material.color;
+    }
+
+    public IEnumerator SetColor_Base()
+    {
+        return TransitionColor(_baseColor);
+    }
+
+    public IEnumerator SetColor(Color targetColor)
+    {
+        return TransitionColor(targetColor);
+    }
+
+    IEnumerator TransitionColor(Color targetColor)
+    {
+        Color startColor = _renderer.material.color;
+        float elapsed = 0f;
+        const float duration = 2f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            _renderer.material.color = Color.Lerp(startColor, targetColor, elapsed / duration);
+            yield return null;
+        }
+
+        _renderer.material.color = targetColor;
+    }
 
     public List<GameObject> GetSubmergedItems()
     {
