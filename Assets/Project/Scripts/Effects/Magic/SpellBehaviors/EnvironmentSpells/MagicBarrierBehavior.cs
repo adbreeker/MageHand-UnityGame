@@ -4,24 +4,41 @@ using UnityEngine;
 
 public class MagicBarrierBehavior : MonoBehaviour
 {
+    enum BarrierLaunchType
+    {
+        Awake,
+        Proximity,
+        None
+    }
+
     [SerializeField] GameObject _impactEffectPrefab;
+    [SerializeField] SphereCollider _barrierCollider;
+
+    [Header("Barrier launch type:")]
+    [SerializeField] BarrierLaunchType _barrierLaunchType = BarrierLaunchType.Awake;
+    [SerializeField] Collider _proximityCollider;
 
     [Header("Ground barrier:")]
-    public bool groundBarrier = false;
+    [SerializeField] bool _spawnGroundBarrier = true;
     [SerializeField] List<GameObject> _groundBarrierElements = new List<GameObject>();
 
     float _barrierRadius;
+    bool isBarrierActive = false;
 
-    void Start()
+    private void Awake()
     {
-        _barrierRadius = GetComponent<SphereCollider>().radius * transform.lossyScale.x;
-        SpawnGroundEffects();
-    }
+        _barrierRadius = _barrierCollider.radius * transform.lossyScale.x;
+        if (_spawnGroundBarrier) { SpawnGroundEffects(); }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (_barrierLaunchType == BarrierLaunchType.Awake) 
+        { 
+            isBarrierActive = true; 
+            GetComponent<ParticleSystem>().Play(true);
+        }
+        else if (_barrierLaunchType == BarrierLaunchType.Proximity)
+        {
+            _proximityCollider.enabled = true;
+        }
     }
 
     void SpawnGroundEffects()
@@ -58,12 +75,25 @@ public class MagicBarrierBehavior : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Instantiate(_impactEffectPrefab, collision.contacts[0].point, Quaternion.LookRotation(collision.contacts[0].point - gameObject.transform.position), gameObject.transform);
-
-        if(collision.collider.GetComponent<ItemBehavior>() != null)
+        if(isBarrierActive)
         {
-            Rigidbody rb = collision.collider.GetComponent<Rigidbody>();
-            rb.AddExplosionForce(5.0f, collision.contacts[0].point, 1.0f, 3.0f, ForceMode.Impulse);
+            Instantiate(_impactEffectPrefab, collision.contacts[0].point, Quaternion.LookRotation(collision.contacts[0].point - gameObject.transform.position), gameObject.transform);
+
+            if (collision.collider.GetComponent<ItemBehavior>() != null)
+            {
+                Rigidbody rb = collision.collider.GetComponent<Rigidbody>();
+                rb.AddExplosionForce(5.0f, collision.contacts[0].point, 1.0f, 3.0f, ForceMode.Impulse);
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (_barrierLaunchType == BarrierLaunchType.Proximity)
+        {
+            isBarrierActive = true;
+            GetComponent<ParticleSystem>().Play(true);
+            _proximityCollider.enabled = false;
         }
     }
 }
