@@ -9,6 +9,7 @@ public class BrewingRecipe
 {
     public List<GameObject> ingredients;
     public GameObject result;
+    public Color brewingColor;
 }
 
 public class CauldronBehavior : InteractableBehavior
@@ -24,7 +25,6 @@ public class CauldronBehavior : InteractableBehavior
     [SerializeField] ParticleSystem _particles;
 
     [Header("Brewing:")]
-    [SerializeField] Color _brewingColor;
     [SerializeField] List<BrewingRecipe> _brewingRecipes;
 
     bool _isCauldronZoomed = false;
@@ -119,7 +119,7 @@ public class CauldronBehavior : InteractableBehavior
             if(allIngredientsPresent && submergedItems.Count == recipe.ingredients.Count)
             {
                 isInteractable = false; //disable cauldron interaction until brewing is finished
-                StartCoroutine(BrewingSuccessRoutine(recipe.result));
+                StartCoroutine(BrewingSuccessRoutine(recipe));
 
                 foreach (GameObject ingredient in recipe.ingredients)
                 {
@@ -131,20 +131,20 @@ public class CauldronBehavior : InteractableBehavior
         }
     }
 
-    IEnumerator BrewingSuccessRoutine(GameObject brewingResult)
+    IEnumerator BrewingSuccessRoutine(BrewingRecipe brewingRecipe)
     {
-        yield return _fluid.SetColor(_brewingColor);
+        yield return _fluid.SetColor(brewingRecipe.brewingColor);
         if (_isCauldronZoomed) { OnClick(); } //unzoom cauldron if zoomed in
 
         yield return new WaitForSeconds(0.5f);
         _particles.gameObject.SetActive(true);
-        _particles.GetComponent<ParticlesColor>().ChangeColorOfEffect(_brewingColor);
+        _particles.GetComponent<ParticlesColor>().ChangeColorOfEffect(brewingRecipe.brewingColor);
         _particles.Play(true);
 
-        yield return new WaitForSeconds(0.8f * _particles.main.duration);
-        Instantiate(brewingResult, _fluid.transform.position - Vector3.up * 0.2f, Quaternion.identity);
+        yield return new WaitForSeconds(_particles.main.duration - 0.5f);
+        Instantiate(brewingRecipe.result, _fluid.transform.position - Vector3.up * 0.2f, Quaternion.identity);
 
-        yield return new WaitForSeconds(0.2f * _particles.main.duration + 0.5f);
+        yield return new WaitForSeconds(1f);
         isInteractable = true; //re-enable cauldron interaction
         StartCoroutine(_fluid.SetColor_Base());
     }
