@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MagicBarrierBehavior : MonoBehaviour
 {
@@ -22,6 +23,10 @@ public class MagicBarrierBehavior : MonoBehaviour
     [SerializeField] bool _spawnGroundBarrier = true;
     [SerializeField] List<GameObject> _groundBarrierElements = new List<GameObject>();
 
+    [Header("Events:")]
+    public UnityEvent OnBarrierActivated;
+    public UnityEvent OnBarrierHit;
+
     float _barrierRadius;
     bool isBarrierActive = false;
 
@@ -32,12 +37,22 @@ public class MagicBarrierBehavior : MonoBehaviour
 
         if (_barrierLaunchType == BarrierLaunchType.Awake) 
         { 
-            isBarrierActive = true; 
-            GetComponent<ParticleSystem>().Play(true);
+            ActivateBarrier();
         }
         else if (_barrierLaunchType == BarrierLaunchType.Proximity)
         {
             _proximityCollider.enabled = true;
+        }
+    }
+
+    public void ActivateBarrier()
+    {
+        if (!isBarrierActive)
+        {
+            isBarrierActive = true;
+            GetComponent<ParticleSystem>().Play(true);
+            _proximityCollider.enabled = false;
+            OnBarrierActivated?.Invoke();
         }
     }
 
@@ -78,6 +93,7 @@ public class MagicBarrierBehavior : MonoBehaviour
         if(isBarrierActive)
         {
             Instantiate(_impactEffectPrefab, collision.contacts[0].point, Quaternion.LookRotation(collision.contacts[0].point - gameObject.transform.position), gameObject.transform);
+            OnBarrierHit?.Invoke();
 
             if (collision.collider.GetComponent<ItemBehavior>() != null)
             {
@@ -91,9 +107,7 @@ public class MagicBarrierBehavior : MonoBehaviour
     {
         if (_barrierLaunchType == BarrierLaunchType.Proximity)
         {
-            isBarrierActive = true;
-            GetComponent<ParticleSystem>().Play(true);
-            _proximityCollider.enabled = false;
+            ActivateBarrier();
         }
     }
 }
