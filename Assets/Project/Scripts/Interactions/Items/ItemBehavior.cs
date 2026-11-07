@@ -14,10 +14,10 @@ public class ItemBehavior : InteractableBehavior
     private AudioManager AudioManager => GameParams.Managers.audioManager;
     private FmodEvents FmodEvents => GameParams.Managers.fmodEvents;
 
-    protected override void Start()
-    {
-        base.Start();
-    }
+    //protected override void Start()
+    //{
+    //    base.Start();
+    //}
 
     public virtual void OnPickUp()
     {
