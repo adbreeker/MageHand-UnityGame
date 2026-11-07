@@ -20,8 +20,9 @@ public class ChestBehavior : InteractableBehavior
     EventInstance openingChestSound;
     EventInstance closingChestSound;
 
-    private void Start() //get necessary components on start
+    protected override void Start() //get necessary components on start
     {
+        base.Start();
         mainCamera = PlayerParams.Objects.playerCamera.gameObject;
         playerMovement = PlayerParams.Controllers.playerMovement;
         pauseMenu = PlayerParams.Controllers.pauseMenu;

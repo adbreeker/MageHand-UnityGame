@@ -7,8 +7,9 @@ public class SpellBookBehavior : ItemBehavior
     private Spellbook spellbook;
     private HandInteractions handInteractions;
 
-    private void Start() //get necessary objects on awake
+    protected override void Start() //get necessary objects on awake
     {
+        base.Start();
         spellbook = PlayerParams.Controllers.spellbook;
         handInteractions = PlayerParams.Controllers.handInteractions;
     }

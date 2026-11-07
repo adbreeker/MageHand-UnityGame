@@ -77,40 +77,62 @@ public class GetObjectsNearHand : MonoBehaviour
 
     public void DrawDebugCylinder(Vector3 startPoint, Vector3 endPoint, float radius, int segments = 20)
     {
-        // Vector representing the axis of the cylinder
         Vector3 axis = endPoint - startPoint;
-        Vector3 axisNormalized = axis.normalized;
+        if (axis.sqrMagnitude <= Mathf.Epsilon)
+        {
+            for (int i = 0; i < segments; i++)
+            {
+                float angle = i * Mathf.PI * 2f / segments;
+                float nextAngle = (i + 1) * Mathf.PI * 2f / segments;
+                Debug.DrawLine(startPoint + new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f) * radius,
+                    startPoint + new Vector3(Mathf.Cos(nextAngle), Mathf.Sin(nextAngle), 0f) * radius, Color.blue);
+                Debug.DrawLine(startPoint + new Vector3(0f, Mathf.Cos(angle), Mathf.Sin(angle)) * radius,
+                    startPoint + new Vector3(0f, Mathf.Cos(nextAngle), Mathf.Sin(nextAngle)) * radius, Color.blue);
+                Debug.DrawLine(startPoint + new Vector3(Mathf.Sin(angle), 0f, Mathf.Cos(angle)) * radius,
+                    startPoint + new Vector3(Mathf.Sin(nextAngle), 0f, Mathf.Cos(nextAngle)) * radius, Color.blue);
+            }
+            return;
+        }
 
-        // Find any vector that is not parallel to the cylinder's axis
+        Vector3 axisNormalized = axis.normalized;
         Vector3 perpendicularVector = Vector3.Cross(axisNormalized, Vector3.up);
-        if (perpendicularVector == Vector3.zero) // If the vector happened to be parallel to "up", choose a different vector
+        if (perpendicularVector.sqrMagnitude <= Mathf.Epsilon)
         {
             perpendicularVector = Vector3.Cross(axisNormalized, Vector3.right);
         }
         perpendicularVector.Normalize();
+        Vector3 secondPerpendicular = Vector3.Cross(axisNormalized, perpendicularVector).normalized;
 
-        // Draw the center axis of the cylinder
         Debug.DrawLine(startPoint, endPoint, Color.cyan);
-
-        // Draw the cross-section of the cylinder
         for (int i = 0; i < segments; i++)
         {
-            float angle = i * Mathf.PI * 2 / segments;
-            float nextAngle = (i + 1) * Mathf.PI * 2 / segments;
+            float angle = i * Mathf.PI * 2f / segments;
+            float nextAngle = (i + 1) * Mathf.PI * 2f / segments;
+            Vector3 radial = perpendicularVector * Mathf.Cos(angle) + secondPerpendicular * Mathf.Sin(angle);
+            Vector3 nextRadial = perpendicularVector * Mathf.Cos(nextAngle) + secondPerpendicular * Mathf.Sin(nextAngle);
+            Vector3 startRingPoint = startPoint + radial * radius;
+            Vector3 nextStartRingPoint = startPoint + nextRadial * radius;
+            Vector3 endRingPoint = endPoint + radial * radius;
+            Vector3 nextEndRingPoint = endPoint + nextRadial * radius;
 
-            // Calculate points on the circle around startPoint and endPoint
-            Vector3 point1 = startPoint + Quaternion.AngleAxis(angle * Mathf.Rad2Deg, axisNormalized) * perpendicularVector * radius;
-            Vector3 point2 = startPoint + Quaternion.AngleAxis(nextAngle * Mathf.Rad2Deg, axisNormalized) * perpendicularVector * radius;
+            Debug.DrawLine(startRingPoint, nextStartRingPoint, Color.blue);
+            Debug.DrawLine(endRingPoint, nextEndRingPoint, Color.blue);
+            Debug.DrawLine(startRingPoint, endRingPoint, Color.blue);
 
-            Vector3 point3 = endPoint + Quaternion.AngleAxis(angle * Mathf.Rad2Deg, axisNormalized) * perpendicularVector * radius;
-            Vector3 point4 = endPoint + Quaternion.AngleAxis(nextAngle * Mathf.Rad2Deg, axisNormalized) * perpendicularVector * radius;
-
-            // Draw the cross-sections (base and top of the cylinder)
-            Debug.DrawLine(point1, point2, Color.blue);
-            Debug.DrawLine(point3, point4, Color.blue);
-
-            // Draw lines connecting the two bases
-            Debug.DrawLine(point1, point3, Color.blue);
+            Vector3 previousStartCapPoint = startRingPoint;
+            Vector3 previousEndCapPoint = endRingPoint;
+            for (int capSegment = 1; capSegment <= segments / 4; capSegment++)
+            {
+                float capAngle = (Mathf.PI * 0.5f) * capSegment / (segments / 4f);
+                Vector3 startCapPoint = startPoint + radial * (Mathf.Cos(capAngle) * radius)
+                    - axisNormalized * (Mathf.Sin(capAngle) * radius);
+                Vector3 endCapPoint = endPoint + radial * (Mathf.Cos(capAngle) * radius)
+                    + axisNormalized * (Mathf.Sin(capAngle) * radius);
+                Debug.DrawLine(previousStartCapPoint, startCapPoint, Color.blue);
+                Debug.DrawLine(previousEndCapPoint, endCapPoint, Color.blue);
+                previousStartCapPoint = startCapPoint;
+                previousEndCapPoint = endCapPoint;
+            }
         }
     }
 
@@ -222,12 +244,14 @@ public class GetObjectsNearHand : MonoBehaviour
             checkPoints[i + 9] = centerPoint + direction * (bounds.extents.magnitude * 0.9f);
         }
 
-        //foreach (Vector3 point in checkPoints)
-        //{
-        //    Vector3 screenPoint = cam.WorldToViewportPoint(point);
-        //    Ray ray = cam.ViewportPointToRay(screenPoint);
-        //    Debug.DrawRay(ray.origin, ray.direction * 4.0f, Color.red);
-        //}
+#if UNITY_EDITOR
+        foreach (Vector3 point in checkPoints)
+        {
+            Vector3 screenPoint = cam.WorldToViewportPoint(point);
+            Ray ray = cam.ViewportPointToRay(screenPoint);
+            Debug.DrawRay(ray.origin, ray.direction * 4.0f, Color.red);
+        }
+#endif
 
         foreach (Vector3 point in checkPoints)
         {
@@ -239,7 +263,9 @@ public class GetObjectsNearHand : MonoBehaviour
             {
                 if (collider.gameObject.GetComponent<InteractableBehavior>().IsTheSameObject(hit.collider.gameObject))
                 {
-                    //Debug.DrawRay(ray.origin, ray.direction * 4.0f, Color.green);
+#if UNITY_EDITOR
+                    Debug.DrawRay(ray.origin, ray.direction * 4.0f, Color.green);
+#endif
                     return true; // At least one point is visible
                 }
             }

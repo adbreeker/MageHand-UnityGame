@@ -18,8 +18,9 @@ public class ReadableBehavior : ItemBehavior
     [Header("Prefabs")]
     public GameObject notePrefab;
 
-    public void Start()
+    protected override void Start()
     {
+        base.Start();
         itemName = '"' + title + '"';
     }
 

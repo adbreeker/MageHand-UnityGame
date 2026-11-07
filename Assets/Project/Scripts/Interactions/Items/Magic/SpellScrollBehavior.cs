@@ -19,8 +19,9 @@ public class SpellScrollBehavior : ItemBehavior
 
     private Spellbook spellbook;
 
-    private void Start() //make scroll unpickable if spellbook wasn't picked up yet
+    protected override void Start() //make scroll unpickable if spellbook wasn't picked up yet
     {
+        base.Start();
         spellbook = PlayerParams.Controllers.spellbook;
 
         if(!spellbook.bookOwned)

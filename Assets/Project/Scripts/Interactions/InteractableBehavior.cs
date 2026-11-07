@@ -7,7 +7,12 @@ public class InteractableBehavior : MonoBehaviour
     public bool isInteractable = true;
     [SerializeField] List<GameObject> _materialOwners = new();
 
-    void Start()
+    protected virtual void Start()
+    {
+        EnsureMaterialOwners();
+    }
+
+    void EnsureMaterialOwners() // Ensure that the _materialOwners list is initialized 
     {
         if (_materialOwners.Count == 0)
         {
@@ -17,11 +22,13 @@ public class InteractableBehavior : MonoBehaviour
 
     public bool IsTheSameObject(GameObject otherObject)
     {
+        EnsureMaterialOwners();
         return _materialOwners.Contains(otherObject);
     }
 
     public void EnlightItem(int enlighteningTime) //yellow englight - items
     {
+        EnsureMaterialOwners();
         foreach(GameObject materialOwner in _materialOwners)
         {
             if (materialOwner.GetComponent<EnlightObject>() != null)
@@ -37,6 +44,7 @@ public class InteractableBehavior : MonoBehaviour
 
     public void EnlightInteraction(int enlighteningTime) //orange enlight - interactions
     {
+        EnsureMaterialOwners();
         foreach(GameObject materialOwner in _materialOwners)
         {
             if (materialOwner.GetComponent<EnlightObject>() != null)
