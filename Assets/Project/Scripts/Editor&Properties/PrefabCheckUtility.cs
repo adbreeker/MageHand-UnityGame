@@ -33,4 +33,30 @@ public static class PrefabCheckUtility
 
         return true;
     }
+
+    public static bool IsSceneInstance(GameObject go)
+    {
+        if (go == null)
+            return false;
+
+        // 1. Must belong to a valid, loaded scene (rules out Project assets & temporary import clones)
+        if (!go.scene.IsValid() || !go.scene.isLoaded)
+            return false;
+
+#if UNITY_EDITOR
+        // 2. Explicitly rule out Prefab Assets on disk
+        if (PrefabUtility.IsPartOfPrefabAsset(go))
+            return false;
+
+        // 3. Rule out the isolated Prefab Mode editing stage (if you only want real gameplay scenes)
+        if (PrefabStageUtility.GetPrefabStage(go) != null)
+            return false;
+
+        // 4. Rule out persistent objects stored on disk
+        if (EditorUtility.IsPersistent(go))
+            return false;
+#endif
+
+        return true;
+    }
 }

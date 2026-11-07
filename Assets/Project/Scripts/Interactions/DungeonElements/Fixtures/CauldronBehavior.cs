@@ -143,7 +143,16 @@ public class CauldronBehavior : InteractableBehavior
         _particles.Play(true);
 
         yield return new WaitForSeconds(_particles.main.duration - 0.5f);
-        Instantiate(brewingRecipe.result, _fluid.transform.position - Vector3.up * 0.2f, Quaternion.identity);
+        if (PrefabCheckUtility.IsSceneInstance(brewingRecipe.result)) //if already spawned in scene, just move it to the cauldron and enable it
+        {
+            brewingRecipe.result.transform.position = _fluid.transform.position - Vector3.up * 0.2f;
+            brewingRecipe.result.transform.rotation = Quaternion.identity;
+            brewingRecipe.result.SetActive(true); 
+        }
+        else //else instantiate the result prefab in the cauldron
+        {
+            Instantiate(brewingRecipe.result, _fluid.transform.position - Vector3.up * 0.2f, Quaternion.identity);
+        } 
 
         yield return new WaitForSeconds(1f);
         isInteractable = true; //re-enable cauldron interaction
