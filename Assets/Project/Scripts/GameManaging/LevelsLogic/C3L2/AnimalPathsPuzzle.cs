@@ -9,6 +9,8 @@ public class AnimalPathsPuzzle : MonoBehaviour
     [SerializeField] List<Transform> _sharkPath;
     [SerializeField] Transform _sharkPathExit;
     [SerializeField] float _sharkPathTpDeley;
+    [SerializeField] LeverBehavior _sharkPathLever;
+    [SerializeField] OpenBarsPassage _sharkPathPassage;
 
     [Header("Path of Tortoise:")]
     [SerializeField] Transform _tortoisePathEnter;
@@ -37,7 +39,12 @@ public class AnimalPathsPuzzle : MonoBehaviour
             if(_pm.currentTile == _sharkPathEnter || _pm.currentTile == _sharkPathExit)
             {
                 List<Transform> path = new(_sharkPath);
-                if(_pm.currentTile == _sharkPathEnter) { path.Insert(0, _sharkPathEnter); }
+                if(_pm.currentTile == _sharkPathEnter) 
+                { 
+                    path.Insert(0, _sharkPathEnter); 
+                    _sharkPathLever.ForceLeverUp();
+                    if(_sharkPathPassage.passageOpen) { _sharkPathPassage.Interaction(); }
+                }
                 else 
                 {
                     path.Add(_sharkPathExit);

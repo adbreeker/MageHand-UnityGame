@@ -42,6 +42,22 @@ public class LeverBehavior : InteractableBehavior
         }
     }
 
+    public void ForceLeverUp()
+    {
+        StopAllCoroutines();
+        leverChanging = false;
+        lever.transform.localRotation = Quaternion.Euler(-25, 0, 0);
+        leverON = false;
+    }
+
+    public void ForceLeverDown()
+    {
+        StopAllCoroutines();
+        leverChanging = false;
+        lever.transform.localRotation = Quaternion.Euler(25, 0, 0);
+        leverON = true;
+    }
+
     IEnumerator LeverAnimation() //animating lever movement
     {
         leverChanging = true;
