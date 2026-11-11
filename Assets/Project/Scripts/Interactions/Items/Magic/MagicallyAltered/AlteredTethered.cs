@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AlteredBinding : MonoBehaviour
+public class AlteredTethered : MonoBehaviour
 {
     Vector3 _startingPos;
     Quaternion _startingRot;
 
+    [Header("Tether settings:")]
+    [SerializeField] float _teleportDelay = 4.0f;
     [SerializeField] Collider _bindBounds;
 
     Coroutine _afterThrow;
@@ -35,7 +37,7 @@ public class AlteredBinding : MonoBehaviour
 
     IEnumerator BackToLocationAfterThrow()
     {
-        yield return new WaitForSeconds(4.0f);
+        yield return new WaitForSeconds(_teleportDelay);
         TeleportBackToLocation();
     }
 
