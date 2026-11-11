@@ -14,10 +14,14 @@ public class AlteredTethered : MonoBehaviour
 
     Coroutine _afterThrow;
 
-    private void Start()
+    private void Awake()
     {
         _startingPos = transform.position;
         _startingRot = transform.rotation;
+    }
+
+    private void Start()
+    {
         PlayerParams.Controllers.playerMovement.StartCoroutine(BackToLocationPlayerMovement());
     }
 
@@ -65,8 +69,14 @@ public class AlteredTethered : MonoBehaviour
         }
     }
 
-    void TeleportBackToLocation()
+    public void TeleportBackToLocation()
     {
+        if (_afterThrow != null)
+        {
+            StopCoroutine(_afterThrow);
+            _afterThrow = null;
+        }
+
         transform.SetParent(null);
         if (GetComponent<Rigidbody>() != null)
         {
