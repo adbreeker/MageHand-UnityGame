@@ -212,7 +212,7 @@ public class Inventory : MonoBehaviour
         
         try
         {
-            PlayerParams.Controllers.handInteractions.inHand = null;
+            if (PlayerParams.Controllers.handInteractions.inHand == item) { PlayerParams.Controllers.handInteractions.inHand = null; }
         }
         catch
         {

@@ -9,11 +9,9 @@ public class LaboratoryIngredientsPuzzle : MonoBehaviour
 
     [Header("Vials:")]
     [SerializeField] List<AlteredTethered> _vials;
-    List<Transform> _initialVialPositions = new ();
 
     [Header("Jars:")]
     [SerializeField] List<AlteredTethered> _jars;
-    List<Transform> _initialJarPositions = new();
 
     private void Start()
     {
@@ -21,6 +19,15 @@ public class LaboratoryIngredientsPuzzle : MonoBehaviour
         _leverVials.OnLeverPulledUpEvents += HideVials;
         _leverJars.OnLeverPulledDownEvents += SpawnJars;
         _leverJars.OnLeverPulledUpEvents += HideJars;
+
+        foreach (AlteredTethered vial in _vials)
+        {
+            vial.gameObject.SetActive(false);
+        }
+        foreach (AlteredTethered jar in _jars)
+        {
+            jar.gameObject.SetActive(false);
+        }
     }
 
     public void SpawnVials(GameObject lever)

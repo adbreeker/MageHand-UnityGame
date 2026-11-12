@@ -9,7 +9,7 @@ public class AlteredTethered : MonoBehaviour
     Quaternion _startingRot;
 
     [Header("Tether settings:")]
-    [SerializeField] float _teleportDelay = 4.0f;
+    [SerializeField] float _teleportDelay = 5.0f;
     [SerializeField] Collider _bindBounds;
 
     Coroutine _afterThrow;
@@ -22,7 +22,7 @@ public class AlteredTethered : MonoBehaviour
 
     private void Start()
     {
-        PlayerParams.Controllers.playerMovement.StartCoroutine(BackToLocationPlayerMovement());
+        PlayerParams.Controllers.playerMovement.StartCoroutine(BackToLocationAfterExitingBounds());
     }
 
     void OnThrow()
@@ -45,14 +45,30 @@ public class AlteredTethered : MonoBehaviour
         TeleportBackToLocation();
     }
 
-    IEnumerator BackToLocationPlayerMovement()
+    IEnumerator BackToLocationAfterExitingBounds()
     {
-        while(true) 
+        WaitForFixedUpdate wait = new WaitForFixedUpdate();
+        Transform playerPos = PlayerParams.Objects.player.transform;
+        Inventory inventory = PlayerParams.Controllers.inventory;
+
+        while (true) 
         {
-            yield return new WaitForFixedUpdate();
-            if (transform.position != _startingPos && !_bindBounds.bounds.Contains(PlayerParams.Objects.player.transform.position))
+            yield return wait;
+
+            if (gameObject.activeSelf)
+            {
+                if(!_bindBounds.bounds.Contains(gameObject.transform.position))
+                {
+                    TeleportBackToLocation();
+                    Debug.Log($"Tethered {gameObject.name} has exited its bounds and was teleported back — ACTIVE");
+                }
+            }
+            else if (transform.position != _startingPos 
+                && inventory.inventory.Contains(gameObject)
+                && !_bindBounds.bounds.Contains(playerPos.position))
             {
                 TeleportBackToLocation();
+                Debug.Log($"Tethered {gameObject.name} has exited its bounds and was teleported back — INVENTORY");
             }
         }
     }
