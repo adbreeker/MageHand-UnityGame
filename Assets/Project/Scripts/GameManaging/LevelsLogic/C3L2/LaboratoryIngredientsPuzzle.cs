@@ -35,7 +35,7 @@ public class LaboratoryIngredientsPuzzle : MonoBehaviour
         foreach (AlteredTethered vial in _vials)
         {
             vial.gameObject.SetActive(true);
-            vial.TeleportBackToLocation();
+            vial.TeleportBackToLocation(false);
         }
     }
 
@@ -43,7 +43,8 @@ public class LaboratoryIngredientsPuzzle : MonoBehaviour
     {
         foreach (AlteredTethered vial in _vials)
         {
-            vial.TeleportBackToLocation();
+            bool tpEffectAtOrigin = vial.gameObject.activeSelf || PlayerParams.Controllers.inventory.inventory.Contains(vial.gameObject);
+            vial.TeleportBackToLocation(tpEffectAtOrigin);
             vial.gameObject.SetActive(false);
         }
     }
@@ -53,7 +54,7 @@ public class LaboratoryIngredientsPuzzle : MonoBehaviour
         foreach (AlteredTethered jar in _jars)
         {
             jar.gameObject.SetActive(true);
-            jar.TeleportBackToLocation();
+            jar.TeleportBackToLocation(false);
         }
     }
 
@@ -61,7 +62,8 @@ public class LaboratoryIngredientsPuzzle : MonoBehaviour
     {
         foreach (AlteredTethered jar in _jars)
         {
-            jar.TeleportBackToLocation();
+            bool tpEffectAtOrigin = jar.gameObject.activeSelf || PlayerParams.Controllers.inventory.inventory.Contains(jar.gameObject);
+            jar.TeleportBackToLocation(tpEffectAtOrigin);
             jar.gameObject.SetActive(false);
         }
     }

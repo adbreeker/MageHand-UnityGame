@@ -85,7 +85,7 @@ public class AlteredTethered : MonoBehaviour
         }
     }
 
-    public void TeleportBackToLocation()
+    public void TeleportBackToLocation(bool tpEffectAtOrigin = true)
     {
         if (_afterThrow != null)
         {
@@ -101,8 +101,11 @@ public class AlteredTethered : MonoBehaviour
 
         if(PlayerParams.Controllers.handInteractions.inHand == gameObject) { PlayerParams.Controllers.handInteractions.inHand = null; }
 
-        GameObject tpEffect = GameParams.Holders.materialsAndEffectsHolder.GetEffect(MaterialsAndEffectsHolder.Effects.teleportationObject);
-        Instantiate(tpEffect, transform.position, Quaternion.identity);
+        if(tpEffectAtOrigin)
+        {
+            GameObject tpEffect = GameParams.Holders.materialsAndEffectsHolder.GetEffect(MaterialsAndEffectsHolder.Effects.teleportationObject);
+            Instantiate(tpEffect, transform.position, Quaternion.identity);
+        }
 
         ChangeLayer(gameObject, LayerMask.NameToLayer("Item"));
 

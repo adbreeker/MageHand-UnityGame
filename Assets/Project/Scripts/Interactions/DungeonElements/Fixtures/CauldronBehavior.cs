@@ -124,7 +124,7 @@ public class CauldronBehavior : InteractableBehavior
 
                 foreach (GameObject ingredient in recipe.ingredients)
                 {
-                    Destroy(ingredient);
+                    ingredient.SetActive(false); //disable ingredients after brewing
                 }
 
                 break;
