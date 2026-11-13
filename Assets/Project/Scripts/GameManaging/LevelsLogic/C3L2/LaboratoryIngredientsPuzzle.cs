@@ -27,7 +27,7 @@ public class LaboratoryIngredientsPuzzle : MonoBehaviour
         _leverJars.OnLeverPulledDownEvents += SpawnJars;
         _leverJars.OnLeverPulledUpEvents += HideJars;
 
-        _cauldron.OnBrewingResultSpawned += SetupBrewedVial;
+        _cauldron.OnBrewingResultSpawned += SetupBrewedObject;
 
         foreach (AlteredTethered vial in _vials)
         {
@@ -83,12 +83,12 @@ public class LaboratoryIngredientsPuzzle : MonoBehaviour
         }
     }
 
-    public void SetupBrewedVial(GameObject vial)
+    public void SetupBrewedObject(GameObject brewed)
     {
-        if(vial.GetComponent<AlteredTethered>() == null)
+        if(brewed.GetComponent<ItemBehavior>().itemName.Contains("Vial") && brewed.GetComponent<AlteredTethered>() == null)
         {
-            AlteredTethered alteredTethered = vial.AddComponent<AlteredTethered>();
-            alteredTethered.SetupTether(Vector3.one * 10000f, vial.transform.rotation, _laboratoryBounds, float.PositiveInfinity, true);
+            AlteredTethered alteredTethered = brewed.AddComponent<AlteredTethered>();
+            alteredTethered.SetupTether(Vector3.one * 10000f, brewed.transform.rotation, _laboratoryBounds, float.PositiveInfinity, true);
             _spawnedVials.Add(alteredTethered);
         }
     }
