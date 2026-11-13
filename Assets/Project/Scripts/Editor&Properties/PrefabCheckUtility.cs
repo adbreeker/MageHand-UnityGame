@@ -59,4 +59,19 @@ public static class PrefabCheckUtility
 
         return true;
     }
+
+    public static bool IsSameItemOrItemPrefabInstance(GameObject assignedItem, GameObject checkedItem)
+    {
+        if (assignedItem == null || checkedItem == null)
+            return false;
+
+        if (assignedItem == checkedItem)
+            return true;
+
+        ItemBehavior assignedBehavior = assignedItem.GetComponent<ItemBehavior>();
+        ItemBehavior checkedBehavior = checkedItem.GetComponent<ItemBehavior>();
+        return assignedBehavior != null && checkedBehavior != null &&
+               !string.IsNullOrEmpty(assignedBehavior.itemName) &&
+               assignedBehavior.itemName == checkedBehavior.itemName;
+    }
 }

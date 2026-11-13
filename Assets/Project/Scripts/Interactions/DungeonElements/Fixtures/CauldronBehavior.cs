@@ -8,7 +8,7 @@ using UnityEngine;
 public class BrewingRecipe
 {
     public List<GameObject> ingredients;
-    public GameObject result;
+    public List<GameObject> results;
     public Color brewingColor;
 }
 
@@ -26,6 +26,9 @@ public class CauldronBehavior : InteractableBehavior
 
     [Header("Brewing:")]
     [SerializeField] List<BrewingRecipe> _brewingRecipes;
+    [SerializeField, Min(0f)] float _resultSpawnRadius = 0.25f;
+
+    public event Action<GameObject> OnBrewingResultSpawned;
 
     bool _isCauldronZoomed = false;
     GameObject mainCamera;
@@ -107,22 +110,38 @@ public class CauldronBehavior : InteractableBehavior
 
         foreach (BrewingRecipe recipe in _brewingRecipes)
         {
+            List<GameObject> matchedIngredients = new List<GameObject>();
+            HashSet<GameObject> usedItems = new HashSet<GameObject>();
             bool allIngredientsPresent = true;
             foreach (GameObject ingredient in recipe.ingredients)
             {
-                if(!submergedItems.Contains(ingredient))
+                GameObject matchingItem = null;
+                foreach (GameObject submergedItem in submergedItems)
+                {
+                    if (!usedItems.Contains(submergedItem) &&
+                        PrefabCheckUtility.IsSameItemOrItemPrefabInstance(ingredient, submergedItem))
+                    {
+                        matchingItem = submergedItem;
+                        break;
+                    }
+                }
+
+                if (matchingItem == null)
                 {
                     allIngredientsPresent = false;
                     break;
                 }
+
+                matchedIngredients.Add(matchingItem);
+                usedItems.Add(matchingItem);
             }
 
-            if(allIngredientsPresent && submergedItems.Count == recipe.ingredients.Count)
+            if (allIngredientsPresent && submergedItems.Count == recipe.ingredients.Count)
             {
                 isInteractable = false; //disable cauldron interaction until brewing is finished
                 StartCoroutine(BrewingSuccessRoutine(recipe));
 
-                foreach (GameObject ingredient in recipe.ingredients)
+                foreach (GameObject ingredient in matchedIngredients)
                 {
                     ingredient.SetActive(false); //disable ingredients after brewing
                 }
@@ -143,16 +162,28 @@ public class CauldronBehavior : InteractableBehavior
         _particles.Play(true);
 
         yield return new WaitForSeconds(_particles.main.duration - 0.5f);
-        if (PrefabCheckUtility.IsSceneInstance(brewingRecipe.result)) //if already spawned in scene, just move it to the cauldron and enable it
+        Vector3 resultCenter = _fluid.transform.position - Vector3.up * 0.2f;
+        int resultCount = brewingRecipe.results.Count;
+        for (int i = 0; i < resultCount; i++)
         {
-            brewingRecipe.result.transform.position = _fluid.transform.position - Vector3.up * 0.2f;
-            brewingRecipe.result.transform.rotation = Quaternion.identity;
-            brewingRecipe.result.SetActive(true); 
+            GameObject result = brewingRecipe.results[i];
+            float angle = 2f * Mathf.PI * i / resultCount;
+            Vector3 offset = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * _resultSpawnRadius;
+            Vector3 resultPosition = resultCenter + offset;
+
+            if (PrefabCheckUtility.IsSceneInstance(result)) //if already spawned in scene, just move it around the cauldron and enable it
+            {
+                result.transform.position = resultPosition;
+                result.transform.rotation = Quaternion.identity;
+                result.SetActive(true);
+                OnBrewingResultSpawned?.Invoke(result);
+            }
+            else //else instantiate the result prefab around the cauldron
+            {
+                GameObject spawned = Instantiate(result, resultPosition, Quaternion.identity);
+                OnBrewingResultSpawned?.Invoke(spawned);
+            }
         }
-        else //else instantiate the result prefab in the cauldron
-        {
-            Instantiate(brewingRecipe.result, _fluid.transform.position - Vector3.up * 0.2f, Quaternion.identity);
-        } 
 
         yield return new WaitForSeconds(1f);
         isInteractable = true; //re-enable cauldron interaction

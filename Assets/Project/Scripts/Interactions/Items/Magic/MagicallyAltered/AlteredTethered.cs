@@ -11,6 +11,7 @@ public class AlteredTethered : MonoBehaviour
     [Header("Tether settings:")]
     [SerializeField] float _teleportDelay = 5.0f;
     [SerializeField] Collider _bindBounds;
+    [SerializeField] bool _destroyOnTether = false;
 
     Coroutine _afterThrow;
 
@@ -23,6 +24,15 @@ public class AlteredTethered : MonoBehaviour
     private void Start()
     {
         PlayerParams.Controllers.playerMovement.StartCoroutine(BackToLocationAfterExitingBounds());
+    }
+
+    public void SetupTether(Vector3 startingPos, Quaternion startingRot, Collider bindBounds, float teleportDelay = 5f, bool destroyOnTether = false)
+    {
+        _startingPos = startingPos;
+        _startingRot = startingRot;
+        _bindBounds = bindBounds;
+        _teleportDelay = teleportDelay;
+        _destroyOnTether = destroyOnTether;
     }
 
     void OnThrow()
@@ -109,7 +119,15 @@ public class AlteredTethered : MonoBehaviour
 
         ChangeLayer(gameObject, LayerMask.NameToLayer("Item"));
 
-        GetComponent<ItemBehavior>().TeleportTo(_startingPos, 0f, null);
-        transform.rotation = _startingRot;
+        if(_destroyOnTether)
+        {
+            GetComponent<ItemBehavior>().TeleportTo(Vector3.one * 10000f, 0f);
+            Destroy(gameObject);
+        }
+        else
+        {
+            GetComponent<ItemBehavior>().TeleportTo(_startingPos, 0f, null);
+            transform.rotation = _startingRot;
+        }
     }
 }

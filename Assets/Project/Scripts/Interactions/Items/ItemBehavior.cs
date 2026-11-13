@@ -42,6 +42,12 @@ public class ItemBehavior : InteractableBehavior
 
     public void TeleportTo(Vector3 tpDestination, float tpRotation)
     {
+        if (PlayerParams.Controllers.inventory.inventory.Contains(gameObject))
+        {
+            gameObject.SetActive(true);
+            PlayerParams.Controllers.inventory.inventory.Remove(gameObject);
+        }
+
         transform.position = tpDestination;
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, tpRotation, transform.rotation.eulerAngles.z);
 
